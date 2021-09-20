@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "types": [ "@honkhonk/vite-plugin-svgr/client" ]
+    "types": ["@honkhonk/vite-plugin-svgr/client"]
   },
   "include": ["./src"]
 }
