@@ -1,0 +1,25 @@
+# Emacs
+*~
+.dir-locals.el
+
+# macOS
+.DS_Store
+
+# Nix
+result*
+
+# direnv.
+.direnv/
+.envrc
+
+# tsserver
+.log/
+
+# yarn
+node_modules/
+yarn-debug.log*
+yarn-error.log*
+
+# vite
+.vite/
+dist/

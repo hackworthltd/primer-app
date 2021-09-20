@@ -1,0 +1,9 @@
+README.md
+node_modules/
+dist/
+yarn.lock
+.direnv/
+.log
+result/
+.github/
+.vite/
