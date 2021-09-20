@@ -4,6 +4,6 @@ dist/
 yarn.lock
 .direnv/
 .log
-result/
+result*
 .github/
 .vite/
