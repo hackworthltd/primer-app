@@ -1,9 +1,10 @@
 import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
+import svgr from "@honkhonk/vite-plugin-svgr";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [reactRefresh()],
+  plugins: [reactRefresh(), svgr()],
 
   // Don't write to node_modules, in case someday we can get it from Nix.
   cacheDir: ".vite",
