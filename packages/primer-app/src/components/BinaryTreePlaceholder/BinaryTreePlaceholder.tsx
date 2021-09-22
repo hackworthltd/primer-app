@@ -10,7 +10,7 @@ interface BinaryTreePlaceholderProps {
 
 export const BinaryTreePlaceholder = ({
   className = "",
-}: BinaryTreePlaceholderProps) => (
+}: BinaryTreePlaceholderProps): JSX.Element => (
   <div>
     <BinaryTreeSvg className={className} />
   </div>

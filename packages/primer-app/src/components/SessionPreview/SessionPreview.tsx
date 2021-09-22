@@ -13,7 +13,9 @@ interface SessionPreviewProps {
   session: SessionMeta;
 }
 
-export function SessionPreview({ session }: SessionPreviewProps) {
+export const SessionPreview = ({
+  session,
+}: SessionPreviewProps): JSX.Element => {
   const locale: string = navigator.language;
   return (
     <div>
@@ -33,4 +35,4 @@ export function SessionPreview({ session }: SessionPreviewProps) {
       </p>
     </div>
   );
-}
+};

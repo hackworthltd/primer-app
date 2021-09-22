@@ -18,7 +18,7 @@ const logoClasses = (size: string) =>
     "fill-current animate-spin-slow": true,
   });
 
-export const Logo = ({ size = "lg" }: LogoProps) => (
+export const Logo = ({ size = "lg" }: LogoProps): JSX.Element => (
   <div className="text-blue-300">
     <LogoSvg className={logoClasses(size)} />
   </div>
