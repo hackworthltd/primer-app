@@ -62,10 +62,28 @@
                 };
               };
             };
+
+            project-checks = final.yarn2nix-moretea.mkYarnWorkspace {
+              inherit src;
+
+              packageOverrides = rec {
+                primer-app = {
+                  inherit ESBUILD_BINARY_PATH;
+                  inherit configurePhase distPhase;
+
+                  buildPhase = "yarn checks";
+                  installPhase = ''
+                    mkdir -p $out
+                    touch $out/success
+                  '';
+                };
+              };
+            };
           in
           {
             inherit nodejs;
             inherit (project) primer-app;
+            primer-app-checks = project-checks.primer-app;
           }
         )
       ];
@@ -126,6 +144,7 @@
 
         checks = {
           source-code-checks = pre-commit-hooks;
+          inherit (pkgs) primer-app-checks;
         };
 
         devShell = pkgs.mkShell {
