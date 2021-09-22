@@ -1,10 +1,11 @@
 import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
 import svgr from "@honkhonk/vite-plugin-svgr";
+import eslintPlugin from "@nabla/vite-plugin-eslint";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [reactRefresh(), svgr()],
+  plugins: [eslintPlugin({ formatter: "stylish" }), reactRefresh(), svgr()],
 
   // Don't write to node_modules, in case someday we can get it from Nix.
   cacheDir: ".vite",
