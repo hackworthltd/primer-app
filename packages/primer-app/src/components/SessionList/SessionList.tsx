@@ -1,5 +1,8 @@
 import "./SessionList.css";
-import { SessionMeta, SessionPreview } from "../SessionPreview/SessionPreview";
+import {
+  SessionMeta,
+  SessionPreview,
+} from "@components/SessionPreview/SessionPreview";
 
 interface SessionListProps {
   sessions: SessionMeta[];

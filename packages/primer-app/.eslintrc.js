@@ -24,6 +24,13 @@ module.exports = {
       // Stop eslint-plugin-react from complaining.
       version: "17",
     },
+
+    // This keeps the eslint-plugin-import linter in sync with our
+    // TypeScript settings, so we only need to set up path aliases in
+    // tsconfig.json.
+    "import/resolver": {
+      typescript: {}
+    }
   },
 
   rules: {

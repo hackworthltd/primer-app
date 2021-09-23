@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
 import svgr from "@honkhonk/vite-plugin-svgr";
 import checker from "vite-plugin-checker";
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -30,6 +31,17 @@ export default defineConfig({
   esbuild: {
     jsxFactory: "_jsx",
     jsxFragment: "_jsxFragment",
-    jsxInject: `import { createElement as _jsx, Fragment as _jsxFragment } from "react"`
-  }
+    jsxInject: `import { createElement as _jsx, Fragment as _jsxFragment } from "react"`,
+  },
+
+  // Support for project root-relative imports.
+  //
+  // Note: this is not passed to tsc, so you must keep this in sync
+  // with tsconfig.json, as well.
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "@components": path.resolve(__dirname, "./src/components"),
+    },
+  },
 });

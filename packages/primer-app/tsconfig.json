@@ -31,7 +31,17 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+
+    // Support for project root-relative imports.
+    //
+    // Note: these path aliases must be kept in sync with the
+    // equivalent settings in vite.config.ts.
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"]
+    }
   },
   "include": ["./src"]
 }

@@ -1,5 +1,5 @@
-import CallToAction from "./components/CallToAction";
-import Logo from "./components/Logo";
+import CallToAction from "@components/CallToAction";
+import Logo from "@components/Logo";
 
 // Required to activate local fonts via Fontsource.
 import "@fontsource/source-sans-pro";
