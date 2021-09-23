@@ -33,7 +33,12 @@
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "typescript-eslint-language-service"
+      }
+    ]
   },
   "include": ["./src"]
 }
