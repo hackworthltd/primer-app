@@ -1,4 +1,3 @@
-import React from "react";
 import CallToAction from "./components/CallToAction";
 import Logo from "./components/Logo";
 

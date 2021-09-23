@@ -1,4 +1,3 @@
-import React from "react";
 import "./CallToAction.css";
 
 export const CallToAction = (): JSX.Element => (

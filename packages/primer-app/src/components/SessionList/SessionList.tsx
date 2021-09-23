@@ -1,4 +1,3 @@
-import React from "react";
 import "./SessionList.css";
 import { SessionMeta, SessionPreview } from "../SessionPreview/SessionPreview";
 

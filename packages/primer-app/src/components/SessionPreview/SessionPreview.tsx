@@ -1,4 +1,3 @@
-import React from "react";
 import "./SessionPreview.css";
 import { BinaryTreePlaceholder } from "../BinaryTreePlaceholder/BinaryTreePlaceholder";
 
