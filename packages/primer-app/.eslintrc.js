@@ -29,8 +29,8 @@ module.exports = {
     // TypeScript settings, so we only need to set up path aliases in
     // tsconfig.json.
     "import/resolver": {
-      typescript: {}
-    }
+      typescript: {},
+    },
   },
 
   rules: {
