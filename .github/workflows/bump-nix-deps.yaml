@@ -6,7 +6,7 @@ on:
     - cron: '0 2 * * 0'
 
 jobs:
-  update-dependencies:
+  update-nix-dependencies:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2.3.4
