@@ -1,6 +1,6 @@
 {
-  "name": "primer-app",
-  "version": "0.0.0",
+  "name": "@hackworthltd/primer-app",
+  "version": "0.1.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "scripts": {
@@ -21,6 +21,7 @@
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
+    "@hackworthltd/primer-lib": "^0.1.0",
     "@honkhonk/vite-plugin-svgr": "^1.1.0",
     "@tailwindcss/aspect-ratio": "^0.2.1",
     "@types/react": "^17.0.0",
