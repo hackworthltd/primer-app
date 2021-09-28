@@ -1,0 +1,10 @@
+<svg viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="1.5" role="img" aria-labelledby="title desc">
+  <title id="title">Binary tree placeholder image</title>
+  <desc id="desc">A generic binary tree with 5 nodes</desc>
+  <circle cx="250" cy="150" r="50" stroke="#000" stroke-width="4"/>
+  <circle cx="350" cy="350" r="50" stroke="#000" stroke-width="4"/>
+  <path d="M200 350c0 27.596-22.404 50-50 50s-50-22.404-50-50 22.404-50 50-50 50 22.404 50 50z" stroke="#000" stroke-width="4"/>
+  <circle cx="250" cy="550" r="50" stroke="#000" stroke-width="4"/>
+  <circle cx="450" cy="550" r="50" stroke="#000" stroke-width="4"/>
+  <path d="M250 200L150 300M350 400L250 500M250 200l100 100M350 400l100 100" stroke="#000" stroke-width="4"/>
+</svg>

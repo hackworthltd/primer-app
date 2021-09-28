@@ -1,0 +1,7 @@
+.vite/
+node_modules/
+dist/
+.eslintrc.js
+.eslintcache
+postcss.config.js
+tailwind.config.js
