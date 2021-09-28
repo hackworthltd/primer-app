@@ -1,4 +1,4 @@
-import "./BinaryTreePlaceholder.css";
+import "@/index.css";
 
 import BinaryTreeSvg from "./binary-tree.svg?component";
 

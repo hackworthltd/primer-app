@@ -1,6 +1,6 @@
-import classNames from "classnames";
+import "@/index.css";
 
-import "./Logo.css";
+import classNames from "classnames";
 
 import LogoSvg from "./logo.svg?component";
 

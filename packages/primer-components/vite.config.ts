@@ -4,6 +4,7 @@ import svgr from "@honkhonk/vite-plugin-svgr";
 import checker from "vite-plugin-checker";
 import dts from "vite-plugin-dts";
 import path from "path";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { name, version } from "./package.json";
 
 // https://vitejs.dev/config/
@@ -16,6 +17,7 @@ export default defineConfig({
     dts(),
     reactRefresh(),
     svgr(),
+    tsconfigPaths(),
   ],
 
   // Don't write to node_modules, in case someday we can get it from Nix.
@@ -34,16 +36,6 @@ export default defineConfig({
   esbuild: {
     jsxFactory: "_jsx",
     jsxInject: `import { createElement as _jsx } from "react"`,
-  },
-
-  // Support for project root-relative imports.
-  //
-  // Note: this is not passed to tsc, so you must keep this in sync
-  // with tsconfig.json, as well.
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
   },
 
   // Library mode settings.

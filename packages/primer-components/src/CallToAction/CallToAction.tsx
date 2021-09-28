@@ -1,4 +1,4 @@
-import "./CallToAction.css";
+import "@/index.css";
 
 export const CallToAction = (): JSX.Element => (
   <div className="flex flex-col justify-items-center items-center">
