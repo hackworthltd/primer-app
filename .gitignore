@@ -12,6 +12,9 @@ result*
 .direnv/
 .envrc
 
+# tsc
+tsconfig.tsbuildinfo
+
 # tsserver
 .log/
 

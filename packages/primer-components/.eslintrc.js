@@ -39,12 +39,5 @@ module.exports = {
     //
     // Note: the `2` here means ignore errors. :\
     "import/no-unresolved": [2, { ignore: [".svg\\?component"] }],
-
-    // I'm not sure how to get eslint to resolve CSS imports from a
-    // library, so we just ignore them for now.
-    "import/no-unresolved": [
-      2,
-      { ignore: ["@hackworthltd/primer-components/style.css"] },
-    ],
   },
 };

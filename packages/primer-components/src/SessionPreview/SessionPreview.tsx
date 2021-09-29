@@ -1,5 +1,6 @@
-import "./SessionPreview.css";
-import { BinaryTreePlaceholder } from "@components/BinaryTreePlaceholder/BinaryTreePlaceholder";
+import "@/index.css";
+
+import { BinaryTreePlaceholder } from "@/BinaryTreePlaceholder/BinaryTreePlaceholder";
 
 export interface SessionMeta {
   id: string;

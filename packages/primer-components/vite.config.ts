@@ -1,7 +1,11 @@
 import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
+import svgr from "@honkhonk/vite-plugin-svgr";
 import checker from "vite-plugin-checker";
+import dts from "vite-plugin-dts";
+import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { name, version } from "./package.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,7 +14,11 @@ export default defineConfig({
       typescript: true,
       eslint: { files: ["./src"], extensions: [".ts", ".tsx"] },
     }),
+    dts({
+      insertTypesEntry: true,
+    }),
     reactRefresh(),
+    svgr(),
     tsconfigPaths(),
   ],
 
@@ -29,7 +37,24 @@ export default defineConfig({
   // natively.
   esbuild: {
     jsxFactory: "_jsx",
-    jsxFragment: "_jsxFragment",
-    jsxInject: `import { createElement as _jsx, Fragment as _jsxFragment } from "react"`,
+    jsxInject: `import { createElement as _jsx } from "react"`,
+  },
+
+  // Library mode settings.
+  build: {
+    lib: {
+      entry: path.resolve(__dirname, "src/index.ts"),
+      name: name,
+      formats: ["es"],
+      fileName: (format) => `index.${format}.js`,
+    },
+    rollupOptions: {
+      // XXX dhess: do we need to add Tailwind UI deps here?
+      external: ["react", "react-dom"],
+    },
+  },
+
+  define: {
+    pkgJson: { name, version },
   },
 });
