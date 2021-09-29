@@ -15,14 +15,11 @@
     "@fontsource/source-code-pro": "^4.5.0",
     "@fontsource/source-sans-pro": "^4.5.0",
     "@fontsource/source-serif-pro": "^4.5.0",
-    "@headlessui/react": "^1.4.1",
-    "@heroicons/react": "^1.0.4",
+    "@hackworthltd/primer-components": "^0.1.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
-    "@honkhonk/vite-plugin-svgr": "^1.1.0",
-    "@tailwindcss/aspect-ratio": "^0.2.1",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.31.2",

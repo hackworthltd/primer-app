@@ -2,12 +2,15 @@
   "extends": "@hackworthltd/primer-lib/tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "types": ["@honkhonk/vite-plugin-svgr/client"],
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["./src"]
+  "include": ["./src"],
+  "references": [
+    {
+      "path": "../primer-components"
+    }
+  ]
 }
