@@ -14,7 +14,9 @@ export default defineConfig({
       typescript: true,
       eslint: { files: ["./src"], extensions: [".ts", ".tsx"] },
     }),
-    dts(),
+    dts({
+      insertTypesEntry: true,
+    }),
     reactRefresh(),
     svgr(),
     tsconfigPaths(),
@@ -42,7 +44,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
-      name: "primer-components",
+      name: name,
       formats: ["es"],
       fileName: (format) => `index.${format}.js`,
     },
@@ -53,6 +55,6 @@ export default defineConfig({
   },
 
   define: {
-    pkgJosn: { name, version },
+    pkgJson: { name, version },
   },
 });

@@ -9,25 +9,32 @@
     "package.json"
   ],
   "module": "./dist/index.es.js",
-  "types": "./dist/src/index.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.es.js"
-    }
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "package.json"
   },
   "scripts": {
     "build": "vite build",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "peerDependencies": {
-    "@headlessui/react": "^1.4.1",
-    "@heroicons/react": "^1.0.4",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
+    "@fontsource/source-code-pro": "^4.5.0",
+    "@fontsource/source-sans-pro": "^4.5.0",
+    "@fontsource/source-serif-pro": "^4.5.0",
+    "@headlessui/react": "^1.4.1",
+    "@heroicons/react": "^1.0.4",
     "@honkhonk/vite-plugin-svgr": "^1.1.0",
     "@storybook/addon-actions": "^6.4.0-beta.1",
     "@storybook/addon-essentials": "^6.4.0-beta.1",
