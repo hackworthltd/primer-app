@@ -4,18 +4,13 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "sideEffects": false,
-  "files": [
-    "dist",
-    "package.json"
-  ],
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.es.js"
     },
-    "./style.css": "./dist/style.css",
-    "./package.json": "package.json"
+    "./style.css": "./dist/style.css"
   },
   "scripts": {
     "build": "vite build",
@@ -69,6 +64,5 @@
     "vite-plugin-checker": "^0.3.4",
     "vite-plugin-dts": "^0.8.1",
     "vite-tsconfig-paths": "^3.3.14"
-  },
-  "dependencies": {}
+  }
 }

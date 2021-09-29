@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { v4 as uuidv4 } from "uuid";
-import { SessionMeta } from "../SessionPreview/SessionPreview";
+import { SessionMeta } from "@/SessionPreview/SessionPreview";
 
 import { SessionList } from "./SessionList";
 

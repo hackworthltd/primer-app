@@ -39,10 +39,6 @@
             nodejs = final.nodejs-16_x;
 
             src = ./.;
-            configurePhase = "ln -s $node_modules node_modules";
-
-            # Force `mkYarnPackage` not to try to build a binary.
-            distPhase = "true";
 
             # We need to use a nixpkgs-provided esbuild for Nix
             # builds, otherwise esbuild will complain that it
@@ -52,38 +48,51 @@
             project = final.yarn2nix-moretea.mkYarnWorkspace {
               inherit src;
 
-              packageOverrides = rec {
-                primer-app = {
+              packageOverrides = {
+                hackworthltd-primer-app = {
                   inherit ESBUILD_BINARY_PATH;
-                  inherit configurePhase distPhase;
 
+                  # We only need the result of the build for this
+                  # package. We can discard everything else, because
+                  # we're not going to use it as a dependency of
+                  # another package.
                   buildPhase = "yarn --offline build";
-                  installPhase = "cp -r dist $out";
+                  installPhase =
+                    let
+                      pname = "@hackworthltd/primer-app";
+                    in
+                    ''
+                      mkdir -p $out
+                      cp -r deps/${pname}/dist/* $out
+                    '';
+
+                  # Skip the distPhase, we don't need it for this package.
+                  distPhase = "true";
                 };
-              };
-            };
 
-            project-checks = final.yarn2nix-moretea.mkYarnWorkspace {
-              inherit src;
-
-              packageOverrides = rec {
-                primer-app = {
+                hackworthltd-primer-components = {
                   inherit ESBUILD_BINARY_PATH;
-                  inherit configurePhase distPhase;
+                  postBuild = "yarn --offline build";
 
-                  buildPhase = "yarn checks";
-                  installPhase = ''
-                    mkdir -p $out
-                    touch $out/success
-                  '';
+                  # We don't need node_modules for this package as
+                  # it's all `devDependencies` and `peerDependencies`.
+                  # This reduces the size of the closure (and the time
+                  # required to generate it) significantly.
+                  installPhase =
+                    let
+                      pname = "@hackworthltd/primer-components";
+                    in
+                    ''
+                      mkdir -p $out/libexec/${pname}
+                      mv deps $out/libexec/${pname}/deps
+                    '';
                 };
               };
             };
           in
           {
             inherit nodejs;
-            inherit (project) primer-app;
-            primer-app-checks = project-checks.primer-app;
+            inherit project;
           }
         )
       ];
@@ -139,12 +148,11 @@
       in
       {
         packages = {
-          inherit (pkgs) primer-app;
+          inherit (pkgs.project) hackworthltd-primer-app hackworthltd-primer-components;
         };
 
         checks = {
           source-code-checks = pre-commit-hooks;
-          inherit (pkgs) primer-app-checks;
         };
 
         devShell = pkgs.mkShell {
