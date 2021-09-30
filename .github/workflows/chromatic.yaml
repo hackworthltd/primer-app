@@ -1,0 +1,37 @@
+name: Deploy to Chromatic.
+
+on: workflow_dispatch
+
+jobs:
+  deploy-to-chromatic:
+    # This must run on our self-hosted EC2 instances, which are
+    # pre-configured for the correct permissions.
+    runs-on: ["self-hosted", "linux", "ec2"]
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2.3.4
+      with:
+        # Nix Flakes doesn't work on shallow clones
+        fetch-depth: 0
+
+    - name: Install Nix and configure binary caches.
+      uses: cachix/install-nix-action@v14
+      with:
+        install_url: https://nixos-nix-install-tests.cachix.org/serve/i6laym9jw3wg9mw6ncyrk6gjx4l34vvx/install
+        install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+          substituters = https://cache.nixos.org?priority=10 s3://hackworth-nix-cache?region=eu-west-1&priority=20 https://hydra.iohk.io?priority=30
+          trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.hackworth-corp.com-1:uLc3Th8lJtfvFAFLqdzRZWEwIk98gAitd5XrDr3Q8SY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+
+    - name: Build Storybook.
+      run: |
+        nix-build -A packages.x86_64-linux.primer-components-storybook
+
+    - name: Publish Storybook to Chromatic.
+      uses: chromaui/action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        storybookBuildDir: result
+        exitZeroOnChanges: true
