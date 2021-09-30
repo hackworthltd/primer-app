@@ -32,3 +32,4 @@ dist/
 
 # Storybook.js
 storybook-static/
+build-storybook.log
