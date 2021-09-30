@@ -89,10 +89,43 @@
                 };
               };
             };
+
+            storybook = final.yarn2nix-moretea.mkYarnWorkspace {
+              inherit src;
+              packageOverrides = {
+                hackworthltd-primer-components = {
+                  inherit ESBUILD_BINARY_PATH;
+
+                  # Storybook needs a writable `node_modules`.
+                  configurePhase = ''
+                    cp -r $node_modules node_modules
+                    chmod -R +w node_modules
+                  '';
+
+                  # We only need the result of the build for this
+                  # package. We can discard everything else, because
+                  # we're not going to use it as a dependency of
+                  # another package.
+                  buildPhase = "yarn --offline build-storybook";
+                  installPhase =
+                    let
+                      pname = "@hackworthltd/primer-app";
+                    in
+                    ''
+                      mkdir -p $out
+                      cp -r storybook-static/* $out
+                    '';
+
+                  # Skip the distPhase, we don't need it for this package.
+                  distPhase = "true";
+                };
+              };
+            };
           in
           {
             inherit nodejs;
             inherit project;
+            inherit storybook;
           }
         )
       ];
@@ -149,6 +182,7 @@
       {
         packages = {
           inherit (pkgs.project) hackworthltd-primer-app hackworthltd-primer-components;
+          primer-components-storybook = pkgs.storybook.hackworthltd-primer-components;
         };
 
         checks = {
