@@ -29,3 +29,6 @@ dist/
 
 # eslint
 .eslintcache
+
+# Storybook.js
+storybook-static/
