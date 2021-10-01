@@ -1,6 +1,9 @@
 name: Deploy to Chromatic.
 
 on:
+  push:
+    branches-ignore:
+      - "primer-app-bors-trying"
   workflow_dispatch:
     inputs:
       sha:
@@ -28,13 +31,25 @@ jobs:
         install_url: https://nixos-nix-install-tests.cachix.org/serve/i6laym9jw3wg9mw6ncyrk6gjx4l34vvx/install
         install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
         extra_nix_config: |
-          experimental-features = nix-command flakes
+          experimental-features = nix-command flakes ca-references
           substituters = https://cache.nixos.org?priority=10 s3://hackworth-nix-cache?region=eu-west-1&priority=20 https://hydra.iohk.io?priority=30
           trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.hackworth-corp.com-1:uLc3Th8lJtfvFAFLqdzRZWEwIk98gAitd5XrDr3Q8SY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 
     - name: Build Storybook.
       run: |
         nix-build -A packages.x86_64-linux.primer-components-storybook
+
+    # The Chromatic Action needs some Node.js tooling that isn't
+    # installed by default on our runners.
+    - name: Install Chromatic prerequisites.
+      run: |
+        nix profile install nixpkgs#yarn
+        nix profile install nixpkgs#nodejs-16_x
+
+    # The Chromatic Action needs `node_modules` to be installed.
+    - name: Install node_modules.
+      run: |
+        yarn
 
     - name: Publish Storybook to Chromatic.
       uses: chromaui/action@v1

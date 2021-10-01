@@ -40,7 +40,7 @@ function exampleSessionsMeta(): SessionMeta[] {
     },
     {
       id: id4,
-      name: "Exercise 2.3(a)",
+      name: "Exercise 2.3(b)",
       lastModified: new Date("2021-07-10T09:00:01.000Z"),
       url: "https://primer.fly.dev/#connect?session=" + id4,
     },
