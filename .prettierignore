@@ -7,3 +7,4 @@ yarn.lock
 result*
 .github/
 .vite/
+storybook-static/
