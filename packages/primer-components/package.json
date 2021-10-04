@@ -26,9 +26,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
-    "@fontsource/source-code-pro": "^4.5.0",
-    "@fontsource/source-sans-pro": "^4.5.0",
-    "@fontsource/source-serif-pro": "^4.5.0",
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
     "@honkhonk/vite-plugin-svgr": "^1.1.0",
