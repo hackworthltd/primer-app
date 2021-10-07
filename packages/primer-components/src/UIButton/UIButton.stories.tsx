@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import type { Size, Appearance, UIButtonProps } from "./UIButton";
 import { UIButton } from "./UIButton";
 
-const sizes: Array<Size> = ["sm", "md", "lg", "xl"];
+const sizes: Array<Size> = ["sm", "md", "lg", "xl", "2xl"];
 const appearances: Array<Appearance> = [
   "primary",
   "secondary",
@@ -39,7 +39,7 @@ const Template: ComponentStory<typeof UIButton> = (args: UIButtonProps) => (
 
 export const Single = Template.bind({});
 Single.args = {
-  size: "lg",
+  size: "xl",
   appearance: "primary",
   text: "Button",
 };

@@ -2,7 +2,7 @@ import "@/index.css";
 
 import classNames from "classnames";
 
-export type Size = "sm" | "md" | "lg" | "xl";
+export type Size = "sm" | "md" | "lg" | "xl" | "2xl";
 export type Appearance =
   | "primary"
   | "secondary"
@@ -35,10 +35,11 @@ export interface UIButtonProps {
 
 const buttonClasses = (size: Size, appearance: Appearance) =>
   classNames({
-    "px-3 py-2 text-sm leading-4 rounded-md": size === "sm",
-    "px-4 py-2 text-sm rounded-md": size === "md",
-    "px-4 py-2 text-base rounded-md": size === "lg",
-    "px-6 py-3 text-base rounded-md": size === "xl",
+    "px-2.5 py-1.5 text-xs rounded": size === "sm",
+    "px-3 py-2 text-sm leading-4 rounded-md": size === "md",
+    "px-4 py-2 text-sm rounded-md": size === "lg",
+    "px-4 py-2 text-base rounded-md": size === "xl",
+    "px-6 py-3 text-base rounded-md": size === "2xl",
     "border-transparent text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500":
       appearance === "primary",
     "border-transparent text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:ring-indigo-500":
