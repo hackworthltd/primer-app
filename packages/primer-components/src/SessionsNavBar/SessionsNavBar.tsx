@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { SearchIcon } from "@heroicons/react/solid";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { UIButton } from "@/UIButton/UIButton";
 
 const user = {
   name: "Chelsea Hagon",
@@ -138,13 +139,9 @@ export const SessionsNavBar = (): JSX.Element => (
                     </Menu.Items>
                   </Transition>
                 </Menu>
-
-                <a
-                  href="#"
-                  className="inline-flex items-center py-2 px-4 ml-6 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md border border-transparent focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 shadow-sm focus:outline-none"
-                >
-                  New Project
-                </a>
+                <div className="inline-flex items-center py-2 px-4 ml-4">
+                  <UIButton size="lg" appearance="primary" text="New program" />
+                </div>
               </div>
             </div>
           </div>
