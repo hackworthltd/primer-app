@@ -16,7 +16,8 @@ export interface PrimerBrandingProps {
 
 const brandingClasses = (size: Size) =>
   classNames({
-    "text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl": size === "responsive",
+    "text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl":
+      size === "responsive",
     "text-sm": size === "sm",
     "text-md": size === "md",
     "text-lg": size === "lg",
