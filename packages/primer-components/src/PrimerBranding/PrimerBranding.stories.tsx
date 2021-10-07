@@ -3,7 +3,8 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import type { Size, PrimerBrandingProps } from "./PrimerBranding";
 import { PrimerBranding } from "./PrimerBranding";
 
-const sizes: Array<Size> = ["sm", "md", "lg", "xl", "2xl"];
+const allSizes: Array<Size> = ["responsive", "sm", "md", "lg", "xl", "2xl"];
+const fixedSizes: Array<Size> = ["sm", "md", "lg", "xl", "2xl"];
 
 export default {
   title: "Application/Component Library/Branding/Primer",
@@ -11,7 +12,7 @@ export default {
   argTypes: {
     size: {
       description: "Pre-defined sizes.",
-      options: sizes,
+      options: allSizes,
       control: { type: "radio" },
     },
   },
@@ -23,13 +24,13 @@ const Template: ComponentStory<typeof PrimerBranding> = (
 
 export const Single = Template.bind({});
 Single.args = {
-  size: "xl",
+  size: "responsive",
 };
 
 const AllSizesTemplate: ComponentStory<typeof PrimerBranding> = () => (
   <>
     <div className="flex flex-row justify-around items-center mb-8">
-      {sizes.map((sz) => (
+      {fixedSizes.map((sz) => (
         <PrimerBranding size={sz} key={sz} />
       ))}
     </div>

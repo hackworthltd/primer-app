@@ -2,11 +2,12 @@ import "@/index.css";
 
 import classNames from "classnames";
 
-export type Size = "sm" | "md" | "lg" | "xl" | "2xl";
+export type Size = "responsive" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export interface PrimerBrandingProps {
   /**
-   * Pre-defined sizes.
+   * Pre-defined sizes, plus "responsive", which uses Tailwind CSS
+   * breakpoints to dynamically adjust the branding size.
    *
    * @type {Size}
    */
@@ -15,6 +16,8 @@ export interface PrimerBrandingProps {
 
 const brandingClasses = (size: Size) =>
   classNames({
+    "text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl":
+      size === "responsive",
     "text-sm": size === "sm",
     "text-md": size === "md",
     "text-lg": size === "lg",
