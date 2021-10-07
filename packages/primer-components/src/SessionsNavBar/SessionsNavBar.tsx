@@ -5,6 +5,7 @@ import { Menu, Popover, Transition } from "@headlessui/react";
 import { SearchIcon } from "@heroicons/react/solid";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { UIButton } from "@/UIButton/UIButton";
+import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
 
 const user = {
   name: "Chelsea Hagon",
@@ -44,16 +45,8 @@ export const SessionsNavBar = (): JSX.Element => (
         <>
           <div className="px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
             <div className="flex xl:grid relative xl:grid-cols-12 lg:gap-8 justify-between">
-              <div className="flex md:absolute lg:static md:inset-y-0 md:left-0 xl:col-span-2">
-                <div className="flex flex-shrink-0 items-center">
-                  <a href="#">
-                    <img
-                      className="block w-auto h-8"
-                      src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                      alt="Workflow"
-                    />
-                  </a>
-                </div>
+              <div className="flex">
+                <PrimerBranding size="2xl" />
               </div>
               <div className="flex-1 xl:col-span-6 md:px-8 lg:px-0 min-w-0">
                 <div className="flex items-center py-4 px-6 xl:px-0 md:mx-auto lg:mx-0 md:max-w-3xl lg:max-w-none">
