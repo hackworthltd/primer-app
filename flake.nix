@@ -37,21 +37,11 @@
         (final: prev:
           let
             nodejs = final.nodejs-16_x;
-
             src = ./.;
-
-            # We need to use a nixpkgs-provided esbuild for Nix
-            # builds, otherwise esbuild will complain that it
-            # couldn't be installed.
-            ESBUILD_BINARY_PATH = "${final.esbuild}/bin/esbuild";
-
             project = final.yarn2nix-moretea.mkYarnWorkspace {
               inherit src;
-
               packageOverrides = {
                 hackworthltd-primer-app = {
-                  inherit ESBUILD_BINARY_PATH;
-
                   # We only need the result of the build for this
                   # package. We can discard everything else, because
                   # we're not going to use it as a dependency of
@@ -71,7 +61,6 @@
                 };
 
                 hackworthltd-primer-components = {
-                  inherit ESBUILD_BINARY_PATH;
                   postBuild = "yarn --offline build";
 
                   # We don't need node_modules for this package as
@@ -94,8 +83,6 @@
               inherit src;
               packageOverrides = {
                 hackworthltd-primer-components = {
-                  inherit ESBUILD_BINARY_PATH;
-
                   # Storybook needs a writable `node_modules`.
                   configurePhase = ''
                     cp -r $node_modules node_modules
