@@ -4,14 +4,24 @@ import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { SearchIcon } from "@heroicons/react/solid";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { Avatar, AvatarStyle } from "@/Avatar/Avatar";
 import { UIButton } from "@/UIButton/UIButton";
 import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
 
-const user = {
+// Placeholder user type.
+interface User {
+  name: string;
+  email: string;
+  avatarStyle: AvatarStyle;
+  imageUrl: string | undefined;
+}
+
+const user: User = {
   name: "Chelsea Hagon",
   email: "chelseahagon@example.com",
+  avatarStyle: "jdenticon",
   imageUrl:
-    "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    "https://images.unsplash.com/photo-1573496358961-3c82861ab8f4?ixid=MnwyNjcwMzh8MHwxfGFsbHx8fHx8fHx8fDE2MzQwNTU4MjU&ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -97,10 +107,11 @@ export const SessionsNavBar = (): JSX.Element => (
                   <div>
                     <Menu.Button className="flex bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none">
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="w-8 h-8 rounded-full"
-                        src={user.imageUrl}
-                        alt=""
+                      <Avatar
+                        id={user.email}
+                        style={user.avatarStyle}
+                        imgSrc={user.imageUrl}
+                        size="responsive"
                       />
                     </Menu.Button>
                   </div>
@@ -164,10 +175,11 @@ export const SessionsNavBar = (): JSX.Element => (
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4 sm:px-6 mx-auto max-w-3xl">
                 <div className="flex-shrink-0">
-                  <img
-                    className="w-10 h-10 rounded-full"
-                    src={user.imageUrl}
-                    alt=""
+                  <Avatar
+                    id={user.email}
+                    style={user.avatarStyle}
+                    imgSrc={user.imageUrl}
+                    size="responsive"
                   />
                 </div>
                 <div className="ml-3">
