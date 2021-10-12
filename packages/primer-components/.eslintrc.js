@@ -39,5 +39,12 @@ module.exports = {
     //
     // Note: the `2` here means ignore errors. :\
     "import/no-unresolved": [2, { ignore: [".svg\\?component"] }],
+
+    "react-hooks/exhaustive-deps": [
+      "warn",
+      {
+        additionalHooks: "(useMemo)",
+      },
+    ],
   },
 };

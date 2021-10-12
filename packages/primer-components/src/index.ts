@@ -1,3 +1,4 @@
+export { default as Avatar } from "@/Avatar";
 export { default as BinaryTreePlaceholder } from "@/BinaryTreePlaceholder";
 export { default as CallToAction } from "@/CallToAction";
 export { default as Logo } from "@/Logo";
