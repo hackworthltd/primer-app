@@ -8,22 +8,22 @@ import { Avatar, AvatarStyle } from "@/Avatar/Avatar";
 import { UIButton } from "@/UIButton/UIButton";
 import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
 
-// Placeholder user type.
-interface User {
+// Placeholder account type.
+interface Account {
   name: string;
   email: string;
   avatarStyle: AvatarStyle;
   imageUrl: string | undefined;
 }
 
-const user: User = {
+const account: Account = {
   name: "Chelsea Hagon",
   email: "chelseahagon@example.com",
   avatarStyle: "jdenticon",
   imageUrl:
     "https://images.unsplash.com/photo-1573496358961-3c82861ab8f4?ixid=MnwyNjcwMzh8MHwxfGFsbHx8fHx8fHx8fDE2MzQwNTU4MjU&ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
-const userNavigation = [
+const accountNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
   { name: "Sign out", href: "#" },
@@ -100,11 +100,11 @@ export const SessionsNavBar = (): JSX.Element => (
                 <Menu as="div" className="relative flex-shrink-0 ml-5">
                   <div>
                     <Menu.Button className="flex bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none">
-                      <span className="sr-only">Open user menu</span>
+                      <span className="sr-only">Open account menu</span>
                       <Avatar
-                        id={user.email}
-                        style={user.avatarStyle}
-                        imgSrc={user.imageUrl}
+                        id={account.email}
+                        style={account.avatarStyle}
+                        imgSrc={account.imageUrl}
                         size="responsive"
                       />
                     </Menu.Button>
@@ -119,7 +119,7 @@ export const SessionsNavBar = (): JSX.Element => (
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 py-1 mt-2 w-48 bg-white rounded-md ring-1 ring-black ring-opacity-5 shadow-lg origin-top-right focus:outline-none">
-                      {userNavigation.map((item) => (
+                      {accountNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           {({ active }) => (
                             <a
@@ -153,18 +153,18 @@ export const SessionsNavBar = (): JSX.Element => (
               <div className="flex items-center px-4 sm:px-6 mx-auto max-w-3xl">
                 <div className="flex-shrink-0">
                   <Avatar
-                    id={user.email}
-                    style={user.avatarStyle}
-                    imgSrc={user.imageUrl}
+                    id={account.email}
+                    style={account.avatarStyle}
+                    imgSrc={account.imageUrl}
                     size="responsive"
                   />
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-gray-800">
-                    {user.name}
+                    {account.name}
                   </div>
                   <div className="text-sm font-medium text-gray-500">
-                    {user.email}
+                    {account.email}
                   </div>
                 </div>
                 <button
@@ -176,7 +176,7 @@ export const SessionsNavBar = (): JSX.Element => (
                 </button>
               </div>
               <div className="px-2 sm:px-4 mx-auto mt-3 space-y-1 max-w-3xl">
-                {userNavigation.map((item) => (
+                {accountNavigation.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
