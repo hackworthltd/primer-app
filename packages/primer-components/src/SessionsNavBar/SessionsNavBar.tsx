@@ -23,12 +23,6 @@ const user: User = {
   imageUrl:
     "https://images.unsplash.com/photo-1573496358961-3c82861ab8f4?ixid=MnwyNjcwMzh8MHwxfGFsbHx8fHx8fHx8fDE2MzQwNTU4MjU&ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
-const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Teams", href: "#", current: false },
-  { name: "Directory", href: "#", current: false },
-];
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
@@ -155,23 +149,6 @@ export const SessionsNavBar = (): JSX.Element => (
           </div>
 
           <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
-            <div className="px-2 sm:px-4 pt-2 pb-3 mx-auto space-y-1 max-w-3xl">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  aria-current={item.current ? "page" : undefined}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-100 text-gray-900"
-                      : "hover:bg-gray-50",
-                    "block rounded-md py-2 px-3 text-base font-medium"
-                  )}
-                >
-                  {item.name}
-                </a>
-              ))}
-            </div>
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4 sm:px-6 mx-auto max-w-3xl">
                 <div className="flex-shrink-0">
