@@ -23,6 +23,23 @@
     , ...
     }@inputs:
     let
+      # A flake can get its git revision via `self.rev` if its working
+      # tree is clean and its index is empty, so we use that for the
+      # program version when it's available.
+      #
+      # When the working tree is modified or the index is not empty,
+      # evaluating `self.rev` is an error. However, we *can* use
+      # `self.lastModifiedDate` in that case, which is at least a bit
+      # more helpful than returning "unknown" or some other static
+      # value. (This should only happen when you `nix run` in a
+      # modified repo. Hydra builds will always be working from a
+      # clean git repo, of course.)
+      version =
+        let
+          v = self.rev or self.lastModifiedDate;
+        in
+        builtins.trace "Nix Primer version is ${v}" v;
+
       forAllSupportedSystems = flake-utils.lib.eachSystem [
         "x86_64-linux"
         "x86_64-darwin"
@@ -165,9 +182,20 @@
               "yarn.lock"
             ];
           };
+
+        # This package is guaranteed to change whenever the git rev
+        # changes. We use this as a forcing function so that Hydra
+        # can't cache required builds, which otherwise causes problems
+        # for GitHub applications that expect Hydra to report the
+        # status of builds to GitHub regardless of whether they're
+        # cached or not.
+        package-version = pkgs.writeShellScriptBin "package-version" ''
+          echo ${version}
+        '';
       in
       {
         packages = {
+          inherit package-version;
           inherit (pkgs.project) hackworthltd-primer-app hackworthltd-primer-components;
           primer-components-storybook = pkgs.storybook.hackworthltd-primer-components;
         };
