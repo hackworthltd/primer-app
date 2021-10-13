@@ -40,7 +40,7 @@ export interface AvatarProps {
   size: Size;
 }
 
-const imgClasses = (size: Size, imgSrc: string | undefined) =>
+const imgClasses = (size: Size) =>
   classNames({
     "h-6 w-6 md:h-8 md:w-8 lg:h-10 lg:w-10 xl:h-12 xl:w-12 2xl:h-14 2xl:w-14":
       size === "responsive",
@@ -49,7 +49,7 @@ const imgClasses = (size: Size, imgSrc: string | undefined) =>
     "h-10 w-10": size === "lg",
     "h-12 w-12": size === "xl",
     "h-14 w-14": size === "2xl",
-    "rounded-md": imgSrc !== undefined,
+    "inline-block rounded-full": true,
   });
 
 export const avatarStyle = (
@@ -65,6 +65,17 @@ export const avatarStyle = (
   }
 };
 
+export const avatarOptions = (style: AvatarStyle): StyleOptions<Options> => {
+  switch (style) {
+    case "bottts":
+      // This transformation focuses on the bot face.
+      return { radius: 50, scale: 200, translateY: -29 };
+    default:
+      // Ensure the square icon is circumscribed by the round cutout.
+      return { scale: 70 };
+  }
+};
+
 export const Avatar = (p: AvatarProps): JSX.Element => {
   // React Hooks must be called in the exact same order in every
   // component render, so we can't put this behind the conditional
@@ -73,12 +84,9 @@ export const Avatar = (p: AvatarProps): JSX.Element => {
     return createAvatar(avatarStyle(p.style), {
       seed: p.id,
       dataUri: true,
+      ...avatarOptions(p.style),
     });
   }, [p.id, p.style]);
   const src = p.imgSrc ? p.imgSrc : avatar;
-  return (
-    <span className="inline-block">
-      <img className={imgClasses(p.size, p.imgSrc)} src={src} alt={p.id} />
-    </span>
-  );
+  return <img className={imgClasses(p.size)} src={src} alt={p.id} />;
 };
