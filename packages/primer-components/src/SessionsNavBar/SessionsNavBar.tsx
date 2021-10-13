@@ -9,20 +9,22 @@ import { UIButton } from "@/UIButton/UIButton";
 import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
 
 // Placeholder account type.
-interface Account {
+export interface Account {
   name: string;
   email: string;
   avatarStyle: AvatarStyle;
   imageUrl: string | undefined;
 }
 
-const account: Account = {
-  name: "Chelsea Hagon",
-  email: "chelseahagon@example.com",
-  avatarStyle: "jdenticon",
-  imageUrl:
-    "https://images.unsplash.com/photo-1573496358961-3c82861ab8f4?ixid=MnwyNjcwMzh8MHwxfGFsbHx8fHx8fHx8fDE2MzQwNTU4MjU&ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+export interface SessionsNavBarProps {
+  /**
+   * The account whose sessions will be displayed.
+   *
+   * @type {Account}
+   */
+  account: Account;
 };
+
 const accountNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
@@ -33,7 +35,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const SessionsNavBar = (): JSX.Element => (
+export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
   <>
     {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
     <Popover
@@ -102,9 +104,9 @@ export const SessionsNavBar = (): JSX.Element => (
                     <Menu.Button className="flex bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none">
                       <span className="sr-only">Open account menu</span>
                       <Avatar
-                        id={account.email}
-                        style={account.avatarStyle}
-                        imgSrc={account.imageUrl}
+                        id={p.account.email}
+                        style={p.account.avatarStyle}
+                        imgSrc={p.account.imageUrl}
                         size="responsive"
                       />
                     </Menu.Button>
@@ -153,18 +155,18 @@ export const SessionsNavBar = (): JSX.Element => (
               <div className="flex items-center px-4 sm:px-6 mx-auto max-w-3xl">
                 <div className="flex-shrink-0">
                   <Avatar
-                    id={account.email}
-                    style={account.avatarStyle}
-                    imgSrc={account.imageUrl}
+                    id={p.account.email}
+                    style={p.account.avatarStyle}
+                    imgSrc={p.account.imageUrl}
                     size="responsive"
                   />
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-gray-800">
-                    {account.name}
+                    {p.account.name}
                   </div>
                   <div className="text-sm font-medium text-gray-500">
-                    {account.email}
+                    {p.account.email}
                   </div>
                 </div>
                 <button
