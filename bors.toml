@@ -1,7 +1,5 @@
 status = [
-  "ci/hydra:hackworthltd:primer-app-bors-staging:required",
-  "UI Review",
-  "UI Tests"
+  "ci/hydra:hackworthltd:primer-app-bors-staging:required"
 ]
 timeout_sec = 3600
 # Disabled for now.
