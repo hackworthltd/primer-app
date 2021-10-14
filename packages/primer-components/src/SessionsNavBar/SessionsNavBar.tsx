@@ -2,11 +2,11 @@ import "@/index.css";
 
 import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
-import { SearchIcon } from "@heroicons/react/solid";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Avatar, AvatarStyle } from "@/Avatar/Avatar";
 import { UIButton } from "@/UIButton/UIButton";
 import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
+import { SearchBar } from "@/SearchBar/SearchBar";
 
 // Placeholder account type.
 export interface Account {
@@ -56,26 +56,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
               </div>
               <div className="flex-1 xl:col-span-6 md:px-8 lg:px-0 min-w-0">
                 <div className="flex items-center py-4 px-6 xl:px-0 md:mx-auto lg:mx-0 md:max-w-3xl lg:max-w-none">
-                  <div className="w-full">
-                    <label htmlFor="search" className="sr-only">
-                      Search
-                    </label>
-                    <div className="relative">
-                      <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                        <SearchIcon
-                          className="w-5 h-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <input
-                        id="search"
-                        name="search"
-                        className="block py-2 pr-3 pl-10 w-full text-sm sm:text-sm placeholder-gray-500 focus:placeholder-gray-400 focus:text-gray-900 bg-white rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
-                        placeholder="Search"
-                        type="search"
-                      />
-                    </div>
-                  </div>
+                  <SearchBar ariaLabel="Search programs" placeholder="Program name" />
                 </div>
               </div>
               <div className="flex lg:hidden md:absolute md:inset-y-0 md:right-0 items-center">
