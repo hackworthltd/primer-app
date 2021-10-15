@@ -2,34 +2,31 @@ import "@/index.css";
 
 import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
-import { SearchIcon } from "@heroicons/react/solid";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Avatar, AvatarStyle } from "@/Avatar/Avatar";
+import { NotificationsButton } from "@/NotificationsButton/NotificationsButton";
 import { UIButton } from "@/UIButton/UIButton";
 import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
+import { SearchBar } from "@/SearchBar/SearchBar";
 
-// Placeholder user type.
-interface User {
+// Placeholder account type.
+export interface Account {
   name: string;
   email: string;
   avatarStyle: AvatarStyle;
   imageUrl: string | undefined;
 }
 
-const user: User = {
-  name: "Chelsea Hagon",
-  email: "chelseahagon@example.com",
-  avatarStyle: "jdenticon",
-  imageUrl:
-    "https://images.unsplash.com/photo-1573496358961-3c82861ab8f4?ixid=MnwyNjcwMzh8MHwxfGFsbHx8fHx8fHx8fDE2MzQwNTU4MjU&ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
-const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Teams", href: "#", current: false },
-  { name: "Directory", href: "#", current: false },
-];
-const userNavigation = [
+export interface SessionsNavBarProps {
+  /**
+   * The account whose sessions will be displayed.
+   *
+   * @type {Account}
+   */
+  account: Account;
+}
+
+const accountNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
   { name: "Sign out", href: "#" },
@@ -39,7 +36,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const SessionsNavBar = (): JSX.Element => (
+export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
   <>
     {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
     <Popover
@@ -60,26 +57,10 @@ export const SessionsNavBar = (): JSX.Element => (
               </div>
               <div className="flex-1 xl:col-span-6 md:px-8 lg:px-0 min-w-0">
                 <div className="flex items-center py-4 px-6 xl:px-0 md:mx-auto lg:mx-0 md:max-w-3xl lg:max-w-none">
-                  <div className="w-full">
-                    <label htmlFor="search" className="sr-only">
-                      Search
-                    </label>
-                    <div className="relative">
-                      <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                        <SearchIcon
-                          className="w-5 h-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <input
-                        id="search"
-                        name="search"
-                        className="block py-2 pr-3 pl-10 w-full text-sm sm:text-sm placeholder-gray-500 focus:placeholder-gray-400 focus:text-gray-900 bg-white rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
-                        placeholder="Search"
-                        type="search"
-                      />
-                    </div>
-                  </div>
+                  <SearchBar
+                    ariaLabel="Search programs"
+                    placeholder="Program name"
+                  />
                 </div>
               </div>
               <div className="flex lg:hidden md:absolute md:inset-y-0 md:right-0 items-center">
@@ -94,23 +75,17 @@ export const SessionsNavBar = (): JSX.Element => (
                 </Popover.Button>
               </div>
               <div className="hidden lg:flex xl:col-span-4 lg:justify-end lg:items-center">
-                <a
-                  href="#"
-                  className="flex-shrink-0 p-1 ml-5 text-gray-400 hover:text-gray-500 bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="w-6 h-6" aria-hidden="true" />
-                </a>
+                <NotificationsButton appearance="plain" />
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative flex-shrink-0 ml-5">
                   <div>
                     <Menu.Button className="flex bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none">
-                      <span className="sr-only">Open user menu</span>
+                      <span className="sr-only">Open account menu</span>
                       <Avatar
-                        id={user.email}
-                        style={user.avatarStyle}
-                        imgSrc={user.imageUrl}
+                        id={p.account.email}
+                        style={p.account.avatarStyle}
+                        imgSrc={p.account.imageUrl}
                         size="responsive"
                       />
                     </Menu.Button>
@@ -125,7 +100,7 @@ export const SessionsNavBar = (): JSX.Element => (
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 py-1 mt-2 w-48 bg-white rounded-md ring-1 ring-black ring-opacity-5 shadow-lg origin-top-right focus:outline-none">
-                      {userNavigation.map((item) => (
+                      {accountNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           {({ active }) => (
                             <a
@@ -155,51 +130,28 @@ export const SessionsNavBar = (): JSX.Element => (
           </div>
 
           <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
-            <div className="px-2 sm:px-4 pt-2 pb-3 mx-auto space-y-1 max-w-3xl">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  aria-current={item.current ? "page" : undefined}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-100 text-gray-900"
-                      : "hover:bg-gray-50",
-                    "block rounded-md py-2 px-3 text-base font-medium"
-                  )}
-                >
-                  {item.name}
-                </a>
-              ))}
-            </div>
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4 sm:px-6 mx-auto max-w-3xl">
                 <div className="flex-shrink-0">
                   <Avatar
-                    id={user.email}
-                    style={user.avatarStyle}
-                    imgSrc={user.imageUrl}
+                    id={p.account.email}
+                    style={p.account.avatarStyle}
+                    imgSrc={p.account.imageUrl}
                     size="responsive"
                   />
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-gray-800">
-                    {user.name}
+                    {p.account.name}
                   </div>
                   <div className="text-sm font-medium text-gray-500">
-                    {user.email}
+                    {p.account.email}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="flex-shrink-0 p-1 ml-auto text-gray-400 hover:text-gray-500 bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="w-6 h-6" aria-hidden="true" />
-                </button>
+                <NotificationsButton appearance="plain" />
               </div>
               <div className="px-2 sm:px-4 mx-auto mt-3 space-y-1 max-w-3xl">
-                {userNavigation.map((item) => (
+                {accountNavigation.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
