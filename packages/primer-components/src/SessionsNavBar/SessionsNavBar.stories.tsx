@@ -18,13 +18,13 @@ export default {
     account: {
       description: "The current account.",
       control: "object",
-    }
+    },
   },
 } as ComponentMeta<typeof SessionsNavBar>;
 
-const Template: ComponentStory<typeof SessionsNavBar> = (args: SessionsNavBarProps) => (
-  <SessionsNavBar {...args} />
-);
+const Template: ComponentStory<typeof SessionsNavBar> = (
+  args: SessionsNavBarProps
+) => <SessionsNavBar {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

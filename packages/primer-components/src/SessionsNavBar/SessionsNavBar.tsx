@@ -24,7 +24,7 @@ export interface SessionsNavBarProps {
    * @type {Account}
    */
   account: Account;
-};
+}
 
 const accountNavigation = [
   { name: "Your Profile", href: "#" },
@@ -57,7 +57,10 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
               </div>
               <div className="flex-1 xl:col-span-6 md:px-8 lg:px-0 min-w-0">
                 <div className="flex items-center py-4 px-6 xl:px-0 md:mx-auto lg:mx-0 md:max-w-3xl lg:max-w-none">
-                  <SearchBar ariaLabel="Search programs" placeholder="Program name" />
+                  <SearchBar
+                    ariaLabel="Search programs"
+                    placeholder="Program name"
+                  />
                 </div>
               </div>
               <div className="flex lg:hidden md:absolute md:inset-y-0 md:right-0 items-center">

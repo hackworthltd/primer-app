@@ -1,12 +1,12 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { Appearance, NotificationsButtonProps } from "./NotificationsButton";
+import type {
+  Appearance,
+  NotificationsButtonProps,
+} from "./NotificationsButton";
 import { NotificationsButton } from "./NotificationsButton";
 
-const appearances: Array<Appearance> = [
-  "plain",
-  "notifications",
-];
+const appearances: Array<Appearance> = ["plain", "notifications"];
 
 export default {
   title: "Application/Component Library/NotificationsButton",
@@ -20,9 +20,9 @@ export default {
   },
 } as ComponentMeta<typeof NotificationsButton>;
 
-const Template: ComponentStory<typeof NotificationsButton> = (args: NotificationsButtonProps) => (
-  <NotificationsButton {...args} />
-);
+const Template: ComponentStory<typeof NotificationsButton> = (
+  args: NotificationsButtonProps
+) => <NotificationsButton {...args} />;
 
 export const Single = Template.bind({});
 Single.args = {
