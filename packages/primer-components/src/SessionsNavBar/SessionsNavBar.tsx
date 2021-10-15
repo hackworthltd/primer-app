@@ -2,8 +2,9 @@ import "@/index.css";
 
 import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Avatar, AvatarStyle } from "@/Avatar/Avatar";
+import { NotificationsButton } from "@/NotificationsButton/NotificationsButton";
 import { UIButton } from "@/UIButton/UIButton";
 import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
 import { SearchBar } from "@/SearchBar/SearchBar";
@@ -71,13 +72,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                 </Popover.Button>
               </div>
               <div className="hidden lg:flex xl:col-span-4 lg:justify-end lg:items-center">
-                <a
-                  href="#"
-                  className="flex-shrink-0 p-1 ml-5 text-gray-400 hover:text-gray-500 bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="w-6 h-6" aria-hidden="true" />
-                </a>
+                <NotificationsButton appearance="plain" />
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative flex-shrink-0 ml-5">
@@ -150,13 +145,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                     {p.account.email}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="flex-shrink-0 p-1 ml-auto text-gray-400 hover:text-gray-500 bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="w-6 h-6" aria-hidden="true" />
-                </button>
+                <NotificationsButton appearance="plain" />
               </div>
               <div className="px-2 sm:px-4 mx-auto mt-3 space-y-1 max-w-3xl">
                 {accountNavigation.map((item) => (

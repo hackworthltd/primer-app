@@ -5,6 +5,9 @@ module.exports = {
   purge: ["./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    stroke: (theme) => ({
+      "indigo-300": theme("colors.indigo.300"),
+    }),
     fontFamily: {
       sans: ["Source Sans Pro", ...defaultTheme.fontFamily.sans],
       serif: ["Source Serif Pro", ...defaultTheme.fontFamily.serif],
