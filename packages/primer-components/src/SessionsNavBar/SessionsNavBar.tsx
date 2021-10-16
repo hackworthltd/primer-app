@@ -4,7 +4,6 @@ import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Avatar, AvatarStyle } from "@/Avatar/Avatar";
-import { NotificationsButton } from "@/NotificationsButton/NotificationsButton";
 import { UIButton } from "@/UIButton/UIButton";
 import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
 import { SearchBar } from "@/SearchBar/SearchBar";
@@ -75,8 +74,6 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                 </Popover.Button>
               </div>
               <div className="hidden lg:flex xl:col-span-4 lg:justify-end lg:items-center">
-                <NotificationsButton appearance="plain" />
-
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative flex-shrink-0 ml-5">
                   <div>
@@ -86,6 +83,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                         id={p.account.email}
                         style={p.account.avatarStyle}
                         imgSrc={p.account.imageUrl}
+                        decoration="plain"
                         size="responsive"
                       />
                     </Menu.Button>
@@ -137,6 +135,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                     id={p.account.email}
                     style={p.account.avatarStyle}
                     imgSrc={p.account.imageUrl}
+                    decoration="plain"
                     size="responsive"
                   />
                 </div>
@@ -148,7 +147,6 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                     {p.account.email}
                   </div>
                 </div>
-                <NotificationsButton appearance="plain" />
               </div>
               <div className="px-2 sm:px-4 mx-auto mt-3 space-y-1 max-w-3xl">
                 {accountNavigation.map((item) => (

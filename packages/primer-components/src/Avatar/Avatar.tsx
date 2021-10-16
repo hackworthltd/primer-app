@@ -10,6 +10,7 @@ import classNames from "classnames";
 
 export type Size = "responsive" | "sm" | "md" | "lg" | "xl" | "2xl";
 export type AvatarStyle = "bottts" | "identicon" | "jdenticon";
+export type Decoration = "plain" | "alert";
 
 export interface AvatarProps {
   /**
@@ -23,6 +24,13 @@ export interface AvatarProps {
    * @type {AvatarStyle}
    */
   style: AvatarStyle;
+
+  /**
+   * What sort of decoration to show on the avatar image.
+   *
+   * @type {Decoration}
+   */
+  decoration: Decoration;
 
   /**
    * A student-provided image source. This may be undefined if the student hasn't uploaded one.
@@ -49,7 +57,21 @@ const imgClasses = (size: Size) =>
     "h-10 w-10": size === "lg",
     "h-12 w-12": size === "xl",
     "h-14 w-14": size === "2xl",
-    "inline-block rounded-full": true,
+    "rounded-full": true,
+  });
+
+const decorationClasses = (size: Size, decoration: Decoration) =>
+  classNames({
+    "h-1.5 w-1.5 md:h-2 md:w-2 lg:h-2.5 lg:w-2.5 xl:h-3 xl:w-3 2xl:h-3.5 2xl:w-3.5":
+      size === "responsive",
+    "h-1.5 w-1.5": size === "sm",
+    "h-2 w-2": size === "md",
+    "h-2.5 w-2.5": size === "lg",
+    "h-3 w-3": size === "xl",
+    "h-3.5 w-3.5": size === "2xl",
+    hidden: decoration === "plain",
+    "absolute top-0 right-0 block rounded-full ring-2 ring-white bg-red-400":
+      true,
   });
 
 export const avatarStyle = (
@@ -88,5 +110,11 @@ export const Avatar = (p: AvatarProps): JSX.Element => {
     });
   }, [p.id, p.style]);
   const src = p.imgSrc ? p.imgSrc : avatar;
-  return <img className={imgClasses(p.size)} src={src} alt={p.id} />;
+
+  return (
+    <span className="inline-block relative">
+      <img className={imgClasses(p.size)} src={src} alt={p.id} />
+      <span className={decorationClasses(p.size, p.decoration)} />
+    </span>
+  );
 };
