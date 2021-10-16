@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { zipWith } from "fp-ts/Array";
-import type { Size, AvatarStyle, AvatarProps } from "./Avatar";
+import type { Size, Decoration, AvatarStyle, AvatarProps } from "./Avatar";
 import { Avatar } from "./Avatar";
 
 const ids: string[] = [
@@ -20,6 +20,7 @@ const imgSrcs: (string | undefined)[] = [
   "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixid=MnwyNjcwMzh8MHwxfGFsbHx8fHx8fHx8fDE2MzQwNTU5MzQ&ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 ];
 
+const allDecorations: Decoration[] = ["plain", "alert"];
 const allStyles: AvatarStyle[] = ["identicon", "jdenticon", "bottts"];
 const allSizes: Size[] = ["responsive", "sm", "md", "lg", "xl", "2xl"];
 const fixedSizes: Size[] = ["sm", "md", "lg", "xl", "2xl"];
@@ -35,6 +36,11 @@ export default {
     },
     id: {
       description: "The student's ID.",
+    },
+    decoration: {
+      description: "A deocration for the avatar.",
+      options: allDecorations,
+      control: { type: "radio" },
     },
     style: {
       description: "The student's chosen avatar style.",
@@ -58,6 +64,7 @@ Single.args = {
   id: "student1@gmail.com",
   style: "identicon",
   imgSrc: undefined,
+  decoration: "plain",
   size: "responsive",
 };
 
@@ -80,6 +87,7 @@ const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
           id={id}
           style="identicon"
           imgSrc={undefined}
+          decoration="plain"
           size={sz}
           key={sz}
         />
@@ -93,6 +101,7 @@ const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
           id={id}
           style="jdenticon"
           imgSrc={undefined}
+          decoration="plain"
           size={sz}
           key={sz}
         />
@@ -102,7 +111,14 @@ const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
     <h1 className="text-xl">Bottts</h1>
     <div className="flex flex-row justify-around items-center mb-8">
       {zipSizeIDs.map(([sz, id]) => (
-        <Avatar id={id} style="bottts" imgSrc={undefined} size={sz} key={sz} />
+        <Avatar
+          id={id}
+          style="bottts"
+          imgSrc={undefined}
+          decoration="plain"
+          size={sz}
+          key={sz}
+        />
       ))}
     </div>
 
@@ -113,6 +129,7 @@ const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
           id="student1@gmail.com"
           style="identicon"
           imgSrc={imgSrc}
+          decoration="plain"
           size={sz}
           key={sz}
         />
@@ -122,3 +139,65 @@ const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
 );
 
 export const Showcase = AllButtonsTemplate.bind({});
+
+const AllButtonsWithAlertTemplate: ComponentStory<typeof Avatar> = () => (
+  <>
+    <h1 className="text-xl">Identicon with alert</h1>
+    <div className="flex flex-row justify-around items-center mb-8">
+      {zipSizeIDs.map(([sz, id]) => (
+        <Avatar
+          id={id}
+          style="identicon"
+          imgSrc={undefined}
+          decoration="alert"
+          size={sz}
+          key={sz}
+        />
+      ))}
+    </div>
+
+    <h1 className="text-xl">Jdenticon with alert</h1>
+    <div className="flex flex-row justify-around items-center mb-8">
+      {zipSizeIDs.map(([sz, id]) => (
+        <Avatar
+          id={id}
+          style="jdenticon"
+          imgSrc={undefined}
+          decoration="alert"
+          size={sz}
+          key={sz}
+        />
+      ))}
+    </div>
+
+    <h1 className="text-xl">Bottts with alert</h1>
+    <div className="flex flex-row justify-around items-center mb-8">
+      {zipSizeIDs.map(([sz, id]) => (
+        <Avatar
+          id={id}
+          style="bottts"
+          imgSrc={undefined}
+          decoration="alert"
+          size={sz}
+          key={sz}
+        />
+      ))}
+    </div>
+
+    <h1 className="text-xl">Image with alert</h1>
+    <div className="flex flex-row justify-around items-center mb-8">
+      {zipSizeImgSrcs.map(([sz, imgSrc]) => (
+        <Avatar
+          id="student1@gmail.com"
+          style="identicon"
+          imgSrc={imgSrc}
+          decoration="alert"
+          size={sz}
+          key={sz}
+        />
+      ))}
+    </div>
+  </>
+);
+
+export const ShowcaseWithAlert = AllButtonsWithAlertTemplate.bind({});
