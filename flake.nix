@@ -5,6 +5,9 @@
     hacknix.url = github:hackworthltd/hacknix;
     nixpkgs.follows = "hacknix/nixpkgs";
 
+    gitignore.url = "github:hercules-ci/gitignore.nix";
+    gitignore.inputs.nixpkgs.follows = "nixpkgs";
+
     flake-utils.url = github:numtide/flake-utils;
 
     flake-compat.url = github:edolstra/flake-compat;
@@ -16,6 +19,7 @@
 
   outputs =
     { self
+    , gitignore
     , nixpkgs
     , hacknix
     , flake-utils
@@ -54,7 +58,7 @@
         (final: prev:
           let
             nodejs = final.nodejs-16_x;
-            src = ./.;
+            src = gitignore.lib.gitignoreSource ./.;
             project = final.yarn2nix-moretea.mkYarnWorkspace {
               inherit src;
               packageOverrides = {
