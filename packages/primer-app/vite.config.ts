@@ -29,7 +29,6 @@ export default defineConfig({
   // natively.
   esbuild: {
     jsxFactory: "_jsx",
-    jsxFragment: "_jsxFragment",
-    jsxInject: `import { createElement as _jsx, Fragment as _jsxFragment } from "react"`,
+    jsxInject: `import { createElement as _jsx } from "react"`,
   },
 });
