@@ -74,5 +74,5 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-        storybookBuildDir: ${{ env.store_path }}
+        storybookBuildDir: result
         exitZeroOnChanges: true
