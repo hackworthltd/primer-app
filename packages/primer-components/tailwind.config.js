@@ -8,11 +8,6 @@ module.exports = {
     stroke: (theme) => ({
       "indigo-300": theme("colors.indigo.300"),
     }),
-    fontFamily: {
-      sans: ["Source Sans Pro", ...defaultTheme.fontFamily.sans],
-      serif: ["Source Serif Pro", ...defaultTheme.fontFamily.serif],
-      mono: ["Source Code Pro", ...defaultTheme.fontFamily.mono],
-    },
     extend: {
       animation: {
         "spin-slow": "spin 10s linear infinite",
