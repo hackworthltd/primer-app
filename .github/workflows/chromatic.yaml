@@ -1,6 +1,10 @@
 name: Deploy to Chromatic.
 
 on:
+  push:
+    branches-ignore:
+      - "trying"
+      - "staging"
   workflow_dispatch:
     inputs:
       sha:
@@ -61,23 +65,9 @@ jobs:
           substituters = https://cache.nixos.org?priority=10 s3://hackworth-nix-cache?region=eu-west-1&priority=20 https://hydra.iohk.io?priority=30
           trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.hackworth-corp.com-1:uLc3Th8lJtfvFAFLqdzRZWEwIk98gAitd5XrDr3Q8SY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 
-    - name: Copy Storybook from Nix binary cache
+    - name: Build Storybook.
       run: |
-        STORE_PATH=$(nix eval --raw .#packages.x86_64-linux.primer-components-storybook)
-        nix copy --from "s3://hackworth-nix-cache?region=eu-west-1" $STORE_PATH
-        echo "store_path=$STORE_PATH" >> $GITHUB_ENV
-
-    # The Chromatic Action needs some Node.js tooling that isn't
-    # installed by default on our runners.
-    - name: Install Chromatic prerequisites.
-      run: |
-        nix profile install nixpkgs#yarn
-        nix profile install nixpkgs#nodejs-16_x
-
-    # The Chromatic Action needs `node_modules` to be installed.
-    - name: Install node_modules.
-      run: |
-        yarn
+        nix-build -A packages.x86_64-linux.primer-components-storybook
 
     - name: Publish Storybook to Chromatic.
       uses: chromaui/action@v1
