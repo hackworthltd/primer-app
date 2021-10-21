@@ -1,9 +1,6 @@
 name: Deploy to Chromatic.
 
 on:
-  push:
-    branches-ignore:
-      - "trying"
   workflow_dispatch:
     inputs:
       sha:
@@ -12,32 +9,63 @@ on:
       ref:
         description: The head branch associated with the pull request.
         required: true
+      trace_id:
+        description: "The webhook event ID which triggered the workflow."
+        required: true
+        # In case of manual trigger.
+        default: "00000000-0000-0000-0000-000000000000"
 
 jobs:
   deploy-to-chromatic:
-    # This must run on our self-hosted EC2 instances, which are
-    # pre-configured for the correct permissions.
-    runs-on: ["self-hosted", "linux", "ec2"]
+    runs-on: ubuntu-latest
     steps:
+    - name: Log trace ID
+      run: |
+        echo "The workflow trace ID is ${{ github.event.inputs.trace_id }}"
+
     - name: Checkout repo
-      uses: actions/checkout@v2.3.4
+      uses: actions/checkout@v2.3.5
       with:
         # Nix Flakes doesn't work on shallow clones
         fetch-depth: 0
 
+    - name: Vault secrets
+      uses: hashicorp/vault-action@v2.3.1
+      with:
+        url: https://vault.hackworth-corp.com
+        method: approle
+        roleId: ${{ secrets.VAULT_ROLE_ID }}
+        secretId: ${{ secrets.VAULT_SECRET_ID }}
+        secrets: |
+          aws/creds/nix-binary-cache-read-only access_key | NIX_BINARY_CACHE_ACCESS_KEY ;
+          aws/creds/nix-binary-cache-read-only secret_key | NIX_BINARY_CACHE_SECRET_KEY ;
+          aws/creds/nix-binary-cache-read-only security_token | NIX_BINARY_CACHE_STS_TOKEN ;
+
+    - name: Configure AWS SDK
+      run: |
+        sudo aws configure set aws_access_key_id ${{ env.NIX_BINARY_CACHE_ACCESS_KEY }} --profile default
+        sudo aws configure set aws_secret_access_key ${{ env.NIX_BINARY_CACHE_SECRET_KEY }} --profile default
+        sudo aws configure set aws_session_token ${{ env.NIX_BINARY_CACHE_STS_TOKEN }} --profile default
+        aws configure set aws_access_key_id ${{ env.NIX_BINARY_CACHE_ACCESS_KEY }} --profile default
+        aws configure set aws_secret_access_key ${{ env.NIX_BINARY_CACHE_SECRET_KEY }} --profile default
+        aws configure set aws_session_token ${{ env.NIX_BINARY_CACHE_STS_TOKEN }} --profile default
+
     - name: Install Nix and configure binary caches.
       uses: cachix/install-nix-action@v14
       with:
-        install_url: https://nixos-nix-install-tests.cachix.org/serve/i6laym9jw3wg9mw6ncyrk6gjx4l34vvx/install
+        install_url: https://nixos-nix-install-tests.cachix.org/serve/vij683ly7sl95nnhb67bdjjfabclr85m/install
         install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
         extra_nix_config: |
           experimental-features = nix-command flakes ca-references
+          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
           substituters = https://cache.nixos.org?priority=10 s3://hackworth-nix-cache?region=eu-west-1&priority=20 https://hydra.iohk.io?priority=30
           trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.hackworth-corp.com-1:uLc3Th8lJtfvFAFLqdzRZWEwIk98gAitd5XrDr3Q8SY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 
-    - name: Build Storybook.
+    - name: Copy Storybook from Nix binary cache
       run: |
-        nix-build -A packages.x86_64-linux.primer-components-storybook
+        STORE_PATH=$(nix eval --raw .#packages.x86_64-linux.primer-components-storybook)
+        nix copy --from "s3://hackworth-nix-cache?region=eu-west-1" $STORE_PATH
+        echo "store_path=$STORE_PATH" >> $GITHUB_ENV
 
     # The Chromatic Action needs some Node.js tooling that isn't
     # installed by default on our runners.
@@ -56,5 +84,5 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-        storybookBuildDir: result
+        storybookBuildDir: ${{ env.store_path }}
         exitZeroOnChanges: true
