@@ -119,6 +119,7 @@ yarn workspace @hackworthltd/primer-app dev
 You may need to do a `yarn build` for `primer-components` before this will work.
 
 This command runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) in a browser to interact with it.
+You can do `yarn dev --open` to automatically open a browser window.
 
 Thanks to Vite's [hot module reloading feature (HMR)](https://vitejs.dev/guide/features.html#hot-module-replacement), the page will reload automatically whenever you make an edit to any source code or CSS files. (Changing project settings in a `.json` or `.js` file may require that you restart the dev server, as these changes are often not automatically picked up.)
 
@@ -176,7 +177,7 @@ Alternatively, from the top-level directory:
 yarn workspace @hackworthltd/primer-components storybook
 ```
 
-This command builds the component Storybook and then serves a local instance of it, which includes support for HMR.
+This command builds the component Storybook and then serves a local instance of it, which includes support for HMR.  It will automatically open a browser window.  This can be disabled by `yarn storybook --no-open`.
 
 #### `yarn build-storybook`
 
