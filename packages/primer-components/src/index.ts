@@ -9,4 +9,5 @@ export { default as SearchBar } from "@/SearchBar";
 export { default as SessionList } from "@/SessionList";
 export { default as SessionPreview } from "@/SessionPreview";
 export { default as SessionsNavBar } from "@/SessionsNavBar";
+export { default as Tree } from "@/Tree";
 export { default as UIButton } from "@/UIButton";
