@@ -78,6 +78,8 @@ Note that for some projects, these checks don't run the full test suite.
 
 To develop interactively, enter the Nix shell via `nix develop`. Once there, you can run all the usual `yarn` commands. Because we're using Yarn workspaces, if you're in the top-level project directory, most Yarn commands will need to be prefixed by `yarn workspace <package>`, where `<package>` is the name of the package you want to manage. Alternatively, from within the Nix shell, you can `cd` to the relevant project subdirectory and run Yarn from there, without the need for the `yarn workspace` command prefix. All packages in the workspace are subdirectories of the top-level `packages/` directory.
 
+In particular, as a first time setup you will need to run `yarn` to populate the `node_modules` directories before `yarn dev`, `yarn lint` or `yarn build` will work. (However, some other commands, such as `yarn add` may automatically trigger this population.)
+
 
 ### The top-level project
 
