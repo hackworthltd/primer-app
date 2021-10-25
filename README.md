@@ -116,6 +116,8 @@ Alternatively, from the top-level directory:
 yarn workspace @hackworthltd/primer-app dev
 ```
 
+You may need to do a `yarn build` for `primer-components` before this will work.
+
 This command runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) in a browser to interact with it.
 
 Thanks to Vite's [hot module reloading feature (HMR)](https://vitejs.dev/guide/features.html#hot-module-replacement), the page will reload automatically whenever you make an edit to any source code or CSS files. (Changing project settings in a `.json` or `.js` file may require that you restart the dev server, as these changes are often not automatically picked up.)
