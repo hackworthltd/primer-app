@@ -78,6 +78,8 @@ Note that for some projects, these checks don't run the full test suite.
 
 To develop interactively, enter the Nix shell via `nix develop`. Once there, you can run all the usual `yarn` commands. Because we're using Yarn workspaces, if you're in the top-level project directory, most Yarn commands will need to be prefixed by `yarn workspace <package>`, where `<package>` is the name of the package you want to manage. Alternatively, from within the Nix shell, you can `cd` to the relevant project subdirectory and run Yarn from there, without the need for the `yarn workspace` command prefix. All packages in the workspace are subdirectories of the top-level `packages/` directory.
 
+In particular, as a first time setup you will need to run `yarn` to populate the `node_modules` directories before `yarn dev`, `yarn lint` or `yarn build` will work. (However, some other commands, such as `yarn add` may automatically trigger this population.)
+
 
 ### The top-level project
 
@@ -114,7 +116,10 @@ Alternatively, from the top-level directory:
 yarn workspace @hackworthltd/primer-app dev
 ```
 
+You may need to do a `yarn build` for `primer-components` before this will work.
+
 This command runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) in a browser to interact with it.
+You can do `yarn dev --open` to automatically open a browser window.
 
 Thanks to Vite's [hot module reloading feature (HMR)](https://vitejs.dev/guide/features.html#hot-module-replacement), the page will reload automatically whenever you make an edit to any source code or CSS files. (Changing project settings in a `.json` or `.js` file may require that you restart the dev server, as these changes are often not automatically picked up.)
 
@@ -172,7 +177,7 @@ Alternatively, from the top-level directory:
 yarn workspace @hackworthltd/primer-components storybook
 ```
 
-This command builds the component Storybook and then serves a local instance of it, which includes support for HMR.
+This command builds the component Storybook and then serves a local instance of it, which includes support for HMR.  It will automatically open a browser window.  This can be disabled by `yarn storybook --no-open`.
 
 #### `yarn build-storybook`
 
