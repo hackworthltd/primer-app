@@ -9,12 +9,14 @@ interface State {
   tree: TreeInteractiveRender;
 }
 
-const labels = ["node", "foobar", "x"];
+interface Args {
+  labels: string[];
+}
 
 // This component just wraps a tree with some state and adds callbacks
 // so one can see what happens when nodes get inserted/deleted
-class ITree extends Component<unknown, State> {
-  constructor(props: unknown) {
+class ITree extends Component<Args, State> {
+  constructor(props: Args) {
     super(props);
     this.state = this.mkInitialState();
   }
@@ -51,9 +53,9 @@ class ITree extends Component<unknown, State> {
       return tree;
     }
     if (path.length === idx + 1 && path[idx] === tree.nodeId) {
-      const n1 = labels[Math.floor(Math.random() * labels.length)];
+      const n1 =
+        this.props.labels[Math.floor(Math.random() * this.props.labels.length)];
       const n = n1 === undefined ? "DEFAULT-LABEL" : n1;
-
       const newId = this.state.nxtId;
       const newNode: TreeInteractiveRender = {
         nodeId: newId,
@@ -117,7 +119,9 @@ class ITree extends Component<unknown, State> {
   }
 }
 
-const Template: ComponentStory<() => JSX.Element> = () => <ITree />;
+const Template: ComponentStory<(args: Args) => JSX.Element> = (args) => (
+  <ITree labels={args.labels} />
+);
 
 export default {
   title: "Application/Component Library/Tree-Interactive",
@@ -136,4 +140,4 @@ export default {
 } as ComponentMeta<typeof ITree>;
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = { labels: ["node", "foobar", "x"] };
