@@ -10,6 +10,7 @@ export { default as SessionsPage } from "@/SessionsPage";
 export { default as SessionPreview } from "@/SessionPreview";
 export { default as SessionsNavBar } from "@/SessionsNavBar";
 export { default as TreeOutline } from "@/TreeOutline";
+export { default as TreeVisx } from "@/TreeVisx";
 export { default as UIButton } from "@/UIButton";
 export { exampleSessionsMeta } from "@/examples/sessions";
 export { exampleAccount } from "@/examples/accounts";
