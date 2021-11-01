@@ -67,6 +67,9 @@
     "vite-plugin-dts": "^0.9.4",
     "vite-plugin-optimize-persist": "^0.1.0",
     "vite-plugin-package-config": "^0.0.3",
-    "vite-tsconfig-paths": "^3.3.14"
+    "vite-tsconfig-paths": "^3.3.14",
+    "@visx/hierarchy": "^2.1.2",
+    "@visx/shape": "^2.1.2",
+    "@visx/gradient": "^2.1.0"
   }
 }
