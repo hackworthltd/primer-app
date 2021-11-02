@@ -43,9 +43,6 @@ export const TreeVisx = ({
         <Tree size={[w, h]} root={hierarchy(tree, (t) => t.childTrees)}>
           {(tree) => (
             <>
-              {tree.descendants().map((node, i) => (
-                <Node key={i} node={node} />
-              ))}
               {tree.links().map((link, i) => (
                 <Link
                   linkType={linkType}
@@ -55,6 +52,9 @@ export const TreeVisx = ({
                   strokeWidth="1"
                   fill="none"
                 />
+              ))}
+              {tree.descendants().map((node, i) => (
+                <Node key={i} node={node} />
               ))}
             </>
           )}
@@ -66,8 +66,17 @@ export const TreeVisx = ({
 
 type HierarchyNode = HierarchyPointNode<TreeI>;
 
+// you can ask for textAnchor=middle to left-right center
+// but seems like there is no top-bottom equivalent. I use dy as a hack here
 function Node({ node }: { node: HierarchyNode }): JSX.Element {
-  return <circle cx={node.x} cy={node.y} r="5" />;
+  return (
+    <>
+      <ellipse cx={node.x} cy={node.y} rx="30" ry="10" />
+      <text x={node.x} y={node.y} textAnchor="middle" dy=".33em" fill="white">
+        {node.data.label}
+      </text>
+    </>
+  );
 }
 
 type LT<Link, Node> = AddSVGProps<
