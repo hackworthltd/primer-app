@@ -23,7 +23,7 @@ const brandingClasses = (size: Size) =>
     "text-lg": size === "lg",
     "text-xl": size === "xl",
     "text-2xl": size === "2xl",
-    "inline-flex items-center font-medium font-serif text-red-400": true,
+    "inline-flex items-center font-medium font-serif text-blue-400": true,
   });
 
 export const PrimerBranding = (p: PrimerBrandingProps): JSX.Element => (
