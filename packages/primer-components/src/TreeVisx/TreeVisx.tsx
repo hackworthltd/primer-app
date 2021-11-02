@@ -2,6 +2,7 @@ import "@/index.css";
 import { hierarchy, Tree } from "@visx/hierarchy";
 import { HierarchyPointNode } from "@visx/hierarchy/lib/types";
 import { Group } from "@visx/group";
+import { LinkVerticalLine } from "@visx/shape";
 
 import { Tree as TreeI } from "@hackworthltd/primer-types";
 
@@ -12,6 +13,9 @@ export interface TreeVisxI {
 }
 
 export const TreeVisx = ({ width, height, tree }: TreeVisxI): JSX.Element => {
+  // TODO: We should enable external control over node and edge styling
+  // See https://github.com/hackworthltd/primer-app/issues/204
+
   // Add a small (10%) margin to our svg, otherwise Tree decides to position
   // nodes very close to the edge, and they are visually cut off
   const mx = width * 0.1;
@@ -26,6 +30,14 @@ export const TreeVisx = ({ width, height, tree }: TreeVisxI): JSX.Element => {
             <>
               {tree.descendants().map((node, i) => (
                 <Node key={i} node={node} />
+              ))}
+              {tree.links().map((link, i) => (
+                <LinkVerticalLine
+                  key={i}
+                  data={link}
+                  stroke="black"
+                  strokeWidth="1"
+                />
               ))}
             </>
           )}
