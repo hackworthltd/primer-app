@@ -1,1 +1,1 @@
-export { TreeVisx as default, type TreeVisxI } from "./TreeVisx";
+export { TreeVisx as default, type TreeVisxI, type LinkType } from "./TreeVisx";
