@@ -2,6 +2,7 @@ import "@/index.css";
 import { hierarchy, Tree } from "@visx/hierarchy";
 import { HierarchyPointNode } from "@visx/hierarchy/lib/types";
 import { Group } from "@visx/group";
+import { LinkVerticalLine } from "@visx/shape";
 
 import { Tree as TreeI } from "@hackworthltd/primer-types";
 
@@ -29,6 +30,14 @@ export const TreeVisx = ({ width, height, tree }: TreeVisxI): JSX.Element => {
             <>
               {tree.descendants().map((node, i) => (
                 <Node key={i} node={node} />
+              ))}
+              {tree.links().map((link, i) => (
+                <LinkVerticalLine
+                  key={i}
+                  data={link}
+                  stroke="black"
+                  strokeWidth="1"
+                />
               ))}
             </>
           )}
