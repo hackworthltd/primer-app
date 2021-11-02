@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import TreeVisx, { TreeVisxI } from "@/TreeVisx";
+import TreeVisx, { TreeVisxI, LinkType } from "@/TreeVisx";
 import { tree1, tree2, tree3, tree4, tree5 } from "@/examples/trees";
 
 export default {
@@ -8,6 +8,11 @@ export default {
   component: TreeVisx,
   argTypes: {
     tree: { control: "object", name: "Tree to display" },
+    linkType: {
+      control: { type: "radio" },
+      options: ["line", "step", "curve", "diagonal"],
+      name: "Edge style",
+    },
   },
 } as ComponentMeta<typeof TreeVisx>;
 
@@ -15,7 +20,8 @@ const Template: ComponentStory<(args: TreeVisxI) => JSX.Element> = (args) => (
   <TreeVisx {...args} />
 );
 
-const size = { width: 400, height: 300 };
+const line: LinkType = "line";
+const size = { width: 400, height: 300, linkType: line };
 
 export const Tree1 = Template.bind({});
 Tree1.args = { ...size, tree: tree1 };

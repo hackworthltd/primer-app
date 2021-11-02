@@ -2,17 +2,32 @@ import "@/index.css";
 import { hierarchy, Tree } from "@visx/hierarchy";
 import { HierarchyPointNode } from "@visx/hierarchy/lib/types";
 import { Group } from "@visx/group";
-import { LinkVerticalLine } from "@visx/shape";
+import {
+  LinkVertical,
+  LinkVerticalLine,
+  LinkVerticalCurve,
+  LinkVerticalStep,
+} from "@visx/shape";
+import { AddSVGProps } from "@visx/shape/lib/types";
+import { LinkVerticalLineProps } from "@visx/shape/lib/shapes/link/line/LinkVerticalLine";
 
 import { Tree as TreeI } from "@hackworthltd/primer-types";
+
+export type LinkType = "line" | "step" | "curve" | "diagonal";
 
 export interface TreeVisxI {
   tree: TreeI;
   width: number;
   height: number;
+  linkType: LinkType;
 }
 
-export const TreeVisx = ({ width, height, tree }: TreeVisxI): JSX.Element => {
+export const TreeVisx = ({
+  width,
+  height,
+  tree,
+  linkType,
+}: TreeVisxI): JSX.Element => {
   // TODO: We should enable external control over node and edge styling
   // See https://github.com/hackworthltd/primer-app/issues/204
 
@@ -32,11 +47,13 @@ export const TreeVisx = ({ width, height, tree }: TreeVisxI): JSX.Element => {
                 <Node key={i} node={node} />
               ))}
               {tree.links().map((link, i) => (
-                <LinkVerticalLine
+                <Link
+                  linkType={linkType}
                   key={i}
                   data={link}
                   stroke="black"
                   strokeWidth="1"
+                  fill="none"
                 />
               ))}
             </>
@@ -51,4 +68,26 @@ type HierarchyNode = HierarchyPointNode<TreeI>;
 
 function Node({ node }: { node: HierarchyNode }): JSX.Element {
   return <circle cx={node.x} cy={node.y} r="5" />;
+}
+
+type LT<Link, Node> = AddSVGProps<
+  LinkVerticalLineProps<Link, Node>,
+  SVGPathElement
+>;
+
+function Link<Link, Node>({
+  linkType,
+  ...args
+}: { linkType: LinkType } & LT<Link, Node>): JSX.Element {
+  if (linkType === "line") {
+    return <LinkVerticalLine {...args} />;
+  }
+  if (linkType === "curve") {
+    return <LinkVerticalCurve {...args} />;
+  }
+  if (linkType === "step") {
+    return <LinkVerticalStep {...args} />;
+  }
+  // otherwise, (linkType === "diagonal") {
+  return <LinkVertical {...args} />;
 }
