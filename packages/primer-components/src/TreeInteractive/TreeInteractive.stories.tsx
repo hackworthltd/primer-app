@@ -3,25 +3,30 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 import TreeOutline from "@/TreeOutline";
-import TreeVisx from "@/TreeVisx";
+import TreeVisx, { LinkType } from "@/TreeVisx";
 
 interface State {
   nxtId: number;
   tree: TreeInteractiveRender;
 }
 
-const TreeVisxDefault = (tree: TreeInteractiveRender) =>
-  TreeVisx({ width: 300, height: 300, linkType: "line", tree: tree });
+type TreeLT = { tree: TreeInteractiveRender; linkType: LinkType };
+
+const TreeOutlineRender = ({ tree }: TreeLT) => TreeOutline(tree);
+
+const TreeVisxDefault = ({ tree, linkType }: TreeLT) =>
+  TreeVisx({ width: 300, height: 300, linkType: linkType, tree: tree });
 
 type Renderer = "TreeOutline" | "TreeVisx";
 const renderersMap = {
   TreeVisx: TreeVisxDefault,
-  TreeOutline,
+  TreeOutline: TreeOutlineRender,
 };
 
 interface ITreeArgs {
   labels: string[];
-  render: (tree: TreeInteractiveRender) => JSX.Element;
+  linkType: LinkType;
+  render: (tree: TreeLT) => JSX.Element;
 }
 
 // This component just wraps a tree with some state and adds callbacks
@@ -127,22 +132,22 @@ class ITree extends Component<ITreeArgs, State> {
 
   override render(): JSX.Element {
     const Render = this.props.render;
-    return <Render {...this.state.tree} />;
+    return <Render tree={this.state.tree} linkType={this.props.linkType} />;
   }
 }
 
 const TreeCheck = ({
   renderers,
-  tree,
+  treeLT,
 }: {
   renderers: Renderer[];
-  tree: TreeInteractiveRender;
+  treeLT: TreeLT;
 }): JSX.Element => {
   return (
     <div className="flex">
       {renderers.map((i) => {
         const R = renderersMap[i];
-        return <R key={i} {...tree} />;
+        return <R key={i} {...treeLT} />;
       })}
     </div>
   );
@@ -150,13 +155,14 @@ const TreeCheck = ({
 
 interface StoryArgs {
   labels: string[];
+  linkType: LinkType;
   renderers: Renderer[];
 }
 
 const Template: ComponentStory<(args: StoryArgs) => JSX.Element> = (args) => (
   <ITree
     {...args}
-    render={(t) => TreeCheck({ renderers: args.renderers, tree: t })}
+    render={(t) => TreeCheck({ renderers: args.renderers, treeLT: t })}
   />
 );
 
@@ -165,12 +171,18 @@ export default {
   component: Template,
   args: {
     renderers: Object.keys(renderersMap),
+    linkType: "line",
   },
   argTypes: {
     render: { table: { disable: true } },
     renderers: {
       options: Object.keys(renderersMap),
       control: { type: "inline-check" },
+    },
+    linkType: {
+      control: { type: "radio" },
+      options: ["line", "step", "curve", "diagonal"],
+      name: "Edge style for Visx trees",
     },
   },
   decorators: [
