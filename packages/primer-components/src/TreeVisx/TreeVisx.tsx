@@ -12,12 +12,12 @@ import { AddSVGProps } from "@visx/shape/lib/types";
 import { LinkVerticalLineProps } from "@visx/shape/lib/shapes/link/line/LinkVerticalLine";
 import { getStringWidth, Text } from "@visx/text";
 
-import { Tree as TreeI } from "@hackworthltd/primer-types";
+import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 
 export type LinkType = "line" | "step" | "curve" | "diagonal";
 
 export interface TreeVisxI {
-  tree: TreeI;
+  tree: TreeInteractiveRender;
   width: number;
   height: number;
   linkType: LinkType;
@@ -65,13 +65,13 @@ export const TreeVisx = ({
   );
 };
 
-type HierarchyNode = HierarchyPointNode<TreeI>;
+type HierarchyNode = HierarchyPointNode<TreeInteractiveRender>;
 
 function Node({ node }: { node: HierarchyNode }): JSX.Element {
   const s = node.data.label;
   const len = getStringWidth(s) || 0;
   return (
-    <>
+    <Group onClick={node.data.onClick} onContextMenu={node.data.onRightClick}>
       <ellipse cx={node.x} cy={node.y} rx={5 + len * 0.55} ry="0.75em" />
       <Text
         x={node.x}
@@ -82,7 +82,7 @@ function Node({ node }: { node: HierarchyNode }): JSX.Element {
       >
         {s}
       </Text>
-    </>
+    </Group>
   );
 }
 
