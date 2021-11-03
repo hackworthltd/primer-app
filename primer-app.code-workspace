@@ -16,9 +16,6 @@
   ],
   "settings": {
     "editor.formatOnSave": true,
-    "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true,
-    "files.trimTrailingWhitespace": true,
     "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
     "[javascript]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
