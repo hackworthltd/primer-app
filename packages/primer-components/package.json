@@ -28,6 +28,7 @@
     "@dicebear/avatars-jdenticon-sprites": "^4.9.1",
     "@visx/hierarchy": "^2.1.2",
     "@visx/shape": "^2.1.2",
+    "@visx/text": "^2.3.0",
     "fp-ts": "^2.11.4",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"

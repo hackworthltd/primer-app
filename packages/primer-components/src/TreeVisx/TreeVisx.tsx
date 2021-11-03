@@ -10,6 +10,7 @@ import {
 } from "@visx/shape";
 import { AddSVGProps } from "@visx/shape/lib/types";
 import { LinkVerticalLineProps } from "@visx/shape/lib/shapes/link/line/LinkVerticalLine";
+import { getStringWidth, Text } from "@visx/text";
 
 import { Tree as TreeI } from "@hackworthltd/primer-types";
 
@@ -66,15 +67,21 @@ export const TreeVisx = ({
 
 type HierarchyNode = HierarchyPointNode<TreeI>;
 
-// you can ask for textAnchor=middle to left-right center
-// but seems like there is no top-bottom equivalent. I use dy as a hack here
 function Node({ node }: { node: HierarchyNode }): JSX.Element {
+  const s = node.data.label;
+  const len = getStringWidth(s) || 0;
   return (
     <>
-      <ellipse cx={node.x} cy={node.y} rx="30" ry="10" />
-      <text x={node.x} y={node.y} textAnchor="middle" dy=".33em" fill="white">
-        {node.data.label}
-      </text>
+      <ellipse cx={node.x} cy={node.y} rx={5 + len * 0.55} ry="0.75em" />
+      <Text
+        x={node.x}
+        y={node.y}
+        textAnchor="middle"
+        verticalAnchor="middle"
+        fill="white"
+      >
+        {s}
+      </Text>
     </>
   );
 }
