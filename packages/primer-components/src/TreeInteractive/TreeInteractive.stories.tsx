@@ -2,7 +2,7 @@ import { Component } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { TreeInteractiveRender } from "@hackworthltd/primer-types";
-import { TreeOutline } from "./TreeOutline";
+import TreeOutline from "@/TreeOutline";
 
 interface State {
   nxtId: number;
