@@ -3,6 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 import TreeOutline from "@/TreeOutline";
+import TreeVisx from "@/TreeVisx";
 
 interface State {
   nxtId: number;
@@ -11,6 +12,7 @@ interface State {
 
 interface Args {
   labels: string[];
+  render: (tree: TreeInteractiveRender) => JSX.Element;
 }
 
 // This component just wraps a tree with some state and adds callbacks
@@ -115,12 +117,13 @@ class ITree extends Component<Args, State> {
   }
 
   override render(): JSX.Element {
-    return <TreeOutline {...this.state.tree} />;
+    const Render = this.props.render;
+    return <Render {...this.state.tree} />;
   }
 }
 
 const Template: ComponentStory<(args: Args) => JSX.Element> = (args) => (
-  <ITree labels={args.labels} />
+  <ITree {...args} />
 );
 
 export default {
@@ -136,5 +139,25 @@ export default {
   ],
 } as ComponentMeta<typeof ITree>;
 
-export const Default = Template.bind({});
-Default.args = { labels: ["node", "foobar", "x"] };
+export const HTML = Template.bind({});
+HTML.args = { labels: ["node", "foobar", "x"], render: TreeOutline };
+
+const TreeVisxDefault = (tree: TreeInteractiveRender) =>
+  TreeVisx({ width: 300, height: 300, linkType: "line", tree: tree });
+
+export const Visx = Template.bind({});
+Visx.args = { labels: ["node", "foobar", "x"], render: TreeVisxDefault };
+
+const TreeBoth = (tree: TreeInteractiveRender) => (
+  <div>
+    <div>
+      <TreeOutline {...tree} />
+    </div>
+    <div>
+      <TreeVisxDefault {...tree} />
+    </div>
+  </div>
+);
+
+export const Both = Template.bind({});
+Both.args = { labels: ["node", "foobar", "x"], render: TreeBoth };
