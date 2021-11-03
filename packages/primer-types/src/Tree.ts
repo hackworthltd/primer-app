@@ -58,14 +58,14 @@ export interface TreeInteractiveRender {
     label: string;
     /**
      * 
-     * @type {React.MouseEventHandler<HTMLElement>}
+     * @type {React.MouseEventHandler<unknown>}
      * @memberof Tree
      */
-    onClick?: React.MouseEventHandler<HTMLElement>;
+    onClick?: React.MouseEventHandler<unknown>;
     /**
      * 
-     * @type {React.MouseEventHandler<HTMLElement>}
+     * @type {React.MouseEventHandler<unknown>}
      * @memberof Tree
      */
-    onRightClick?: React.MouseEventHandler<HTMLElement>;
+    onRightClick?: React.MouseEventHandler<unknown>;
 }
