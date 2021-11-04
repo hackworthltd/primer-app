@@ -2,6 +2,9 @@
 *~
 .dir-locals.el
 
+# Vim
+.*.swp
+
 # macOS
 .DS_Store
 
