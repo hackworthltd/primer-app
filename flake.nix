@@ -15,6 +15,8 @@
 
     pre-commit-hooks-nix.url = github:cachix/pre-commit-hooks.nix;
     pre-commit-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
+    # Fixes aarch64-darwin support.
+    pre-commit-hooks-nix.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs =
