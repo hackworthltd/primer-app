@@ -6,7 +6,7 @@ export const CallToAction = (): JSX.Element => (
       Edit <code>src/App.tsx</code> and save to reload.
     </p>
     <a
-      className="mt-4 font-serif text-3xl text-blue-400 hover:text-[#ff69b4]"
+      className="mt-4 font-serif text-3xl hover:text-[#ff69b4] text-blue-400"
       href="https://reactjs.org"
       target="_blank"
       rel="noopener noreferrer"

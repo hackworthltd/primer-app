@@ -29,16 +29,18 @@ export interface ActionButtonProps {
 
 const buttonClasses = (appearance: Appearance) =>
   classNames({
-    "border-indigo-700 text-indigo-700 hover:bg-indigo-700 hover:text-white focus:ring-indigo-500":
+    "border-grey-primary text-blue-primary bg-white-primary hover:bg-blue-primary hover:text-white-primary focus:ring-blue-primary":
       appearance === "primary",
-    "border-red-600 text-red-600 hover:bg-red-600 hover:text-white focus:ring-red-500":
+
+    "border-red-secondary text-white-primary bg-red-secondary hover:bg-red-primary hover:text-white hover:border-red-primary focus:ring-red-primary":
       appearance === "warning",
-    "inline-flex items-center w-full px-6 py-3 text-base rounded border font-medium shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-offset-2": true,
+    "inline-flex items-center w-full px-6 py-3 text-base rounded border font-medium shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-offset-2":
+      true,
   });
 
 export const ActionButton = (p: ActionButtonProps): JSX.Element => (
   <button type="button" className={buttonClasses(p.appearance)}>
-    <div className="w-8 flex-none mr-4 -ml-4" aria-hidden="true">
+    <div className="flex-none mr-4 -ml-4 w-8" aria-hidden="true">
       {p.label}
     </div>
     <p className="text-left">{p.description}</p>

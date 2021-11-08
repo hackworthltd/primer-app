@@ -19,12 +19,18 @@ const iconClasses = (appearance: Appearance) =>
     // In Tailwind, note that in order to define different stroke and
     // fill colors on the same SVG, we need to make use of Tailwind's
     // themes, which is what we've done below via the
-    // "stroke-indigo-700" class. See:
+    // "stroke-blue-primary" class. See:
     //
     // https://github.com/tailwindlabs/tailwindcss/issues/2024
-    "stroke-indigo-300 fill-current text-indigo-600 hover:text-indigo-700":
+    //
+    // XXX dhess: I think we need a tertiary blue/red to make this work in
+    // notification mode.
+    "stroke-grey-primary fill-current text-red-secondary hover:stroke-grey-primary hover:text-red-primary":
       appearance === "notifications",
-    "text-gray-400 hover:text-gray-500 ": appearance === "plain",
+    // XXX dhess: our primary grey is a bit too light here, but our
+    // secondary and tertiary are too dark.
+    "stroke-grey-primary fill-current text-white-primary hover:stroke-grey-secondary hover:text-blue-secondary":
+      appearance === "plain",
     "w-6 h-6": true,
   });
 
@@ -33,7 +39,7 @@ export const NotificationsButton = (
 ): JSX.Element => (
   <button
     type="button"
-    className="flex-shrink-0 p-1 ml-5 md:ml-auto bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
+    className="flex-shrink-0 p-1 ml-5 md:ml-auto bg-white-primary rounded-full focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 focus:outline-none"
   >
     <span className="sr-only">View notifications</span>
     <BellIcon className={iconClasses(p.appearance)} aria-hidden="true" />

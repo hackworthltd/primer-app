@@ -16,5 +16,5 @@ const Template: ComponentStory<typeof BinaryTreePlaceholder> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  className: "fill-current text-white h-48 w-48",
+  className: "fill-current text-white-primary h-48 w-48",
 };

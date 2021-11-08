@@ -33,7 +33,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
       className={({ open }) =>
         classNames(
           open ? "fixed inset-0 z-40 overflow-y-auto" : "",
-          "bg-white shadow-sm lg:static lg:overflow-y-visible"
+          "bg-white-primary shadow-sm lg:static lg:overflow-y-visible"
         )
       }
     >
@@ -54,7 +54,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
               </div>
               <div className="flex lg:hidden md:absolute md:inset-y-0 md:right-0 items-center">
                 {/* Mobile menu button */}
-                <Popover.Button className="inline-flex justify-center items-center p-2 -mx-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-md focus:ring-2 focus:ring-inset focus:ring-indigo-500 focus:outline-none">
+                <Popover.Button className="inline-flex justify-center items-center p-2 -mx-2 text-blue-primary hover:text-blue-secondary hover:bg-grey-primary rounded-md focus:ring-2 focus:ring-inset focus:ring-blue-primary focus:outline-none">
                   <span className="sr-only">Open menu</span>
                   {open ? (
                     <XIcon className="block w-6 h-6" aria-hidden="true" />
@@ -67,7 +67,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative flex-shrink-0 ml-5">
                   <div>
-                    <Menu.Button className="flex bg-white rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none">
+                    <Menu.Button className="flex bg-white-primary rounded-full focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 focus:outline-none">
                       <span className="sr-only">Open account menu</span>
                       <Avatar
                         id={p.account.email}
@@ -87,15 +87,15 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 py-1 mt-2 w-48 bg-white rounded-md ring-1 ring-black ring-opacity-5 shadow-lg origin-top-right focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 py-1 mt-2 w-48 text-blue-primary bg-white-primary rounded-md ring-1 ring-blue-primary ring-opacity-5 shadow-lg origin-top-right focus:outline-none">
                       {accountNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           {({ active }) => (
                             <a
                               href={item.href}
                               className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block py-2 px-4 text-sm text-gray-700"
+                                active ? "bg-white-primary" : "",
+                                "block py-2 px-4 text-sm text-blue-primary hover:text-white-primary hover:bg-blue-secondary"
                               )}
                             >
                               {item.name}
@@ -118,7 +118,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
           </div>
 
           <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
-            <div className="pt-4 pb-3 border-t border-gray-200">
+            <div className="pt-4 pb-3 border-t border-grey-primary">
               <div className="flex items-center px-4 sm:px-6 mx-auto max-w-3xl">
                 <div className="flex-shrink-0">
                   <Avatar
@@ -130,10 +130,10 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                   />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium text-gray-800">
+                  <div className="text-base font-medium text-blue-primary">
                     {p.account.name}
                   </div>
-                  <div className="text-sm font-medium text-gray-500">
+                  <div className="text-sm font-medium text-blue-primary">
                     {p.account.email}
                   </div>
                 </div>
@@ -143,7 +143,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                   <a
                     key={item.name}
                     href={item.href}
-                    className="block py-2 px-3 text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+                    className="block py-2 px-3 text-base font-medium text-blue-primary hover:text-white-primary hover:bg-blue-primary rounded-md"
                   >
                     {item.name}
                   </a>

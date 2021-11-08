@@ -7,9 +7,11 @@ const allSizes: Array<Size> = ["responsive", "sm", "md", "lg", "xl", "2xl"];
 const fixedSizes: Array<Size> = ["sm", "md", "lg", "xl", "2xl"];
 const appearances: Array<Appearance> = [
   "primary",
+  "primarylighter",
   "secondary",
   "warning",
   "danger",
+  "dangerlighter",
   "plain",
 ];
 
@@ -54,6 +56,18 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = () => (
       ))}
     </div>
 
+    <h1 className="text-xl">Primary Lighter</h1>
+    <div className="flex flex-row justify-around items-center mb-8">
+      {fixedSizes.map((sz) => (
+        <UIButton
+          text="New program"
+          appearance="primarylighter"
+          size={sz}
+          key={sz}
+        />
+      ))}
+    </div>
+
     <h1 className="text-xl">Secondary</h1>
     <div className="flex flex-row justify-around items-center mb-8">
       {fixedSizes.map((sz) => (
@@ -74,6 +88,18 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = () => (
         <UIButton
           text="Delete program"
           appearance="danger"
+          size={sz}
+          key={sz}
+        />
+      ))}
+    </div>
+
+    <h1 className="text-xl">Danger Lighter</h1>
+    <div className="flex flex-row justify-around items-center mb-8">
+      {fixedSizes.map((sz) => (
+        <UIButton
+          text="Delete program"
+          appearance="dangerlighter"
           size={sz}
           key={sz}
         />
