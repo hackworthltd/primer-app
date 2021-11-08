@@ -36,3 +36,7 @@ dist/
 # Storybook.js
 storybook-static/
 build-storybook.log
+
+# VSCode
+*.code-workspace
+.vscode
