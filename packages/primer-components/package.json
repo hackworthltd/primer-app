@@ -1,6 +1,6 @@
 {
   "name": "@hackworthltd/primer-components",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "sideEffects": false,
@@ -30,6 +30,7 @@
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
+    "@hackworthltd/primer-types": "^0.2.0",
     "@babel/core": "^7.15.5",
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",

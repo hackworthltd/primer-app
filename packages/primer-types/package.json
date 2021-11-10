@@ -1,45 +1,36 @@
 {
-  "name": "@hackworthltd/primer-app",
+  "name": "@hackworthltd/primer-types",
   "version": "0.2.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
+  "sideEffects": false,
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js"
+    }
+  },
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
-  "dependencies": {
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@hackworthltd/primer-types": "^0.2.0",
-    "@hackworthltd/primer-components": "^0.2.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
-    "@vitejs/plugin-react": "^1.0.1",
-    "@vitejs/plugin-react-refresh": "^1.3.1",
-    "autoprefixer": "^10.3.4",
-    "classnames": "^2.3.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-react": "^7.26.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-tailwindcss": "^1.15.0",
-    "postcss": "^8.3.6",
-    "tailwindcss": "^2.2.15",
     "typescript": "^4.4.3",
     "typescript-eslint-language-service": "^4.1.5",
     "typescript-language-server": "^0.6.2",
     "vite": "^2.5.4",
     "vite-plugin-checker": "^0.3.4",
+    "vite-plugin-dts": "^0.9.4",
     "vite-tsconfig-paths": "^3.3.17"
   }
 }

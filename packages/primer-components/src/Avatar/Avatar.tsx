@@ -6,10 +6,10 @@ import { createAvatar } from "@dicebear/avatars";
 import * as bottts from "@dicebear/avatars-bottts-sprites";
 import * as identicon from "@dicebear/avatars-identicon-sprites";
 import * as jdenticon from "@dicebear/avatars-jdenticon-sprites";
+import type { AvatarStyle } from "@hackworthltd/primer-types";
 import classNames from "classnames";
 
 export type Size = "responsive" | "sm" | "md" | "lg" | "xl" | "2xl";
-export type AvatarStyle = "bottts" | "identicon" | "jdenticon";
 export type Decoration = "plain" | "alert";
 
 export interface AvatarProps {

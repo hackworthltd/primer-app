@@ -62,9 +62,29 @@
           let
             nodejs = final.nodejs-16_x;
             src = gitignore.lib.gitignoreSource ./.;
+
+            hackworthltd-primer-types = {
+              postBuild = "yarn --offline build";
+
+              # We don't need node_modules for this package as
+              # it's all `devDependencies` and `peerDependencies`.
+              # This reduces the size of the closure (and the time
+              # required to generate it) significantly.
+              installPhase =
+                let
+                  pname = "@hackworthltd/primer-types";
+                in
+                ''
+                  mkdir -p $out/libexec/${pname}
+                  mv deps $out/libexec/${pname}/deps
+                '';
+            };
+
             project = final.yarn2nix-moretea.mkYarnWorkspace {
               inherit src;
               packageOverrides = {
+                inherit hackworthltd-primer-types;
+
                 hackworthltd-primer-app = {
                   # We only need the result of the build for this
                   # package. We can discard everything else, because
@@ -106,6 +126,8 @@
             storybook = final.yarn2nix-moretea.mkYarnWorkspace {
               inherit src;
               packageOverrides = {
+                inherit hackworthltd-primer-types;
+
                 hackworthltd-primer-components = {
                   # Storybook needs a writable `node_modules`.
                   configurePhase = ''
@@ -203,7 +225,7 @@
       {
         packages = {
           inherit package-version;
-          inherit (pkgs.project) hackworthltd-primer-app hackworthltd-primer-components;
+          inherit (pkgs.project) hackworthltd-primer-app hackworthltd-primer-components hackworthltd-primer-types;
           primer-components-storybook = pkgs.storybook.hackworthltd-primer-components;
         };
 

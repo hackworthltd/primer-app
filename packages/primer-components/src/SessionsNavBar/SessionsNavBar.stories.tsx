@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { SessionsNavBarProps, Account } from "./SessionsNavBar";
+import type { Account } from "@hackworthltd/primer-types";
+import type { SessionsNavBarProps } from "./SessionsNavBar";
 import { SessionsNavBar } from "./SessionsNavBar";
 
 const account: Account = {
