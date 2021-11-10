@@ -12181,10 +12181,10 @@ vite-plugin-checker@^0.3.4:
     vscode-languageserver-textdocument "^1.0.1"
     vscode-uri "^3.0.2"
 
-vite-plugin-dts@^0.8.1:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-0.8.3.tgz#0a7bac4f14aa412de9c12827009371c3c3434379"
-  integrity sha512-ChWyCb3Y4NbpHlgsxQevMbcvehvhQn9dEunjIvNIu0YN6sPkxROQJ6QEBRHrxgL5O9vf0dsCfIBLjGkOl0t2Xw==
+vite-plugin-dts@^0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-0.9.4.tgz#f949ecd21d6469ee7dfc41d115397f8131a235f0"
+  integrity sha512-eBzaCRvzQltIj712hrjYHoDgDYeTMWRg0zXtr0ZES1tPpHMTDLJaeHhCeNWp2OfCVcbQQV0qKHegBh//+v1Lig==
   dependencies:
     fast-glob "^3.2.7"
     fs-extra "^10.0.0"

@@ -1,6 +1,7 @@
 import "@/index.css";
 
-import { SessionMeta, SessionPreview } from "@/SessionPreview/SessionPreview";
+import { SessionMeta } from "@hackworthltd/primer-types";
+import { SessionPreview } from "@/SessionPreview/SessionPreview";
 
 interface SessionListProps {
   sessions: SessionMeta[];

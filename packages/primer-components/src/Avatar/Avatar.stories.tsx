@@ -1,7 +1,8 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { zipWith } from "fp-ts/Array";
-import type { Size, Decoration, AvatarStyle, AvatarProps } from "./Avatar";
+import type { AvatarStyle } from "@hackworthltd/primer-types";
+import type { Size, Decoration, AvatarProps } from "./Avatar";
 import { Avatar } from "./Avatar";
 
 const ids: string[] = [

@@ -1,4 +1,12 @@
 {
   "files": [],
-  "references": [{ "path": "primer-app" }, { "path": "primer-components" }]
+  "references": [
+    {
+      "path": "primer-app"
+    },
+    {
+      "path": "primer-components"
+    },
+    { "path": "primer-types" }
+  ]
 }

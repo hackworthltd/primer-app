@@ -1,6 +1,6 @@
 {
   "name": "@hackworthltd/primer-components",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "sideEffects": false,
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
+    "@hackworthltd/primer-types": "^0.2.0",
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
     "@honkhonk/vite-plugin-svgr": "^1.1.0",
@@ -67,7 +68,7 @@
     "typescript-language-server": "^0.6.2",
     "vite": "^2.5.4",
     "vite-plugin-checker": "^0.3.4",
-    "vite-plugin-dts": "^0.8.1",
+    "vite-plugin-dts": "^0.9.4",
     "vite-tsconfig-paths": "^3.3.14"
   }
 }

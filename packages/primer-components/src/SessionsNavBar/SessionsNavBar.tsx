@@ -1,20 +1,14 @@
 import "@/index.css";
 
 import { Fragment } from "react";
+import classNames from "classnames";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import { Avatar, AvatarStyle } from "@/Avatar/Avatar";
+import type { Account } from "@hackworthltd/primer-types";
+import { Avatar } from "@/Avatar/Avatar";
 import { UIButton } from "@/UIButton/UIButton";
 import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
 import { SearchBar } from "@/SearchBar/SearchBar";
-
-// Placeholder account type.
-export interface Account {
-  name: string;
-  email: string;
-  avatarStyle: AvatarStyle;
-  imageUrl: string | undefined;
-}
 
 export interface SessionsNavBarProps {
   /**
@@ -30,10 +24,6 @@ const accountNavigation = [
   { name: "Settings", href: "#" },
   { name: "Sign out", href: "#" },
 ];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
   <>
