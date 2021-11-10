@@ -1,13 +1,7 @@
 import "@/index.css";
 
+import { SessionMeta } from "@hackworthltd/primer-types";
 import { BinaryTreePlaceholder } from "@/BinaryTreePlaceholder/BinaryTreePlaceholder";
-
-export interface SessionMeta {
-  id: string;
-  name: string;
-  lastModified: Date;
-  url: string;
-}
 
 interface SessionPreviewProps {
   session: SessionMeta;
