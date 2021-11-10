@@ -43,10 +43,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src"],
-  "references": [
-    {
-      "path": "../primer-types"
-    }
-  ]
+  "include": ["./src"]
 }
