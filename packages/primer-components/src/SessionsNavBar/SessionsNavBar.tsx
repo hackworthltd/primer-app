@@ -1,6 +1,7 @@
 import "@/index.css";
 
 import { Fragment } from "react";
+import classNames from "classnames";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Avatar, AvatarStyle } from "@/Avatar/Avatar";
@@ -30,10 +31,6 @@ const accountNavigation = [
   { name: "Settings", href: "#" },
   { name: "Sign out", href: "#" },
 ];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
   <>
