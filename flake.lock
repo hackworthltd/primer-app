@@ -163,11 +163,11 @@
         "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1636022323,
-        "narHash": "sha256-UFeNVVD5IKGXVvBdmvPSkGFJNKKwlUly4NEooilJY4I=",
+        "lastModified": 1636039043,
+        "narHash": "sha256-FsMTJAlDOZpO4vMGlU+DUOKXekPeX/dQhy0bRvnou4I=",
         "owner": "hackworthltd",
         "repo": "hacknix",
-        "rev": "038f186528636a12b18458088906231cc82d5a4a",
+        "rev": "e6fad1cc7e68743227d97e03daf05f3e72da5753",
         "type": "github"
       },
       "original": {
