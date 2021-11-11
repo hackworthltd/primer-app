@@ -33,7 +33,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
       className={({ open }) =>
         classNames(
           open ? "fixed inset-0 z-40 overflow-y-auto" : "",
-          "bg-white-primary shadow-sm lg:static lg:overflow-y-visible"
+          "lg:static lg:overflow-y-visible"
         )
       }
     >
