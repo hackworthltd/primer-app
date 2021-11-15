@@ -38,7 +38,7 @@ const buttonClasses = (appearance: Appearance) =>
 
 export const ActionButton = (p: ActionButtonProps): JSX.Element => (
   <button type="button" className={buttonClasses(p.appearance)}>
-    <div className="mr-8 -ml-1" aria-hidden="true">
+    <div className="w-8 flex-none mr-4 -ml-4" aria-hidden="true">
       {p.label}
     </div>
     {p.description}
