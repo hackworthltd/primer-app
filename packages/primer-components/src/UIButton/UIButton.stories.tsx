@@ -14,7 +14,7 @@ const appearances: Array<Appearance> = [
 ];
 
 export default {
-  title: "Application/Component Library/UIButton",
+  title: "Application/Component Library/Buttons/UIButton",
   component: UIButton,
   argTypes: {
     size: {
