@@ -1,3 +1,4 @@
+export { default as ActionButton } from "@/ActionButton";
 export { default as Avatar } from "@/Avatar";
 export { default as BinaryTreePlaceholder } from "@/BinaryTreePlaceholder";
 export { default as CallToAction } from "@/CallToAction";
