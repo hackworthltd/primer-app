@@ -53,8 +53,7 @@ const buttonClasses = (size: Size, appearance: Appearance) =>
       appearance === "danger",
     "border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-indigo-500":
       appearance === "plain",
-    "inline-flex items-center border font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2":
-      true,
+    "inline-flex items-center border font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2": true,
   });
 
 export const UIButton = (p: UIButtonProps): JSX.Element => (

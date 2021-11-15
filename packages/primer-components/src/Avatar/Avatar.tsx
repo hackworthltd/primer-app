@@ -70,8 +70,7 @@ const decorationClasses = (size: Size, decoration: Decoration) =>
     "h-3 w-3": size === "xl",
     "h-3.5 w-3.5": size === "2xl",
     hidden: decoration === "plain",
-    "absolute top-0 right-0 block rounded-full ring-2 ring-white bg-red-400":
-      true,
+    "absolute top-0 right-0 block rounded-full ring-2 ring-white bg-red-400": true,
   });
 
 export const avatarStyle = (
