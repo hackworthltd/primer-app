@@ -190,7 +190,10 @@
           pre-commit-hooks-nix.lib.${system}.run {
             src = ./.;
             hooks = {
-              prettier.enable = true;
+              # Disabled for now. See:
+              # https://github.com/hackworthltd/primer-app/issues/138
+              prettier.enable = false;
+
               nixpkgs-fmt.enable = true;
             };
 
