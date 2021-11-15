@@ -41,6 +41,6 @@ export const ActionButton = (p: ActionButtonProps): JSX.Element => (
     <div className="w-8 flex-none mr-4 -ml-4" aria-hidden="true">
       {p.label}
     </div>
-    {p.description}
+    <p className="text-left">{p.description}</p>
   </button>
 );
