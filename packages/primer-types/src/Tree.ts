@@ -1,9 +1,25 @@
-export interface TreeI {
-  nodeId: number;
-  label: string;
-  /* NB: 'children' is treated specially by react, leading to weird errors.
-   * Let's avoid that word.
-   */
-  childTrees: TreeI[];
+/**
+ * 
+ * @export
+ * @interface Tree
+ */
+export interface Tree {
+    /**
+     * 
+     * @type {Array<Tree>}
+     * @memberof Tree
+     */
+    childTrees: Array<Tree>;
+    /**
+     * 
+     * @type {number}
+     * @memberof Tree
+     */
+    nodeId: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Tree
+     */
+    label: string;
 }
-

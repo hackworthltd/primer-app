@@ -1,26 +1,26 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { TreeI } from "@hackworthltd/primer-types";
-import { Tree } from "./Tree";
+import { Tree } from "@hackworthltd/primer-types";
+import { TreeOutline } from "./TreeOutline";
 
 export default {
-  title: "Application/Component Library/Tree",
-  component: Tree,
+  title: "Application/Component Library/TreeOutline",
+  component: TreeOutline,
   argTypes: {
     tree: { control: "object", name: "Tree to display" },
   },
-} as ComponentMeta<typeof Tree>;
+} as ComponentMeta<typeof TreeOutline>;
 
 /* We have this indirection so storybook renders the whole json description of
  * a tree as one control. (As having three separate controls for 'label', 'id'
  * and 'subtrees' is not particularly useful.)
  */
 interface TreeArgs {
-  tree: TreeI;
+  tree: Tree;
 }
 
 const Template: ComponentStory<(args: TreeArgs) => JSX.Element> = (args) => (
-  <Tree {...args.tree} />
+  <TreeOutline {...args.tree} />
 );
 
 export const Tree1 = Template.bind({});
