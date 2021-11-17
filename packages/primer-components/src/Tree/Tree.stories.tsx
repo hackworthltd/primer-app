@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { Tree, TreeI } from "./Tree";
+import { TreeI } from "@hackworthltd/primer-types";
+import { Tree } from "./Tree";
 
 export default {
   title: "Application/Component Library/Tree",
