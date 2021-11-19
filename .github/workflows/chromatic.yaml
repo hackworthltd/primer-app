@@ -30,7 +30,7 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2.4.0
       with:
-        # Nix Flakes doesn't work on shallow clones
+        # Chromatic needs the full history.
         fetch-depth: 0
 
     - name: Vault secrets
@@ -55,13 +55,9 @@ jobs:
         aws configure set aws_session_token ${{ env.NIX_BINARY_CACHE_STS_TOKEN }} --profile default
 
     - name: Install Nix and configure binary caches.
-      uses: cachix/install-nix-action@v14
+      uses: cachix/install-nix-action@v15
       with:
-        install_url: https://nixos-nix-install-tests.cachix.org/serve/vij683ly7sl95nnhb67bdjjfabclr85m/install
-        install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
         extra_nix_config: |
-          experimental-features = nix-command flakes ca-references
-          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
           substituters = https://cache.nixos.org?priority=10 s3://hackworth-nix-cache?region=eu-west-1&priority=20 https://hydra.iohk.io?priority=30
           trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.hackworth-corp.com-1:uLc3Th8lJtfvFAFLqdzRZWEwIk98gAitd5XrDr3Q8SY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 
