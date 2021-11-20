@@ -10,7 +10,6 @@ export default defineConfig({
   plugins: [
     checker({
       typescript: true,
-      eslint: { files: ["./src"], extensions: [".ts"] },
     }),
     dts({
       insertTypesEntry: true,
