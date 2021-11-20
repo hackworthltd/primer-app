@@ -8,7 +8,6 @@ export default defineConfig({
   plugins: [
     checker({
       typescript: true,
-      eslint: { files: ["./src"], extensions: [".ts", ".tsx"] },
     }),
     reactRefresh(),
     tsconfigPaths(),
