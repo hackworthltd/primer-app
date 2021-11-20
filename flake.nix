@@ -240,6 +240,7 @@
           buildInputs = (with pkgs; [
             nodejs
             nixpkgs-fmt
+            rnix-lsp
             yarn
           ]);
 
