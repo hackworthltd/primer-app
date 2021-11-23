@@ -88,7 +88,12 @@ const exampleTermActions = (): ActionButtonProps[] => {
 
 const Template: ComponentStory<typeof ActionButtonList> = (args) => (
   <>
-    <div className="flex flex-col w-1/2">
+    {/*
+     Let's replace this background color hack with a proper
+     ActionPanel component. See:
+     https://github.com/hackworthltd/primer-app/issues/140
+     */}
+    <div className="flex flex-col p-8 w-1/2 bg-grey-primary">
       <ActionButtonList {...args} />
     </div>
   </>
