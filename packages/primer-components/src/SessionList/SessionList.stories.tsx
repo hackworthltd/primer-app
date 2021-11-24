@@ -24,31 +24,26 @@ function exampleSessionsMeta(): SessionMeta[] {
       id: id1,
       name: "Map test",
       lastModified: new Date("2021-08-15T23:17:50.918Z"),
-      url: "https://primer.fly.dev/#connect?session=" + id1,
     },
     {
       id: id2,
       name: "Just playing around",
       lastModified: new Date("2021-08-07T10:12:03.332Z"),
-      url: "https://primer.fly.dev/#connect?session=" + id2,
     },
     {
       id: id3,
       name: "😄😂🤣🤗 🦊 🦈",
       lastModified: new Date("2021-07-23T11:53:13.730Z"),
-      url: "https://primer.fly.dev/#connect?session=" + id3,
     },
     {
       id: id4,
       name: "Exercise 2.3(b)",
       lastModified: new Date("2021-07-10T09:00:01.000Z"),
-      url: "https://primer.fly.dev/#connect?session=" + id4,
     },
     {
       id: id5,
       name: "Not yet working",
       lastModified: new Date("2021-08-20T03:20:59.999Z"),
-      url: "https://primer.fly.dev/#connect?session=" + id5,
     },
   ];
 }

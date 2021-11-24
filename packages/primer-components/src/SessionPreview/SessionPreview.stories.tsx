@@ -27,7 +27,6 @@ English.args = {
     id: id1,
     name: "Example program",
     lastModified: new Date("2021-08-15T23:17:50.918Z"),
-    url: "https://primer.fly.dev/#connect?session=" + id1,
   },
 };
 
@@ -37,7 +36,6 @@ Japanese.args = {
     id: id2,
     name: "サンプルプログラム",
     lastModified: new Date("2021-08-07T10:12:03.332Z"),
-    url: "https://primer.fly.dev/#connect?session=" + id2,
   },
 };
 
@@ -47,7 +45,6 @@ SimplifiedChinese.args = {
     id: id3,
     name: "示例程序",
     lastModified: new Date("2021-07-10T09:00:01.000Z"),
-    url: "https://primer.fly.dev/#connect?session=" + id3,
   },
 };
 
@@ -57,7 +54,6 @@ Arabic.args = {
     id: id4,
     name: "برنامج مثال",
     lastModified: new Date("2021-08-20T03:20:59.999Z"),
-    url: "https://primer.fly.dev/#connect?session=" + id4,
   },
 };
 
@@ -67,6 +63,5 @@ Emoji.args = {
     id: id5,
     name: "😄😂🤣🤗 🦊 🦈",
     lastModified: new Date("2021-07-23T11:53:13.730Z"),
-    url: "https://primer.fly.dev/#connect?session=" + id5,
   },
 };

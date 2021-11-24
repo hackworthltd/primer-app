@@ -3,5 +3,4 @@ export interface SessionMeta {
   id: string;
   name: string;
   lastModified: Date;
-  url: string;
 }
