@@ -19,11 +19,13 @@ export interface SessionsPageProps {
    * @type {SessionMeta[]}
    */
   sessions: SessionMeta[];
-};
+}
 
 export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
-  <div className="container flex flex-col">
+  <div className="grid overflow-hidden h-screen grid-cols-1 grid-rows-[auto,1fr]">
     <SessionsNavBar account={p.account} />
-    <SessionList sessions={p.sessions} />
+    <div className="max-h-screen overflow-auto">
+      <SessionList sessions={p.sessions} />
+    </div>
   </div>
 );
