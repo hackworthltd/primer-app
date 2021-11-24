@@ -7,6 +7,7 @@ export { default as NotificationsButton } from "@/NotificationsButton";
 export { default as PrimerBranding } from "@/PrimerBranding";
 export { default as SearchBar } from "@/SearchBar";
 export { default as SessionList } from "@/SessionList";
+export { default as SessionsPage } from "@/SessionsPage";
 export { default as SessionPreview } from "@/SessionPreview";
 export { default as SessionsNavBar } from "@/SessionsNavBar";
 export { default as TreeOutline } from "@/TreeOutline";
