@@ -27,13 +27,13 @@ const accountNavigation = [
 
 export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
   <>
-    {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
+    {/* When the mobile menu is open, add `overflow-y-auto` to prevent double scrollbars. */}
     <Popover
       as="header"
       className={({ open }) =>
         classNames(
           open ? "fixed inset-0 z-40 overflow-y-auto" : "",
-          "bg-white-primary shadow-sm lg:static lg:overflow-y-visible"
+          "lg:static lg:overflow-y-visible"
         )
       }
     >
