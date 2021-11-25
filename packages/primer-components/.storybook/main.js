@@ -19,7 +19,7 @@ module.exports = {
       config.server.https = false;
       config.server.host = true;
       config.server.hmr = {
-        port: 443,
+        port: 6443,
         protocol: "ws",
       };
     }
