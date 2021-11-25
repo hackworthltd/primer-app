@@ -4,7 +4,7 @@ import { exampleSessionsMeta } from "@/examples/sessions";
 import { exampleAccount } from "@/examples/accounts";
 
 export default {
-  title: "Application/Component Library/SessionsPage",
+  title: "Application/Component Library/Sessions/SessionsPage",
   component: SessionsPage,
   argTypes: {
     sessions: { control: "object", name: "List of sessions" },

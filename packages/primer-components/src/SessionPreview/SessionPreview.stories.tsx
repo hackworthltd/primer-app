@@ -4,7 +4,7 @@ import * as examples from "@/examples/sessions";
 import { SessionPreview } from "./SessionPreview";
 
 export default {
-  title: "Application/Component Library/SessionPreview",
+  title: "Application/Component Library/Sessions/SessionPreview",
   component: SessionPreview,
   argTypes: {
     session: { control: "object", name: "Session metadata" },

@@ -5,7 +5,7 @@ import { SessionsNavBar } from "./SessionsNavBar";
 import { exampleAccount } from "@/examples/accounts";
 
 export default {
-  title: "Application/Component Library/SessionsNavBar",
+  title: "Application/Component Library/Sessions/SessionsNavBar",
   component: SessionsNavBar,
   argTypes: {
     account: {

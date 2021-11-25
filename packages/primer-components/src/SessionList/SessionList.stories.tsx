@@ -4,7 +4,7 @@ import { exampleSessionsMeta } from "@/examples/sessions";
 import { SessionList } from "./SessionList";
 
 export default {
-  title: "Application/Component Library/SessionList",
+  title: "Application/Component Library/Sessions/SessionList",
   component: SessionList,
   argTypes: {
     sessions: { control: "object", name: "List of sessions" },
