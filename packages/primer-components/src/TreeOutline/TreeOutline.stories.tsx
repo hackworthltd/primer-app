@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { Tree } from "@hackworthltd/primer-types";
+import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 import { TreeOutline } from "./TreeOutline";
 
 export default {
@@ -16,7 +16,7 @@ export default {
  * and 'subtrees' is not particularly useful.)
  */
 interface TreeArgs {
-  tree: Tree;
+  tree: TreeInteractiveRender;
 }
 
 const Template: ComponentStory<(args: TreeArgs) => JSX.Element> = (args) => (

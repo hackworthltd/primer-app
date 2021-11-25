@@ -18,8 +18,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
-  "dependencies": {},
+  "dependencies": {
+    "react": "^17.0.0"
+  },
   "devDependencies": {
+    "@types/react": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
