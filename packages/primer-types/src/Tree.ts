@@ -1,3 +1,5 @@
+import * as React from "react";
+
 /**
  * 
  * @export
@@ -22,4 +24,45 @@ export interface Tree {
      * @memberof Tree
      */
     label: string;
+}
+
+/**
+ * TreeInteractiveRender is like Tree, but has added information for frontend
+ * purposes. We add some click handlers, primarily to help visualise how trees
+ * dynamically respond to nodes being added and removed.
+ * 
+ * @export
+ * @interface TreeInteractiveRender
+ */
+export interface TreeInteractiveRender {
+    /**
+     * 
+     * @type {Array<Tree>}
+     * @memberof Tree
+     */
+    childTrees: Array<Tree>;
+    /**
+     * 
+     * @type {number}
+     * @memberof Tree
+     */
+    nodeId: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Tree
+     */
+    label: string;
+    /**
+     * 
+     * @type {React.MouseEventHandler<HTMLElement>}
+     * @memberof Tree
+     */
+    onClick?: React.MouseEventHandler<HTMLElement>;
+    /**
+     * 
+     * @type {React.MouseEventHandler<HTMLElement>}
+     * @memberof Tree
+     */
+    onRightClick?: React.MouseEventHandler<HTMLElement>;
 }

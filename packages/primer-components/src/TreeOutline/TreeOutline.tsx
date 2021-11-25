@@ -1,15 +1,21 @@
 import "@/index.css";
 
-import { Tree } from "@hackworthltd/primer-types";
+import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 
-export const TreeOutline = (tree: Tree): JSX.Element => (
+export const TreeOutline = (tree: TreeInteractiveRender): JSX.Element => (
   <ul className="ml-2 list-disc list-outside">
-    <li>{tree.label}</li>
+    <li onClick={tree.onClick} onContextMenu={tree.onRightClick}>
+      {tree.label}
+    </li>
     <ChildTrees trees={tree.childTrees} />
   </ul>
 );
 
-function ChildTrees({ trees }: { trees: Tree[] }): JSX.Element {
+function ChildTrees({
+  trees,
+}: {
+  trees: TreeInteractiveRender[];
+}): JSX.Element {
   if (trees.length > 0) {
     return (
       <ul className="ml-2 list-disc list-outside">
