@@ -4,14 +4,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "sideEffects": false,
-  "module": "./dist/index.es.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.es.js"
-    },
-    "./style.css": "./dist/style.css"
-  },
+  "main": "src/index.ts",
   "scripts": {
     "build": "vite build",
     "storybook": "start-storybook -p 6006",
@@ -21,6 +14,7 @@
     "chromatic": "chromatic --exit-zero-on-changes"
   },
   "dependencies": {
+    "@hackworthltd/primer-types": "*",
     "@dicebear/avatars": "^4.9.1",
     "@dicebear/avatars-bottts-sprites": "^4.9.1",
     "@dicebear/avatars-identicon-sprites": "^4.9.1",
@@ -31,7 +25,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
-    "@hackworthltd/primer-types": "^0.2.0",
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
     "@honkhonk/vite-plugin-svgr": "^1.1.0",

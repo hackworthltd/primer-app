@@ -2,7 +2,7 @@ import "@/index.css";
 
 import { ActionButton, ActionButtonProps } from "@/ActionButton/ActionButton";
 
-interface ActionButtonListProps {
+export interface ActionButtonListProps {
   actions: ActionButtonProps[];
 }
 

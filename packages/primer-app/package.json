@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
+  "main": "src/main.tsx",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,12 +12,12 @@
     "lint:fix": "eslint --fix ."
   },
   "dependencies": {
+    "@hackworthltd/primer-components": "*",
+    "@hackworthltd/primer-types": "*",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
-    "@hackworthltd/primer-components": "^0.2.0",
-    "@hackworthltd/primer-types": "^0.2.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.31.2",

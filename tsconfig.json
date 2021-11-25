@@ -1,12 +1,17 @@
 {
   "files": [],
+  "include": [],
   "references": [
     {
-      "path": "primer-app"
+      "path": "./packages/primer-app"
     },
     {
-      "path": "primer-components"
+      "path": "./packages/primer-components",
+      "name": "@hackworthltd/primer-components"
     },
-    { "path": "primer-types" }
+    {
+      "path": "./packages/primer-types",
+      "name": "@hackworthltd/primer-types"
+    }
   ]
 }
