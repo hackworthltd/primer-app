@@ -17,8 +17,6 @@ export default defineConfig({
     OptimizationPersist(),
   ],
 
-  sourcemap: true,
-
   // Don't write to node_modules, in case someday we can get it from Nix.
   cacheDir: ".vite",
 
@@ -35,5 +33,9 @@ export default defineConfig({
   esbuild: {
     jsxFactory: "_jsx",
     jsxInject: `import { createElement as _jsx } from "react"`,
+  },
+
+  build: {
+    sourcemap: true,
   },
 });
