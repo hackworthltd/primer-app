@@ -2,7 +2,9 @@
   "name": "@hackworthltd/primer",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/primer-types",
+    "packages/primer-components",
+    "packages/primer-app"
   ],
   "devDependencies": {
     "@typescript-eslint/parser": "^5.4.0",
