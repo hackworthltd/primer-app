@@ -13,17 +13,6 @@ module.exports = {
   // so we have to recreate the important bits here, mainly the
   // resolvers and the relevant plugins.
   async viteFinal(config, { configType }) {
-    // Fix for https://github.com/eirslett/storybook-builder-vite/issues/139
-    if (configType === "DEVELOPMENT") {
-      config.server.port = 6001;
-      config.server.https = false;
-      config.server.host = true;
-      config.server.hmr = {
-        port: 6443,
-        protocol: "ws",
-      };
-    }
-
     return {
       ...config,
 
