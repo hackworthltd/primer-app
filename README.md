@@ -260,6 +260,14 @@ yarn upgrade
 
 There's no need to run this command in each separate workspace unless you want to upgrade only that workspace/package's dependencies.
 
+The `yarn upgrade` command will strictly obey any version bounds specified in packages's `package.json` file. To ignore those bounds and upgrade all packages to their latest versions, run this command from the top-level project directory:
+
+```sh
+yarn upgrade --latest
+```
+
+This command will also update the various `package.json` files' version bounds, as needed.
+
 ### Type-checking in TypeScript
 
 The TypeScript compiler (`tsc`) can perform full type-checking on your TypeScript code, and there are some knobs to set in the per-package `tsconfig.json` file depending on how strict you want it to be. However, most TypeScript projects, including ours, do not use `tsc` to generate object code, both because `tsc` is relatively slow, and because it doesn't produce particularly efficient object code (neither in terms of size nor performance). Most projects use `tsc` only as a sort of opt-in type-checking pass, and it's often combined with other tooling (e.g., `eslint`).
