@@ -13,6 +13,8 @@ export default defineConfig({
     tsconfigPaths(),
   ],
 
+  sourcemap: true,
+
   // Don't write to node_modules, in case someday we can get it from Nix.
   cacheDir: ".vite",
 
