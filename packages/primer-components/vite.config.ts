@@ -25,8 +25,6 @@ export default defineConfig({
     OptimizationPersist(),
   ],
 
-  sourcemap: true,
-
   // Don't write to node_modules, in case someday we can get it from Nix.
   cacheDir: ".vite",
 
@@ -45,8 +43,10 @@ export default defineConfig({
     jsxInject: `import { createElement as _jsx } from "react"`,
   },
 
-  // Library mode settings.
   build: {
+    sourcemap: true,
+
+    // Library mode settings.
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
       name: name,
