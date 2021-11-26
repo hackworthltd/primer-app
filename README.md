@@ -1,6 +1,6 @@
 # primer-app
 
-This repo contains the Primer frontend application and related projects.
+This repo contains the Primer frontend application and related packages.
 
 ## License
 
@@ -8,13 +8,13 @@ Unlike Primer's backend, this project is covered by a proprietary license; see [
 
 ## Project organization
 
-We use [Yarn 1.x](https://classic.yarnpkg.com/lang/en/) (also known as "classic Yarn") to manage JavaScript dependencies, build the project, run tests, etc. We take advantage of [Yarn's support for workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/), which means that this project is organized like a monorepo, in the sense that it contains multiple related projects, each managed via its own `package.json` & `yarn.lock` files.
+We use [Yarn 1.x](https://classic.yarnpkg.com/lang/en/) (also known as "classic Yarn") to manage JavaScript dependencies, build the project's packages, run tests, etc. We take advantage of [Yarn's support for workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/), which means that this project is organized like a monorepo, in the sense that it contains multiple related packages, each managed via its own `package.json` & `yarn.lock` files.
 
 The main reason for this project organization is so that Hackworth members and other contributors can develop UI components, using mainly HTML, CSS, and a bit of React, without needing to understand all the details of a complicated frontend web application. It also means that we can use tools and third-party integrations to develop and test these components without creating extraneous dependencies in our frontend application, so that our frontend application can remain relatively lightweight and move at the pace of React, rather than being held back by third-party dependencies that might lag behind the rest of the React ecosystem.
 
 ## Build system
 
-All of the projects in this monorepo are managed by the [Vite build system](https://vitejs.dev/guide/). While this build system isn't as full-featured as [Create React App](https://create-react-app.dev), it's much simpler, more agile, and significantly faster than [Webpack](https://webpack.js.org), which underpins Create React App and is a major contributor to Create React App's complexity.
+All of the packages in this monorepo are managed by the [Vite build system](https://vitejs.dev/guide/). While this build system isn't as full-featured as [Create React App](https://create-react-app.dev), it's much simpler, more agile, and significantly faster than [Webpack](https://webpack.js.org), which underpins Create React App and is a major contributor to Create React App's complexity.
 
 We build our official packages & run CI via Nix, of course. There are many Nix-based packagers for the JavaScript & Node.js ecosystem, none of which are perfect. We've chosen [yarn2nix](https://nixos.org/manual/nixpkgs/unstable/#language-javascript), which is probably the most mature & issue-free of the bunch. Additionally, it's officially supported (as in, it's included in nixpkgs, where it's annoyingly called [yarn2nix-moretea](https://github.com/NixOS/nixpkgs/tree/master/pkgs/development/tools/yarn2nix-moretea/yarn2nix)), and it works with [the latest version of Node](https://nodejs.org/en/blog/release/v16.0.0/). The same cannot be said about any of the other Nix JavaScript package managers as of October 2021.
 
@@ -72,20 +72,59 @@ or
 nix-build -A checks.x86_64-linux
 ```
 
-Note that for some projects, these checks don't run the full test suite.
+Note that for some packages, these checks don't run the full test suite.
 
 ## Interactive development
 
-To develop interactively, enter the Nix shell via `nix develop`. Once there, you can run all the usual `yarn` commands. Because we're using Yarn workspaces, if you're in the top-level project directory, most Yarn commands will need to be prefixed by `yarn workspace <package>`, where `<package>` is the name of the package you want to manage. Alternatively, from within the Nix shell, you can `cd` to the relevant project subdirectory and run Yarn from there, without the need for the `yarn workspace` command prefix. All packages in the workspace are subdirectories of the top-level `packages/` directory.
+To develop interactively, enter the Nix shell via `nix develop`. Once there, you can run all the usual `yarn` commands. Because we're using Yarn workspaces, if you're in the top-level project directory, most Yarn commands will need to be prefixed by `yarn workspace <package>`, where `<package>` is the name of the package you want to manage. Alternatively, from within the Nix shell, you can `cd` to the relevant package subdirectory and run Yarn from there, without the need for the `yarn workspace` command prefix. All packages in the workspace are subdirectories of the top-level `packages/` directory.
 
 In particular, as a first time setup you will need to run `yarn` to populate the `node_modules` directories before `yarn dev`, `yarn lint` or `yarn build` will work. (However, some other commands, such as `yarn add` may automatically trigger this population.)
 
+### Automatic, on-the-fly rebuilds
 
-### The top-level project
+Via `wsrun`, we can run our build tool, Vite, in watch mode across multiple packages at once. Any change made to the source code of one of the watched packages will trigger a rebuild of that package, plus any of that package's reverse dependencies. Because this is handled via `wsrun` rather than Vite directly, this may result in temporarily broken builds (`wsrun` doesn't know how to make the watcher for the reverse dependency wait for the dependency's build to finish, so the reverse dependency may temporarily see missing or incomplete object files in the dependency's output directory), but Vite's watch mode is pretty robust, and eventually things should just work again without your needing to intervene or restart the watchers.
+
+To hack on the main Primer application in this mode, run this command from the top-level directory:
+
+```sh
+yarn watch
+```
+
+To hack on the `@hackworthltd/primer-components` Storybook in this mode, run this command from the top-level directory:
+
+```sh
+yarn watch:storybook
+```
+
+Note, however, that the Storybook watch mode does not appear to reliably catch all TypeScript errors, so consider this mode to be beta- or alpha-quality.
+
+### Fast project-wide builds
+
+When you want to build every package in the whole workspace very quickly, you can use `ultra`, like so:
+
+```sh
+ultra -r build
+```
+
+You can also use `yarn workspaces run build`, but `ultra` does some extra bookkeeping to decide whether a build is needed (i.e., have files been modified since the last build), whereas `yarn` just blindly performs the builds whether they're necessary or not.
+
+Note that `ultra` has a recursive watch mode, but it's not yet robust enough to work like `wsrun` does, so `ultra` is currently only useful for one-off whole-workspace builds.
+
+### Project-wide builds using `tsc`
+
+The TypeScript compiler has a whole-project build/watch mode that can be invoked as follows:
+
+```sh
+tsc --build --watch
+```
+
+However, the configuration required to make `tsc` work like this is currently not compatible with how we use Vite and Nix. Therefore, this command will fail on our project. See https://github.com/hackworthltd/primer-app/pull/155
+
+### The top-level package
 
 Only project-wide commands should be installed & run at top-level.
 
-Occasionally, it makes sense to install a Yarn development dependency in the top-level project (e.g., [`prettier`](https://prettier.io)), but for the most part, you should only install dependencies on a per-package basis. For example, if you want to add a dev dependency for package `foo` to the `@hackworthltd/primer-app` package, you would run:
+Occasionally, it makes sense to install a Yarn development dependency in the top-level package (e.g., [`prettier`](https://prettier.io)), but for the most part, you should only install dependencies on a per-package basis. For example, if you want to add a dev dependency for package `foo` to the `@hackworthltd/primer-app` package, you would run:
 
 ```sh
 yarn workspace @hackworthltd/primer-app add --dev foo
@@ -100,11 +139,11 @@ yarn add --dev foo
 
 #### `yarn format`
 
-This runs `prettier --write` on all projects in the workspace, using project-wide `prettier` settings.
+This runs `prettier --write` on all packages in the workspace, using project-wide `prettier` settings.
 
-### The `@hackworthltd/primer-app` project
+### The `@hackworthltd/primer-app` package
 
-This project is where the actual frontend application lives. Its Yarn/Node name is `@hackworthltd/primer-app`, but it lives in the `packages/primer-app` subdirectory of the repo.
+This package is where the actual frontend application lives. Its Yarn/Node name is `@hackworthltd/primer-app`, but it lives in the `packages/primer-app` subdirectory of the repo.
 
 The following commands are useful in this workspace.
 
@@ -121,7 +160,7 @@ You may need to do a `yarn build` for `primer-components` before this will work.
 This command runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) in a browser to interact with it.
 You can do `yarn dev --open` to automatically open a browser window.
 
-Thanks to Vite's [hot module reloading feature (HMR)](https://vitejs.dev/guide/features.html#hot-module-replacement), the page will reload automatically whenever you make an edit to any source code or CSS files. (Changing project settings in a `.json` or `.js` file may require that you restart the dev server, as these changes are often not automatically picked up.)
+Thanks to Vite's [hot module reloading feature (HMR)](https://vitejs.dev/guide/features.html#hot-module-replacement), the page will reload automatically whenever you make an edit to any source code or CSS files. (Changing a package's settings in a `.json` or `.js` file may require that you restart the dev server, as these changes are often not automatically picked up.)
 
 In development mode, Vite also runs TypeScript and `eslint` when files change, so you'll see warnings and errors in the console where the `yarn dev` command is running. There is sometimes a lag between when the browser reloads and the errors & warnings show up, however.
 
@@ -143,17 +182,17 @@ Alternatively, from the top-level directory:
 yarn workspace @hackworthltd/primer-app build
 ```
 
-This command builds the app for production, and places the optimized files in the `dist` subdirectory of the project. 
+This command builds the app for production, and places the optimized files in the `dist` subdirectory of the package directory. 
 
 Once you've built the production version locally, you can then run `yarn serve` and open [http://localhost:5000](http://localhost:5000) in a browser to see the production build. (Note: `yarn serve` does not appear to be compatible with Safari on macOS. You may need to use Firefox or Chrome to view the production build on this platform.) 
 
 In theory, the local production version of the application should be no different than the `dev` version, so unless you're trying to debug a production issue locally, `yarn serve` is probably not what you want.
 
-### The `@hackworthltd/primer-components` project
+### The `@hackworthltd/primer-components` package
 
-This project is a component library for the frontend application. It is used as a dependency by the `@hackworthltd/primer-app` project, so it is built as a library, rather than a standalone application. It also includes a [Storybook.js](https://storybook.js.org) application for rapid component-based development and visual testing.
+This package is a component library for the frontend application. It is used as a dependency by the `@hackworthltd/primer-app` package, so it is built as a library, rather than a standalone application. It also includes a [Storybook.js](https://storybook.js.org) application for rapid component-based development and visual testing.
 
-This project's Yarn/Node name is `@hackworthltd/primer-components`, but it lives in the `packages/primer-components` subdirectory of the repo.
+This package's Yarn/Node name is `@hackworthltd/primer-components`, but it lives in the `packages/primer-components` subdirectory of the repo.
 
 The following commands are useful in this workspace.
 
@@ -213,7 +252,7 @@ This command performs a manual Chromatic deployment. You should never need to do
 
 ### Type-checking in TypeScript
 
-The TypeScript compiler (`tsc`) can perform full type-checking on your TypeScript code, and there are some knobs to set in the per-project `tsconfig.json` file depending on how strict you want it to be. However, most TypeScript projects, including ours, do not use `tsc` to generate object code, both because `tsc` is relatively slow, and because it doesn't produce particularly efficient object code (neither in terms of size nor performance). Most projects use `tsc` only as a sort of opt-in type-checking pass, and it's often combined with other tooling (e.g., `eslint`).
+The TypeScript compiler (`tsc`) can perform full type-checking on your TypeScript code, and there are some knobs to set in the per-package `tsconfig.json` file depending on how strict you want it to be. However, most TypeScript projects, including ours, do not use `tsc` to generate object code, both because `tsc` is relatively slow, and because it doesn't produce particularly efficient object code (neither in terms of size nor performance). Most projects use `tsc` only as a sort of opt-in type-checking pass, and it's often combined with other tooling (e.g., `eslint`).
 
 If you're coming from the Haskell or PureScript world, this approach takes some getting used to. For one thing, if you want to enforce type-checking, you must explicitly enable `tsc` passes, either directly by calling `tsc` in the Yarn build command, or indirectly by adding some configuration to the build system's own configuration. Unfortunately, this configuration is often quite bespoke, and there are a seemingly infinite number of ways (and plugins) to do this.
 
@@ -239,7 +278,7 @@ If you need a tool that's not provided by the project's Nix development shell an
 
 It's not uncommon in Yarn workspace projects to need slightly different tooling settings for each individual workspace, but this isn't always the case. In theory, at least for some tools, it's possible to use a base configuration by default, and then add/override just the settings that are different for individual workspaces.
 
-We tried this initially by creating a separate "settings-only" project and adding it as a dependency to the other projects in the workspace, but we ran into several path resolution problems, and it didn't seem worth the trouble. Unfortunately, this means that there is a lot of duplication of tool settings across multiple projects, which will require discipline to keep them in sync when we want to, e.g., add some new typechecking rules across the board.
+We tried this initially by creating a separate "settings-only" package and adding it as a dependency to the other packages in the workspace, but we ran into several path resolution problems, and it didn't seem worth the trouble. Unfortunately, this means that there is a lot of duplication of tool settings across multiple packages, which will require discipline to keep them in sync when we want to, e.g., add some new typechecking rules across the board.
 
 ### CI & Chromatic
 
@@ -251,7 +290,7 @@ The full documentation for this review process is [available here](https://www.c
 
 ### SVGs
 
-Before using an SVG in any of the projects, run it through [SVGOMG](https://jakearchibald.github.io/svgomg/) first.
+Before using an SVG in any of the packages, run it through [SVGOMG](https://jakearchibald.github.io/svgomg/) first.
 
 Other suggestions:
 

@@ -12,6 +12,8 @@
     }
   },
   "scripts": {
+    "watch": "vite build --watch",
+    "storybook": "vite build --watch",
     "build": "vite build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."

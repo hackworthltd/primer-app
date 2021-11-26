@@ -2,11 +2,11 @@
   "files": [],
   "references": [
     {
-      "path": "primer-app"
+      "path": "./packages/primer-app"
     },
     {
-      "path": "primer-components"
+      "path": "./packages/primer-components"
     },
-    { "path": "primer-types" }
+    { "path": "./packages/primer-types" }
   ]
 }
