@@ -26,8 +26,8 @@
     "format": "prettier --write .",
     "watch": "wsrun --done-criteria 'Declaration files built in ' --package @hackworthltd/primer-app --stages --recursive watch",
     "watch:storybook": "wsrun --done-criteria 'Declaration files built in ' --package @hackworthltd/primer-components --stages --recursive storybook"
-},
-"dependencies": {
+  },
+  "dependencies": {
     "npm-run-all": "^4.1.5"
-}
+  }
 }

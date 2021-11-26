@@ -250,6 +250,16 @@ This command performs a manual Chromatic deployment. You should never need to do
 
 ## Other notes
 
+### Upgrading npm packages
+
+To upgrade the `npm` package set for the entire project, including all workspace packages' dependencies, run the following command from the top-level project directory:
+
+```sh
+yarn upgrade
+```
+
+There's no need to run this command in each separate workspace unless you want to upgrade only that workspace/package's dependencies.
+
 ### Type-checking in TypeScript
 
 The TypeScript compiler (`tsc`) can perform full type-checking on your TypeScript code, and there are some knobs to set in the per-package `tsconfig.json` file depending on how strict you want it to be. However, most TypeScript projects, including ours, do not use `tsc` to generate object code, both because `tsc` is relatively slow, and because it doesn't produce particularly efficient object code (neither in terms of size nor performance). Most projects use `tsc` only as a sort of opt-in type-checking pass, and it's often combined with other tooling (e.g., `eslint`).
