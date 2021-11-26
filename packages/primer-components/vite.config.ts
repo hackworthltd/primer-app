@@ -5,6 +5,8 @@ import checker from "vite-plugin-checker";
 import dts from "vite-plugin-dts";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
+import OptimizationPersist from "vite-plugin-optimize-persist";
+import PkgConfig from "vite-plugin-package-config";
 import { name, version } from "./package.json";
 
 // https://vitejs.dev/config/
@@ -19,6 +21,8 @@ export default defineConfig({
     reactRefresh(),
     svgr(),
     tsconfigPaths(),
+    PkgConfig(),
+    OptimizationPersist(),
   ],
 
   sourcemap: true,
