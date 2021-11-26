@@ -65,6 +65,8 @@
     "vite": "^2.5.4",
     "vite-plugin-checker": "^0.3.4",
     "vite-plugin-dts": "^0.9.4",
+    "vite-plugin-optimize-persist": "^0.1.0",
+    "vite-plugin-package-config": "^0.0.3",
     "vite-tsconfig-paths": "^3.3.14"
   }
 }

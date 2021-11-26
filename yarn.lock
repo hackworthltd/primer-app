@@ -13105,6 +13105,21 @@ vite-plugin-mdx@^3.5.6:
     resolve "^1.20.0"
     unified "^9.2.1"
 
+vite-plugin-optimize-persist@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-optimize-persist/-/vite-plugin-optimize-persist-0.1.0.tgz#d4b18e36e9669f47d2a7c24ec438ef2820ab2589"
+  integrity sha512-9pVjHUDJCPq7H1OiaQU8olejOoh8Caf+YVEqaaPcIBRJ/ENym1DdQQD/RCc3GzxVkCTlUwVIihpLkg98am9sEQ==
+  dependencies:
+    debug "^4.3.2"
+    fs-extra "^10.0.0"
+
+vite-plugin-package-config@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/vite-plugin-package-config/-/vite-plugin-package-config-0.0.3.tgz#8667dbffffd3eafa0f697c386659d653f737b887"
+  integrity sha512-xneYdCd9fqmehemphnfyHJDE/IyiXe2rtg39lNcQq9jaA5oZCIBBTG+lLAaal3zIyABjKd7fp9oHG/Y+sq5Xlw==
+  dependencies:
+    debug "^4.3.2"
+
 vite-tsconfig-paths@^3.3.14, vite-tsconfig-paths@^3.3.17:
   version "3.3.17"
   resolved "https://registry.yarnpkg.com/vite-tsconfig-paths/-/vite-tsconfig-paths-3.3.17.tgz#b1421c4a01e6b446b78cc1dd12d45f302bc3a27b"
