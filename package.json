@@ -19,12 +19,15 @@
     "vscode-css-languageserver-bin": "^1.4.0",
     "vscode-html-languageserver-bin": "^1.4.0",
     "vscode-json-languageserver": "^1.3.4",
+    "wsrun": "^5.2.4",
     "yaml-language-server": "^1.2.0"
   },
   "scripts": {
-    "format": "prettier --write ."
-  },
-  "dependencies": {
+    "format": "prettier --write .",
+    "watch": "wsrun --done-criteria 'Declaration files built in ' --package @hackworthltd/primer-app --stages --recursive watch",
+    "watch:storybook": "wsrun --done-criteria 'Declaration files built in ' --package @hackworthltd/primer-components --stages --recursive storybook"
+},
+"dependencies": {
     "npm-run-all": "^4.1.5"
-  }
+}
 }

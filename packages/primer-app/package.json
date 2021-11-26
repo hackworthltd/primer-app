@@ -4,6 +4,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "scripts": {
+    "watch": "vite",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",

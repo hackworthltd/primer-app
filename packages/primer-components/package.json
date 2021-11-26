@@ -13,6 +13,7 @@
     "./style.css": "./dist/style.css"
   },
   "scripts": {
+    "watch": "vite build --watch",
     "build": "vite build",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",

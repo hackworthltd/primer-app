@@ -80,6 +80,24 @@ To develop interactively, enter the Nix shell via `nix develop`. Once there, you
 
 In particular, as a first time setup you will need to run `yarn` to populate the `node_modules` directories before `yarn dev`, `yarn lint` or `yarn build` will work. (However, some other commands, such as `yarn add` may automatically trigger this population.)
 
+### Automatic, on-the-fly rebuilds
+
+Via `wsrun`, we can run our build tool, Vite, in watch mode across multiple packages at once. Any change made to the source code of one of the watched packages will trigger a rebuild of that package, plus any of that package's reverse dependencies. Because this is handled via `wsrun` rather than Vite directly, this may result in temporarily broken builds (`wsrun` doesn't know how to make the watcher for the reverse dependency wait for the dependency's build to finish, so the reverse dependency may temporarily see missing or incomplete object files in the dependency's output directory), but Vite's watch mode is pretty robust, and eventually things should just work again without your needing to intervene or restart the watchers.
+
+To hack on the main Primer application in this mode, run this command from the top-level directory:
+
+```sh
+yarn watch
+```
+
+To hack on the `@hackworthltd/primer-components` Storybook in this mode, run this command from the top-level directory:
+
+```sh
+yarn watch:storybook
+```
+
+Note, however, that the Storybook watch mode does not appear to reliably catch all TypeScript errors, so consider this mode to be beta- or alpha-quality.
+
 ### Fast project-wide builds
 
 When you want to build every project in the whole workspace very quickly, you can use `ultra`, like so:
@@ -90,6 +108,17 @@ ultra -r build
 
 You can also use `yarn workspaces run build`, but `ultra` does some extra bookkeeping to decide whether a build is needed (i.e., have files been modified since the last build), whereas `yarn` just blindly performs the builds whether they're necessary or not.
 
+Note that `ultra` has a recursive watch mode, but it's not yet robust enough to work like `wsrun` does, so `ultra` is currently only useful for one-off whole-workspace builds.
+
+### Project-wide builds using `tsc`
+
+The TypeScript compiler has a whole-project build/watch mode that can be invoked as follows:
+
+```sh
+tsc --build --watch
+```
+
+However, the configuration required to make `tsc` work like this is currently not compatible with how we use Vite and Nix. Therefore, this command will fail on our project. See https://github.com/hackworthltd/primer-app/pull/155
 
 ### The top-level project
 
