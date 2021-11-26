@@ -40,3 +40,6 @@ build-storybook.log
 # VSCode
 *.code-workspace
 .vscode
+
+# Ultra
+.ultra.cache.json

@@ -80,6 +80,16 @@ To develop interactively, enter the Nix shell via `nix develop`. Once there, you
 
 In particular, as a first time setup you will need to run `yarn` to populate the `node_modules` directories before `yarn dev`, `yarn lint` or `yarn build` will work. (However, some other commands, such as `yarn add` may automatically trigger this population.)
 
+### Fast project-wide builds
+
+When you want to build every project in the whole workspace very quickly, you can use `ultra`, like so:
+
+```sh
+ultra -r build
+```
+
+You can also use `yarn workspaces run build`, but `ultra` does some extra bookkeeping to decide whether a build is needed (i.e., have files been modified since the last build), whereas `yarn` just blindly performs the builds whether they're necessary or not.
+
 
 ### The top-level project
 
