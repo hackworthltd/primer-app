@@ -3,7 +3,7 @@ import "@/index.css";
 import { SessionMeta } from "@hackworthltd/primer-types";
 import { SessionPreview } from "@/SessionPreview/SessionPreview";
 
-interface SessionListProps {
+export interface SessionListProps {
   sessions: SessionMeta[];
 }
 

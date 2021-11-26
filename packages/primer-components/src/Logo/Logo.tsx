@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 import LogoSvg from "./logo.svg?component";
 
-interface LogoProps {
+export interface LogoProps {
   size?: "sm" | "md" | "lg" | "xl";
 }
 

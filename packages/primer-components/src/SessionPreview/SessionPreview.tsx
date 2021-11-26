@@ -3,7 +3,7 @@ import "@/index.css";
 import { SessionMeta } from "@hackworthltd/primer-types";
 import { BinaryTreePlaceholder } from "@/BinaryTreePlaceholder/BinaryTreePlaceholder";
 
-interface SessionPreviewProps {
+export interface SessionPreviewProps {
   session: SessionMeta;
 }
 

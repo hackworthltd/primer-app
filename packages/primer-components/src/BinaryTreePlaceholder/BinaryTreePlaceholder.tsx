@@ -2,7 +2,7 @@ import "@/index.css";
 
 import BinaryTreeSvg from "./binary-tree.svg?component";
 
-interface BinaryTreePlaceholderProps {
+export interface BinaryTreePlaceholderProps {
   className?: string;
 }
 
