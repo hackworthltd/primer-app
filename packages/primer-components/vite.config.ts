@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import reactRefresh from "@vitejs/plugin-react-refresh";
+import react from "@vitejs/plugin-react";
 import svgr from "@honkhonk/vite-plugin-svgr";
 import checker from "vite-plugin-checker";
 import dts from "vite-plugin-dts";
@@ -18,7 +18,7 @@ export default defineConfig({
     dts({
       insertTypesEntry: true,
     }),
-    reactRefresh(),
+    react(),
     svgr(),
     tsconfigPaths(),
     PkgConfig(),
@@ -34,13 +34,6 @@ export default defineConfig({
     fs: {
       allow: ["../.."],
     },
-  },
-
-  // This is required until Vite/esbuild supports React 17-style JSX
-  // natively.
-  esbuild: {
-    jsxFactory: "_jsx",
-    jsxInject: `import { createElement as _jsx } from "react"`,
   },
 
   build: {
