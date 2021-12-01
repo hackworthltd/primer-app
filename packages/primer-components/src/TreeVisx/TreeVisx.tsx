@@ -83,12 +83,43 @@ function getLink(linkType : LinkType) : typeof LinkVerticalLine {
 }
 */
 
+//declare type LT = any;
+declare type AccessorProps<Link, Node> = {
+    /** Given a node, returns its x coordinate. */
+    x?: (node: Node) => number;
+    /** Given a node, returns its y coordinate. */
+    y?: (node: Node) => number;
+    /** Given a link, returns the source node. */
+    source?: (link: Link) => Node;
+    /** Given a link, returns the target node. */
+    target?: (link: Link) => Node;
+};
+declare type PathType<Link> = (link: Link) => string | null;
+declare type SharedLinkProps<Link> = {
+    /** className applied to path element. */
+    className?: string;
+    /** React ref to the path element. */
+    innerRef?: React.Ref<SVGPathElement>;
+    /** Path generator, given a link returns a path d attribute string */
+    path?: PathType<Link>;
+    /** Render function override which is passed the configured path generator as input. */
+    children?: (args: {
+        path: PathType<Link>;
+    }) => React.ReactNode;
+    /** Datum for which to render a link. */
+    data: Link;
+};
+declare type LinkVerticalLineProps<Link, Node> = AccessorProps<Link, Node> & SharedLinkProps<Link>;
+declare type Props<Link,Node> = LinkVerticalLineProps<Link, Node>;
+declare type LT<Link,Node> = Props<Link,Node> & Omit<React.SVGProps<SVGPathElement>, keyof Props<Link,Node>>;
+
 // I don't see how to type this nicely
-function Link({
+function Link<Link,Node>({
   linkType,
   ...args
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}: { linkType: LinkType } & any): JSX.Element {
+//}: { linkType: LinkType } & any): JSX.Element {
+}: { linkType: LinkType } & LT<Link,Node> ): JSX.Element {
   // I think the type "should" be the following, but it is not exported from visx, so I cannot write this (iiuc)
   // (This is from node_modules/@visx/shape/lib/shapes/link/line/LinkVerticalLine.d.ts)
   //}: { linkType: LinkType } & AddSVGProps<LinkVerticalLineProps<Link, Node>, SVGPathElement>): JSX.Element {
