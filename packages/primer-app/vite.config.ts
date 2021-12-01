@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import reactRefresh from "@vitejs/plugin-react-refresh";
+import react from "@vitejs/plugin-react";
 import checker from "vite-plugin-checker";
 import OptimizationPersist from "vite-plugin-optimize-persist";
 import PkgConfig from "vite-plugin-package-config";
@@ -11,7 +11,7 @@ export default defineConfig({
     checker({
       typescript: true,
     }),
-    reactRefresh(),
+    react(),
     tsconfigPaths(),
     PkgConfig(),
     OptimizationPersist(),
@@ -26,13 +26,6 @@ export default defineConfig({
     fs: {
       allow: ["../.."],
     },
-  },
-
-  // This is required until Vite/esbuild supports React 17-style JSX
-  // natively.
-  esbuild: {
-    jsxFactory: "_jsx",
-    jsxInject: `import { createElement as _jsx } from "react"`,
   },
 
   build: {
