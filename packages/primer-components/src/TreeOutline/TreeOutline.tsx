@@ -3,7 +3,7 @@ import "@/index.css";
 import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 
 export const TreeOutline = (tree: TreeInteractiveRender): JSX.Element => (
-  <ul className="ml-2 list-disc list-outside">
+  <ul className="ml-2 list-disc list-inside">
     <li onClick={tree.onClick} onContextMenu={tree.onRightClick}>
       {tree.label}
     </li>
@@ -18,7 +18,7 @@ function ChildTrees({
 }): JSX.Element {
   if (trees.length > 0) {
     return (
-      <ul className="ml-2 list-disc list-outside">
+      <ul className="ml-2 list-disc list-inside">
         {trees.map((t) => (
           <TreeOutline {...t} key={t.nodeId} />
         ))}
