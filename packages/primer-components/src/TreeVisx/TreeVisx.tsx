@@ -87,6 +87,7 @@ function getLink(linkType : LinkType) : typeof LinkVerticalLine {
 function Link({
   linkType,
   ...args
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: { linkType: LinkType } & any): JSX.Element {
   // I think the type "should" be the following, but it is not exported from visx, so I cannot write this (iiuc)
   // (This is from node_modules/@visx/shape/lib/shapes/link/line/LinkVerticalLine.d.ts)
