@@ -149,12 +149,12 @@ export const Visx = Template.bind({});
 Visx.args = { labels: ["node", "foobar", "x"], render: TreeVisxDefault };
 
 const TreeBoth = (tree: TreeInteractiveRender) => (
-  <div>
-    <div>
-      <TreeOutline {...tree} />
-    </div>
+  <div className="flex">
     <div>
       <TreeVisxDefault {...tree} />
+    </div>
+    <div>
+      <TreeOutline {...tree} />
     </div>
   </div>
 );
