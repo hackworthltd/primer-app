@@ -10,9 +10,19 @@ interface State {
   tree: TreeInteractiveRender;
 }
 
+const TreeVisxDefault = (tree: TreeInteractiveRender) =>
+  TreeVisx({ width: 300, height: 300, linkType: "line", tree: tree });
+
+type Renderer = "TreeOutline" | "TreeVisx";
+const renderersMap = {
+  TreeVisx: TreeVisxDefault,
+  TreeOutline,
+};
+
 interface Args {
   labels: string[];
   render: (tree: TreeInteractiveRender) => JSX.Element;
+  renderers: Renderer[];
 }
 
 // This component just wraps a tree with some state and adds callbacks
@@ -129,6 +139,14 @@ const Template: ComponentStory<(args: Args) => JSX.Element> = (args) => (
 export default {
   title: "Application/Component Library/Tree-Interactive",
   component: ITree,
+  argTypes: {
+    render: { table: { disable: true } },
+    renderers: {
+      options: Object.keys(renderersMap),
+      defaultValue: Object.keys(renderersMap),
+      control: { type: "inline-check" },
+    },
+  },
   decorators: [
     (Story) => (
       <div>
@@ -141,9 +159,6 @@ export default {
 
 export const HTML = Template.bind({});
 HTML.args = { labels: ["node", "foobar", "x"], render: TreeOutline };
-
-const TreeVisxDefault = (tree: TreeInteractiveRender) =>
-  TreeVisx({ width: 300, height: 300, linkType: "line", tree: tree });
 
 export const Visx = Template.bind({});
 Visx.args = { labels: ["node", "foobar", "x"], render: TreeVisxDefault };
@@ -161,3 +176,29 @@ const TreeBoth = (tree: TreeInteractiveRender) => (
 
 export const Both = Template.bind({});
 Both.args = { labels: ["node", "foobar", "x"], render: TreeBoth };
+
+const TreeCheck = ({
+  renderers,
+  tree,
+}: {
+  renderers: Renderer[];
+  tree: TreeInteractiveRender;
+}): JSX.Element => {
+  return (
+    <div className="flex">
+      {renderers.map((i) => {
+        const R = renderersMap[i];
+        return <R key={i} {...tree} />;
+      })}
+    </div>
+  );
+};
+
+const TemplateCheck: ComponentStory<(args: Args) => JSX.Element> = (args) => (
+  <ITree
+    {...args}
+    render={(t) => TreeCheck({ renderers: args.renderers, tree: t })}
+  />
+);
+export const Check = TemplateCheck.bind({});
+Check.args = { labels: ["node", "foobar", "x"] };
