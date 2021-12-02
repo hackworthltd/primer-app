@@ -163,11 +163,13 @@ const Template: ComponentStory<(args: StoryArgs) => JSX.Element> = (args) => (
 export default {
   title: "Application/Component Library/Tree-Interactive",
   component: Template,
+  args: {
+    renderers: Object.keys(renderersMap),
+  },
   argTypes: {
     render: { table: { disable: true } },
     renderers: {
       options: Object.keys(renderersMap),
-      defaultValue: Object.keys(renderersMap),
       control: { type: "inline-check" },
     },
   },
