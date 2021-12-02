@@ -19,16 +19,15 @@ const renderersMap = {
   TreeOutline,
 };
 
-interface Args {
+interface ITreeArgs {
   labels: string[];
   render: (tree: TreeInteractiveRender) => JSX.Element;
-  renderers: Renderer[];
 }
 
 // This component just wraps a tree with some state and adds callbacks
 // so one can see what happens when nodes get inserted/deleted
-class ITree extends Component<Args, State> {
-  constructor(props: Args) {
+class ITree extends Component<ITreeArgs, State> {
+  constructor(props: ITreeArgs) {
     super(props);
     this.state = this.mkInitialState();
   }
@@ -132,13 +131,38 @@ class ITree extends Component<Args, State> {
   }
 }
 
-const Template: ComponentStory<(args: Args) => JSX.Element> = (args) => (
-  <ITree {...args} />
+const TreeCheck = ({
+  renderers,
+  tree,
+}: {
+  renderers: Renderer[];
+  tree: TreeInteractiveRender;
+}): JSX.Element => {
+  return (
+    <div className="flex">
+      {renderers.map((i) => {
+        const R = renderersMap[i];
+        return <R key={i} {...tree} />;
+      })}
+    </div>
+  );
+};
+
+interface StoryArgs {
+  labels: string[];
+  renderers: Renderer[];
+}
+
+const Template: ComponentStory<(args: StoryArgs) => JSX.Element> = (args) => (
+  <ITree
+    {...args}
+    render={(t) => TreeCheck({ renderers: args.renderers, tree: t })}
+  />
 );
 
 export default {
   title: "Application/Component Library/Tree-Interactive",
-  component: ITree,
+  component: Template,
   argTypes: {
     render: { table: { disable: true } },
     renderers: {
@@ -157,48 +181,5 @@ export default {
   ],
 } as ComponentMeta<typeof ITree>;
 
-export const HTML = Template.bind({});
-HTML.args = { labels: ["node", "foobar", "x"], render: TreeOutline };
-
-export const Visx = Template.bind({});
-Visx.args = { labels: ["node", "foobar", "x"], render: TreeVisxDefault };
-
-const TreeBoth = (tree: TreeInteractiveRender) => (
-  <div className="flex">
-    <div>
-      <TreeVisxDefault {...tree} />
-    </div>
-    <div>
-      <TreeOutline {...tree} />
-    </div>
-  </div>
-);
-
-export const Both = Template.bind({});
-Both.args = { labels: ["node", "foobar", "x"], render: TreeBoth };
-
-const TreeCheck = ({
-  renderers,
-  tree,
-}: {
-  renderers: Renderer[];
-  tree: TreeInteractiveRender;
-}): JSX.Element => {
-  return (
-    <div className="flex">
-      {renderers.map((i) => {
-        const R = renderersMap[i];
-        return <R key={i} {...tree} />;
-      })}
-    </div>
-  );
-};
-
-const TemplateCheck: ComponentStory<(args: Args) => JSX.Element> = (args) => (
-  <ITree
-    {...args}
-    render={(t) => TreeCheck({ renderers: args.renderers, tree: t })}
-  />
-);
-export const Check = TemplateCheck.bind({});
-Check.args = { labels: ["node", "foobar", "x"] };
+export const Default = Template.bind({});
+Default.args = { labels: ["node", "foobar", "x"] };
