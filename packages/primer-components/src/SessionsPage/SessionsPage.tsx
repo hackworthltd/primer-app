@@ -22,11 +22,11 @@ export interface SessionsPageProps {
 }
 
 export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
-  <div className="grid overflow-hidden h-screen grid-cols-1 grid-rows-[auto,1fr]">
+  <div className="grid overflow-hidden grid-cols-1 grid-rows-[auto,1fr] h-screen">
     <div className="mx-1 lg:mx-4">
       <SessionsNavBar account={p.account} />
     </div>
-    <div className="mx-1 lg:mx-4 max-h-screen overflow-auto">
+    <div className="overflow-auto mx-1 lg:mx-4 max-h-screen">
       <SessionList sessions={p.sessions} />
     </div>
   </div>
