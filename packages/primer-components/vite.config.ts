@@ -48,7 +48,7 @@ export default defineConfig({
     },
     rollupOptions: {
       // XXX dhess: do we need to add Tailwind UI deps here?
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", "react-router-dom"],
     },
   },
 
