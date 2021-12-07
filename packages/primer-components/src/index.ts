@@ -9,6 +9,7 @@ export { default as SessionList } from "@/SessionList";
 export { default as SessionsPage } from "@/SessionsPage";
 export { default as SessionPreview } from "@/SessionPreview";
 export { default as SessionsNavBar } from "@/SessionsNavBar";
+export { default as TreeD3 } from "@/TreeD3";
 export { default as TreeOutline } from "@/TreeOutline";
 export { default as TreeVisx } from "@/TreeVisx";
 export { default as UIButton } from "@/UIButton";
