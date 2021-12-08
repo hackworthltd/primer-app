@@ -38,7 +38,7 @@
     "vite": "^2.5.4",
     "vite-plugin-checker": "^0.3.4",
     "vite-plugin-optimize-persist": "^0.1.0",
-    "vite-plugin-package-config": "^0.0.3",
+    "vite-plugin-package-config": "^0.1.0",
     "vite-tsconfig-paths": "^3.3.17"
   },
   "vite": {
