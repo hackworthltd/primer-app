@@ -2,6 +2,7 @@ import { Component } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { TreeInteractiveRender } from "@hackworthltd/primer-types";
+import TreeD3 from "@/TreeD3";
 import TreeOutline from "@/TreeOutline";
 import TreeVisx, { LinkType } from "@/TreeVisx";
 
@@ -17,9 +18,13 @@ const TreeOutlineRender = ({ tree }: TreeLT) => TreeOutline(tree);
 const TreeVisxDefault = ({ tree, linkType }: TreeLT) =>
   TreeVisx({ width: 300, height: 300, linkType: linkType, tree: tree });
 
+const TreeD3Default = ({ tree, linkType }: TreeLT) =>
+  TreeD3({ width: 300, height: 300, linkType: linkType, tree: tree });
+
 type Renderer = "TreeOutline" | "TreeVisx";
 const renderersMap = {
   TreeVisx: TreeVisxDefault,
+  TreeD3: TreeD3Default,
   TreeOutline: TreeOutlineRender,
 };
 
