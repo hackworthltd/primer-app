@@ -58,7 +58,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-tailwindcss": "^1.15.0",
     "postcss": "^8.4.4",
-    "react-router-dom": "^6.0.2",
+    "react-router-dom": "^6.1.1",
     "storybook-builder-vite": "^0.1.0",
     "tailwindcss": "^2.2.16",
     "typescript": "^4.3.2",
