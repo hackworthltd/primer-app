@@ -16,7 +16,7 @@ function d3graph(
 
   const hier = d3.hierarchy(tree, (d) => d.childTrees);
 
-  const d3tree = d3.tree().size([width, height]);
+  const d3tree = d3.tree<TreeInteractiveRender>().size([width, height]);
 
   const layout = d3tree(hier);
 
@@ -43,7 +43,17 @@ function d3graph(
     .append("circle")
     .attr("cx", (d) => d.x)
     .attr("cy", (d) => d.y)
-    .attr("r", 5);
+    .attr("r", 5)
+    .on("click", (e, d) => {
+      if (d.data.onClick) {
+        d.data.onClick(e);
+      }
+    })
+    .on("contextmenu", (e, d) => {
+      if (d.data.onRightClick) {
+        d.data.onRightClick(e);
+      }
+    });
 
   const link = d3.linkVertical<
     HierarchyLink<TreeInteractiveRender>,
