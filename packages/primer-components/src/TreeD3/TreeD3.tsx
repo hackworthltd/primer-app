@@ -1,7 +1,11 @@
 import "@/index.css";
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { HierarchyLink, HierarchyPointNode } from "@visx/hierarchy/lib/types";
+import {
+  HierarchyPointLink,
+  HierarchyLink,
+  HierarchyPointNode,
+} from "@visx/hierarchy/lib/types";
 
 import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 import { TreeVisxI } from "@/TreeVisx";
@@ -22,27 +26,45 @@ function d3graph(
 
   // We create the link group before the node group, so that all links will be
   // rendered below the nodes
-  const linkG = svg
-    .append("g")
-    .attr("stroke", "#000")
-    .attr("fill", "none")
-    .selectAll();
+  let linkG: d3.Selection<SVGGElement, unknown, null, unknown> =
+    svg.select(".linkG");
+  if (linkG.empty()) {
+    linkG = svg
+      .append("g")
+      .attr("class", "linkG")
+      .attr("stroke", "#000")
+      .attr("fill", "none");
+  }
 
   // TODO: We should enable external control over node and edge styling
   // See https://github.com/hackworthltd/primer-app/issues/204
 
-  const nodeG = svg
-    .append("g")
-    .attr("stroke", "#fff")
-    .attr("stroke-width", 2)
-    .selectAll();
+  let nodeG: d3.Selection<SVGGElement, unknown, null, unknown> =
+    svg.select(".nodeG");
+  if (nodeG.empty()) {
+    nodeG = svg
+      .append("g")
+      .attr("class", "nodeG")
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 2);
+  }
 
-  nodeG
-    .data(layout)
+  const link = linkG
+    .selectAll<SVGPathElement, HierarchyPointLink<TreeInteractiveRender>>(
+      ".link"
+    )
+    .data(layout.links(), (l) => l.target.data.nodeId);
+
+  const node = nodeG
+    .selectAll<SVGCircleElement, HierarchyPointNode<TreeInteractiveRender>>(
+      ".node"
+    )
+    .data(layout, (n) => n.data.nodeId);
+
+  node
     .enter()
     .append("circle")
-    .attr("cx", (d) => d.x)
-    .attr("cy", (d) => d.y)
+    .attr("class", "node")
     .attr("r", 5)
     .on("click", (e, d) => {
       if (d.data.onClick) {
@@ -53,21 +75,29 @@ function d3graph(
       if (d.data.onRightClick) {
         d.data.onRightClick(e);
       }
-    });
+    })
+    .merge(node)
+    .attr("cx", (d) => d.x)
+    .attr("cy", (d) => d.y);
 
-  const link = d3.linkVertical<
+  node.exit().remove();
+
+  const drawLink = d3.linkVertical<
     HierarchyLink<TreeInteractiveRender>,
     HierarchyPointNode<TreeInteractiveRender>
   >();
 
-  linkG
-    .data(hier.links())
+  link
     .enter()
     .append("path")
+    .attr("class", "link")
+    .merge(link)
     .attr(
       "d",
-      link.x((d) => d.x).y((d) => d.y)
+      drawLink.x((d) => d.x).y((d) => d.y)
     );
+
+  link.exit().remove();
 }
 
 export function TreeD3({ width, height, tree }: TreeVisxI) {
@@ -79,14 +109,7 @@ export function TreeD3({ width, height, tree }: TreeVisxI) {
   const h = height - 2 * my;
   const svgRef = useRef<SVGSVGElement>(null);
   useEffect(() => {
-    const svg = svgRef.current;
-    d3graph(w, h, svg, tree);
-    return () => {
-      // This cleans up, which is important since d3graph only ever adds DOM
-      // nodes. If we did not do this, we would get multiple stale copies of
-      // stuff inside the svg when we rerender.
-      svg && (svg.innerHTML = "");
-    };
+    d3graph(w, h, svgRef.current, tree);
   }, [svgRef, tree, w, h]);
   return (
     <div>
