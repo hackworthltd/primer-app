@@ -3,18 +3,20 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import {
   HierarchyPointLink,
-  HierarchyLink,
   HierarchyPointNode,
 } from "@visx/hierarchy/lib/types";
 
 import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 import { TreeVisxI } from "@/TreeVisx";
 
+type Pt = { x: number; y: number };
+
 function d3graph(
   width: number,
   height: number,
   svgRef: null | SVGElement,
-  tree: TreeInteractiveRender
+  tree: TreeInteractiveRender,
+  oldPos: Map<number, Pt>
 ) {
   const svg = d3.select(svgRef);
 
@@ -49,19 +51,41 @@ function d3graph(
       .attr("stroke-width", 2);
   }
 
-  const link = linkG
+  let link = linkG
     .selectAll<SVGPathElement, HierarchyPointLink<TreeInteractiveRender>>(
       ".link"
     )
     .data(layout.links(), (l) => l.target.data.nodeId);
 
-  const node = nodeG
+  let node = nodeG
     .selectAll<SVGCircleElement, HierarchyPointNode<TreeInteractiveRender>>(
       ".node"
     )
     .data(layout, (n) => n.data.nodeId);
 
+  function getPos(d: HierarchyPointNode<TreeInteractiveRender>) {
+    // return the nearest parent's position from oldPos
+    // falling back to new position from layout
+    let p = { x: d.x, y: d.y };
+    let n: null | typeof d = d;
+    while (n) {
+      const tmp = oldPos.get(n.data.nodeId);
+      if (tmp) {
+        p = tmp;
+        break;
+      }
+      n = n.parent;
+    }
+    return p;
+  }
+
   node
+    .exit<HierarchyPointNode<TreeInteractiveRender>>()
+    // delete remembered old positions for no-longer existing nodes
+    .each((d) => oldPos.delete(d.data.nodeId))
+    .remove();
+
+  node = node
     .enter()
     .append("circle")
     .attr("class", "node")
@@ -76,30 +100,37 @@ function d3graph(
         d.data.onRightClick(e);
       }
     })
-    // Nodes enter at their correct/final position, but existing nodes do not
-    // move yet, as we will animate them later.
-    .attr("cx", (d) => d.x)
-    .attr("cy", (d) => d.y);
-
-  node.exit().remove();
+    // Nodes enter at their parent's currently rendered position (i.e. the
+    // parent's oldPos). Later, we animate all nodes into their new position.
+    // This gives a "growing" visual effect.
+    .each(function (d) {
+      const p = getPos(d);
+      d3.select(this).attr("cx", p.x).attr("cy", p.y);
+    })
+    .merge(node);
 
   const drawLink = d3
     .linkVertical<
-      HierarchyLink<TreeInteractiveRender>,
+      { source: Pt; target: Pt },
       HierarchyPointNode<TreeInteractiveRender>
     >()
     .x((d) => d.x)
     .y((d) => d.y);
 
-  link
+  link.exit().remove();
+
+  link = link
     .enter()
     .append("path")
     .attr("class", "link")
-    // Links enter at their correct/final position, but existing links do not
-    // move yet, as we will animate them later.
-    .attr("d", drawLink);
-
-  link.exit().remove();
+    // Links enter as a zero-length path at their source's currently rendered
+    // position (i.e. the source's oldPos). Later, we animate all links into
+    // their new position. This gives a "growing" visual effect.
+    .attr("d", (d) => {
+      const s = getPos(d.source);
+      return drawLink({ source: s, target: s });
+    })
+    .merge(link);
 
   // Now transition to new position
   // TODO: We should enable external control over transition timing
@@ -110,7 +141,11 @@ function d3graph(
     .duration(duration);
   node
     .transition(t)
-    .attr("cx", (d) => d.x)
+    .attr("cx", (d) => {
+      // remember the node's position for next render as well as doing the animation
+      oldPos.set(d.data.nodeId, { x: d.x, y: d.y });
+      return d.x;
+    })
     .attr("cy", (d) => d.y);
   link.transition(t).attr("d", drawLink);
 }
@@ -123,8 +158,20 @@ export function TreeD3({ width, height, tree }: TreeVisxI) {
   const w = width - 2 * mx;
   const h = height - 2 * my;
   const svgRef = useRef<SVGSVGElement>(null);
+  // oldPos is used to remember last position of nodes, for doing animations.
+  // It is imperatively mutated by d3graph.
+  // To do our insertion animation, we need to know where the parent node was
+  // at the end of the last render cycle (i.e. where it is now, before we start
+  // any animation). This is in the selection.data(...), attached to the dom
+  // nodes, but we need to bind new data, overwriting this, before we need the
+  // old value. It is presumably possible to read this out of the old data or
+  // attributes internally to d3graph, but it is easier to just record it
+  // manually in this map. Note that a user of this TreeD3 component does not
+  // have to care about this implementation detail.
+  const oldPos = useRef(new Map());
+
   useEffect(() => {
-    d3graph(w, h, svgRef.current, tree);
+    d3graph(w, h, svgRef.current, tree, oldPos.current);
   }, [svgRef, tree, w, h]);
   return (
     <div>
