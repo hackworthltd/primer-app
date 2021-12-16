@@ -65,18 +65,20 @@ function d3graph(
 
   function getPos(d: HierarchyPointNode<TreeInteractiveRender>) {
     // return the nearest parent's position from oldPos
-    // falling back to new position from layout
-    let p = { x: d.x, y: d.y };
-    let n: null | typeof d = d;
-    while (n) {
+    // falling back to new position of root
+    let n = d;
+    const tmp = oldPos.get(n.data.nodeId);
+    if (tmp) {
+      return tmp;
+    }
+    while (n.parent) {
+      n = n.parent;
       const tmp = oldPos.get(n.data.nodeId);
       if (tmp) {
-        p = tmp;
-        break;
+        return tmp;
       }
-      n = n.parent;
     }
-    return p;
+    return { x: n.x, y: n.y };
   }
 
   node
