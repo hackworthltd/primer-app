@@ -16,7 +16,8 @@ function d3graph(
   height: number,
   svgRef: null | SVGElement,
   tree: TreeInteractiveRender,
-  oldPos: Map<number, Pt>
+  oldPos: Map<number, Pt>,
+  bbs: Map<number, DOMRect>
 ) {
   const svg = d3.select(svgRef);
 
@@ -44,11 +45,7 @@ function d3graph(
   let nodeG: d3.Selection<SVGGElement, unknown, null, unknown> =
     svg.select(".nodeG");
   if (nodeG.empty()) {
-    nodeG = svg
-      .append("g")
-      .attr("class", "nodeG")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 2);
+    nodeG = svg.append("g").attr("class", "nodeG");
   }
 
   let link = linkG
@@ -58,9 +55,7 @@ function d3graph(
     .data(layout.links(), (l) => l.target.data.nodeId);
 
   let node = nodeG
-    .selectAll<SVGCircleElement, HierarchyPointNode<TreeInteractiveRender>>(
-      ".node"
-    )
+    .selectAll<SVGGElement, HierarchyPointNode<TreeInteractiveRender>>(".node")
     .data(layout, (n) => n.data.nodeId);
 
   function getPos(d: HierarchyPointNode<TreeInteractiveRender>) {
@@ -85,13 +80,16 @@ function d3graph(
     .exit<HierarchyPointNode<TreeInteractiveRender>>()
     // delete remembered old positions for no-longer existing nodes
     // but don't remove the DOM node yet - we will fade it out later
-    .each((d) => oldPos.delete(d.data.nodeId));
+    // also delete remembered bounding box
+    .each((d) => {
+      oldPos.delete(d.data.nodeId);
+      bbs.delete(d.data.nodeId);
+    });
 
-  node = node
+  const nodeEnter = node
     .enter()
-    .append("circle")
+    .append("g")
     .attr("class", "node")
-    .attr("r", 5)
     // An opacity=1 is default, but we need the explicit attribute so we can
     // smoothly animate opacity to zero as nodes exit, to visually fade them
     // out
@@ -111,9 +109,56 @@ function d3graph(
     // This gives a "growing" visual effect.
     .each(function (d) {
       const p = getPos(d);
-      d3.select(this).attr("cx", p.x).attr("cy", p.y);
-    })
-    .merge(node);
+      d3.select(this).attr("x", p.x).attr("y", p.y);
+    });
+
+  // Text (e.g. for node labels) is a bit awkward to deal with, as it is not
+  // obvious how large it is. Our strategy here is to ask the browser for the
+  // text's bounding box, and from then on only care about the bounding box.
+  // This is made slightly awkward by the fact we want to animate our trees,
+  // which means our nodes (and their labels) will move around and be rescaled.
+  // Concretely, our strategy is:
+  // - Use a svg group per node. This will contain the textual label and any
+  //   decorations (e.g. a background)
+  // - Consider this group to introduce a new local coordinate system: inside
+  //   it we will draw everything at (or near) the origin, at full scale, and
+  //   then we will translate and scale the group as a whole.
+  // - This translation/scaling of the group will keep the center of text label
+  //   at the computed node position
+  // We achieve this by:
+  // - Initially, have no transform on the group
+  // - Add a text label to the node, then compute its bounding box (and
+  //   remember this in bbs)
+  // - We then add a background of exactly that size
+  //   (actually, for technical reasons, it is easier to do this after the next
+  //   point)
+  // - Now transform the group to scale it to a point and position it at the
+  //   initial node position, ready for an entry animation ("grow out of the
+  //   parent")
+  // - Later, in the animation phase, we will recall the cached bounding box to
+  //   compute the transform to put the group into final position.
+  nodeEnter
+    .append("text")
+    .text((d) => d.data.label)
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("fill", "white"); // TODO: do we need the 0,0?
+  nodeEnter.each(function (d) {
+    const bb = this.getBBox();
+    bbs.set(d.data.nodeId, bb);
+    const p = getPos(d);
+    d3.select(this)
+      .attr("transform", `translate(${p.x},${p.y}) scale(0)`)
+      .insert("rect", ":first-child")
+      .attr("width", bb.width)
+      .attr("height", bb.height)
+      .attr("x", bb.x)
+      .attr("y", bb.y)
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 2);
+  });
+
+  node = node.merge(nodeEnter);
 
   const drawLink = d3
     .linkVertical<
@@ -153,14 +198,16 @@ function d3graph(
   // Now transition to new position
   const durationMove = 500;
   const tMove = tExit.transition().duration(durationMove);
-  node
-    .transition(tMove)
-    .attr("cx", (d) => {
-      // remember the node's position for next render as well as doing the animation
-      oldPos.set(d.data.nodeId, { x: d.x, y: d.y });
-      return d.x;
-    })
-    .attr("cy", (d) => d.y);
+  node.transition(tMove).attr("transform", function (d) {
+    // remember the node's position for next render as well as doing the animation
+    oldPos.set(d.data.nodeId, { x: d.x, y: d.y });
+    // bbs.get(..) should never be null, as we have set this index of bbs when
+    // the node entered
+    const bb = bbs.get(d.data.nodeId) || { x: 0, y: 0, width: 0, height: 0 };
+    return `translate(${
+      d.x - bb.x - bb.width / 2
+    },${d.y - bb.y - bb.height / 2})`;
+  });
   link.transition(tMove).attr("d", drawLink);
 }
 
@@ -183,9 +230,12 @@ export function TreeD3({ width, height, tree }: TreeVisxI) {
   // manually in this map. Note that a user of this TreeD3 component does not
   // have to care about this implementation detail.
   const oldPos = useRef(new Map());
+  // bbs is used to remember bounding box sizes (i.e. text sizes). It is used
+  // similarly to oldPos, but is updated on entry rather than update
+  const bbs = useRef(new Map());
 
   useEffect(() => {
-    d3graph(w, h, svgRef.current, tree, oldPos.current);
+    d3graph(w, h, svgRef.current, tree, oldPos.current, bbs.current);
   }, [svgRef, tree, w, h]);
   return (
     <div>
