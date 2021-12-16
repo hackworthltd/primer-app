@@ -76,28 +76,43 @@ function d3graph(
         d.data.onRightClick(e);
       }
     })
-    .merge(node)
+    // Nodes enter at their correct/final position, but existing nodes do not
+    // move yet, as we will animate them later.
     .attr("cx", (d) => d.x)
     .attr("cy", (d) => d.y);
 
   node.exit().remove();
 
-  const drawLink = d3.linkVertical<
-    HierarchyLink<TreeInteractiveRender>,
-    HierarchyPointNode<TreeInteractiveRender>
-  >();
+  const drawLink = d3
+    .linkVertical<
+      HierarchyLink<TreeInteractiveRender>,
+      HierarchyPointNode<TreeInteractiveRender>
+    >()
+    .x((d) => d.x)
+    .y((d) => d.y);
 
   link
     .enter()
     .append("path")
     .attr("class", "link")
-    .merge(link)
-    .attr(
-      "d",
-      drawLink.x((d) => d.x).y((d) => d.y)
-    );
+    // Links enter at their correct/final position, but existing links do not
+    // move yet, as we will animate them later.
+    .attr("d", drawLink);
 
   link.exit().remove();
+
+  // Now transition to new position
+  // TODO: We should enable external control over transition timing
+  // See https://github.com/hackworthltd/primer-app/issues/204
+  const duration = 500;
+  const t = (svg as d3.Selection<d3.BaseType, unknown, null, unknown>)
+    .transition()
+    .duration(duration);
+  node
+    .transition(t)
+    .attr("cx", (d) => d.x)
+    .attr("cy", (d) => d.y);
+  link.transition(t).attr("d", drawLink);
 }
 
 export function TreeD3({ width, height, tree }: TreeVisxI) {
