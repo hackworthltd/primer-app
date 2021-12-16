@@ -81,17 +81,21 @@ function d3graph(
     return { x: n.x, y: n.y };
   }
 
-  node
+  const nodeExit = node
     .exit<HierarchyPointNode<TreeInteractiveRender>>()
     // delete remembered old positions for no-longer existing nodes
-    .each((d) => oldPos.delete(d.data.nodeId))
-    .remove();
+    // but don't remove the DOM node yet - we will fade it out later
+    .each((d) => oldPos.delete(d.data.nodeId));
 
   node = node
     .enter()
     .append("circle")
     .attr("class", "node")
     .attr("r", 5)
+    // An opacity=1 is default, but we need the explicit attribute so we can
+    // smoothly animate opacity to zero as nodes exit, to visually fade them
+    // out
+    .attr("opacity", 1)
     .on("click", (e, d) => {
       if (d.data.onClick) {
         d.data.onClick(e);
@@ -119,12 +123,14 @@ function d3graph(
     .x((d) => d.x)
     .y((d) => d.y);
 
-  link.exit().remove();
+  // Don't remove the DOM nodes yet - we will fade them out later
+  const linkExit = link.exit();
 
   link = link
     .enter()
     .append("path")
     .attr("class", "link")
+    .attr("opacity", 1)
     // Links enter as a zero-length path at their source's currently rendered
     // position (i.e. the source's oldPos). Later, we animate all links into
     // their new position. This gives a "growing" visual effect.
@@ -134,22 +140,28 @@ function d3graph(
     })
     .merge(link);
 
-  // Now transition to new position
+  // Fade out the old nodes and links (if any)
   // TODO: We should enable external control over transition timing
   // See https://github.com/hackworthltd/primer-app/issues/204
-  const duration = 500;
-  const t = (svg as d3.Selection<d3.BaseType, unknown, null, unknown>)
+  const durationExit = nodeExit.empty() && linkExit.empty() ? 0 : 500;
+  const tExit = (svg as d3.Selection<d3.BaseType, unknown, null, unknown>)
     .transition()
-    .duration(duration);
+    .duration(durationExit);
+  nodeExit.transition(tExit).attr("opacity", 0).remove();
+  linkExit.transition(tExit).attr("opacity", 0).remove();
+
+  // Now transition to new position
+  const durationMove = 500;
+  const tMove = tExit.transition().duration(durationMove);
   node
-    .transition(t)
+    .transition(tMove)
     .attr("cx", (d) => {
       // remember the node's position for next render as well as doing the animation
       oldPos.set(d.data.nodeId, { x: d.x, y: d.y });
       return d.x;
     })
     .attr("cy", (d) => d.y);
-  link.transition(t).attr("d", drawLink);
+  link.transition(tMove).attr("d", drawLink);
 }
 
 export function TreeD3({ width, height, tree }: TreeVisxI) {
