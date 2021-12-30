@@ -1,0 +1,16 @@
+agents:
+  private: "true"
+
+steps:
+  - command: nix-buildkite
+    label: ":nixos: :buildkite:"
+    plugins:
+      - hackworthltd/nix-buildkite#hackworthltd-v4:
+          file: ci.nix
+          post-build-hook:
+            /run/current-system/sw/bin/buildkite-private-post-build-hook
+  - wait
+  - label: ":chromatic: Deploy Storybook to Chromatic"
+    agents:
+      chromatic: "true"
+    command: nix run .#deploy-to-chromatic

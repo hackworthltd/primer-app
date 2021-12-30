@@ -1,5 +1,5 @@
 status = [
-  "ci/hydra:hackworthltd:primer-app-bors-staging:required"
+  "buildkite/primer-app/required"
 ]
 timeout_sec = 3600
 # Disabled for now.
