@@ -10,7 +10,14 @@ steps:
           post-build-hook:
             /run/current-system/sw/bin/buildkite-private-post-build-hook
   - wait
-  - label: ":chromatic: Deploy Storybook to Chromatic"
-    agents:
-      chromatic: "true"
-    command: nix run .#deploy-to-chromatic
+  - label: ":chromatic: Trigger Chromatic deployment"
+    trigger: primer-app-chromatic
+    async: true
+    build:
+      message: "${BUILDKITE_MESSAGE}"
+      commit: "${BUILDKITE_COMMIT}"
+      branch: "${BUILDKITE_BRANCH}"
+      env:
+        BUILDKITE_PULL_REQUEST: "${BUILDKITE_PULL_REQUEST}"
+        BUILDKITE_PULL_REQUEST_BASE_BRANCH: "${BUILDKITE_PULL_REQUEST_BASE_BRANCH}"
+        BUILDKITE_PULL_REQUEST_REPO: "${BUILDKITE_PULL_REQUEST_REPO}"
