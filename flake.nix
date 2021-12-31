@@ -236,6 +236,34 @@
           source-code-checks = pre-commit-hooks;
         };
 
+        apps =
+          let
+            x86_64-linux-pkgs = pkgsFor "x86_64-linux";
+            storybook-build = x86_64-linux-pkgs.storybook.hackworthltd-primer-components;
+            yarnbin = "${pkgs.yarn}/bin/yarn";
+
+            deploy-to-chromatic-script = pkgs.writeShellApplication {
+              name = "deploy-to-chromatic-script";
+              runtimeInputs = with pkgs; [
+                nodejs
+                yarn
+              ];
+              text = builtins.readFile ./scripts/deploy-to-chromatic.sh;
+            };
+
+            deploy-to-chromatic = (pkgs.writeShellApplication {
+              name = "deploy-to-chromatic";
+              text = ''
+                ${deploy-to-chromatic-script}/bin/deploy-to-chromatic-script ${storybook-build}
+              '';
+            }).overrideAttrs (drv: {
+              meta.platforms = pkgs.flyctl.meta.platforms;
+            });
+          in
+          {
+            inherit deploy-to-chromatic;
+          };
+
         devShell = pkgs.mkShell {
           buildInputs = (with pkgs; [
             nodejs
