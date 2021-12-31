@@ -1,0 +1,6 @@
+agents:
+  chromatic: "true"
+
+steps:
+  - label: ":chromatic: Deploy Storybook to Chromatic"
+    command: nix run .#deploy-to-chromatic
