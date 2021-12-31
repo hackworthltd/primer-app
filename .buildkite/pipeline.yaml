@@ -12,7 +12,9 @@ steps:
   - wait
   - label: ":chromatic: Trigger Chromatic deployment"
     trigger: primer-app-chromatic
-    async: true
+    # This can't be async, because we need to be sure the Chromatic
+    # deployment succeeded before merging via Bors.
+    async: false
     build:
       message: "${BUILDKITE_MESSAGE}"
       commit: "${BUILDKITE_COMMIT}"
