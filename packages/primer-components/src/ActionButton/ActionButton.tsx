@@ -34,7 +34,7 @@ const buttonClasses = (appearance: Appearance) =>
 
     "border-red-secondary text-white-primary bg-red-secondary hover:bg-red-secondary-hover hover:border-red-secondary-hover focus:ring-red-primary":
       appearance === "warning",
-    "inline-flex items-center w-full px-6 py-3 text-base rounded border font-medium shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-offset-2":
+    "inline-flex items-center w-full px-1 py-6 pl-7 text-base rounded border font-medium shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-offset-2":
       true,
   });
 
