@@ -29,6 +29,7 @@
     "@visx/hierarchy": "^2.1.2",
     "@visx/shape": "^2.1.2",
     "@visx/text": "^2.3.0",
+    "d3": "7.1.0",
     "fp-ts": "^2.11.4",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
@@ -45,6 +46,7 @@
     "@storybook/react": "^6.4.0-beta.1",
     "@tailwindcss/aspect-ratio": "^0.3.0",
     "@tailwindcss/forms": "^0.3.4",
+    "@types/d3": "^7.1.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/uuid": "^8.3.1",
