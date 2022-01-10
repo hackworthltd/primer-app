@@ -41,7 +41,7 @@
     "@heroicons/react": "^1.0.4",
     "@honkhonk/vite-plugin-svgr": "^1.1.0",
     "@storybook/addon-actions": "^6.4.0-beta.1",
-    "@storybook/addon-essentials": "^6.4.0-beta.1",
+    "@storybook/addon-essentials": "^6.4.10",
     "@storybook/addon-links": "^6.4.0-beta.1",
     "@storybook/react": "^6.4.0-beta.1",
     "@tailwindcss/aspect-ratio": "^0.4.0",
