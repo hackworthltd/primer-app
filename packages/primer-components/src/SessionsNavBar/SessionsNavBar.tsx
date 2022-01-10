@@ -65,7 +65,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
               </div>
               <div className="hidden lg:flex xl:col-span-4 lg:justify-end lg:items-center">
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative flex-shrink-0 ml-5">
+                <Menu as="div" className="relative shrink-0 ml-5">
                   <div>
                     <Menu.Button className="flex bg-white-primary rounded-full focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 focus:outline-none">
                       <span className="sr-only">Open account menu</span>
@@ -81,11 +81,11 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                   <Transition
                     as={Fragment}
                     enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
+                    enterFrom="opacity-0 scale-95"
+                    enterTo="opacity-100 scale-100"
                     leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 py-1 mt-2 w-48 text-blue-primary bg-white-primary rounded-md ring-1 ring-blue-primary ring-opacity-5 shadow-lg origin-top-right focus:outline-none">
                       {accountNavigation.map((item) => (
@@ -120,7 +120,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
           <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
             <div className="pt-4 pb-3 border-t border-grey-primary">
               <div className="flex items-center px-4 sm:px-6 mx-auto max-w-3xl">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <Avatar
                     id={p.account.email}
                     style={p.account.avatarStyle}
