@@ -250,6 +250,28 @@ This command performs a manual Chromatic deployment. You should never need to do
 
 ## Other notes
 
+### Calculating reverse dependencies
+
+To find out we have a dependency on a particular package, run `yarn why <package-name>`. For example:
+
+```sh
+yarn why immer                                                                                                                         ~/git/primer-app
+yarn why v1.22.17
+[1/4] 🤔  Why do we have the module "immer"...?
+[2/4] 🚚  Initialising dependency graph...
+[3/4] 🔍  Finding dependency...
+[4/4] 🚡  Calculating file sizes...
+=> Found "immer@8.0.1"
+info Reasons this module exists
+   - "_project_#@hackworthltd#primer-components#@storybook#react#react-dev-utils" depends on it
+   - Hoisted from "_project_#@hackworthltd#primer-components#@storybook#react#react-dev-utils#immer"
+info Disk size without dependencies: "1.02MB"
+info Disk size with unique dependencies: "1.02MB"
+info Disk size with transitive dependencies: "1.02MB"
+info Number of shared dependencies: 0
+✨  Done in 0.31s.
+```
+
 ### Upgrading npm packages
 
 To upgrade the `npm` package set for the entire project, including all workspace packages' dependencies, run the following command from the top-level project directory:
