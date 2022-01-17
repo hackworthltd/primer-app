@@ -9,12 +9,15 @@
     "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "generate": "orval --config ./orval.config.js"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "history": "^5.1.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
+    "react-query": "^3.34.8",
     "react-router-dom": "^6.0.2"
   },
   "devDependencies": {
@@ -32,6 +35,7 @@
     "eslint-plugin-react": "^7.26.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-tailwindcss": "^3.1.2",
+    "orval": "^6.5.1",
     "postcss": "^8.4.5",
     "tailwindcss": "3.0",
     "typescript": "^4.4.3",
