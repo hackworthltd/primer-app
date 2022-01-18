@@ -1,5 +1,9 @@
 module.exports = {
   "primer-api": {
+    input: {
+      target: "./primer-api.json",
+      validation: true,
+    },
     output: {
       mode: "split",
       workspace: "./src/primer-api",
@@ -8,10 +12,12 @@ module.exports = {
       client: "react-query",
       mock: true,
       prettier: true,
-    },
-    input: {
-      target: "./primer-api.json",
-      validation: true,
+      override: {
+        mutator: {
+          path: "./mutator/use-custom-instance.ts",
+          name: "useCustomInstance",
+        },
+      },
     },
   },
 };

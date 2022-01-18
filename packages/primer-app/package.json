@@ -48,8 +48,10 @@
   "vite": {
     "optimizeDeps": {
       "include": [
+        "axios",
         "react",
         "react-dom",
+        "react-query",
         "react-router-dom"
       ]
     }

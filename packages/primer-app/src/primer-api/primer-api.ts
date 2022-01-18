@@ -5,7 +5,6 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import {
   useQuery,
   useMutation,
@@ -24,6 +23,7 @@ import type {
   Prog,
   GetApiProgramParams,
 } from "./model";
+import { useCustomInstance, ErrorType } from "./mutator/use-custom-instance";
 
 type AsyncReturnType<T extends (...args: any) => Promise<any>> = T extends (
   ...args: any
@@ -34,34 +34,40 @@ type AsyncReturnType<T extends (...args: any) => Promise<any>> = T extends (
 /**
  * @summary Create a new session
  */
-export const createSession = (
-  initialApp: InitialApp,
-  options?: AxiosRequestConfig
-): Promise<AxiosResponse<Uuid>> => {
-  return axios.post(`/api/sessions`, initialApp, options);
+export const useCreateSessionHook = () => {
+  const createSession = useCustomInstance<Uuid>();
+
+  return (initialApp: InitialApp) => {
+    return createSession({
+      url: `/api/sessions`,
+      method: "post",
+      data: initialApp,
+    });
+  };
 };
 
 export const useCreateSession = <
-  TError = AxiosError<void>,
+  TError = ErrorType<void>,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
-    AsyncReturnType<typeof createSession>,
+    AsyncReturnType<ReturnType<typeof useCreateSessionHook>>,
     TError,
     { data: InitialApp },
     TContext
   >;
-  axios?: AxiosRequestConfig;
 }) => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options || {};
+  const { mutation: mutationOptions } = options || {};
+
+  const createSession = useCreateSessionHook();
 
   const mutationFn: MutationFunction<
-    AsyncReturnType<typeof createSession>,
+    AsyncReturnType<ReturnType<typeof useCreateSessionHook>>,
     { data: InitialApp }
   > = (props) => {
     const { data } = props || {};
 
-    return createSession(data, axiosOptions);
+    return createSession(data);
   };
 
   return useMutation<
@@ -75,14 +81,12 @@ export const useCreateSession = <
 /**
  * @summary List sessions
  */
-export const getSessionList = (
-  params?: GetSessionListParams,
-  options?: AxiosRequestConfig
-): Promise<AxiosResponse<PaginatedSession>> => {
-  return axios.get(`/api/sessions`, {
-    params,
-    ...options,
-  });
+export const useGetSessionListHook = () => {
+  const getSessionList = useCustomInstance<PaginatedSession>();
+
+  return (params?: GetSessionListParams) => {
+    return getSessionList({ url: `/api/sessions`, method: "get", params });
+  };
 };
 
 export const getGetSessionListQueryKey = (params?: GetSessionListParams) => [
@@ -91,31 +95,33 @@ export const getGetSessionListQueryKey = (params?: GetSessionListParams) => [
 ];
 
 export const useGetSessionList = <
-  TData = AsyncReturnType<typeof getSessionList>,
-  TError = AxiosError<void>
+  TData = AsyncReturnType<ReturnType<typeof useGetSessionListHook>>,
+  TError = ErrorType<void>
 >(
   params?: GetSessionListParams,
   options?: {
     query?: UseQueryOptions<
-      AsyncReturnType<typeof getSessionList>,
+      AsyncReturnType<ReturnType<typeof useGetSessionListHook>>,
       TError,
       TData
     >;
-    axios?: AxiosRequestConfig;
   }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions, axios: axiosOptions } = options || {};
+  const { query: queryOptions } = options || {};
 
   const queryKey = queryOptions?.queryKey ?? getGetSessionListQueryKey(params);
 
-  const queryFn: QueryFunction<AsyncReturnType<typeof getSessionList>> = () =>
-    getSessionList(params, axiosOptions);
+  const getSessionList = useGetSessionListHook();
 
-  const query = useQuery<AsyncReturnType<typeof getSessionList>, TError, TData>(
-    queryKey,
-    queryFn,
-    queryOptions
-  );
+  const queryFn: QueryFunction<
+    AsyncReturnType<ReturnType<typeof useGetSessionListHook>>
+  > = () => getSessionList(params);
+
+  const query = useQuery<
+    AsyncReturnType<ReturnType<typeof useGetSessionListHook>>,
+    TError,
+    TData
+  >(queryKey, queryFn, queryOptions);
 
   return {
     queryKey,
@@ -123,14 +129,12 @@ export const useGetSessionList = <
   };
 };
 
-export const getApiProgram = (
-  params?: GetApiProgramParams,
-  options?: AxiosRequestConfig
-): Promise<AxiosResponse<Prog>> => {
-  return axios.get(`/api/program`, {
-    params,
-    ...options,
-  });
+export const useGetApiProgramHook = () => {
+  const getApiProgram = useCustomInstance<Prog>();
+
+  return (params?: GetApiProgramParams) => {
+    return getApiProgram({ url: `/api/program`, method: "get", params });
+  };
 };
 
 export const getGetApiProgramQueryKey = (params?: GetApiProgramParams) => [
@@ -139,31 +143,33 @@ export const getGetApiProgramQueryKey = (params?: GetApiProgramParams) => [
 ];
 
 export const useGetApiProgram = <
-  TData = AsyncReturnType<typeof getApiProgram>,
-  TError = AxiosError<void>
+  TData = AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>,
+  TError = ErrorType<void>
 >(
   params?: GetApiProgramParams,
   options?: {
     query?: UseQueryOptions<
-      AsyncReturnType<typeof getApiProgram>,
+      AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>,
       TError,
       TData
     >;
-    axios?: AxiosRequestConfig;
   }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions, axios: axiosOptions } = options || {};
+  const { query: queryOptions } = options || {};
 
   const queryKey = queryOptions?.queryKey ?? getGetApiProgramQueryKey(params);
 
-  const queryFn: QueryFunction<AsyncReturnType<typeof getApiProgram>> = () =>
-    getApiProgram(params, axiosOptions);
+  const getApiProgram = useGetApiProgramHook();
 
-  const query = useQuery<AsyncReturnType<typeof getApiProgram>, TError, TData>(
-    queryKey,
-    queryFn,
-    queryOptions
-  );
+  const queryFn: QueryFunction<
+    AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>
+  > = () => getApiProgram(params);
+
+  const query = useQuery<
+    AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>,
+    TError,
+    TData
+  >(queryKey, queryFn, queryOptions);
 
   return {
     queryKey,
