@@ -12,6 +12,10 @@ export default {
       description: "The current account.",
       control: "object",
     },
+    onClickNewProgram: {
+      description: "the onClick handler for the \"New program\" button.",
+      action: "clicked"
+    },
   },
 } as ComponentMeta<typeof SessionsNavBar>;
 

@@ -36,16 +36,16 @@ export interface SimplePaginationBarProps {
   /**
    * The event handler for the "next page" button, if there is one.
    *
-   * @type {MouseEventHandler<unknown>}
+   * @type {MouseEventHandler<unknown> | undefined}
    */
-  nextPageOnClick?: MouseEventHandler<unknown>;
+  onClickNextPage: MouseEventHandler<unknown> | undefined;
 
   /**
    * The event handler for the "previous page" button, if there is one.
    *
-   * @type {MouseEventHandler<unknown>}
+   * @type {MouseEventHandler<unknown> | undefined}
    */
-  previousPageOnClick?: MouseEventHandler<unknown>;
+  onClickPreviousPage: MouseEventHandler<unknown> | undefined;
 }
 
 export const SimplePaginationBar = (
@@ -64,10 +64,20 @@ export const SimplePaginationBar = (
     </div>
     <div className="flex-1 flex justify-between sm:justify-end">
       <div className="inline-flex px-2 py-2">
-        <UIButton size="responsive" appearance="secondary" text="Previous" />
+        <UIButton
+          onClick={p.onClickPreviousPage}
+          size="responsive"
+          appearance="secondary"
+          text="Previous"
+        />
       </div>
       <div className="inline-flex px-2 py-2">
-        <UIButton size="responsive" appearance="secondary" text="Next" />
+        <UIButton
+          onClick={p.onClickNextPage}
+          size="responsive"
+          appearance="secondary"
+          text="Next"
+        />
       </div>
     </div>
   </nav>

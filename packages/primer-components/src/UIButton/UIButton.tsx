@@ -40,7 +40,7 @@ export interface UIButtonProps {
    *
    * @type {React.MouseEventHandler<unknown>}
    */
-  onClick?: MouseEventHandler<unknown>;
+  onClick: MouseEventHandler<unknown> | undefined;
 }
 
 const buttonClasses = (size: Size, appearance: Appearance) =>

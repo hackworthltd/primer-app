@@ -1,5 +1,4 @@
-import "@/index.css";
-
+import type { MouseEventHandler } from "react";
 import { Fragment } from "react";
 import classNames from "classnames";
 import { Menu, Popover, Transition } from "@headlessui/react";
@@ -10,6 +9,8 @@ import { UIButton } from "@/UIButton/UIButton";
 import { PrimerBranding } from "@/PrimerBranding/PrimerBranding";
 import { SearchBar } from "@/SearchBar/SearchBar";
 
+import "@/index.css";
+
 export interface SessionsNavBarProps {
   /**
    * The account whose sessions will be displayed.
@@ -17,6 +18,13 @@ export interface SessionsNavBarProps {
    * @type {Account}
    */
   account: Account;
+
+  /**
+   * The "New program" button's on-click handler.
+   *
+   * @type {React.MouseEventHandler<unknown>}
+   */
+  onClickNewProgram: MouseEventHandler<unknown> | undefined;
 }
 
 const accountNavigation = [
@@ -111,6 +119,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
                     size="responsive"
                     appearance="primary"
                     text="New program"
+                    onClick={p.onClickNewProgram}
                   />
                 </div>
               </div>
