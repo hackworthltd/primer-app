@@ -1,3 +1,5 @@
+import type { MouseEventHandler } from "react";
+
 import "@/index.css";
 
 import classNames from "classnames";
@@ -32,6 +34,13 @@ export interface UIButtonProps {
    * @type {string}
    */
   text: string;
+
+  /**
+   * The button's on-click handler.
+   *
+   * @type {React.MouseEventHandler<unknown>}
+   */
+  onClick?: MouseEventHandler<unknown>;
 }
 
 const buttonClasses = (size: Size, appearance: Appearance) =>
@@ -58,7 +67,7 @@ const buttonClasses = (size: Size, appearance: Appearance) =>
   });
 
 export const UIButton = (p: UIButtonProps): JSX.Element => (
-  <button type="button" className={buttonClasses(p.size, p.appearance)}>
+  <button type="button" onClick={p.onClick} className={buttonClasses(p.size, p.appearance)}>
     {p.text}
   </button>
 );

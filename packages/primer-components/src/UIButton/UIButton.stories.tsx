@@ -31,6 +31,10 @@ export default {
       description: "The button label.",
       control: "text",
     },
+    onClick: {
+      description: "The onClick handler.",
+      action: "clicked"
+    },
   },
 } as ComponentMeta<typeof UIButton>;
 
@@ -45,26 +49,26 @@ Single.args = {
   text: "Button",
 };
 
-const AllButtonsTemplate: ComponentStory<typeof UIButton> = () => (
+const AllButtonsTemplate: ComponentStory<typeof UIButton> = (args: UIButtonProps) => (
   <>
     <h1 className="text-xl">Primary</h1>
     <div className="flex flex-row justify-around items-center mb-8">
       {fixedSizes.map((sz) => (
-        <UIButton text="New program" appearance="primary" size={sz} key={sz} />
+        <UIButton onClick={args.onClick!} text="New program" appearance="primary" size={sz} key={sz} />
       ))}
     </div>
 
     <h1 className="text-xl">Secondary</h1>
     <div className="flex flex-row justify-around items-center mb-8">
       {fixedSizes.map((sz) => (
-        <UIButton text="Settings" appearance="secondary" size={sz} key={sz} />
+        <UIButton onClick={args.onClick!} text="Settings" appearance="secondary" size={sz} key={sz} />
       ))}
     </div>
 
     <h1 className="text-xl">Warning</h1>
     <div className="flex flex-row justify-around items-center mb-8">
       {fixedSizes.map((sz) => (
-        <UIButton text="Undo" appearance="warning" size={sz} key={sz} />
+        <UIButton onClick={args.onClick!} text="Undo" appearance="warning" size={sz} key={sz} />
       ))}
     </div>
 
@@ -72,6 +76,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = () => (
     <div className="flex flex-row justify-around items-center mb-8">
       {fixedSizes.map((sz) => (
         <UIButton
+          onClick={args.onClick!}
           text="Delete program"
           appearance="danger"
           size={sz}
@@ -83,10 +88,11 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = () => (
     <h1 className="text-xl">Plain</h1>
     <div className="flex flex-row justify-around items-center mb-8">
       {fixedSizes.map((sz) => (
-        <UIButton text="Cancel" appearance="plain" size={sz} key={sz} />
+        <UIButton onClick={args.onClick!} text="Cancel" appearance="plain" size={sz} key={sz} />
       ))}
     </div>
   </>
 );
 
 export const Showcase = AllButtonsTemplate.bind({});
+Showcase.args = {};
