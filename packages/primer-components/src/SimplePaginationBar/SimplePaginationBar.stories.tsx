@@ -23,6 +23,14 @@ export default {
       description: "The total number of items.",
       control: "number",
     },
+    onClickNextPage: {
+      description: "The event handler for the \"Next\" button.",
+      action: "clicked"
+    },
+    onClickPreviousPage: {
+      description: "The event handler for the \"Previous\" button.",
+      action: "clicked"
+    },
   },
 } as ComponentMeta<typeof SimplePaginationBar>;
 
