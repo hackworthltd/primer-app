@@ -51,18 +51,16 @@ export interface SimplePaginationBarProps {
 export const SimplePaginationBar = (
   p: SimplePaginationBarProps
 ): JSX.Element => (
-  <nav
-    className="py-3 flex items-center justify-between"
-    aria-label="Pagination"
-  >
-    <div className="hidden sm:block">
-      <p className="text-sm">
-        Showing <span className="font-medium">{p.startIndex}</span> to{" "}
-        <span className="font-medium">{p.startIndex + p.numItems - 1}</span> of{" "}
-        <span className="font-medium">{p.totalItems}</span> {p.itemNamePlural}
-      </p>
-    </div>
-    <div className="flex-1 flex justify-between sm:justify-end">
+  <nav className="py-3" aria-label="Pagination">
+    <div className="flex-1 flex items-center justify-between sm:justify-end">
+      <div className="hidden sm:block px-2 py-2">
+        <p className="text-sm">
+          Showing <span className="font-medium">{p.startIndex}</span> to{" "}
+          <span className="font-medium">{p.startIndex + p.numItems - 1}</span>{" "}
+          of <span className="font-medium">{p.totalItems}</span>{" "}
+          {p.itemNamePlural}
+        </p>
+      </div>
       <div className="inline-flex px-2 py-2">
         <UIButton
           onClick={p.onClickPreviousPage}
