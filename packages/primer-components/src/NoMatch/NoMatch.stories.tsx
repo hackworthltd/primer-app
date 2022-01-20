@@ -6,8 +6,6 @@ export default {
   component: NoMatch,
 } as ComponentMeta<typeof NoMatch>;
 
-const Template: ComponentStory<typeof NoMatch> = () => (
-  <NoMatch />
-);
+const Template: ComponentStory<typeof NoMatch> = () => <NoMatch />;
 
 export const Default = Template.bind({});

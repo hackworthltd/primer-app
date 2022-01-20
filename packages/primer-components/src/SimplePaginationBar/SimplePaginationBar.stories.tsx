@@ -8,7 +8,7 @@ export default {
   component: SimplePaginationBar,
   argTypes: {
     itemNamePlural: {
-      description: "The name given to items (plural); e.g., \"projects\".",
+      description: 'The name given to items (plural); e.g., "projects".',
       control: "text",
     },
     startIndex: {
@@ -24,24 +24,24 @@ export default {
       control: "number",
     },
     onClickNextPage: {
-      description: "The event handler for the \"Next\" button.",
-      action: "clicked"
+      description: 'The event handler for the "Next" button.',
+      action: "clicked",
     },
     onClickPreviousPage: {
-      description: "The event handler for the \"Previous\" button.",
-      action: "clicked"
+      description: 'The event handler for the "Previous" button.',
+      action: "clicked",
     },
   },
 } as ComponentMeta<typeof SimplePaginationBar>;
 
-const Template: ComponentStory<typeof SimplePaginationBar> = (args: SimplePaginationBarProps) => (
-  <SimplePaginationBar {...args} />
-);
+const Template: ComponentStory<typeof SimplePaginationBar> = (
+  args: SimplePaginationBarProps
+) => <SimplePaginationBar {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
   itemNamePlural: "sessions",
   startIndex: 21,
   numItems: 10,
-  totalItems: 95
+  totalItems: 95,
 };
