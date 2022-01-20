@@ -52,7 +52,7 @@ export const SimplePaginationBar = (
   p: SimplePaginationBarProps
 ): JSX.Element => (
   <nav
-    className="px-4 py-3 flex items-center justify-between sm:px-6"
+    className="py-3 flex items-center justify-between"
     aria-label="Pagination"
   >
     <div className="hidden sm:block">
@@ -72,7 +72,7 @@ export const SimplePaginationBar = (
           hidden={!p.onClickPreviousPage}
         />
       </div>
-      <div className="inline-flex px-2 py-2">
+      <div className="inline-flex pl-2 py-2">
         <UIButton
           onClick={p.onClickNextPage}
           size="responsive"
