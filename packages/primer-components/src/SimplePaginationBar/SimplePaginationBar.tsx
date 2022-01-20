@@ -69,6 +69,7 @@ export const SimplePaginationBar = (
           size="responsive"
           appearance="secondary"
           text="Previous"
+          hidden={!p.onClickPreviousPage}
         />
       </div>
       <div className="inline-flex px-2 py-2">
@@ -77,6 +78,7 @@ export const SimplePaginationBar = (
           size="responsive"
           appearance="secondary"
           text="Next"
+          hidden={!p.onClickNextPage}
         />
       </div>
     </div>

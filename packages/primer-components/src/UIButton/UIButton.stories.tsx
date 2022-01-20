@@ -35,6 +35,10 @@ export default {
       description: "The onClick handler.",
       action: "clicked"
     },
+    hidden: {
+      description: "If true, the button is hidden.",
+      control: { type: "boolean"}
+    },
   },
 } as ComponentMeta<typeof UIButton>;
 
