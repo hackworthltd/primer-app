@@ -52,7 +52,7 @@ export const SimplePaginationBar = (
   p: SimplePaginationBarProps
 ): JSX.Element => (
   <nav
-    className="px-4 py-3 flex items-center justify-between border-t sm:px-6"
+    className="px-4 py-3 flex items-center justify-between sm:px-6"
     aria-label="Pagination"
   >
     <div className="hidden sm:block">
