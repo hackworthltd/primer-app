@@ -1,8 +1,12 @@
 import { useState } from "react";
 import type { SessionMeta } from "@hackworthltd/primer-types";
 import { exampleAccount, SessionsPage } from "@hackworthltd/primer-components";
-import type { Session } from "@/primer-api";
-import { useGetSessionList, GetSessionListParams } from "@/primer-api";
+import type {
+  GetSessionListParams,
+  PaginatedMeta,
+  Session,
+} from "@/primer-api";
+import { useGetSessionList } from "@/primer-api";
 
 import "@hackworthltd/primer-components/style.css";
 
@@ -21,10 +25,30 @@ const App = (): JSX.Element => {
 
   // Backend sessions do not yet have `lastModified`, so we just
   // create one on the fly for each retrieved session.
-  const sessions: Session[] = data? data.items : [];
-  const sessionsMeta: SessionMeta[] = sessions.map((session: Session) => ({ name: session.name, id: session.id, lastModified: new Date() }));
+  const sessions: Session[] = data ? data.items : [];
+  const sessionsMeta: SessionMeta[] = sessions.map((session: Session) => ({
+    name: session.name,
+    id: session.id,
+    lastModified: new Date(),
+  }));
 
-  return <SessionsPage account={exampleAccount} sessions={sessionsMeta} />;
+  const meta: PaginatedMeta = data
+    ? data.meta
+    : { totalItems: 0, pageSize: 1, thisPage: 1, firstPage: 1, lastPage: 1 };
+  const startIndex: number = (meta.thisPage - 1) * meta.pageSize + 1;
+
+  return (
+    <SessionsPage
+      account={exampleAccount}
+      sessions={sessionsMeta}
+      startIndex={startIndex}
+      numItems={meta.pageSize}
+      totalItems={meta.totalItems}
+      onClickNewProgram={undefined}
+      onClickNextPage={undefined}
+      onClickPreviousPage={undefined}
+    />
+  );
 };
 
 export default App;
