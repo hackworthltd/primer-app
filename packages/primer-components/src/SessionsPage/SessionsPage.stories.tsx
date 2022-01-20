@@ -9,6 +9,22 @@ export default {
   argTypes: {
     sessions: { control: "object", name: "List of sessions" },
     account: { control: "object", name: "Account" },
+    startIndex: {
+      description: "The 1-based index of the first item shown on this page.",
+      control: "number",
+    },
+    totalItems: {
+      description: "The total number of items.",
+      control: "number",
+    },
+    onClickNextPage: {
+      description: 'The event handler for the "Next" button.',
+      action: "clicked",
+    },
+    onClickPreviousPage: {
+      description: 'The event handler for the "Previous" button.',
+      action: "clicked",
+    },
   },
 } as ComponentMeta<typeof SessionsPage>;
 
@@ -20,4 +36,6 @@ export const Default = Template.bind({});
 Default.args = {
   account: exampleAccount,
   sessions: exampleSessionsMeta(),
+  startIndex: 21,
+  totalItems: 95,
 };
