@@ -13,8 +13,8 @@ export default {
       control: "object",
     },
     onClickNewProgram: {
-      description: "the onClick handler for the \"New program\" button.",
-      action: "clicked"
+      description: 'the onClick handler for the "New program" button.',
+      action: "clicked",
     },
   },
 } as ComponentMeta<typeof SessionsNavBar>;

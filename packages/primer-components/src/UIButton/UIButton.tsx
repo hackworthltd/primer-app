@@ -70,7 +70,7 @@ const buttonClasses = (size: Size, appearance: Appearance, hidden?: boolean) =>
       appearance === "danger",
     "border-transparent text-blue-primary bg-grey-primary hover:bg-grey-primary-hover focus:bg-grey-primary":
       appearance === "plain",
-    "hidden": hidden === true,
+    hidden: hidden === true,
     "inline-flex items-center border font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2":
       true,
   });

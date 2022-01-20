@@ -8,3 +8,5 @@ result*
 .github/
 .vite/
 storybook-static/
+.buildkite/
+primer-api.json

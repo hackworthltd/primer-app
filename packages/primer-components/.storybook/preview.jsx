@@ -9,7 +9,7 @@ export const decorators = [
     <MemoryRouter>
       <Story />
     </MemoryRouter>
-  )
+  ),
 ];
 
 export const parameters = {

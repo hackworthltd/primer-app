@@ -15,7 +15,7 @@ export const SessionPreview = ({
   const locale: string = navigator.language;
   return (
     <div>
-      <Link to={`/sessions/${session.id}`} key={session.id} >
+      <Link to={`/sessions/${session.id}`} key={session.id}>
         <div className="group flex overflow-hidden flex-row justify-center w-full max-w-md bg-grey-primary rounded-lg">
           <BinaryTreePlaceholder className="w-16 md:w-48 h-16 md:h-48 text-white-primary group-hover:text-blue-primary fill-current" />
         </div>
