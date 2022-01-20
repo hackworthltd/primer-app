@@ -14,12 +14,7 @@ import "@hackworthltd/primer-components/style.css";
 const App = (): JSX.Element => {
   // NOTE: pagination in our API is 1-indexed.
   const [page, setPage] = useState(1);
-
-  // XXX dhess: the default page size of 4 is chosen here just to
-  // exercise the UI a bit. We should almost certainly make the
-  // default value larger, and potentially set it based on the
-  // device's viewport size.
-  const [pageSize] = useState(4);
+  const [pageSize] = useState(20);
 
   const params: GetSessionListParams = { page: page, pageSize: pageSize };
   const { data } = useGetSessionList(params);
