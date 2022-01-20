@@ -41,9 +41,17 @@ export interface UIButtonProps {
    * @type {React.MouseEventHandler<unknown>}
    */
   onClick: MouseEventHandler<unknown> | undefined;
+
+  /**
+   * Toggle the button's visiblity. Note: if true, the button will
+   * also be removed from the accessibility tree.
+   *
+   * @type {boolean | undefined}
+   */
+  hidden?: boolean;
 }
 
-const buttonClasses = (size: Size, appearance: Appearance) =>
+const buttonClasses = (size: Size, appearance: Appearance, hidden?: boolean) =>
   classNames({
     "px-2.5 py-1.5 text-xs rounded md:px-3 md:py-2 md:text-sm md:leading-4 md:rounded-md lg:px-4 xl:text-base 2xl:px-6 2xl:py-3":
       size === "responsive",
@@ -62,12 +70,17 @@ const buttonClasses = (size: Size, appearance: Appearance) =>
       appearance === "danger",
     "border-transparent text-blue-primary bg-grey-primary hover:bg-grey-primary-hover focus:bg-grey-primary":
       appearance === "plain",
+    "hidden": hidden === true,
     "inline-flex items-center border font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2":
       true,
   });
 
 export const UIButton = (p: UIButtonProps): JSX.Element => (
-  <button type="button" onClick={p.onClick} className={buttonClasses(p.size, p.appearance)}>
+  <button
+    type="button"
+    onClick={p.onClick}
+    className={buttonClasses(p.size, p.appearance, p.hidden)}
+  >
     {p.text}
   </button>
 );
