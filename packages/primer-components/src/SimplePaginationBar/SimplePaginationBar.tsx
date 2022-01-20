@@ -67,7 +67,7 @@ export const SimplePaginationBar = (
         <UIButton
           onClick={p.onClickPreviousPage}
           size="responsive"
-          appearance="secondary"
+          appearance="plain"
           text="Previous"
           hidden={!p.onClickPreviousPage}
         />
@@ -76,7 +76,7 @@ export const SimplePaginationBar = (
         <UIButton
           onClick={p.onClickNextPage}
           size="responsive"
-          appearance="secondary"
+          appearance="plain"
           text="Next"
           hidden={!p.onClickNextPage}
         />
