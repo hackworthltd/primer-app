@@ -1,3 +1,4 @@
+import type { MouseEventHandler } from "react";
 import { useState } from "react";
 import type { SessionMeta } from "@hackworthltd/primer-types";
 import { exampleAccount, SessionsPage } from "@hackworthltd/primer-components";
@@ -12,7 +13,7 @@ import "@hackworthltd/primer-components/style.css";
 
 const App = (): JSX.Element => {
   // NOTE: pagination in our API is 1-indexed.
-  const [page] = useState(1);
+  const [page, setPage] = useState(1);
 
   // XXX dhess: the default page size of 4 is chosen here just to
   // exercise the UI a bit. We should almost certainly make the
@@ -37,6 +38,11 @@ const App = (): JSX.Element => {
     : { totalItems: 0, pageSize: 1, thisPage: 1, firstPage: 1, lastPage: 1 };
   const startIndex: number = (meta.thisPage - 1) * meta.pageSize + 1;
 
+  const onClickNextPage: MouseEventHandler<unknown> | undefined =
+    meta.thisPage < meta.lastPage ? () => setPage(page + 1) : undefined;
+  const onClickPreviousPage: MouseEventHandler<unknown> | undefined =
+    meta.thisPage > 1 ? () => setPage(page - 1) : undefined;
+
   return (
     <SessionsPage
       account={exampleAccount}
@@ -45,8 +51,8 @@ const App = (): JSX.Element => {
       numItems={meta.pageSize}
       totalItems={meta.totalItems}
       onClickNewProgram={undefined}
-      onClickNextPage={undefined}
-      onClickPreviousPage={undefined}
+      onClickNextPage={onClickNextPage}
+      onClickPreviousPage={onClickPreviousPage}
     />
   );
 };
