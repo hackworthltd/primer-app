@@ -15,6 +15,7 @@ updates:
   directory: "/"
   schedule:
     interval: "weekly"
+    day: "saturday"
   reviewers:
     - "dhess"
   commit-message:
