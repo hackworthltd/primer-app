@@ -5550,10 +5550,10 @@ d3-zoom@3:
     d3-selection "2 - 3"
     d3-transition "2 - 3"
 
-d3@7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/d3/-/d3-7.1.0.tgz#fcc1695799e9d6b80d31fd8513a3646f5c76ef37"
-  integrity sha512-gfc489DnwSwd6Bh+BMhR7lzfFj+Mw+HCXn4OFQwCVQFz6H8jbEt/vWqR5oClpj4uxehJsA7ecRKEVUiKHNL1bg==
+d3@7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/d3/-/d3-7.3.0.tgz#f3d5a22c1f658952a6491cf50132f5267ed7a40a"
+  integrity sha512-MDRLJCMK232OJQRqGljQ/gCxtB8k3/sLKFjftMjzPB3nKVUODpdW9Rb3vcq7U8Ka5YKoZkAmp++Ur6I+6iNWIw==
   dependencies:
     d3-array "3"
     d3-axis "3"
