@@ -1,4 +1,5 @@
 import type { MouseEventHandler } from "react";
+import classNames from "classnames";
 
 import { UIButton } from "@/UIButton/UIButton";
 
@@ -48,13 +49,19 @@ export interface SimplePaginationBarProps {
   onClickPreviousPage: MouseEventHandler<unknown> | undefined;
 }
 
+const summaryClasses = (totalItems: number) =>
+  classNames({
+    hidden: totalItems === 0,
+    "text-sm": true,
+  });
+
 export const SimplePaginationBar = (
   p: SimplePaginationBarProps
 ): JSX.Element => (
   <nav className="py-3" aria-label="Pagination">
     <div className="flex-1 flex items-center justify-between sm:justify-end">
       <div className="hidden sm:block px-2 py-2">
-        <p className="text-sm">
+        <p className={summaryClasses(p.totalItems)}>
           Showing <span className="font-medium">{p.startIndex}</span> to{" "}
           <span className="font-medium">{p.startIndex + p.numItems - 1}</span>{" "}
           of <span className="font-medium">{p.totalItems}</span>{" "}
