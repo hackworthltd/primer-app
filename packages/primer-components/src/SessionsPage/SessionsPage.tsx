@@ -16,7 +16,7 @@ export interface SessionsPageProps {
   account: Account;
 
   /**
-   * The list of the account's sessions.
+   * The list of session metadata displayed on this page.
    *
    * @type {SessionMeta[]}
    */

@@ -4,6 +4,9 @@ import { SessionMeta } from "@hackworthltd/primer-types";
 import { SessionPreview } from "@/SessionPreview/SessionPreview";
 
 export interface SessionListProps {
+  /**
+   * The list of session metadata.
+   */
   sessions: SessionMeta[];
 }
 
