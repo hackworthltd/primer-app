@@ -37,7 +37,7 @@
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@hackworthltd/primer-types": "*",
-    "@headlessui/react": "^1.4.1",
+    "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.4",
     "@honkhonk/vite-plugin-svgr": "^1.1.0",
     "@storybook/addon-actions": "^6.4.0-beta.1",
