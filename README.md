@@ -282,10 +282,10 @@ yarn upgrade
 
 There's no need to run this command in each separate workspace unless you want to upgrade only that workspace/package's dependencies.
 
-The `yarn upgrade` command will strictly obey any version bounds specified in packages's `package.json` file. To ignore those bounds and upgrade all packages to their latest versions, run this command from the top-level project directory:
+The `yarn upgrade` command will strictly obey any version bounds specified in packages's `package.json` file. To ignore those bounds and upgrade all packages to their latest versions, run this command from the each project directory:
 
 ```sh
-yarn upgrade --latest
+yarn upgrade-interactive --latest
 ```
 
 This command will also update the various `package.json` files' version bounds, as needed.
