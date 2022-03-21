@@ -43,7 +43,7 @@ This will build everything (production builds, tests, documentation, etc.) for a
 To build the Nix derivation for just the frontend production distribution, run this on macOS:
 
 ```sh
-nix-build -A packages.x86_64-darwin.hackworthltd-primer-app
+nix-build -A packages.aarch64-darwin.hackworthltd-primer-app
 ```
 
 or this on Linux:
@@ -63,7 +63,7 @@ Note that these commands should produce the same result regardless of which plat
 To run some basic, relatively quick project-wide checks (source code formatting, linting, etc.), run:
 
 ```sh
-nix-build -A checks.x86_64-darwin
+nix-build -A checks.aarch64-darwin
 ```
 
 or

@@ -48,7 +48,6 @@
 
       forAllSupportedSystems = flake-utils.lib.eachSystem [
         "x86_64-linux"
-        "x86_64-darwin"
         "aarch64-darwin"
       ];
 
