@@ -13,7 +13,7 @@
     "generate": "orval --config ./orval.config.js"
   },
   "dependencies": {
-    "axios": "^0.26.0",
+    "axios": "^0.26.1",
     "history": "^5.1.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
