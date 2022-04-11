@@ -1,3 +1,6 @@
-import { ActionButton } from "./ActionButton";
-
-export default ActionButton;
+export {
+  ActionButton as default,
+  buttonClassesPrimary,
+  buttonClassesSecondary,
+  buttonClassesPad,
+} from "./ActionButton";
