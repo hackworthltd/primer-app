@@ -16,12 +16,12 @@ import {
   QueryKey,
 } from "react-query";
 import type {
-  Uuid,
-  InitialApp,
-  PaginatedSession,
-  GetSessionListParams,
   Prog,
   GetApiProgramParams,
+  PaginatedSession,
+  GetSessionListParams,
+  Uuid,
+  InitialApp,
 } from "./model";
 import { useCustomInstance, ErrorType } from "./mutator/use-custom-instance";
 
@@ -32,51 +32,52 @@ type AsyncReturnType<T extends (...args: any) => Promise<any>> = T extends (
   ? R
   : any;
 
-/**
- * @summary Create a new session
- */
-export const useCreateSessionHook = () => {
-  const createSession = useCustomInstance<Uuid>();
+export const useGetApiProgramHook = () => {
+  const getApiProgram = useCustomInstance<Prog>();
 
-  return (initialApp: InitialApp) => {
-    return createSession({
-      url: `/api/sessions`,
-      method: "post",
-      data: initialApp,
-    });
+  return (params?: GetApiProgramParams) => {
+    return getApiProgram({ url: `/api/program`, method: "get", params });
   };
 };
 
-export const useCreateSession = <
-  TError = ErrorType<void>,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    AsyncReturnType<ReturnType<typeof useCreateSessionHook>>,
+export const getGetApiProgramQueryKey = (params?: GetApiProgramParams) => [
+  `/api/program`,
+  ...(params ? [params] : []),
+];
+
+export const useGetApiProgram = <
+  TData = AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>,
+  TError = ErrorType<void>
+>(
+  params?: GetApiProgramParams,
+  options?: {
+    query?: UseQueryOptions<
+      AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options || {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetApiProgramQueryKey(params);
+
+  const getApiProgram = useGetApiProgramHook();
+
+  const queryFn: QueryFunction<
+    AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>
+  > = () => getApiProgram(params);
+
+  const query = useQuery<
+    AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>,
     TError,
-    { data: InitialApp },
-    TContext
-  >;
-}) => {
-  const { mutation: mutationOptions } = options || {};
+    TData
+  >(queryKey, queryFn, queryOptions);
 
-  const createSession = useCreateSessionHook();
-
-  const mutationFn: MutationFunction<
-    AsyncReturnType<ReturnType<typeof useCreateSessionHook>>,
-    { data: InitialApp }
-  > = (props) => {
-    const { data } = props || {};
-
-    return createSession(data);
+  return {
+    queryKey,
+    ...query,
   };
-
-  return useMutation<
-    AsyncReturnType<typeof createSession>,
-    TError,
-    { data: InitialApp },
-    TContext
-  >(mutationFn, mutationOptions);
 };
 
 /**
@@ -130,50 +131,49 @@ export const useGetSessionList = <
   };
 };
 
-export const useGetApiProgramHook = () => {
-  const getApiProgram = useCustomInstance<Prog>();
+/**
+ * @summary Create a new session
+ */
+export const useCreateSessionHook = () => {
+  const createSession = useCustomInstance<Uuid>();
 
-  return (params?: GetApiProgramParams) => {
-    return getApiProgram({ url: `/api/program`, method: "get", params });
+  return (initialApp: InitialApp) => {
+    return createSession({
+      url: `/api/sessions`,
+      method: "post",
+      data: initialApp,
+    });
   };
 };
 
-export const getGetApiProgramQueryKey = (params?: GetApiProgramParams) => [
-  `/api/program`,
-  ...(params ? [params] : []),
-];
-
-export const useGetApiProgram = <
-  TData = AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>,
-  TError = ErrorType<void>
->(
-  params?: GetApiProgramParams,
-  options?: {
-    query?: UseQueryOptions<
-      AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>,
-      TError,
-      TData
-    >;
-  }
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions } = options || {};
-
-  const queryKey = queryOptions?.queryKey ?? getGetApiProgramQueryKey(params);
-
-  const getApiProgram = useGetApiProgramHook();
-
-  const queryFn: QueryFunction<
-    AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>
-  > = () => getApiProgram(params);
-
-  const query = useQuery<
-    AsyncReturnType<ReturnType<typeof useGetApiProgramHook>>,
+export const useCreateSession = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    AsyncReturnType<ReturnType<typeof useCreateSessionHook>>,
     TError,
-    TData
-  >(queryKey, queryFn, queryOptions);
+    { data: InitialApp },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options || {};
 
-  return {
-    queryKey,
-    ...query,
+  const createSession = useCreateSessionHook();
+
+  const mutationFn: MutationFunction<
+    AsyncReturnType<ReturnType<typeof useCreateSessionHook>>,
+    { data: InitialApp }
+  > = (props) => {
+    const { data } = props || {};
+
+    return createSession(data);
   };
+
+  return useMutation<
+    AsyncReturnType<typeof createSession>,
+    TError,
+    { data: InitialApp },
+    TContext
+  >(mutationFn, mutationOptions);
 };

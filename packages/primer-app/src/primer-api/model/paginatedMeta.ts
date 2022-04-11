@@ -7,11 +7,11 @@
  */
 
 export interface PaginatedMeta {
-  totalItems: number;
-  pageSize: number;
-  nextPage?: number;
-  thisPage: number;
   firstPage: number;
   lastPage: number;
+  nextPage?: number;
+  pageSize: number;
   prevPage?: number;
+  thisPage: number;
+  totalItems: number;
 }

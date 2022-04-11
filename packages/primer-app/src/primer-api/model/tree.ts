@@ -8,6 +8,6 @@
 
 export interface Tree {
   childTrees: Tree[];
-  nodeId: number;
   label: string;
+  nodeId: number;
 }

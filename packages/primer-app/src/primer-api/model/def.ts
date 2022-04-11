@@ -9,7 +9,6 @@ import type { Tree } from "./tree";
 
 export interface Def {
   name: string;
-  term: Tree;
+  term?: Tree;
   type_: Tree;
-  id: number;
 }
