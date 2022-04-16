@@ -7,7 +7,7 @@
     "packages/primer-app"
   ],
   "devDependencies": {
-    "@typescript-eslint/parser": "^5.9.1",
+    "@typescript-eslint/parser": "^5.19.0",
     "eslint-import-resolver-typescript": "^2.7.0",
     "eslint-plugin-import": "^2.25.3",
     "prettier": "^2.5.1",
