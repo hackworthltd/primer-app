@@ -14,23 +14,23 @@ const modeSvg = (m: Mode) => {
     case "text":
       return <CodeIcon className="p-0.5" />;
     case "tree":
-      return <ShareIcon className="rotate-90 p-1" />;
+      return <ShareIcon className="p-1 rotate-90" />;
   }
 };
 
-const arrow = <ReplyIcon className="stroke-[3] w-6" />;
+const arrow = <ReplyIcon className="w-6 stroke-[3]" />;
 const undoRedoClasses =
-  "flex flex-col items-center hover:bg-grey-primary-hover w-12 rounded";
+  "flex flex-col items-center w-12 hover:bg-grey-primary-hover rounded";
 
 export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => (
   <div
-    className="flex flex-col items-center justify-center gap-2 
-    bg-grey-primary text-blue-primary rounded shadow-lg
-    w-20 p-4"
+    className="flex flex-col gap-2 justify-center items-center 
+    p-4 w-20 text-blue-primary bg-grey-primary
+    rounded shadow-lg"
   >
     <button
       className="flex flex-col items-center
-      bg-blue-primary text-white-primary rounded shadow-lg h-6 w-12 hover:bg-blue-secondary"
+      w-12 h-6 text-white-primary bg-blue-primary hover:bg-blue-secondary rounded shadow-lg"
     >
       {modeSvg(p.mode)}
     </button>
