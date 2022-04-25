@@ -27,17 +27,20 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => (
   >
     <button
       className="flex flex-col items-center
-      bg-blue-primary text-white-primary rounded shadow-lg h-6 w-12"
+      bg-blue-primary text-white-primary rounded shadow-lg h-6 w-12 hover:bg-blue-secondary"
     >
       {modeSvg(p.mode)}
     </button>
-    <button type="button" className="flex flex-col items-center">
+    <button
+      type="button"
+      className="flex flex-col items-center hover:bg-grey-primary-hover w-12 rounded"
+    >
       <div className="-scale-x-100">{arrow}</div>
       redo
     </button>
     <button
       type="button"
-      className="flex flex-col items-center text-red-secondary"
+      className="flex flex-col items-center hover:bg-grey-primary-hover w-12 rounded text-red-secondary"
     >
       {arrow}
       undo
