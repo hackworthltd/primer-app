@@ -2,7 +2,7 @@ import {
   CodeIcon,
   ShareIcon,
   ReplyIcon,
-  ChevronUpIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/outline";
 import classNames from "classnames";
 
@@ -46,7 +46,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => (
       undo
     </button>
     <button>
-      <ChevronUpIcon className="w-6" />
+      <ChevronDownIcon className="w-6" />
     </button>
   </div>
 );
