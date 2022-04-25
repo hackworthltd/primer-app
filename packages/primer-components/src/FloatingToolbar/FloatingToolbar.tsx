@@ -4,6 +4,7 @@ import {
   ReplyIcon,
   ChevronUpIcon,
 } from "@heroicons/react/outline";
+import classNames from "classnames";
 
 export type FloatingToolbarProps = { mode: Mode };
 export type Mode = "text" | "tree";
@@ -18,6 +19,8 @@ const modeSvg = (m: Mode) => {
 };
 
 const arrow = <ReplyIcon className="stroke-[3] w-6" />;
+const undoRedoClasses =
+  "flex flex-col items-center hover:bg-grey-primary-hover w-12 rounded";
 
 export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => (
   <div
@@ -31,16 +34,13 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => (
     >
       {modeSvg(p.mode)}
     </button>
-    <button
-      type="button"
-      className="flex flex-col items-center hover:bg-grey-primary-hover w-12 rounded"
-    >
+    <button type="button" className={undoRedoClasses}>
       <div className="-scale-x-100">{arrow}</div>
       redo
     </button>
     <button
       type="button"
-      className="flex flex-col items-center hover:bg-grey-primary-hover w-12 rounded text-red-secondary"
+      className={classNames(undoRedoClasses, "text-red-secondary")}
     >
       {arrow}
       undo
