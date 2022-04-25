@@ -35,7 +35,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => (
       {modeSvg(p.mode)}
     </button>
     <button type="button" className={undoRedoClasses}>
-      <div className="-scale-x-100">{arrow}</div>
+      <div className="scale-x-[-1]">{arrow}</div>
       redo
     </button>
     <button
