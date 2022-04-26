@@ -15,12 +15,6 @@ export default {
   },
 } as ComponentMeta<typeof FloatingToolbar>;
 
-const Template: ComponentStory<typeof FloatingToolbar> = (
+export const Default: ComponentStory<typeof FloatingToolbar> = (
   args: FloatingToolbarProps
-) => (
-  <div>
-    <FloatingToolbar {...args} />
-  </div>
-);
-
-export const Default = Template.bind({});
+) => <FloatingToolbar {...args} />;
