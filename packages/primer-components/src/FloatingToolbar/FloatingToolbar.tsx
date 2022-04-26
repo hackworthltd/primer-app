@@ -38,6 +38,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => (
         rounded shadow-lg"
     >
       <button
+        type="button"
         onClick={p.onClickMode}
         className="flex flex-col items-center
           w-12 h-6 text-white-primary bg-blue-primary hover:bg-blue-secondary rounded shadow-lg"
@@ -56,7 +57,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => (
         {arrow}
         undo
       </button>
-      <button onClick={p.onClickChevron}>
+      <button type="button" onClick={p.onClickChevron}>
         <ChevronDownIcon className="w-6" />
       </button>
     </div>
