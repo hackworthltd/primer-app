@@ -5,9 +5,16 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/outline";
 import classNames from "classnames";
+import { MouseEventHandler } from "react";
 import Draggable from "react-draggable";
 
-export type FloatingToolbarProps = { mode: Mode };
+export type FloatingToolbarProps = {
+  mode: Mode;
+  onClickMode: MouseEventHandler<HTMLButtonElement>;
+  onClickRedo: MouseEventHandler<HTMLButtonElement>;
+  onClickUndo: MouseEventHandler<HTMLButtonElement>;
+  onClickChevron: MouseEventHandler<HTMLButtonElement>;
+};
 export type Mode = "text" | "tree";
 
 const modeSvg = (m: Mode) => {
@@ -31,23 +38,25 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => (
         rounded shadow-lg"
     >
       <button
+        onClick={p.onClickMode}
         className="flex flex-col items-center
           w-12 h-6 text-white-primary bg-blue-primary hover:bg-blue-secondary rounded shadow-lg"
       >
         {modeSvg(p.mode)}
       </button>
-      <button type="button" className={undoRedoClasses}>
+      <button type="button" className={undoRedoClasses} onClick={p.onClickRedo}>
         <div className="scale-x-[-1]">{arrow}</div>
         redo
       </button>
       <button
         type="button"
+        onClick={p.onClickUndo}
         className={classNames(undoRedoClasses, "text-red-secondary")}
       >
         {arrow}
         undo
       </button>
-      <button>
+      <button onClick={p.onClickChevron}>
         <ChevronDownIcon className="w-6" />
       </button>
     </div>
