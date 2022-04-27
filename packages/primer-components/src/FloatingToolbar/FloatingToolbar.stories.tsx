@@ -6,13 +6,7 @@ export default {
   title: "Application/Component Library/FloatingToolbar",
   component: FloatingToolbar,
   argTypes: {
-    mode: {
-      description: "Editing mode.",
-      options: ["text", "tree"],
-      control: { type: "radio" },
-      defaultValue: "tree",
-    },
-    onClickMode: {
+    onModeChange: {
       description: 'The event handler for the "Mode" button.',
       action: "mode",
     },
@@ -33,4 +27,4 @@ export default {
 
 export const Default: ComponentStory<typeof FloatingToolbar> = (
   args: FloatingToolbarProps
-) => <FloatingToolbar {...args} />;
+) => <FloatingToolbar {...args} initialMode="tree" />;
