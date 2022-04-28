@@ -10,7 +10,10 @@ import Draggable from "react-draggable";
 
 export type FloatingToolbarProps = {
   initialMode: Mode;
-  onModeChange: (mode: Mode) => void;
+  onModeChange: (
+    mode: Mode,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => void;
   onClickRedo: MouseEventHandler<HTMLButtonElement>;
   onClickUndo: MouseEventHandler<HTMLButtonElement>;
   onClickChevron: MouseEventHandler<HTMLButtonElement>;
@@ -50,10 +53,10 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
       >
         <button
           type="button"
-          onClick={(_) => {
+          onClick={(e) => {
             const m = nextMode(mode);
             setMode(m);
-            p.onModeChange(m);
+            p.onModeChange(m, e);
           }}
           className="flex flex-col items-center
             w-12 h-6 text-white-primary bg-blue-primary hover:bg-blue-secondary rounded shadow-lg"
