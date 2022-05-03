@@ -48,6 +48,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
 
   return (
     <Draggable
+      cancel="button"
       onStart={(e) => {
         if (e.type == "touchstart") setTouchDragging(true);
       }}
