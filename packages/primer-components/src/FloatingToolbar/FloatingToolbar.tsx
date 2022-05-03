@@ -44,13 +44,19 @@ const undoRedoClasses =
 
 export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
   const [mode, setMode] = useState(p.initialMode);
+  const [dragging, setDragging] = useState(false);
 
   return (
-    <Draggable>
+    <Draggable
+      onStart={(_) => setDragging(true)}
+      onStop={(_) => setDragging(false)}
+    >
       <div
-        className="flex flex-col gap-2 justify-center items-center
-          p-4 w-20 text-blue-primary bg-grey-primary
-          rounded shadow-lg"
+        className={classNames(
+          "flex flex-col gap-2 justify-center items-center",
+          "text-blue-primary bg-grey-primary rounded shadow-lg",
+          dragging ? "p-5 w-24" : "p-4 w-20"
+        )}
       >
         <div className="w-6 -mt-2 -mb-1">
           <DotsHorizontalIcon className="stroke-grey-secondary" />
