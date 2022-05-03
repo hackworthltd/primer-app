@@ -58,6 +58,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
         className={classNames(
           "flex flex-col gap-2 justify-center items-center",
           "text-blue-primary bg-grey-primary rounded shadow-lg",
+          "select-none",
           touchDragging ? "p-5 w-24 -my-1 -mx-2" : "p-4 w-20"
         )}
       >
