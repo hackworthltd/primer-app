@@ -3,6 +3,7 @@ import {
   ShareIcon,
   ReplyIcon,
   ChevronDownIcon,
+  DotsHorizontalIcon,
 } from "@heroicons/react/outline";
 import classNames from "classnames";
 import { MouseEventHandler, useState } from "react";
@@ -51,6 +52,10 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
           p-4 w-20 text-blue-primary bg-grey-primary
           rounded shadow-lg"
       >
+        <div className="w-6 -mt-2 -mb-1">
+          <DotsHorizontalIcon className="stroke-grey-secondary" />
+          <DotsHorizontalIcon className="stroke-grey-secondary -mt-4" />
+        </div>
         <button
           type="button"
           onClick={(e) => {
