@@ -34,5 +34,3 @@ queue_rules:
     conditions:
       - base=main
       - check-success="buildkite/primer-app/pr/required"
-      - check-success="UI Review"
-      - check-success="UI Tests"
