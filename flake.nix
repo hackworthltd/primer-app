@@ -121,43 +121,10 @@
                 };
               };
             };
-
-            storybook = final.yarn2nix-moretea.mkYarnWorkspace {
-              inherit src;
-              packageOverrides = {
-                inherit hackworthltd-primer-types;
-
-                hackworthltd-primer-components = {
-                  # Storybook needs a writable `node_modules`.
-                  configurePhase = ''
-                    cp -r $node_modules node_modules
-                    chmod -R +w node_modules
-                  '';
-
-                  # We only need the result of the build for this
-                  # package. We can discard everything else, because
-                  # we're not going to use it as a dependency of
-                  # another package.
-                  buildPhase = "yarn --offline build-storybook";
-                  installPhase =
-                    let
-                      pname = "@hackworthltd/primer-app";
-                    in
-                    ''
-                      mkdir -p $out
-                      cp -r storybook-static/* $out
-                    '';
-
-                  # Skip the distPhase, we don't need it for this package.
-                  distPhase = "true";
-                };
-              };
-            };
           in
           {
             inherit nodejs;
             inherit project;
-            inherit storybook;
           }
         )
       ];
@@ -228,7 +195,6 @@
         packages = {
           inherit package-version;
           inherit (pkgs.project) hackworthltd-primer-app hackworthltd-primer-components hackworthltd-primer-types;
-          primer-components-storybook = pkgs.storybook.hackworthltd-primer-components;
         };
 
         checks = {
@@ -238,7 +204,6 @@
         apps =
           let
             x86_64-linux-pkgs = pkgsFor "x86_64-linux";
-            storybook-build = x86_64-linux-pkgs.storybook.hackworthltd-primer-components;
             yarnbin = "${pkgs.yarn}/bin/yarn";
 
             deploy-to-chromatic-script = pkgs.writeShellApplication {
@@ -253,7 +218,7 @@
             deploy-to-chromatic = (pkgs.writeShellApplication {
               name = "deploy-to-chromatic";
               text = ''
-                ${deploy-to-chromatic-script}/bin/deploy-to-chromatic-script ${storybook-build}
+                ${deploy-to-chromatic-script}/bin/deploy-to-chromatic-script
               '';
             }).overrideAttrs (drv: {
               meta.platforms = pkgs.flyctl.meta.platforms;
