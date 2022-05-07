@@ -19,11 +19,7 @@
     "lint:fix": "eslint --fix ."
   },
   "dependencies": {
-    "@typescript-eslint/parser": "^5.22.0",
-    "react": "^17.0.0",
-    "typescript": "^4.5.3",
-    "typescript-language-server": "^0.9.1",
-    "unified-language-server": "^2.1.0"
+    "react": "^17.0.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.43",
@@ -34,6 +30,7 @@
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.25.4",
     "typescript": "^4.5.4",
+    "typescript-language-server": "^0.9.1",
     "unified-language-server": "^2.1.0",
     "vite": "^2.5.4",
     "vite-plugin-checker": "^0.4.2",
