@@ -11,6 +11,13 @@ import { name, version } from "./package.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // Recent versions of the vite-plugin-dts plugin require this. See:
+  // https://github.com/qmhc/vite-plugin-dts/issues/70
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    }
+  },
   plugins: [
     checker({
       typescript: true,
