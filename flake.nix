@@ -138,15 +138,13 @@
                   # package. We can discard everything else, because
                   # we're not going to use it as a dependency of
                   # another package.
-                  buildPhase = "yarn --offline build-storybook";
-                  installPhase =
-                    let
-                      pname = "@hackworthltd/primer-app";
-                    in
-                    ''
-                      mkdir -p $out
-                      cp -r storybook-static/* $out
-                    '';
+                  postBuild = "yarn --offline build";
+
+                  installPhase = ''
+                    yarn --offline build-storybook
+                    mkdir -p $out
+                    cp -r storybook-static/* $out
+                  '';
 
                   # Skip the distPhase, we don't need it for this package.
                   distPhase = "true";
