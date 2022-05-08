@@ -5,4 +5,4 @@ if [[ -z "${CHROMATIC_PROJECT_TOKEN:-}" ]]; then
   CHROMATIC_PROJECT_TOKEN="$(cat "$CHROMATIC_PROJECT_TOKEN_PATH")"
   export CHROMATIC_PROJECT_TOKEN
 fi
-yarn run chromatic --storybook-build-dir="$1" --exit-zero-on-changes
+yarn workspace @hackworthltd/primer-components chromatic
