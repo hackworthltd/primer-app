@@ -63,6 +63,7 @@
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.5.0",
+    "eslint-plugin-storybook": "^0.5.11",
     "eslint-plugin-tailwindcss": "^3.1.2",
     "postcss": "^8.4.13",
     "react-router-dom": "^6.3.0",
