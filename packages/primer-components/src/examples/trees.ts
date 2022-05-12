@@ -1,4 +1,4 @@
-import type { Tree } from "@hackworthltd/primer-types";
+import type { Tree, TreeInteractiveRender } from "@hackworthltd/primer-types";
 
 export const tree1: Tree = {
   nodeId: 0,
@@ -57,7 +57,7 @@ export const tree4: Tree = {
   label: "App",
 };
 
-export const tree5: Tree = {
+export const tree5: TreeInteractiveRender = {
   nodeId: 0,
   childTrees: [
     {
@@ -71,4 +71,5 @@ export const tree5: Tree = {
     },
   ],
   label: "Lam x",
+  onClick: (e) => console.log("Clicked: " + e),
 };
