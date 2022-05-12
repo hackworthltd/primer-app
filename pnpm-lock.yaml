@@ -153,6 +153,7 @@ importers:
       react: ^17.0.0
       react-dom: ^17.0.0
       react-draggable: ^4.4.5
+      react-flow-renderer: ^10.2.2
       react-router-dom: ^6.3.0
       tailwindcss: 3.0.24
       ts-node: ^10.7.0
@@ -179,6 +180,7 @@ importers:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-draggable: 4.4.5_sfoxds7t5ydpegc3knd667wn6m
+      react-flow-renderer: 10.3.1_sfoxds7t5ydpegc3knd667wn6m
       unified-language-server: 2.1.0
       uuid: 8.3.2
     devDependencies:
@@ -6285,6 +6287,10 @@ packages:
       isobject: 3.0.1
       static-extend: 0.1.2
     dev: true
+
+  /classcat/5.0.3:
+    resolution: {integrity: sha512-6dK2ke4VEJZOFx2ZfdDAl5OhEL8lvkl6EHF92IfRePfHxQTqir5NlcNVUv+2idjDqCX2NDc8m8YSAI5NI975ZQ==}
+    dev: false
 
   /classnames/2.3.1:
     resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
@@ -12711,6 +12717,23 @@ packages:
       react-is: 17.0.2
     dev: true
 
+  /react-flow-renderer/10.3.1_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-aehSl+n8c+OpvGZbfrkFELh31VzvVxVMBus7Wzmkd8DPSBBgf1mjoVDU5CwBBhodx93QE9eFh/y1Ky8AxE4zLQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: 16 || 17 || 18
+      react-dom: 16 || 17 || 18
+    dependencies:
+      '@babel/runtime': 7.18.0
+      classcat: 5.0.3
+      d3-drag: 3.0.0
+      d3-selection: 3.0.0
+      d3-zoom: 3.0.0
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      zustand: 3.7.2_react@17.0.2
+    dev: false
+
   /react-inspector/5.1.1_react@17.0.2:
     resolution: {integrity: sha512-GURDaYzoLbW8pMGXwYPDBIv6nqei4kK7LPRZ9q9HCZF54wqXz/dnylBp/kfE9XmekBhHvLDdcYeyIwSrvtOiWg==}
     peerDependencies:
@@ -15814,6 +15837,18 @@ packages:
     optionalDependencies:
       commander: 2.20.3
     dev: true
+
+  /zustand/3.7.2_react@17.0.2:
+    resolution: {integrity: sha512-PIJDIZKtokhof+9+60cpockVOq05sJzHCriyvaLBmEJixseQ1a5Kdov6fWZfWOu5SK9c+FhH1jU0tntLxRJYMA==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      react: '>=16.8'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /zwitch/1.0.5:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
