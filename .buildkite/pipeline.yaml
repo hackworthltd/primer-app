@@ -19,10 +19,10 @@ steps:
   - wait
   - label: ":nixos: :linux: Cache the Nix shell"
     command: |
-      nix develop --profile /tmp/primer-app --command cachix --verbose --config "$CACHIX_CONFIG" push "$CACHIX_CACHE" /tmp/primer-app
+      nix develop --print-build-logs --profile /tmp/primer-app --command cachix --verbose --config "$CACHIX_CONFIG" push "$CACHIX_CACHE" /tmp/primer-app
   - label: ":nixos: :macos: Cache the Nix shell"
     command: |
-      nix develop --profile /tmp/primer-app --command cachix --verbose --config "$CACHIX_CONFIG" push "$CACHIX_CACHE" /tmp/primer-app
+      nix develop --print-build-logs --profile /tmp/primer-app --command cachix --verbose --config "$CACHIX_CONFIG" push "$CACHIX_CACHE" /tmp/primer-app
   - label: ":chromatic: Trigger Chromatic deployment"
     trigger: primer-app-chromatic
     # This can't be async, because we need to be sure the Chromatic
