@@ -1,5 +1,6 @@
 agents:
   chromatic: "true"
+  os: "linux"
 
 steps:
   - label: ":chromatic: Deploy Storybook to Chromatic"
