@@ -1,21 +1,7 @@
 {
     "components": {
         "schemas": {
-            "InitialApp": {
-                "type": "string",
-                "enum": [
-                    "NewApp",
-                    "NewEmptyApp"
-                ]
-            },
             "Def": {
-                "type": "object",
-                "required": [
-                    "id",
-                    "name",
-                    "type_",
-                    "term"
-                ],
                 "properties": {
                     "name": {
                         "type": "string"
@@ -25,20 +11,22 @@
                     },
                     "type_": {
                         "$ref": "#/components/schemas/Tree"
-                    },
-                    "id": {
-                        "minimum": -9223372036854775808,
-                        "type": "integer",
-                        "maximum": 9223372036854775807
                     }
-                }
-            },
-            "Prog": {
-                "type": "object",
+                },
                 "required": [
-                    "types",
-                    "defs"
+                    "name",
+                    "type_"
                 ],
+                "type": "object"
+            },
+            "InitialApp": {
+                "enum": [
+                    "NewApp",
+                    "NewEmptyApp"
+                ],
+                "type": "string"
+            },
+            "Module": {
                 "properties": {
                     "defs": {
                         "items": {
@@ -46,16 +34,86 @@
                         },
                         "type": "array"
                     },
+                    "editable": {
+                        "type": "boolean"
+                    },
+                    "modname": {
+                        "$ref": "#/components/schemas/ModuleName"
+                    },
                     "types": {
                         "items": {
                             "type": "string"
                         },
                         "type": "array"
                     }
-                }
+                },
+                "required": [
+                    "modname",
+                    "editable",
+                    "types",
+                    "defs"
+                ],
+                "type": "object"
+            },
+            "ModuleName": {
+                "properties": {
+                    "unModuleName": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1,
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "unModuleName"
+                ],
+                "type": "object"
             },
             "PaginatedMeta": {
-                "type": "object",
+                "properties": {
+                    "firstPage": {
+                        "exclusiveMinimum": true,
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "lastPage": {
+                        "exclusiveMinimum": true,
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "nextPage": {
+                        "exclusiveMinimum": true,
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "pageSize": {
+                        "exclusiveMinimum": true,
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "prevPage": {
+                        "exclusiveMinimum": true,
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "thisPage": {
+                        "exclusiveMinimum": true,
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "totalItems": {
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                },
                 "required": [
                     "totalItems",
                     "pageSize",
@@ -63,95 +121,9 @@
                     "thisPage",
                     "lastPage"
                 ],
-                "properties": {
-                    "totalItems": {
-                        "minimum": 0,
-                        "type": "integer",
-                        "maximum": 9223372036854775807
-                    },
-                    "pageSize": {
-                        "minimum": 0,
-                        "type": "integer",
-                        "exclusiveMinimum": true,
-                        "maximum": 9223372036854775807
-                    },
-                    "nextPage": {
-                        "minimum": 0,
-                        "type": "integer",
-                        "exclusiveMinimum": true,
-                        "maximum": 9223372036854775807
-                    },
-                    "thisPage": {
-                        "minimum": 0,
-                        "type": "integer",
-                        "exclusiveMinimum": true,
-                        "maximum": 9223372036854775807
-                    },
-                    "firstPage": {
-                        "minimum": 0,
-                        "type": "integer",
-                        "exclusiveMinimum": true,
-                        "maximum": 9223372036854775807
-                    },
-                    "lastPage": {
-                        "minimum": 0,
-                        "type": "integer",
-                        "exclusiveMinimum": true,
-                        "maximum": 9223372036854775807
-                    },
-                    "prevPage": {
-                        "minimum": 0,
-                        "type": "integer",
-                        "exclusiveMinimum": true,
-                        "maximum": 9223372036854775807
-                    }
-                }
-            },
-            "Tree": {
-                "type": "object",
-                "required": [
-                    "nodeId",
-                    "label",
-                    "childTrees"
-                ],
-                "properties": {
-                    "childTrees": {
-                        "items": {
-                            "$ref": "#/components/schemas/Tree"
-                        },
-                        "type": "array"
-                    },
-                    "nodeId": {
-                        "minimum": -9223372036854775808,
-                        "type": "integer",
-                        "maximum": 9223372036854775807
-                    },
-                    "label": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Session": {
-                "type": "object",
-                "required": [
-                    "id",
-                    "name"
-                ],
-                "properties": {
-                    "name": {
-                        "$ref": "#/components/schemas/SessionName"
-                    },
-                    "id": {
-                        "$ref": "#/components/schemas/UUID"
-                    }
-                }
+                "type": "object"
             },
             "Paginated_Session": {
-                "type": "object",
-                "required": [
-                    "meta",
-                    "items"
-                ],
                 "properties": {
                     "items": {
                         "items": {
@@ -162,107 +134,97 @@
                     "meta": {
                         "$ref": "#/components/schemas/PaginatedMeta"
                     }
-                }
+                },
+                "required": [
+                    "meta",
+                    "items"
+                ],
+                "type": "object"
             },
-            "UUID": {
-                "type": "string",
-                "format": "uuid",
-                "example": "00000000-0000-0000-0000-000000000000"
+            "Prog": {
+                "properties": {
+                    "modules": {
+                        "items": {
+                            "$ref": "#/components/schemas/Module"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "modules"
+                ],
+                "type": "object"
+            },
+            "Session": {
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/UUID"
+                    },
+                    "name": {
+                        "$ref": "#/components/schemas/SessionName"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "type": "object"
             },
             "SessionName": {
+                "type": "string"
+            },
+            "Tree": {
+                "properties": {
+                    "childTrees": {
+                        "items": {
+                            "$ref": "#/components/schemas/Tree"
+                        },
+                        "type": "array"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "nodeId": {
+                        "maximum": 9223372036854775807,
+                        "minimum": -9223372036854775808,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "nodeId",
+                    "label",
+                    "childTrees"
+                ],
+                "type": "object"
+            },
+            "UUID": {
+                "example": "00000000-0000-0000-0000-000000000000",
+                "format": "uuid",
                 "type": "string"
             }
         }
     },
+    "info": {
+        "description": "A backend service implementing a pedagogic functional programming language.",
+        "title": "Primer backend API",
+        "version": "0.7"
+    },
+    "openapi": "3.0.0",
     "paths": {
-        "/api/sessions": {
-            "post": {
-                "responses": {
-                    "400": {
-                        "description": "Invalid `body`"
-                    },
-                    "200": {
-                        "content": {
-                            "application/json;charset=utf-8": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/UUID"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                },
-                "operationId": "createSession",
-                "summary": "Create a new session",
-                "requestBody": {
-                    "content": {
-                        "application/json;charset=utf-8": {
-                            "schema": {
-                                "$ref": "#/components/schemas/InitialApp"
-                            }
-                        }
-                    }
-                }
-            },
+        "/api/program": {
             "get": {
-                "responses": {
-                    "400": {
-                        "description": "Invalid `pageSize` or `page` or `inMemory`"
-                    },
-                    "200": {
-                        "content": {
-                            "application/json;charset=utf-8": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Paginated_Session"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                },
-                "operationId": "getSessionList",
-                "summary": "List sessions",
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "inMemory",
+                        "name": "session",
+                        "required": true,
                         "schema": {
-                            "type": "boolean",
-                            "default": false
-                        },
-                        "allowEmptyValue": true
-                    },
-                    {
-                        "in": "query",
-                        "name": "page",
-                        "required": false,
-                        "schema": {
-                            "minimum": 0,
-                            "type": "integer",
-                            "exclusiveMinimum": true,
-                            "maximum": 9223372036854775807
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "pageSize",
-                        "required": false,
-                        "schema": {
-                            "minimum": 0,
-                            "type": "integer",
-                            "exclusiveMinimum": true,
-                            "maximum": 9223372036854775807
+                            "format": "uuid",
+                            "type": "string"
                         }
                     }
-                ]
-            }
-        },
-        "/api/program": {
-            "get": {
+                ],
                 "responses": {
-                    "400": {
-                        "description": "Invalid `session`"
-                    },
                     "200": {
                         "content": {
                             "application/json;charset=utf-8": {
@@ -272,26 +234,94 @@
                             }
                         },
                         "description": ""
+                    },
+                    "400": {
+                        "description": "Invalid `session`"
                     }
-                },
+                }
+            }
+        },
+        "/api/sessions": {
+            "get": {
+                "operationId": "getSessionList",
                 "parameters": [
                     {
+                        "allowEmptyValue": true,
                         "in": "query",
-                        "name": "session",
-                        "required": true,
+                        "name": "inMemory",
                         "schema": {
-                            "type": "string",
-                            "format": "uuid"
+                            "default": false,
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "exclusiveMinimum": true,
+                            "maximum": 9223372036854775807,
+                            "minimum": 0,
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageSize",
+                        "required": false,
+                        "schema": {
+                            "exclusiveMinimum": true,
+                            "maximum": 9223372036854775807,
+                            "minimum": 0,
+                            "type": "integer"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json;charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Paginated_Session"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Invalid `pageSize` or `page` or `inMemory`"
+                    }
+                },
+                "summary": "List sessions"
+            },
+            "post": {
+                "operationId": "createSession",
+                "requestBody": {
+                    "content": {
+                        "application/json;charset=utf-8": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InitialApp"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json;charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UUID"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Create a new session"
             }
         }
-    },
-    "openapi": "3.0.0",
-    "info": {
-        "title": "Primer backend API",
-        "description": "A backend service implementing a pedagogic functional programming language.",
-        "version": "0.7"
     }
 }

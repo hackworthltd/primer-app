@@ -9,3 +9,5 @@ export * from "./def";
 export * from "./getSessionListParams";
 export * from "./paginatedMeta";
 export * from "./paginatedSession";
+export * from "./moduleName";
+export * from "./module";
