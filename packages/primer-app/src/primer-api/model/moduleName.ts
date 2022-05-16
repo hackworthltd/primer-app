@@ -5,10 +5,7 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { Uuid } from "./uuid";
-import type { SessionName } from "./sessionName";
 
-export interface Session {
-  id: Uuid;
-  name: SessionName;
+export interface ModuleName {
+  unModuleName: string[];
 }

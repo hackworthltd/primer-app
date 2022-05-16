@@ -250,6 +250,27 @@ This command performs a manual Chromatic deployment. You should never need to do
 
 ## Other notes
 
+### Updating the backend API & bindings
+
+We use [Orval](https://github.com/anymaniax/orval) to automatically generate TypeScript bindings for the Primer backend API. Updating these bindings requires a manual step in the Primer repo, after which you must copy the resulting `openapi.json` file to this repo as `primer-api.json`. We'll automate this in the future, but for now, do the following:
+
+* In the Primer repo, run the following:
+
+```sh
+nix develop
+make openapi.json
+cp openapi.json <path/to/primer-app-repo>/packages/primer-app/primer-api.json
+```
+
+* Then, in this repo, run the following:
+
+```sh
+nix develop
+cd packages/primer-app && yarn generate
+```
+
+(Note that Orval will update the generated bindings even if there's only been an Orval version bump and no functional changes, which is annoying.)
+
 ### Calculating reverse dependencies
 
 To find out we have a dependency on a particular package, run `yarn why <package-name>`. For example:
