@@ -24,11 +24,14 @@ const convertTree = (
     data: { label: tree.label },
     position: { x, y },
   };
-  const thisToChildren: Edge[] = tree.childTrees.map((t) => ({
-    id: "",
-    source: id,
-    target: t.nodeId.toString(),
-  }));
+  const thisToChildren: Edge[] = tree.childTrees.map((t) => {
+    const target = t.nodeId.toString();
+    return {
+      id: JSON.stringify([id, target]),
+      source: id,
+      target,
+    };
+  });
   return {
     nodes: [thisNode, ...children.flatMap(({ nodes }) => nodes)],
     edges: [...thisToChildren, ...children.flatMap(({ edges }) => edges)],
