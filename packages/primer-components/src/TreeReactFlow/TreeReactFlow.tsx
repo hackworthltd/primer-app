@@ -6,6 +6,8 @@ export type TreeReactFlowProps = {
   tree: TreeInteractiveRender;
   width: number;
   height: number;
+  nodeWidth: number;
+  nodeHeight: number;
 };
 
 const convertTree = (
@@ -37,7 +39,11 @@ const convertTree = (
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const tree = convertTree(p.tree);
-  const layoutedNodes = useLayout(tree.nodes, tree.edges, { direction: "TB" });
+  const layoutedNodes = useLayout(tree.nodes, tree.edges, {
+    direction: "TB",
+    nodeWidth: p.nodeWidth,
+    nodeHeight: p.nodeHeight,
+  });
 
   return (
     <div style={{ height: p.height, width: p.width }}>
