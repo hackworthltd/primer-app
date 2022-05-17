@@ -7,20 +7,20 @@ export default {
   component: TreeReactFlow,
 } as ComponentMeta<typeof TreeReactFlow>;
 
-const size = { width: 1000, height: 300 };
+const props = { width: 1000, height: 300 };
 
 export const Tree1: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...size} tree={tree1} />;
+) => <TreeReactFlow {...props} tree={tree1} />;
 export const Tree2: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...size} tree={tree2} />;
+) => <TreeReactFlow {...props} tree={tree2} />;
 export const Tree3: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...size} tree={tree3} />;
+) => <TreeReactFlow {...props} tree={tree3} />;
 export const Tree4: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...size} tree={tree4} />;
+) => <TreeReactFlow {...props} tree={tree4} />;
 export const Tree5: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...size} tree={tree5} />;
+) => <TreeReactFlow {...props} tree={tree5} />;
