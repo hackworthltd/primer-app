@@ -35,16 +35,16 @@ const convertTree = (
   };
 };
 
-export const TreeReactFlow = (args: TreeReactFlowProps) => {
-  const tree = convertTree(args.tree);
+export const TreeReactFlow = (p: TreeReactFlowProps) => {
+  const tree = convertTree(p.tree);
   const layoutedNodes = useLayout(tree.nodes, tree.edges, { direction: "TB" });
 
   return (
-    <div style={{ height: args.height, width: args.width }}>
+    <div style={{ height: p.height, width: p.width }}>
       <ReactFlow
         nodes={layoutedNodes}
         edges={tree.edges}
-        onNodeClick={(e, _n) => args.tree.onClick?.(e)}
+        onNodeClick={(e, _n) => p.tree.onClick?.(e)}
       >
         <MiniMap />
         <Controls />
