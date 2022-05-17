@@ -7,13 +7,12 @@ export type Direction = "TB" | "LR" | "RL" | "BT";
 
 export type Options = {
   direction: Direction;
+  nodeWidth: number;
+  nodeHeight: number;
 };
 
 const dagreGraph = new dagre.graphlib!.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
-
-const nodeWidth = 100;
-const nodeHeight = 50;
 
 const positionMap = {
   T: Position.Top,
@@ -25,7 +24,7 @@ const positionMap = {
 function layoutGraph(
   nodes: Node[],
   edges: Edge[],
-  { direction = "TB" }: Options
+  { direction = "TB", nodeWidth, nodeHeight }: Options
 ) {
   dagreGraph.setGraph({ rankdir: direction });
 
