@@ -1,5 +1,6 @@
 import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 import ReactFlow, { Node, Edge, MiniMap, Controls } from "react-flow-renderer";
+import useLayout from "./useLayout";
 
 export type TreeReactFlowProps = {
   tree: TreeInteractiveRender;
@@ -8,21 +9,17 @@ export type TreeReactFlowProps = {
 };
 
 const convertTree = (
-  tree: TreeInteractiveRender,
-  x: number = 0,
-  y: number = 0
+  tree: TreeInteractiveRender
 ): {
   nodes: Node[];
   edges: Edge[];
 } => {
-  const children = tree.childTrees.map((t, n) =>
-    convertTree(t, x + n * 200, y + 60)
-  );
+  const children = tree.childTrees.map(convertTree);
   const id = tree.nodeId.toString();
   const thisNode: Node = {
     id,
     data: { label: tree.label },
-    position: { x, y },
+    position: { x: 0, y: 0 }, // this gets overwritten by layout algorithm
   };
   const thisToChildren: Edge[] = tree.childTrees.map((t) => {
     const target = t.nodeId.toString();
@@ -40,10 +37,12 @@ const convertTree = (
 
 export const TreeReactFlow = (args: TreeReactFlowProps) => {
   const tree = convertTree(args.tree);
+  const layoutedNodes = useLayout(tree.nodes, tree.edges, { direction: "TB" });
+
   return (
     <div style={{ height: args.height, width: args.width }}>
       <ReactFlow
-        nodes={tree.nodes}
+        nodes={layoutedNodes}
         edges={tree.edges}
         onNodeClick={(e, _n) => args.tree.onClick?.(e)}
       >
