@@ -42,7 +42,7 @@
     "@headlessui/react": "^1.6.1",
     "@heroicons/react": "^1.0.4",
     "@honkhonk/vite-plugin-svgr": "^1.1.0",
-    "@storybook/addon-actions": "^6.4.22",
+    "@storybook/addon-actions": "^6.5.3",
     "@storybook/addon-essentials": "^6.4.22",
     "@storybook/addon-links": "^6.4.22",
     "@storybook/react": "^6.4.22",
