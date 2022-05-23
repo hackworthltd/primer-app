@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Node, Edge, Position } from "react-flow-renderer";
+import { Node, Edge, Position } from "react-flow-renderer/nocss";
 import dagre from "dagre";
 
 // the layout direction (T = top, R = right, B = bottom, L = left, TB = top to bottom, ...)
