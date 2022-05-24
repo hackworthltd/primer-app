@@ -225,7 +225,10 @@
             });
           in
           {
-            inherit deploy-to-chromatic;
+            deploy-to-chromatic = {
+              type = "app";
+              program = "${deploy-to-chromatic}/bin/deploy-to-chromatic";
+            };
           };
 
         devShell = pkgs.mkShell {
