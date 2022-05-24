@@ -2,8 +2,6 @@ import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 import ReactFlow, {
   Node,
   Edge,
-  MiniMap,
-  Controls,
   Handle,
   Position,
   NodeProps,
@@ -90,10 +88,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
         edges={tree.edges}
         onNodeClick={(e, _n) => p.tree.onClick?.(e)}
         nodeTypes={{ [primerNodeTypeName]: PrimerNode }}
-      >
-        <MiniMap />
-        <Controls />
-      </ReactFlow>
+      ></ReactFlow>
     </div>
   );
 };
