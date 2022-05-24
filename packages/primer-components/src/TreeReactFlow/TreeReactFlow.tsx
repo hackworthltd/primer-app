@@ -4,10 +4,12 @@ import ReactFlow, {
   Edge,
   MiniMap,
   Controls,
+  Handle,
+  Position,
+  NodeProps,
 } from "react-flow-renderer/nocss";
 import "react-flow-renderer/dist/style.css";
 import useLayout from "./useLayout";
-import "./extra-styles.css";
 
 export type TreeReactFlowProps = {
   tree: TreeInteractiveRender;
@@ -15,6 +17,28 @@ export type TreeReactFlowProps = {
   height: number;
   nodeWidth: number;
   nodeHeight: number;
+};
+
+const primerNodeTypeName = "primer";
+type PrimerNodeProps = { label: string; width: number; height: number };
+const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
+  const handleStyle = "absolute border-[2px] border-solid border-grey-tertiary";
+  return (
+    <>
+      <Handle type="target" position={Position.Top} className={handleStyle} />
+      <div
+        className="flex items-center justify-center rounded text-grey-tertiary border-[3px]"
+        style={{ width: p.data.width, height: p.data.height }}
+      >
+        {p.data.label}
+      </div>
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        className={handleStyle}
+      />
+    </>
+  );
 };
 
 const convertTree = (
@@ -29,16 +53,11 @@ const convertTree = (
     convertTree(t, nodeWidth, nodeHeight)
   );
   const id = tree.nodeId.toString();
-  const thisNode: Node = {
+  const thisNode: Node<PrimerNodeProps> = {
     id,
-    data: { label: tree.label },
+    type: primerNodeTypeName,
+    data: { label: tree.label, width: nodeWidth, height: nodeHeight },
     position: { x: 0, y: 0 }, // this gets overwritten by layout algorithm
-    className:
-      "flex items-center justify-center rounded text-grey-tertiary border-[3px]",
-    style: {
-      width: nodeWidth,
-      height: nodeHeight,
-    },
   };
   const thisToChildren: Edge[] = tree.childTrees.map((t) => {
     const target = t.nodeId.toString();
@@ -70,6 +89,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
         nodes={layoutedNodes}
         edges={tree.edges}
         onNodeClick={(e, _n) => p.tree.onClick?.(e)}
+        nodeTypes={{ [primerNodeTypeName]: PrimerNode }}
       >
         <MiniMap />
         <Controls />
