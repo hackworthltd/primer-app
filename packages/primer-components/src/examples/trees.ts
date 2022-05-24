@@ -1,48 +1,48 @@
 import type { Tree, TreeInteractiveRender } from "@hackworthltd/primer-types";
 
 export const tree1: Tree = {
-  nodeId: 0,
+  nodeId: 100,
   childTrees: [],
   label: "EmptyHole",
 };
 
 export const tree2: Tree = {
-  nodeId: 0,
-  childTrees: [{ nodeId: 1, childTrees: [], label: "Var x" }],
+  nodeId: 200,
+  childTrees: [{ nodeId: 201, childTrees: [], label: "Var x" }],
   label: "Lam x",
 };
 
 export const tree3: Tree = {
-  nodeId: 0,
-  childTrees: [{ nodeId: 1, childTrees: [], label: "Var y" }],
+  nodeId: 300,
+  childTrees: [{ nodeId: 301, childTrees: [], label: "Var y" }],
   label: "Lam y",
 };
 
 export const tree4: Tree = {
-  nodeId: 0,
+  nodeId: 400,
   childTrees: [
     {
-      nodeId: 1,
+      nodeId: 401,
       childTrees: [
         {
-          nodeId: 2,
+          nodeId: 402,
           childTrees: [
             {
-              nodeId: 3,
-              childTrees: [{ nodeId: 4, childTrees: [], label: "Var x" }],
+              nodeId: 403,
+              childTrees: [{ nodeId: 404, childTrees: [], label: "Var x" }],
               label: "Lam x",
             },
           ],
           label: "LAM a",
         },
         {
-          nodeId: 5,
+          nodeId: 405,
           childTrees: [
             {
-              nodeId: 6,
+              nodeId: 406,
               childTrees: [
-                { nodeId: 7, childTrees: [], label: "TVar a" },
-                { nodeId: 8, childTrees: [], label: "TVar a" },
+                { nodeId: 407, childTrees: [], label: "TVar a" },
+                { nodeId: 408, childTrees: [], label: "TVar a" },
               ],
               label: "TFun",
             },
@@ -52,20 +52,20 @@ export const tree4: Tree = {
       ],
       label: "Ann",
     },
-    { nodeId: 9, childTrees: [], label: "Con Unit" },
+    { nodeId: 409, childTrees: [], label: "Con Unit" },
   ],
   label: "App",
 };
 
 export const tree5: TreeInteractiveRender = {
-  nodeId: 0,
+  nodeId: 500,
   childTrees: [
     {
-      nodeId: 1,
+      nodeId: 501,
       childTrees: [
-        { nodeId: 2, childTrees: [], label: "Var x" },
-        { nodeId: 3, childTrees: [], label: "EmptyHole" },
-        { nodeId: 6, childTrees: [], label: "EmptyHole" },
+        { nodeId: 502, childTrees: [], label: "Var x" },
+        { nodeId: 503, childTrees: [], label: "EmptyHole" },
+        { nodeId: 506, childTrees: [], label: "EmptyHole" },
       ],
       label: "Case",
     },
