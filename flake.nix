@@ -59,73 +59,8 @@
         hacknix.overlay
         (final: prev:
           let
-            nodejs = final.nodejs-16_x;
-            src = gitignore.lib.gitignoreSource ./.;
-
-            hackworthltd-primer-types = {
-              postBuild = "yarn --offline build";
-
-              # We don't need node_modules for this package as
-              # it's all `devDependencies` and `peerDependencies`.
-              # This reduces the size of the closure (and the time
-              # required to generate it) significantly.
-              installPhase =
-                let
-                  pname = "@hackworthltd/primer-types";
-                in
-                ''
-                  mkdir -p $out/libexec/${pname}
-                  mv deps $out/libexec/${pname}/deps
-                '';
-            };
-
-            project = final.yarn2nix-moretea.mkYarnWorkspace {
-              inherit src;
-              packageOverrides = {
-                inherit hackworthltd-primer-types;
-
-                hackworthltd-primer-app = {
-                  # We only need the result of the build for this
-                  # package. We can discard everything else, because
-                  # we're not going to use it as a dependency of
-                  # another package.
-                  buildPhase = "yarn --offline build";
-                  installPhase =
-                    let
-                      pname = "@hackworthltd/primer-app";
-                    in
-                    ''
-                      mkdir -p $out
-                      cp -r deps/${pname}/dist/* $out
-                    '';
-
-                  # Skip the distPhase, we don't need it for this package.
-                  distPhase = "true";
-                };
-
-                hackworthltd-primer-components = {
-                  postBuild = "yarn --offline build";
-
-                  # We don't need node_modules for this package as
-                  # it's all `devDependencies` and `peerDependencies`.
-                  # This reduces the size of the closure (and the time
-                  # required to generate it) significantly.
-                  installPhase =
-                    let
-                      pname = "@hackworthltd/primer-components";
-                    in
-                    ''
-                      mkdir -p $out/libexec/${pname}
-                      mv deps $out/libexec/${pname}/deps
-                    '';
-                };
-              };
-            };
           in
-          {
-            inherit nodejs;
-            inherit project;
-          }
+          { }
         )
       ];
 
@@ -156,10 +91,7 @@
           pre-commit-hooks-nix.lib.${system}.run {
             src = ./.;
             hooks = {
-              # Disabled for now. See:
-              # https://github.com/hackworthltd/primer-app/issues/138
-              prettier.enable = false;
-
+              prettier.enable = true;
               nixpkgs-fmt.enable = true;
             };
 
@@ -168,7 +100,7 @@
             #
             # Note that we can't quite get the same `prettier` that
             # we're using in the shell because the latter is installed
-            # by `npm`, not nixpkgs.
+            # by `pnpm`, not nixpkgs.
             tools = {
               inherit (pkgs) nixpkgs-fmt;
             };
@@ -177,73 +109,26 @@
               ".github/"
               "README.md"
               "package.json"
-              "yarn.lock"
+              "pnpm-lock.yaml"
             ];
           };
-
-        # This package is guaranteed to change whenever the git rev
-        # changes. We use this as a forcing function so that Hydra
-        # can't cache required builds, which otherwise causes problems
-        # for GitHub applications that expect Hydra to report the
-        # status of builds to GitHub regardless of whether they're
-        # cached or not.
-        package-version = pkgs.writeShellScriptBin "package-version" ''
-          echo ${version}
-        '';
       in
       {
-        packages = {
-          inherit package-version;
-          inherit (pkgs.project) hackworthltd-primer-app hackworthltd-primer-components hackworthltd-primer-types;
-        };
-
         checks = {
           source-code-checks = pre-commit-hooks;
         };
-
-        apps =
-          let
-            x86_64-linux-pkgs = pkgsFor "x86_64-linux";
-            yarnbin = "${pkgs.yarn}/bin/yarn";
-
-            deploy-to-chromatic-script = pkgs.writeShellApplication {
-              name = "deploy-to-chromatic-script";
-              runtimeInputs = with pkgs; [
-                nodejs
-                yarn
-              ];
-              text = builtins.readFile ./scripts/deploy-to-chromatic.sh;
-            };
-
-            deploy-to-chromatic = (pkgs.writeShellApplication {
-              name = "deploy-to-chromatic";
-              text = ''
-                ${deploy-to-chromatic-script}/bin/deploy-to-chromatic-script
-              '';
-            }).overrideAttrs (drv: {
-              meta.platforms = pkgs.flyctl.meta.platforms;
-            });
-          in
-          {
-            deploy-to-chromatic = {
-              type = "app";
-              program = "${deploy-to-chromatic}/bin/deploy-to-chromatic";
-            };
-          };
 
         devShell = pkgs.mkShell {
           buildInputs = (with pkgs; [
             nodejs
             nixpkgs-fmt
             rnix-lsp
-            yarn
+            nodePackages.pnpm
           ]);
 
-          # We don't get cute with node_modules, because this project
-          # is a Yarn workspace, and its node_modules layout is
-          # non-trivial. However, we do want to make sure binaries in
-          # the top-level project node_modules are in the shell's
-          # path.
+          # Make sure the Nix shell includes node_modules's bin dir in
+          # the path, or else our editors may not see the editor
+          # tooling that we include in the Node packaging.
           shellHook = ''
             export PATH="$(pwd)/node_modules/.bin:$PATH"
           '';
@@ -252,7 +137,6 @@
 
     // {
       hydraJobs = {
-        inherit (self) packages;
         inherit (self) checks;
 
         required =
@@ -260,14 +144,12 @@
             pkgs = pkgsFor "x86_64-linux";
           in
           pkgs.releaseTools.aggregate {
-            name = "required";
+            name = "required-nix-ci";
             constituents = builtins.map builtins.attrValues (with self.hydraJobs; [
-              packages.x86_64-linux
-              packages.aarch64-darwin
               checks.x86_64-linux
               checks.aarch64-darwin
             ]);
-            meta.description = "Required CI builds";
+            meta.description = "Required Nix CI builds";
           };
       };
 

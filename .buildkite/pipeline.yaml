@@ -25,16 +25,3 @@ steps:
       nix develop --print-build-logs --profile /tmp/primer-app --command cachix --verbose --config "$CACHIX_CONFIG" push "$CACHIX_CACHE" /tmp/primer-app
     agents:
       os: "darwin"
-  - label: ":chromatic: Trigger Chromatic deployment"
-    trigger: primer-app-chromatic
-    # This can't be async, because we need to be sure the Chromatic
-    # deployment succeeded before merging via Bors.
-    async: false
-    build:
-      message: "${BUILDKITE_MESSAGE}"
-      commit: "${BUILDKITE_COMMIT}"
-      branch: "${BUILDKITE_BRANCH}"
-      env:
-        BUILDKITE_PULL_REQUEST: "${BUILDKITE_PULL_REQUEST}"
-        BUILDKITE_PULL_REQUEST_BASE_BRANCH: "${BUILDKITE_PULL_REQUEST_BASE_BRANCH}"
-        BUILDKITE_PULL_REQUEST_REPO: "${BUILDKITE_PULL_REQUEST_REPO}"

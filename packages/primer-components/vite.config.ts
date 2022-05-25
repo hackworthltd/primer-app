@@ -15,8 +15,8 @@ export default defineConfig({
   // https://github.com/qmhc/vite-plugin-dts/issues/70
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
-    }
+      "@": path.resolve(__dirname, "src"),
+    },
   },
   plugins: [
     checker({
