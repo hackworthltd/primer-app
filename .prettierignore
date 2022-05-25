@@ -1,7 +1,7 @@
 README.md
 node_modules/
 dist/
-yarn.lock
+pnpm-lock.yaml
 .direnv/
 .log
 result*

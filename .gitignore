@@ -21,10 +21,10 @@ tsconfig.tsbuildinfo
 # tsserver
 .log/
 
-# yarn
+# dependencies
 node_modules/
-yarn-debug.log*
-yarn-error.log*
+/.pnp
+.pnp.js
 
 # vite
 .vite/
@@ -40,6 +40,3 @@ build-storybook.log
 # VSCode
 *.code-workspace
 .vscode
-
-# Ultra
-.ultra.cache.json
