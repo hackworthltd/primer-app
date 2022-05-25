@@ -11,16 +11,19 @@ const props = { width: 1000, height: 800, nodeWidth: 100, nodeHeight: 40 };
 
 export const Tree1: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} tree={tree1} />;
+) => <TreeReactFlow {...props} trees={[tree1]} />;
 export const Tree2: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} tree={tree2} />;
+) => <TreeReactFlow {...props} trees={[tree2]} />;
 export const Tree3: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} tree={tree3} />;
+) => <TreeReactFlow {...props} trees={[tree3]} />;
 export const Tree4: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} tree={tree4} />;
+) => <TreeReactFlow {...props} trees={[tree4]} />;
 export const Tree5: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} tree={tree5} />;
+) => <TreeReactFlow {...props} trees={[tree5]} />;
+export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
+  _: TreeReactFlowProps
+) => <TreeReactFlow {...props} trees={[tree1, tree2, tree3, tree4, tree5]} />;
