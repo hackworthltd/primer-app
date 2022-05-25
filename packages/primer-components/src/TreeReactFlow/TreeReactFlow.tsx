@@ -10,7 +10,7 @@ import "react-flow-renderer/dist/style.css";
 import useLayout from "./useLayout";
 
 export type TreeReactFlowProps = {
-  tree: TreeInteractiveRender;
+  trees: TreeInteractiveRender[];
   width: number;
   height: number;
   nodeWidth: number;
@@ -74,8 +74,12 @@ const convertTree = (
 };
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
-  const tree = convertTree(p.tree, p.nodeWidth, p.nodeHeight);
-  const layoutedNodes = useLayout(tree.nodes, tree.edges, {
+  const trees = p.trees.map((t) => convertTree(t, p.nodeWidth, p.nodeHeight));
+  const forest = {
+    nodes: trees.flatMap(({ nodes }) => nodes),
+    edges: trees.flatMap(({ edges }) => edges),
+  };
+  const layoutedNodes = useLayout(forest.nodes, forest.edges, {
     direction: "TB",
     nodeWidth: p.nodeWidth,
     nodeHeight: p.nodeHeight,
@@ -85,8 +89,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
     <div style={{ height: p.height, width: p.width }}>
       <ReactFlow
         nodes={layoutedNodes}
-        edges={tree.edges}
-        onNodeClick={(e, _n) => p.tree.onClick?.(e)}
+        edges={forest.edges}
         nodeTypes={{ [primerNodeTypeName]: PrimerNode }}
       ></ReactFlow>
     </div>
