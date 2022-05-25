@@ -9,18 +9,11 @@ on:
 
 jobs:
   build:
-    permissions:
-      contents: read
-      id-token: write
-      deployments: write
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-        with:
-          # Required by the Chromatic GitHub Action
-          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2.2.1
