@@ -1,0 +1,40 @@
+name: Build the frontend
+
+on:
+  push:
+    branches:
+      - main
+      - gh-readonly-queue/main/*
+  pull_request:
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      id-token: write
+      deployments: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          # Required by the Chromatic GitHub Action
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.1
+        with:
+          version: 7.1.0
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v3.2.0
+        with:
+          node-version: 14
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the frontend
+        run: pnpm build

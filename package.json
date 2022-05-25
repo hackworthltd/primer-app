@@ -1,38 +1,38 @@
 {
   "name": "@hackworthltd/primer",
   "private": true,
-  "workspaces": [
-    "packages/primer-types",
-    "packages/primer-components",
-    "packages/primer-app"
-  ],
+  "engines": {
+    "node": "^14.19.2",
+    "pnpm": "^7.1.0"
+  },
   "devDependencies": {
     "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^8.16.0",
     "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.26.0",
     "prettier": "^2.6.2",
     "typescript": "^4.6.4",
     "typescript-eslint-language-service": "^5.0.0",
     "typescript-language-server": "^0.10.0",
-    "ultra-runner": "^3.10.5",
     "unified-language-server": "^2.1.0",
     "vite-plugin-optimize-persist": "^0.1.1",
     "vite-plugin-package-config": "^0.1.0",
     "vscode-css-languageserver-bin": "^1.4.0",
     "vscode-html-languageserver-bin": "^1.4.0",
     "vscode-json-languageserver": "^1.3.4",
-    "wsrun": "^5.2.4",
     "yaml-language-server": "^1.7.0"
   },
   "scripts": {
     "format": "prettier --write .",
-    "watch": "wsrun --done-criteria 'Declaration files built in ' --package @hackworthltd/primer-app --stages --recursive watch",
-    "watch:storybook": "wsrun --done-criteria 'Declaration files built in ' --package @hackworthltd/primer-components --stages --recursive storybook"
+    "lint": "pnpm --parallel --stream -r lint",
+    "lint:fix": "pnpm --parallel --stream -r lint:fix",
+    "build": "pnpm -r build"
   },
-  "dependencies": {
-    "npm-run-all": "^4.1.5"
-  },
-  "resolutions": {
-    "colors": "1.4.0"
+  "pnpm": {
+    "overrides": {
+      "@hackworthltd/primer-types": "workspace:*",
+      "@hackworthltd/primer-components": "workspace:*",
+      "@hackworthltd/primer-app": "workspace:*"
+    }
   }
 }
