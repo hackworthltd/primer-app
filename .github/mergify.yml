@@ -5,8 +5,8 @@ pull_request_rules:
       - base=main
       - label="Ready to merge"
       - "#changes-requested-reviews-by=0"
-      - check-success="Build the frontend"
-      - check-success="Deploy Storybook.js"
+      - check-success="build-frontend"
+      - check-success="deploy-to-chromatic"
       - check-success="buildkite/primer-app/pr/required-nix-ci"
       - check-success="UI Review"
       - check-success="UI Tests"
@@ -35,4 +35,6 @@ queue_rules:
     allow_inplace_checks: false
     conditions:
       - base=main
-      - check-success="buildkite/primer-app/pr/required"
+      - check-success="buildkite/primer-app/pr/required-nix-ci"
+      - check-success="Build the frontend / build (push)"
+      - check-success="Deploy Storybook.js / build (push)"

@@ -8,7 +8,7 @@ on:
       - dependabot/**
 
 jobs:
-  build:
+  deploy-to-chromatic:
     permissions:
       contents: read
       id-token: write
