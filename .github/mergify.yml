@@ -5,7 +5,9 @@ pull_request_rules:
       - base=main
       - label="Ready to merge"
       - "#changes-requested-reviews-by=0"
-      - check-success="buildkite/primer-app/pr/required"
+      - check-success="Build the frontend"
+      - check-success="Deploy Storybook.js"
+      - check-success="buildkite/primer-app/pr/required-nix-ci"
       - check-success="UI Review"
       - check-success="UI Tests"
     actions:
