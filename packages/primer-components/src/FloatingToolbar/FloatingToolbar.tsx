@@ -38,6 +38,8 @@ const nextMode = (m: Mode): Mode => {
   }
 };
 
+// https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/130
+// eslint-disable-next-line tailwindcss/no-custom-classname
 const arrow = <ReplyIcon className="w-6 stroke-[3]" />;
 const undoRedoClasses =
   "flex flex-col items-center w-12 hover:bg-grey-primary-hover rounded";
@@ -62,9 +64,9 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
           touchDragging ? "p-5 w-24 -my-1 -mx-2" : "p-4 w-20"
         )}
       >
-        <div className="w-6 -mt-2 -mb-1">
+        <div className="-mt-2 -mb-1 w-6">
           <DotsHorizontalIcon className="stroke-grey-secondary" />
-          <DotsHorizontalIcon className="stroke-grey-secondary -mt-4" />
+          <DotsHorizontalIcon className="-mt-4 stroke-grey-secondary" />
         </div>
         <button
           type="button"

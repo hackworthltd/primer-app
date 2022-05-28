@@ -43,7 +43,7 @@ export const SearchBar = (p: SearchBarProps): JSX.Element => (
       <input
         id="search"
         name="search"
-        className="block py-2 pr-3 pl-10 w-full text-sm sm:text-sm placeholder-grey-secondary focus:placeholder-grey-secondary focus:text-grey-secondary rounded-md border border-grey-secondary focus:border-blue-primary focus:ring-1 focus:ring-blue-primary focus:outline-none bg-white"
+        className="block py-2 pr-3 pl-10 w-full text-sm placeholder:text-grey-secondary focus:text-grey-secondary focus:placeholder:text-grey-secondary bg-white-primary rounded-md border border-grey-secondary focus:border-blue-primary focus:outline-none focus:ring-1 focus:ring-blue-primary sm:text-sm"
         placeholder={p.placeholder}
         type="search"
       />
