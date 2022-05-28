@@ -201,12 +201,10 @@ react-router-dom 6.3.0
 To upgrade the package set for the entire project, including all workspace packages' dependencies, run the following command from the top-level project directory:
 
 ```sh
-pnpm upgrade
+pnpm -r upgrade
 ```
 
-There's no need to run this command in each separate workspace unless you want to upgrade only that workspace/package's dependencies.
-
-The `pnpm upgrade` command will strictly obey any version bounds specified in packages's `package.json` file. To ignore those bounds and upgrade all packages to their latest versions, run `pnpm upgrade --latest`.
+The `pnpm upgrade` command will strictly obey any version bounds specified in packages's `package.json` file. To ignore those bounds and upgrade all packages to their latest versions, run `pnpm -r upgrade --latest`.
 
 This command will also update the various `package.json` files' version bounds, as needed.
 
