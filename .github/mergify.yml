@@ -35,6 +35,6 @@ queue_rules:
     allow_inplace_checks: false
     conditions:
       - base=main
+      - check-success="build-frontend"
+      - check-success="deploy-to-chromatic"
       - check-success="buildkite/primer-app/pr/required-nix-ci"
-      - check-success="Build the frontend / build (push)"
-      - check-success="Deploy Storybook.js / build (push)"
