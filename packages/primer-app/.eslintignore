@@ -5,3 +5,5 @@ dist/
 .eslintcache
 postcss.config.js
 tailwind.config.js
+orval.config.js
+src/primer-api/

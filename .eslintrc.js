@@ -60,5 +60,12 @@ module.exports = {
         additionalHooks: "(useMemo)",
       },
     ],
+
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        argsIgnorePattern: "^_",
+      },
+    ],
   },
 };
