@@ -27,3 +27,8 @@ jobs:
 
       - name: Build the frontend
         run: pnpm build
+
+      # Note: linting must come after building, or else eslint won't
+      # be able to resolve some paths.
+      - name: Lint
+        run: pnpm lint
