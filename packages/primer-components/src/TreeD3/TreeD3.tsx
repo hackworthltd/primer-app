@@ -19,10 +19,13 @@ function d3graph(
   oldPos: Map<number, Pt>,
   bbs: Map<number, DOMRect>
 ) {
+  // eslint-disable-next-line import/namespace
   const svg = d3.select(svgRef);
 
+  // eslint-disable-next-line import/namespace
   const hier = d3.hierarchy(tree, (d) => d.childTrees);
 
+  // eslint-disable-next-line import/namespace
   const d3tree = d3.tree<TreeInteractiveRender>().size([width, height]);
 
   const layout = d3tree(hier);
@@ -109,6 +112,7 @@ function d3graph(
     // This gives a "growing" visual effect.
     .each(function (d) {
       const p = getPos(d);
+      // eslint-disable-next-line import/namespace
       d3.select(this).attr("x", p.x).attr("y", p.y);
     });
 
@@ -147,6 +151,7 @@ function d3graph(
     const bb = this.getBBox();
     bbs.set(d.data.nodeId, bb);
     const p = getPos(d);
+    // eslint-disable-next-line import/namespace
     d3.select(this)
       .attr("transform", `translate(${p.x},${p.y}) scale(0)`)
       .insert("rect", ":first-child")
@@ -161,6 +166,7 @@ function d3graph(
   node = node.merge(nodeEnter);
 
   const drawLink = d3
+    // eslint-disable-next-line import/namespace
     .linkVertical<
       { source: Pt; target: Pt },
       HierarchyPointNode<TreeInteractiveRender>

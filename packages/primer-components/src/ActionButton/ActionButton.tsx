@@ -28,7 +28,7 @@ export interface ActionButtonProps {
 }
 
 const buttonClassesBase =
-  "inline-flex items-center text-base rounded border font-medium shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-offset-2";
+  "inline-flex items-center text-base rounded border font-medium shadow-sm bg-white-primary focus:outline-none focus:ring-2 focus:ring-offset-2";
 const buttonClassesWidth = "w-full";
 const buttonClassesPrimaryExtra =
   "border-grey-primary text-blue-primary bg-white-primary hover:bg-blue-primary hover:text-white-primary focus:ring-blue-primary";

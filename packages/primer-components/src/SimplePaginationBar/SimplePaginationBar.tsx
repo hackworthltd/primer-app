@@ -59,8 +59,8 @@ export const SimplePaginationBar = (
   p: SimplePaginationBarProps
 ): JSX.Element => (
   <nav className="py-3" aria-label="Pagination">
-    <div className="flex-1 flex items-center justify-between sm:justify-end">
-      <div className="hidden sm:block px-2 py-2">
+    <div className="flex flex-1 justify-between items-center sm:justify-end">
+      <div className="hidden p-2 sm:block">
         <p className={summaryClasses(p.totalItems)}>
           Showing <span className="font-medium">{p.startIndex}</span> to{" "}
           <span className="font-medium">{p.startIndex + p.numItems - 1}</span>{" "}
@@ -68,7 +68,7 @@ export const SimplePaginationBar = (
           {p.itemNamePlural}
         </p>
       </div>
-      <div className="inline-flex px-2 py-2">
+      <div className="inline-flex p-2">
         <UIButton
           onClick={p.onClickPreviousPage}
           size="responsive"
@@ -77,7 +77,7 @@ export const SimplePaginationBar = (
           hidden={!p.onClickPreviousPage}
         />
       </div>
-      <div className="inline-flex pl-2 py-2">
+      <div className="inline-flex py-2 pl-2">
         <UIButton
           onClick={p.onClickNextPage}
           size="responsive"
