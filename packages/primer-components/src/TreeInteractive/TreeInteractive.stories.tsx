@@ -5,6 +5,7 @@ import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 import TreeD3 from "@/TreeD3";
 import TreeOutline from "@/TreeOutline";
 import TreeVisx, { LinkType } from "@/TreeVisx";
+import TreeReactFlow from "@/TreeReactFlow";
 
 interface State {
   nxtId: number;
@@ -21,11 +22,21 @@ const TreeVisxDefault = ({ tree, linkType }: TreeLT) =>
 const TreeD3Default = ({ tree, linkType }: TreeLT) =>
   TreeD3({ width: 300, height: 300, linkType: linkType, tree: tree });
 
-type Renderer = "TreeOutline" | "TreeVisx";
+const TreeReactFlowDefault = ({ tree }: TreeLT) =>
+  TreeReactFlow({
+    width: 300,
+    height: 300,
+    nodeWidth: 40,
+    nodeHeight: 40,
+    trees: [tree],
+  });
+
+type Renderer = "TreeOutline" | "TreeVisx" | "TreeReactFlow" | "TreeD3";
 const renderersMap = {
   TreeVisx: TreeVisxDefault,
   TreeD3: TreeD3Default,
   TreeOutline: TreeOutlineRender,
+  TreeReactFlow: TreeReactFlowDefault,
 };
 
 interface ITreeArgs {
