@@ -38,6 +38,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     </>
   );
 };
+const nodeTypes = { [primerNodeTypeName]: PrimerNode };
 
 const convertTree = (
   tree: TreeInteractiveRender,
@@ -90,7 +91,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       <ReactFlow
         nodes={layoutedNodes}
         edges={forest.edges}
-        nodeTypes={{ [primerNodeTypeName]: PrimerNode }}
+        nodeTypes={nodeTypes}
       ></ReactFlow>
     </div>
   );
