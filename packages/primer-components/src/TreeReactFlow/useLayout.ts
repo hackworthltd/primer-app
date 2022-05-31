@@ -11,9 +11,6 @@ export type Options = {
   nodeHeight: number;
 };
 
-const dagreGraph = new dagre.graphlib!.Graph();
-dagreGraph.setDefaultEdgeLabel(() => ({}));
-
 const positionMap = {
   T: Position.Top,
   L: Position.Left,
@@ -26,6 +23,9 @@ function layoutGraph(
   edges: Edge[],
   { direction = "TB", nodeWidth, nodeHeight }: Options
 ) {
+  const dagreGraph = new dagre.graphlib!.Graph();
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
+
   dagreGraph.setGraph({ rankdir: direction });
 
   nodes.forEach((el) => {
