@@ -6,10 +6,13 @@ pull_request_rules:
       - label="Ready to merge"
       - "#changes-requested-reviews-by=0"
       - check-success="build-frontend"
-      - check-success="deploy-to-chromatic"
       - check-success="buildkite/primer-app/pr/required-nix-ci"
-      - check-success="UI Review"
-      - check-success="UI Tests"
+
+      # Currently disabled due to https://github.com/hackworthltd/primer-app/pull/339
+      #- check-success="deploy-to-chromatic"
+      #- check-success="UI Review"
+      #- check-success="UI Tests"
+
     actions:
       queue:
         name: default
