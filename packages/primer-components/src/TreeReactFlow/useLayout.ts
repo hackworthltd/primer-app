@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Node, Edge, Position } from "react-flow-renderer/nocss";
-import dagre from "dagre";
+import { graphlib, layout } from "dagre";
 
 // the layout direction (T = top, R = right, B = bottom, L = left, TB = top to bottom, ...)
 export type Direction = "TB" | "LR" | "RL" | "BT";
@@ -23,7 +23,7 @@ function layoutGraph(
   edges: Edge[],
   { direction = "TB", nodeWidth, nodeHeight }: Options
 ) {
-  const dagreGraph = new dagre.graphlib!.Graph();
+  const dagreGraph = new graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   dagreGraph.setGraph({ rankdir: direction });
 
@@ -35,7 +35,7 @@ function layoutGraph(
     dagreGraph.setEdge(el.source, el.target);
   });
 
-  dagre.layout(dagreGraph);
+  layout(dagreGraph);
 
   const layoutNodes = nodes.map((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
