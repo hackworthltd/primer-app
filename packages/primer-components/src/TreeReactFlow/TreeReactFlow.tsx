@@ -20,7 +20,9 @@ export type TreeReactFlowProps = {
 const primerNodeTypeName = "primer";
 type PrimerNodeProps = { label: string; width: number; height: number };
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
+  // these properties are necessary due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
   const handleStyle = "absolute border-[2px] border-solid border-grey-tertiary";
+
   return (
     <>
       <Handle type="target" position={Position.Top} className={handleStyle} />
