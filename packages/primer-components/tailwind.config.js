@@ -24,10 +24,10 @@ module.exports = {
         "primary-hover": "#e2e2e2",
       },
       red: {
-        primary: "#982F2C",
-        secondary: "#D24232",
-        "primary-hover": "#C7433f",
-        "secondary-hover": "#AE5235",
+        primary: "#D10700",
+        secondary: "#CD3764",
+        "primary-hover": "#9E322E",
+        "secondary-hover": "#7E213B",
       },
       green: {
         primary: "#62E2B4",
