@@ -12,8 +12,8 @@ module.exports = {
       blue: {
         primary: "#34375d",
         secondary: "#4b5097",
-        tertiary: "2C6A85",
-        quaternary: "64B0C8",
+        tertiary: "#2C6A85",
+        quaternary: "#64B0C8",
         "primary-hover": "#46486f",
         "secondary-hover": "#2b3679",
       },
@@ -27,7 +27,7 @@ module.exports = {
         primary: "#982F2C",
         secondary: "#D24232",
         "primary-hover": "#C7433f",
-        "secondary-hover": "#922F2C",
+        "secondary-hover": "#AE5235",
       },
       green: {
         primary: "#62E2B4",
