@@ -22,7 +22,7 @@
     "@typescript-eslint/parser": "^5.27.1",
     "react": "^17.0.2",
     "typescript": "^4.7.3",
-    "typescript-language-server": "^0.10.1",
+    "typescript-language-server": "^0.11.0",
     "unified-language-server": "^2.1.0"
   },
   "devDependencies": {
