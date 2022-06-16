@@ -19,15 +19,15 @@
     "lint:fix": "eslint --fix ."
   },
   "dependencies": {
-    "@typescript-eslint/parser": "^5.27.1",
+    "@typescript-eslint/parser": "^5.28.0",
     "react": "^17.0.2",
     "typescript": "^4.7.3",
-    "typescript-language-server": "^0.11.0",
+    "typescript-language-server": "^0.11.1",
     "unified-language-server": "^2.1.0"
   },
   "devDependencies": {
-    "@types/react": "^17.0.45",
-    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@types/react": "^17.0.46",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.22.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
