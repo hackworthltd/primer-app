@@ -19,13 +19,6 @@
                 ],
                 "type": "object"
             },
-            "InitialApp": {
-                "enum": [
-                    "NewApp",
-                    "NewEmptyApp"
-                ],
-                "type": "string"
-            },
             "Module": {
                 "properties": {
                     "defs": {
@@ -296,15 +289,6 @@
             },
             "post": {
                 "operationId": "createSession",
-                "requestBody": {
-                    "content": {
-                        "application/json;charset=utf-8": {
-                            "schema": {
-                                "$ref": "#/components/schemas/InitialApp"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "content": {
@@ -315,9 +299,6 @@
                             }
                         },
                         "description": ""
-                    },
-                    "400": {
-                        "description": "Invalid `body`"
                     }
                 },
                 "summary": "Create a new session"
