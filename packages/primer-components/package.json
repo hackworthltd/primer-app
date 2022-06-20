@@ -32,7 +32,7 @@
     "@visx/shape": "^2.10.0",
     "@visx/text": "^2.10.0",
     "d3": "7.4.4",
-    "dagre": "^0.8.5",
+    "dagre": "github:dagrejs/dagre#103136b04a13c7ac10d8ded25954da58d5ed88e1",
     "fp-ts": "^2.12.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
