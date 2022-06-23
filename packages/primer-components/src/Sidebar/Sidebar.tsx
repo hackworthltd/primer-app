@@ -99,14 +99,14 @@ const TypesAndDefinitions = (
         )}
         {DefList(
           "IMPORTED TYPES",
-          prog.importedDefs,
+          prog.importedTypes,
           "italic font-bold",
           "italic",
           onClickDef
         )}
         {DefList(
           "IMPORTED DEFINITIONS",
-          prog.importedTypes,
+          prog.importedDefs,
           "italic font-bold",
           "italic",
           onClickDef
