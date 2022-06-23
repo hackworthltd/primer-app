@@ -52,7 +52,7 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
         {tab("Info", <InformationCircleIcon className="h-8" />)}
         {tab("Folder", <FolderIcon className="h-8" />)}
       </div>
-      <div className="flex-auto p-6 bg-grey-primary rounded">
+      <div className="p-6 bg-grey-primary rounded">
         {TabContents(currentTab, p.prog, p.onClickDef, p.onClickAdd)}
       </div>
     </div>
