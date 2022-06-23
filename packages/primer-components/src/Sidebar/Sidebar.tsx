@@ -47,12 +47,12 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
 
   return (
     <div className="flex flex-col w-96 h-[800px]">
-      <div className="grid grid-cols-3 h-16 text-grey-secondary">
+      <div className="grid shrink-0 grid-cols-3 h-16 text-grey-secondary">
         {tab("T&D", <div className="text-xl font-bold text-center">T&D</div>)}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
         {tab("Folder", <FolderIcon className="h-8" />)}
       </div>
-      <div className="p-6 bg-grey-primary rounded">
+      <div className="p-6 pr-4 h-full bg-grey-primary rounded">
         {TabContents(currentTab, p.prog, p.onClickDef, p.onClickAdd)}
       </div>
     </div>
@@ -82,7 +82,7 @@ const TypesAndDefinitions = (
   onClickAdd: OnClick
 ): JSX.Element => {
   return (
-    <div>
+    <div className="overflow-auto h-full">
       <div className="pb-3 text-xl font-bold text-blue-primary">
         Types & Definitions
       </div>

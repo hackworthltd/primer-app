@@ -23,7 +23,11 @@ export const Default: ComponentStory<typeof Sidebar> = (args: SidebarProps) => (
       types: ["GoalOrMiss", "WinLoseDraw"],
       defs: ["footballGame", "whatsopposite"],
       importedTypes: [],
-      importedDefs: ["opposite"],
+      importedDefs: ["opposite"].concat(
+        Array(30)
+          .fill({})
+          .map((_, i) => "def".concat(i.toString()))
+      ),
     }}
     initialMode="T&D"
   />
