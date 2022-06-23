@@ -151,12 +151,12 @@ const DefList = (
           []
         )}
       </div>
-      <div className="flex flex-col items-start">
+      <div className="flex flex-col gap-3 items-start">
         {expanded
           ? elems.map((def) => (
               <button
                 className={classNames(
-                  "text-grey-secondary underline",
+                  "text-grey-secondary underline text-left leading-5",
                   defStyle
                 )}
                 onClick={(e) => onClickDef(def, e)}
