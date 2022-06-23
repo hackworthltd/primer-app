@@ -30,29 +30,28 @@ type Tab = "T&D" | "Info" | "Folder";
 export const Sidebar = (p: SidebarProps): JSX.Element => {
   const [currentTab, switchTab] = useState(p.initialMode);
 
+  const tab = (tab: Tab, element: JSX.Element): JSX.Element => (
+    <button
+      key={tab}
+      className={classNames(
+        "flex hover:text-blue-primary hover:border-y-8 hover:border-t-transparent",
+        {
+          "text-blue-primary border-y-8 border-t-transparent":
+            tab == currentTab,
+        }
+      )}
+      onClick={(_) => switchTab(tab)}
+    >
+      <div className="flex flex-col self-center w-full">{element}</div>
+    </button>
+  );
+
   return (
     <div style={{ height: 800 }} className="flex flex-col w-96">
       <div className="grid grid-cols-3 h-16 text-grey-secondary">
-        {(
-          [
-            ["T&D", <div className="text-xl font-bold text-center">T&D</div>],
-            ["Info", <InformationCircleIcon className="h-8" />],
-            ["Folder", <FolderIcon className="h-8" />],
-          ] as const
-        ).map(([tab, element]) => (
-          <button
-            className={classNames(
-              "flex hover:text-blue-primary hover:border-y-8 hover:border-t-transparent",
-              {
-                "text-blue-primary border-y-8 border-t-transparent":
-                  tab == currentTab,
-              }
-            )}
-            onClick={(_) => switchTab(tab)}
-          >
-            <div className="flex flex-col self-center w-full">{element}</div>
-          </button>
-        ))}
+        {tab("T&D", <div className="text-xl font-bold text-center">T&D</div>)}
+        {tab("Info", <InformationCircleIcon className="h-8" />)}
+        {tab("Folder", <FolderIcon className="h-8" />)}
       </div>
       <div className="flex-auto p-6 bg-grey-primary">
         {TabContents(currentTab, p.prog, p.onClickDef, p.onClickAdd)}
@@ -142,7 +141,11 @@ const DefList = (
       <div className="flex flex-col items-start">
         {expanded
           ? elems.map((def) => (
-              <button className="underline" onClick={(e) => onClickDef(def, e)}>
+              <button
+                className="underline"
+                onClick={(e) => onClickDef(def, e)}
+                key={def}
+              >
                 {def}
               </button>
             ))
