@@ -34,11 +34,10 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
     <button
       key={tab}
       className={classNames(
-        "flex hover:text-blue-primary hover:border-y-8 hover:border-t-transparent",
-        {
-          "text-blue-primary border-y-8 border-t-transparent":
-            tab == currentTab,
-        }
+        "flex",
+        tab == currentTab
+          ? "text-blue-primary border-y-8 border-t-transparent"
+          : "hover:text-blue-secondary hover:border-y-8 hover:border-t-transparent"
       )}
       onClick={(_) => switchTab(tab)}
     >
