@@ -34,7 +34,7 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
     <button
       key={tab}
       className={classNames(
-        "flex",
+        "flex rounded",
         tab == currentTab
           ? "text-blue-primary border-y-8 border-t-transparent"
           : "hover:text-blue-secondary hover:border-y-8 hover:border-t-transparent"
@@ -52,7 +52,7 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
         {tab("Info", <InformationCircleIcon className="h-8" />)}
         {tab("Folder", <FolderIcon className="h-8" />)}
       </div>
-      <div className="flex-auto p-6 bg-grey-primary">
+      <div className="flex-auto p-6 bg-grey-primary rounded">
         {TabContents(currentTab, p.prog, p.onClickDef, p.onClickAdd)}
       </div>
     </div>
