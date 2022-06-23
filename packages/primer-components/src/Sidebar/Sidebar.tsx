@@ -46,7 +46,7 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
   );
 
   return (
-    <div style={{ height: 800 }} className="flex flex-col w-96">
+    <div className="flex flex-col w-96 h-[800px]">
       <div className="grid grid-cols-3 h-16 text-grey-secondary">
         {tab("T&D", <div className="text-xl font-bold text-center">T&D</div>)}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
