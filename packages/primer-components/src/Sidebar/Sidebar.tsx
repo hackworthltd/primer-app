@@ -83,7 +83,9 @@ const TypesAndDefinitions = (
 ): JSX.Element => {
   return (
     <div>
-      <div className="pb-3 text-xl font-bold">Types & Definitions</div>
+      <div className="pb-3 text-xl font-bold text-blue-primary">
+        Types & Definitions
+      </div>
 
       <div className="flex flex-col gap-5 p-2 leading-8">
         {DefList("TYPES", prog.types, "font-bold", "", onClickDef, onClickAdd)}
@@ -129,7 +131,9 @@ const DefList = (
   return (
     <div>
       <div className="flex gap-2">
-        <div className={headerStyle}>{heading}</div>
+        <div className={classNames("text-blue-primary", headerStyle)}>
+          {heading}
+        </div>
         {expanded ? (
           <button onClick={(_) => setExpanded(false)}>
             <ChevronDownIcon className={iconClasses} />
@@ -151,7 +155,10 @@ const DefList = (
         {expanded
           ? elems.map((def) => (
               <button
-                className={classNames("underline", defStyle)}
+                className={classNames(
+                  "text-grey-secondary underline",
+                  defStyle
+                )}
                 onClick={(e) => onClickDef(def, e)}
                 key={def}
               >
