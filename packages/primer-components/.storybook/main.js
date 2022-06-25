@@ -20,6 +20,16 @@ module.exports = {
       plugins: [...config.plugins, svgr(), tsconfigPaths()],
       // Don't write to node_modules, in case someday we can get it from Nix.
       cacheDir: "../.vite",
+      build: {
+        ...config.build,
+
+        // Workaround a dagre issue. See:
+        //
+        // https://github.com/vitejs/vite/issues/5759#issuecomment-1034461225
+        commonjsOptions: {
+          ignoreTryCatch: false,
+        },
+      },
     };
   },
 };
