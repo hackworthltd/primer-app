@@ -57,6 +57,13 @@ export default defineConfig({
       // XXX dhess: do we need to add Tailwind UI deps here?
       external: ["react", "react-dom", "react-router-dom"],
     },
+
+    // Workaround a dagre issue. See:
+    //
+    // https://github.com/vitejs/vite/issues/5759#issuecomment-1034461225
+    commonjsOptions: {
+      ignoreTryCatch: false,
+    },
   },
 
   define: {
