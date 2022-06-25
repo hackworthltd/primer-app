@@ -32,3 +32,9 @@ jobs:
       # be able to resolve some paths.
       - name: Lint
         run: pnpm lint
+
+      # Note: we only audit non-dev dependencies, because there are
+      # nearly always dev dependency vulnerabilities, but they're very
+      # unlikely to affect the production app.
+      - name: Audit
+        run: pnpm audit --prod
