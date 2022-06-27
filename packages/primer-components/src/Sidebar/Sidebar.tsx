@@ -1,6 +1,5 @@
 import {
   InformationCircleIcon,
-  FolderIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   PlusIcon,
@@ -25,7 +24,7 @@ type OnClick = (
   event: React.MouseEvent<HTMLButtonElement>
 ) => void;
 
-type Tab = "T&D" | "Info" | "Folder";
+type Tab = "T&D" | "Info";
 
 export const Sidebar = (p: SidebarProps): JSX.Element => {
   const [currentTab, switchTab] = useState(p.initialMode);
@@ -47,10 +46,9 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
 
   return (
     <div className="flex flex-col w-96 h-[800px]">
-      <div className="grid shrink-0 grid-cols-3 h-16 text-grey-secondary">
+      <div className="grid shrink-0 grid-cols-2 h-16 text-grey-secondary">
         {tab("T&D", <div className="text-xl font-bold text-center">T&D</div>)}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
-        {tab("Folder", <FolderIcon className="h-8" />)}
       </div>
       <div className="p-6 pr-4 h-full bg-grey-primary">
         {TabContents(currentTab, p.prog, p.onClickDef, p.onClickAdd)}
@@ -71,8 +69,6 @@ const TabContents = (
   return TypesAndDefinitions(prog, onClickDef, onClickAdd);
   // case "Info":
   //   return <div>Placeholder - "Info" view not implemented</div>;
-  // case "Folder":
-  //   return <div>Placeholder - "Folder" view not implemented</div>;
   // }
 };
 
