@@ -2,7 +2,7 @@ import {
   InformationCircleIcon,
   FolderIcon,
   ChevronDownIcon,
-  ChevronLeftIcon,
+  ChevronRightIcon,
   PlusIcon,
 } from "@heroicons/react/outline";
 import { useState } from "react";
@@ -140,7 +140,7 @@ const DefList = (
           </button>
         ) : (
           <button onClick={(_) => setExpanded(true)}>
-            <ChevronLeftIcon className={iconClasses} />
+            <ChevronRightIcon className={iconClasses} />
           </button>
         )}
         {typeof onClickAdd !== "undefined" ? (
