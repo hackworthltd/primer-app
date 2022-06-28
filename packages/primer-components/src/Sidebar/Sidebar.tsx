@@ -131,7 +131,9 @@ const DefList = (
   return (
     <div>
       <div className="flex gap-2">
-        <div className={classNames("text-blue-primary", headerStyle)}>
+        <div
+          className={classNames("text-blue-primary text-lg mb-1", headerStyle)}
+        >
           {heading}
         </div>
         {expanded ? (
