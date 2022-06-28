@@ -17,11 +17,17 @@ export type Prog = {
 const headingStyle = "mb-1 text-lg font-bold text-blue-primary";
 const itemStyle = "leading-5 text-left text-grey-secondary";
 
-export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps;
+export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
+  InfoProps;
 type TypesAndDefinitionsProps = {
   prog: Prog;
   onClickDef: OnClick;
   onClickAdd: OnClick;
+};
+type InfoProps = {
+  shadowed: boolean;
+  type: string;
+  folder: string;
 };
 type OnClick = (
   label: string,
@@ -60,9 +66,7 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
             case "T&D":
               return <TypesAndDefinitions {...p}></TypesAndDefinitions>;
             case "Info":
-              return (
-                <div>Placeholder - &quot;Info&quot; view not implemented</div>
-              );
+              return <Info {...p}></Info>;
           }
         })()}
       </div>
@@ -166,6 +170,35 @@ const DefList = ({
               </button>
             ))
           : []}
+      </div>
+    </div>
+  );
+};
+
+const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
+  return (
+    <div className="overflow-auto h-full">
+      <div className="flex flex-col gap-5 p-2 leading-8">
+        {shadowed ? (
+          <div className="text-red-primary flex items-center gap-1">
+            <InformationCircleIcon className="h-4" />
+            <div>
+              <span>The definition has been </span>
+              <span className="underline">shadowed</span>
+              <span>.</span>
+            </div>
+          </div>
+        ) : (
+          []
+        )}
+        <div>
+          <div className={headingStyle}>Type</div>
+          <div className={itemStyle}>{type}</div>
+        </div>
+        <div>
+          <div className={headingStyle}>Folder</div>
+          <div className={itemStyle}>{folder}</div>
+        </div>
       </div>
     </div>
   );
