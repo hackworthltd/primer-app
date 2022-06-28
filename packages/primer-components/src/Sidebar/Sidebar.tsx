@@ -82,29 +82,25 @@ const TypesAndDefinitions = ({
         <DefList
           heading="Types"
           elems={prog.types}
-          headerStyle="font-bold"
-          defStyle=""
+          italic={false}
           {...{ onClickDef, onClickAdd }}
         />
         <DefList
           heading="Definitions"
           elems={prog.defs}
-          headerStyle="font-bold"
-          defStyle=""
+          italic={false}
           {...{ onClickDef, onClickAdd }}
         />
         <DefList
           heading="Imported Types"
           elems={prog.importedTypes}
-          headerStyle="italic font-bold"
-          defStyle="italic"
+          italic={true}
           {...{ onClickDef }}
         />
         <DefList
           heading="Imported Definitions"
           elems={prog.importedDefs}
-          headerStyle="italic font-bold"
-          defStyle="italic"
+          italic={true}
           {...{ onClickDef }}
         />
       </div>
@@ -118,8 +114,7 @@ const DefList = ({
 }: {
   heading: string;
   elems: string[];
-  headerStyle: string;
-  defStyle: string;
+  italic: boolean;
   onClickDef: OnClick;
   onClickAdd?: OnClick;
 }): JSX.Element => {
@@ -131,10 +126,9 @@ const DefList = ({
     <div>
       <div className="flex gap-2">
         <div
-          className={classNames(
-            "text-blue-primary text-lg mb-1",
-            p.headerStyle
-          )}
+          className={classNames("text-blue-primary text-lg mb-1 font-bold", {
+            ["italic"]: p.italic,
+          })}
         >
           {p.heading}
         </div>
@@ -161,7 +155,7 @@ const DefList = ({
               <button
                 className={classNames(
                   "text-grey-secondary underline text-left leading-5",
-                  p.defStyle
+                  { ["italic"]: p.italic }
                 )}
                 onClick={(e) => p.onClickDef(def, e)}
                 key={def}
