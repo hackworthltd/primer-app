@@ -13,9 +13,10 @@ export type Prog = {
   importedDefs: string[];
   importedTypes: string[];
 };
-export type SidebarProps = {
+
+export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps;
+type TypesAndDefinitionsProps = {
   prog: Prog;
-  initialMode: Tab;
   onClickDef: OnClick;
   onClickAdd: OnClick;
 };
@@ -51,32 +52,26 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
         {tab("Info", <InformationCircleIcon className="h-8" />)}
       </div>
       <div className="p-6 pr-4 h-full bg-grey-primary">
-        {TabContents(currentTab, p.prog, p.onClickDef, p.onClickAdd)}
+        {TabContents(currentTab, p)}
       </div>
     </div>
   );
 };
 
-const TabContents = (
-  _tab: Tab,
-  prog: Prog,
-  onClickDef: OnClick,
-  onClickAdd: OnClick
-): JSX.Element => {
-  // TODO making this conditional causes a runtime failure due to React hooks...
-  // switch (tab) {
-  //   case "T&D":
-  return TypesAndDefinitions(prog, onClickDef, onClickAdd);
-  // case "Info":
-  //   return <div>Placeholder - "Info" view not implemented</div>;
-  // }
+const TabContents = (tab: Tab, p: TypesAndDefinitionsProps): JSX.Element => {
+  switch (tab) {
+    case "T&D":
+      return <TypesAndDefinitions {...p}></TypesAndDefinitions>;
+    case "Info":
+      return <div>Placeholder - &quot;Info&quot; view not implemented</div>;
+  }
 };
 
-const TypesAndDefinitions = (
-  prog: Prog,
-  onClickDef: OnClick,
-  onClickAdd: OnClick
-): JSX.Element => {
+const TypesAndDefinitions = ({
+  onClickDef,
+  onClickAdd,
+  prog,
+}: TypesAndDefinitionsProps): JSX.Element => {
   return (
     <div className="overflow-auto h-full">
       <div className="pb-3 text-xl font-bold text-blue-primary">
@@ -84,42 +79,50 @@ const TypesAndDefinitions = (
       </div>
 
       <div className="flex flex-col gap-5 p-2 leading-8">
-        {DefList("Types", prog.types, "font-bold", "", onClickDef, onClickAdd)}
-        {DefList(
-          "Definitions",
-          prog.defs,
-          "font-bold",
-          "",
-          onClickDef,
-          onClickAdd
-        )}
-        {DefList(
-          "Imported Types",
-          prog.importedTypes,
-          "italic font-bold",
-          "italic",
-          onClickDef
-        )}
-        {DefList(
-          "Imported Definitions",
-          prog.importedDefs,
-          "italic font-bold",
-          "italic",
-          onClickDef
-        )}
+        <DefList
+          heading="Types"
+          elems={prog.types}
+          headerStyle="font-bold"
+          defStyle=""
+          {...{ onClickDef, onClickAdd }}
+        />
+        <DefList
+          heading="Definitions"
+          elems={prog.defs}
+          headerStyle="font-bold"
+          defStyle=""
+          {...{ onClickDef, onClickAdd }}
+        />
+        <DefList
+          heading="Imported Types"
+          elems={prog.importedTypes}
+          headerStyle="italic font-bold"
+          defStyle="italic"
+          {...{ onClickDef }}
+        />
+        <DefList
+          heading="Imported Definitions"
+          elems={prog.importedDefs}
+          headerStyle="italic font-bold"
+          defStyle="italic"
+          {...{ onClickDef }}
+        />
       </div>
     </div>
   );
 };
 
-const DefList = (
-  heading: string,
-  elems: string[],
-  headerStyle: string,
-  defStyle: string,
-  onClickDef: OnClick,
-  onClickAdd?: OnClick
-): JSX.Element => {
+const DefList = ({
+  onClickAdd,
+  ...p
+}: {
+  heading: string;
+  elems: string[];
+  headerStyle: string;
+  defStyle: string;
+  onClickDef: OnClick;
+  onClickAdd?: OnClick;
+}): JSX.Element => {
   const [expanded, setExpanded] = useState(true);
 
   const iconClasses = "w-5 stroke-blue-primary stroke-[3px]";
@@ -128,9 +131,12 @@ const DefList = (
     <div>
       <div className="flex gap-2">
         <div
-          className={classNames("text-blue-primary text-lg mb-1", headerStyle)}
+          className={classNames(
+            "text-blue-primary text-lg mb-1",
+            p.headerStyle
+          )}
         >
-          {heading}
+          {p.heading}
         </div>
         {expanded ? (
           <button onClick={(_) => setExpanded(false)}>
@@ -142,7 +148,7 @@ const DefList = (
           </button>
         )}
         {typeof onClickAdd !== "undefined" ? (
-          <button onClick={(e) => onClickAdd(heading, e)}>
+          <button onClick={(e) => onClickAdd(p.heading, e)}>
             <PlusIcon className={iconClasses} />
           </button>
         ) : (
@@ -151,13 +157,13 @@ const DefList = (
       </div>
       <div className="flex flex-col gap-3 items-start">
         {expanded
-          ? elems.map((def) => (
+          ? p.elems.map((def) => (
               <button
                 className={classNames(
                   "text-grey-secondary underline text-left leading-5",
-                  defStyle
+                  p.defStyle
                 )}
-                onClick={(e) => onClickDef(def, e)}
+                onClick={(e) => p.onClickDef(def, e)}
                 key={def}
               >
                 {def}
