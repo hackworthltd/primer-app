@@ -52,19 +52,19 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
         {tab("Info", <InformationCircleIcon className="h-8" />)}
       </div>
       <div className="p-6 pr-4 h-full bg-grey-primary">
-        {TabContents(currentTab, p)}
+        {(() => {
+          switch (currentTab) {
+            case "T&D":
+              return <TypesAndDefinitions {...p}></TypesAndDefinitions>;
+            case "Info":
+              return (
+                <div>Placeholder - &quot;Info&quot; view not implemented</div>
+              );
+          }
+        })()}
       </div>
     </div>
   );
-};
-
-const TabContents = (tab: Tab, p: TypesAndDefinitionsProps): JSX.Element => {
-  switch (tab) {
-    case "T&D":
-      return <TypesAndDefinitions {...p}></TypesAndDefinitions>;
-    case "Info":
-      return <div>Placeholder - &quot;Info&quot; view not implemented</div>;
-  }
 };
 
 const TypesAndDefinitions = ({
