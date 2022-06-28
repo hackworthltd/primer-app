@@ -88,9 +88,9 @@ const TypesAndDefinitions = (
       </div>
 
       <div className="flex flex-col gap-5 p-2 leading-8">
-        {DefList("TYPES", prog.types, "font-bold", "", onClickDef, onClickAdd)}
+        {DefList("Types", prog.types, "font-bold", "", onClickDef, onClickAdd)}
         {DefList(
-          "DEFINITIONS",
+          "Definitions",
           prog.defs,
           "font-bold",
           "",
@@ -98,14 +98,14 @@ const TypesAndDefinitions = (
           onClickAdd
         )}
         {DefList(
-          "IMPORTED TYPES",
+          "Imported Types",
           prog.importedTypes,
           "italic font-bold",
           "italic",
           onClickDef
         )}
         {DefList(
-          "IMPORTED DEFINITIONS",
+          "Imported Definitions",
           prog.importedDefs,
           "italic font-bold",
           "italic",
@@ -131,7 +131,9 @@ const DefList = (
   return (
     <div>
       <div className="flex gap-2">
-        <div className={classNames("text-blue-primary", headerStyle)}>
+        <div
+          className={classNames("text-blue-primary text-lg mb-1", headerStyle)}
+        >
           {heading}
         </div>
         {expanded ? (
