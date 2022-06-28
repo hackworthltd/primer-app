@@ -14,6 +14,9 @@ export type Prog = {
   importedTypes: string[];
 };
 
+const headingStyle = "mb-1 text-lg font-bold text-blue-primary";
+const itemStyle = "leading-5 text-left text-grey-secondary";
+
 export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps;
 type TypesAndDefinitionsProps = {
   prog: Prog;
@@ -126,7 +129,7 @@ const DefList = ({
     <div>
       <div className="flex gap-2">
         <div
-          className={classNames("text-blue-primary text-lg mb-1 font-bold", {
+          className={classNames(headingStyle, {
             ["italic"]: p.italic,
           })}
         >
@@ -153,10 +156,9 @@ const DefList = ({
         {expanded
           ? p.elems.map((def) => (
               <button
-                className={classNames(
-                  "text-grey-secondary underline text-left leading-5",
-                  { ["italic"]: p.italic }
-                )}
+                className={classNames(itemStyle, "underline", {
+                  ["italic"]: p.italic,
+                })}
                 onClick={(e) => p.onClickDef(def, e)}
                 key={def}
               >
