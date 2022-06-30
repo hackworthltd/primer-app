@@ -15,7 +15,7 @@ export type Prog = {
 };
 
 const headerStyle = "pb-3 text-xl font-bold text-blue-primary";
-const headingStyle = "mb-1 text-lg font-bold text-blue-primary";
+const subHeaderStyle = "mb-1 text-lg font-bold text-blue-primary";
 const itemStyle = "leading-5 text-left text-grey-secondary";
 
 export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
@@ -132,7 +132,7 @@ const DefList = ({
     <div>
       <div className="flex gap-2">
         <div
-          className={classNames(headingStyle, {
+          className={classNames(subHeaderStyle, {
             ["italic"]: p.italic,
           })}
         >
@@ -192,11 +192,11 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
           []
         )}
         <div>
-          <div className={headingStyle}>Type</div>
+          <div className={subHeaderStyle}>Type</div>
           <div className={itemStyle}>{type}</div>
         </div>
         <div>
-          <div className={headingStyle}>Folder</div>
+          <div className={subHeaderStyle}>Folder</div>
           <div className={itemStyle}>{folder}</div>
         </div>
       </div>
