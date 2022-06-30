@@ -1,6 +1,5 @@
 import {
   InformationCircleIcon,
-  FolderIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   PlusIcon,
@@ -14,18 +13,29 @@ export type Prog = {
   importedDefs: string[];
   importedTypes: string[];
 };
-export type SidebarProps = {
+
+const headerStyle = "pb-3 text-xl font-bold text-blue-primary";
+const subHeaderStyle = "mb-1 text-lg font-bold text-blue-primary";
+const itemStyle = "leading-5 text-left text-grey-secondary";
+
+export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
+  InfoProps;
+type TypesAndDefinitionsProps = {
   prog: Prog;
-  initialMode: Tab;
   onClickDef: OnClick;
   onClickAdd: OnClick;
+};
+type InfoProps = {
+  shadowed: boolean;
+  type: string;
+  folder: string;
 };
 type OnClick = (
   label: string,
   event: React.MouseEvent<HTMLButtonElement>
 ) => void;
 
-type Tab = "T&D" | "Info" | "Folder";
+type Tab = "T&D" | "Info";
 
 export const Sidebar = (p: SidebarProps): JSX.Element => {
   const [currentTab, switchTab] = useState(p.initialMode);
@@ -47,83 +57,73 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
 
   return (
     <div className="flex flex-col w-96 h-[800px]">
-      <div className="grid shrink-0 grid-cols-3 h-16 text-grey-secondary">
+      <div className="grid shrink-0 grid-cols-2 h-16 text-grey-secondary">
         {tab("T&D", <div className="text-xl font-bold text-center">T&D</div>)}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
-        {tab("Folder", <FolderIcon className="h-8" />)}
       </div>
       <div className="p-6 pr-4 h-full bg-grey-primary">
-        {TabContents(currentTab, p.prog, p.onClickDef, p.onClickAdd)}
+        {(() => {
+          switch (currentTab) {
+            case "T&D":
+              return <TypesAndDefinitions {...p}></TypesAndDefinitions>;
+            case "Info":
+              return <Info {...p}></Info>;
+          }
+        })()}
       </div>
     </div>
   );
 };
 
-const TabContents = (
-  _tab: Tab,
-  prog: Prog,
-  onClickDef: OnClick,
-  onClickAdd: OnClick
-): JSX.Element => {
-  // TODO making this conditional causes a runtime failure due to React hooks...
-  // switch (tab) {
-  //   case "T&D":
-  return TypesAndDefinitions(prog, onClickDef, onClickAdd);
-  // case "Info":
-  //   return <div>Placeholder - "Info" view not implemented</div>;
-  // case "Folder":
-  //   return <div>Placeholder - "Folder" view not implemented</div>;
-  // }
-};
-
-const TypesAndDefinitions = (
-  prog: Prog,
-  onClickDef: OnClick,
-  onClickAdd: OnClick
-): JSX.Element => {
+const TypesAndDefinitions = ({
+  onClickDef,
+  onClickAdd,
+  prog,
+}: TypesAndDefinitionsProps): JSX.Element => {
   return (
     <div className="overflow-auto h-full">
-      <div className="pb-3 text-xl font-bold text-blue-primary">
-        Types & Definitions
-      </div>
+      <div className={headerStyle}>Types & Definitions</div>
 
       <div className="flex flex-col gap-5 p-2 leading-8">
-        {DefList("Types", prog.types, "font-bold", "", onClickDef, onClickAdd)}
-        {DefList(
-          "Definitions",
-          prog.defs,
-          "font-bold",
-          "",
-          onClickDef,
-          onClickAdd
-        )}
-        {DefList(
-          "Imported Types",
-          prog.importedTypes,
-          "italic font-bold",
-          "italic",
-          onClickDef
-        )}
-        {DefList(
-          "Imported Definitions",
-          prog.importedDefs,
-          "italic font-bold",
-          "italic",
-          onClickDef
-        )}
+        <DefList
+          heading="Types"
+          elems={prog.types}
+          italic={false}
+          {...{ onClickDef, onClickAdd }}
+        />
+        <DefList
+          heading="Definitions"
+          elems={prog.defs}
+          italic={false}
+          {...{ onClickDef, onClickAdd }}
+        />
+        <DefList
+          heading="Imported Types"
+          elems={prog.importedTypes}
+          italic={true}
+          {...{ onClickDef }}
+        />
+        <DefList
+          heading="Imported Definitions"
+          elems={prog.importedDefs}
+          italic={true}
+          {...{ onClickDef }}
+        />
       </div>
     </div>
   );
 };
 
-const DefList = (
-  heading: string,
-  elems: string[],
-  headerStyle: string,
-  defStyle: string,
-  onClickDef: OnClick,
-  onClickAdd?: OnClick
-): JSX.Element => {
+const DefList = ({
+  onClickAdd,
+  ...p
+}: {
+  heading: string;
+  elems: string[];
+  italic: boolean;
+  onClickDef: OnClick;
+  onClickAdd?: OnClick;
+}): JSX.Element => {
   const [expanded, setExpanded] = useState(true);
 
   const iconClasses = "w-5 stroke-blue-primary stroke-[3px]";
@@ -132,9 +132,11 @@ const DefList = (
     <div>
       <div className="flex gap-2">
         <div
-          className={classNames("text-blue-primary text-lg mb-1", headerStyle)}
+          className={classNames(subHeaderStyle, {
+            ["italic"]: p.italic,
+          })}
         >
-          {heading}
+          {p.heading}
         </div>
         {expanded ? (
           <button onClick={(_) => setExpanded(false)}>
@@ -146,7 +148,7 @@ const DefList = (
           </button>
         )}
         {typeof onClickAdd !== "undefined" ? (
-          <button onClick={(e) => onClickAdd(heading, e)}>
+          <button onClick={(e) => onClickAdd(p.heading, e)}>
             <PlusIcon className={iconClasses} />
           </button>
         ) : (
@@ -155,19 +157,48 @@ const DefList = (
       </div>
       <div className="flex flex-col gap-3 items-start">
         {expanded
-          ? elems.map((def) => (
+          ? p.elems.map((def) => (
               <button
-                className={classNames(
-                  "text-grey-secondary underline text-left leading-5",
-                  defStyle
-                )}
-                onClick={(e) => onClickDef(def, e)}
+                className={classNames(itemStyle, "underline", {
+                  ["italic"]: p.italic,
+                })}
+                onClick={(e) => p.onClickDef(def, e)}
                 key={def}
               >
                 {def}
               </button>
             ))
           : []}
+      </div>
+    </div>
+  );
+};
+
+const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
+  return (
+    <div className="overflow-auto h-full">
+      <div className={headerStyle}>Selection Info</div>
+      <div className="flex flex-col gap-5 p-2 leading-8">
+        {shadowed ? (
+          <div className="text-red-primary flex items-center gap-1">
+            <InformationCircleIcon className="h-4" />
+            <div>
+              <span>The definition has been </span>
+              <span className="underline">shadowed</span>
+              <span>.</span>
+            </div>
+          </div>
+        ) : (
+          []
+        )}
+        <div>
+          <div className={subHeaderStyle}>Type</div>
+          <div className={itemStyle}>{type}</div>
+        </div>
+        <div>
+          <div className={subHeaderStyle}>Folder</div>
+          <div className={itemStyle}>{folder}</div>
+        </div>
       </div>
     </div>
   );
