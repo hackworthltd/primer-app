@@ -30,5 +30,8 @@ export const Default: ComponentStory<typeof Sidebar> = (args: SidebarProps) => (
       ),
     }}
     initialMode="T&D"
+    shadowed={true}
+    type="Direction → Direction"
+    folder="Direction"
   />
 );
