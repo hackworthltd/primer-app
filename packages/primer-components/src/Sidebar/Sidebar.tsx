@@ -14,6 +14,7 @@ export type Prog = {
   importedTypes: string[];
 };
 
+const headerStyle = "pb-3 text-xl font-bold text-blue-primary";
 const headingStyle = "mb-1 text-lg font-bold text-blue-primary";
 const itemStyle = "leading-5 text-left text-grey-secondary";
 
@@ -81,9 +82,7 @@ const TypesAndDefinitions = ({
 }: TypesAndDefinitionsProps): JSX.Element => {
   return (
     <div className="overflow-auto h-full">
-      <div className="pb-3 text-xl font-bold text-blue-primary">
-        Types & Definitions
-      </div>
+      <div className={headerStyle}>Types & Definitions</div>
 
       <div className="flex flex-col gap-5 p-2 leading-8">
         <DefList
@@ -178,6 +177,7 @@ const DefList = ({
 const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
   return (
     <div className="overflow-auto h-full">
+      <div className={headerStyle}>Selection Info</div>
       <div className="flex flex-col gap-5 p-2 leading-8">
         {shadowed ? (
           <div className="text-red-primary flex items-center gap-1">
