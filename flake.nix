@@ -17,6 +17,10 @@
     pre-commit-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
     # Fixes aarch64-darwin support.
     pre-commit-hooks-nix.inputs.flake-utils.follows = "flake-utils";
+
+    # Note: don't override any of primer's Nix flake inputs, or else
+    # we won't hit its binary cache.
+    primer.url = github:hackworthltd/primer/860660acfaeefdc3e88595e73a2009c2341123c9;
   };
 
   outputs =
@@ -26,6 +30,7 @@
     , hacknix
     , flake-utils
     , pre-commit-hooks-nix
+    , primer
     , ...
     }@inputs:
     let
@@ -85,6 +90,8 @@
       let
         pkgs = pkgsFor system;
 
+        primerPackages = primer.packages.${system};
+
         pre-commit-hooks =
           let
           in
@@ -114,6 +121,10 @@
           };
       in
       {
+        packages = { } // (pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          inherit (primerPackages) primer-service-docker-image;
+        });
+
         checks = {
           source-code-checks = pre-commit-hooks;
         };
