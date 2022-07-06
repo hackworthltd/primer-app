@@ -148,7 +148,7 @@
 
     // {
       hydraJobs = {
-        inherit (self) checks;
+        inherit (self) checks packages;
 
         required =
           let
@@ -157,6 +157,8 @@
           pkgs.releaseTools.aggregate {
             name = "required-nix-ci";
             constituents = builtins.map builtins.attrValues (with self.hydraJobs; [
+              packages.x86_64-linux
+              packages.aarch64-darwin
               checks.x86_64-linux
               checks.aarch64-darwin
             ]);
