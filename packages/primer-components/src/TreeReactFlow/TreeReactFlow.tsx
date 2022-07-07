@@ -94,6 +94,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
         nodes={layoutedNodes}
         edges={forest.edges}
         nodeTypes={nodeTypes}
+        proOptions={{ hideAttribution: true, account: "paid-pro" }}
       ></ReactFlow>
     </div>
   );
