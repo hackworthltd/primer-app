@@ -11,7 +11,7 @@ import { useGetSessionList } from "@/primer-api";
 
 import "@hackworthltd/primer-components/style.css";
 
-const App = (): JSX.Element => {
+const ChooseSession = (): JSX.Element => {
   // NOTE: pagination in our API is 1-indexed.
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
@@ -52,4 +52,4 @@ const App = (): JSX.Element => {
   );
 };
 
-export default App;
+export default ChooseSession;
