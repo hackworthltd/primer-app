@@ -1,11 +1,12 @@
 import * as React from "react";
 import { render } from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "./index.css";
 
 import { NoMatch } from "@hackworthltd/primer-components";
 import ChooseSession from "./ChooseSession";
+import App from "./App";
 
 const queryClient = new QueryClient();
 const rootElement: HTMLElement | null = document.getElementById("root");
@@ -15,7 +16,11 @@ render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <Routes>
-          <Route path="/" element={<ChooseSession />} />
+          <Route path="/" element={<Navigate to="/sessions" />} />
+          <Route path="/sessions">
+            <Route index element={<ChooseSession />} />
+            <Route path=":sessionId" element={<App />} />
+          </Route>
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </QueryClientProvider>
