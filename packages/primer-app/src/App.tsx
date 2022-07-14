@@ -12,6 +12,9 @@ const App = (): JSX.Element => {
       <Error string={"No session id parameter: " + JSON.stringify(params)} />
     );
   }
+  // This hook is *technically* conditional.
+  // But if the condition above fails, then the app is broken anyway.
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const queryRes = useGetApiProgram({ session });
 
   if (!queryRes.isSuccess) {
