@@ -2,6 +2,7 @@ export { default as ActionButton } from "@/ActionButton";
 export { default as ActionButtonList } from "@/ActionButtonList";
 export { default as Avatar } from "@/Avatar";
 export { default as BinaryTreePlaceholder } from "@/BinaryTreePlaceholder";
+export { default as Error } from "@/Error";
 export { default as FloatingToolbar } from "@/FloatingToolbar";
 export { default as GroupedButtonList } from "@/GroupedButtonList";
 export { default as NoMatch } from "@/NoMatch";
