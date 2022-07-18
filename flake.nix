@@ -139,6 +139,7 @@
         devShell = pkgs.mkShell {
           buildInputs = (with pkgs; [
             actionlint
+            flyctl
             nodejs
             nixpkgs-fmt
             rnix-lsp
