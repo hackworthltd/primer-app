@@ -150,7 +150,7 @@
             };
           in
           (pkgs.lib.mapAttrs (name: pkg: mkApp pkg name) {
-            inherit (self.packages) deploy-primer-service;
+            inherit (scripts) deploy-primer-service;
           });
 
         devShell = pkgs.mkShell {
