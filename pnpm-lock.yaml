@@ -18,7 +18,6 @@ importers:
       typescript-eslint-language-service: ^5.0.0
       typescript-language-server: ^0.11.2
       unified-language-server: ^3.0.0
-      vite-plugin-optimize-persist: ^0.1.2
       vite-plugin-package-config: ^0.1.1
       vscode-css-languageserver-bin: ^1.4.0
       vscode-html-languageserver-bin: ^1.4.0
@@ -34,7 +33,6 @@ importers:
       typescript-eslint-language-service: 5.0.0_b7n364ggt6o4xlkgyoaww3ph3q
       typescript-language-server: 0.11.2
       unified-language-server: 3.0.0
-      vite-plugin-optimize-persist: 0.1.2_2uqrud7rrkcopi6txc5uwsxkv4
       vite-plugin-package-config: 0.1.1_vite@2.9.14
       vscode-css-languageserver-bin: 1.4.0
       vscode-html-languageserver-bin: 1.4.0
@@ -72,7 +70,6 @@ importers:
       unified-language-server: ^3.0.0
       vite: ^2.9.14
       vite-plugin-checker: ^0.4.9
-      vite-plugin-optimize-persist: ^0.1.2
       vite-plugin-package-config: ^0.1.1
       vite-tsconfig-paths: ^3.5.0
     dependencies:
@@ -106,7 +103,6 @@ importers:
       typescript: 4.7.4
       vite: 2.9.14
       vite-plugin-checker: 0.4.9_vite@2.9.14
-      vite-plugin-optimize-persist: 0.1.2_2uqrud7rrkcopi6txc5uwsxkv4
       vite-plugin-package-config: 0.1.1_vite@2.9.14
       vite-tsconfig-paths: 3.5.0_vite@2.9.14
 
@@ -168,7 +164,6 @@ importers:
       vite: ^2.9.14
       vite-plugin-checker: ^0.4.9
       vite-plugin-dts: ^1.3.0
-      vite-plugin-optimize-persist: ^0.1.2
       vite-plugin-package-config: ^0.1.1
       vite-tsconfig-paths: ^3.5.0
     dependencies:
@@ -229,7 +224,6 @@ importers:
       vite: 2.9.14
       vite-plugin-checker: 0.4.9_vite@2.9.14
       vite-plugin-dts: 1.3.0_vite@2.9.14
-      vite-plugin-optimize-persist: 0.1.2_2uqrud7rrkcopi6txc5uwsxkv4
       vite-plugin-package-config: 0.1.1_vite@2.9.14
       vite-tsconfig-paths: 3.5.0_vite@2.9.14
 
@@ -250,7 +244,6 @@ importers:
       vite: ^2.9.14
       vite-plugin-checker: ^0.4.9
       vite-plugin-dts: ^1.3.0
-      vite-plugin-optimize-persist: ^0.1.2
       vite-plugin-package-config: ^0.1.1
       vite-tsconfig-paths: ^3.5.0
     dependencies:
@@ -270,7 +263,6 @@ importers:
       vite: 2.9.14
       vite-plugin-checker: 0.4.9_vite@2.9.14
       vite-plugin-dts: 1.3.0_vite@2.9.14
-      vite-plugin-optimize-persist: 0.1.2_2uqrud7rrkcopi6txc5uwsxkv4
       vite-plugin-package-config: 0.1.1_vite@2.9.14
       vite-tsconfig-paths: 3.5.0_vite@2.9.14
 
@@ -15196,20 +15188,6 @@ packages:
       fs-extra: 10.1.0
       ts-morph: 14.0.0
       vite: 2.9.14
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /vite-plugin-optimize-persist/0.1.2_2uqrud7rrkcopi6txc5uwsxkv4:
-    resolution: {integrity: sha512-H/Ebn2kZO8PvwUF08SsT5K5xMJNCWKoGX71+e9/ER3yNj7GHiFjNQlvGg5ih/zEx09MZ9m7WCxOwmEKbeIVzww==}
-    peerDependencies:
-      vite: ^2.0.0
-      vite-plugin-package-config: ^0.1.0
-    dependencies:
-      debug: 4.3.4
-      fs-extra: 10.1.0
-      vite: 2.9.14
-      vite-plugin-package-config: 0.1.1_vite@2.9.14
     transitivePeerDependencies:
       - supports-color
     dev: true
