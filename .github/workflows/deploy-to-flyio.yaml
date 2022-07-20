@@ -1,0 +1,27 @@
+# Note: this workflow simply creates a GitHub Deployment via the API.
+# Our Buildkite primer-app-deploy-primer-service pipeline is triggered
+# by this deployment creation and does the actual deployment,
+# including updating its status. Therefore, this workflow is just a
+# relatively simple fire-and-forget.
+
+name: Deploy primer-service
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: Deploy primer-service
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v3.0.2
+      - uses: chrnorm/deployment-action@v2.0.3
+        name: Create GitHub Deployment
+        id: deployment
+        with:
+          initial-status: "queued"
+          token: '${{ github.token }}'
+          environment-url: https://hackworth-code.fly.dev/
