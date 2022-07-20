@@ -15,7 +15,6 @@
     "typescript-eslint-language-service": "^5.0.0",
     "typescript-language-server": "^0.11.2",
     "unified-language-server": "^3.0.0",
-    "vite-plugin-optimize-persist": "^0.1.2",
     "vite-plugin-package-config": "^0.1.1",
     "vscode-css-languageserver-bin": "^1.4.0",
     "vscode-html-languageserver-bin": "^1.4.0",

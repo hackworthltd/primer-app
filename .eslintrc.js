@@ -37,23 +37,6 @@ module.exports = {
   },
 
   rules: {
-    // @honkhonk/vite-plugin-svgr uses query parameters, which are not
-    // properly ignored by eslint-plugin-import.
-    //
-    // Also, it's not clear how to get eslint to resolve CSS imoprts
-    // from a library, so we just ignore them for now.
-    //
-    // Note: the `2` here means ignore errors. :\
-    "import/no-unresolved": [
-      2,
-      {
-        ignore: [
-          ".svg\\?component",
-          "@hackworthltd/primer-components/style.css",
-        ],
-      },
-    ],
-
     "react-hooks/exhaustive-deps": [
       "warn",
       {

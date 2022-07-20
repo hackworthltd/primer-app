@@ -1,6 +1,6 @@
 import "@/index.css";
 
-import BinaryTreeSvg from "./binary-tree.svg?component";
+import { ReactComponent as BinaryTreeSvg } from "./binary-tree.svg";
 
 export interface BinaryTreePlaceholderProps {
   className?: string;
