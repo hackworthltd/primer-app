@@ -1,0 +1,11 @@
+agents:
+  flyio: "true"
+  os: "linux"
+
+steps:
+  - label: ":fly-io: Deploy to Fly.io"
+    if: build.branch == "main"
+    concurrency: 1
+    concurrency_group: "deploy-to-flyio"
+    command: |
+      nix run .#deploy-primer-service
