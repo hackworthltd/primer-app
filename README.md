@@ -62,7 +62,7 @@ In theory, the local production version of the application should be no differen
 
 Note: you may need to do a `pnpm build` on the `@hackworthltd/primer-components` and `@hackworthltd/primer-types` packages before this will work.
 
-This command runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) in a browser to interact with it. You can run `pnpm watch --open` to automatically open a browser window.
+This command runs the app in development mode. Open [http://localhost:5173](http://localhost:5173) in a browser to interact with it. You can run `pnpm watch --open` to automatically open a browser window.
 
 Thanks to Vite's [hot module reloading feature (HMR)](https://vitejs.dev/guide/features.html#hot-module-replacement), the page will reload automatically whenever you make an edit to any source code or CSS files. (Changing a package's settings in a `.json` or `.js` file may require that you restart the dev server, as these changes are often not automatically picked up.)
 
@@ -250,5 +250,3 @@ Other suggestions:
 * Remove any `stroke` or `fill` colors; in React, we can use CSS to control these.
 
 See https://www.youtube.com/watch?v=MbUyHQRq2go&list=PL7CcGwsqRpSM3w9BT_21tUU8JN2SnyckR&index=15 for an 8-minute tutorial.
-
-We use the [`@honkhonk/vite-plugin-svgr`](https://github.com/lucsky/vite-plugin-svgr) Vite plugin to automatically convert SVGs to React components. See [here](https://github.com/hackworthltd/primer-app/blob/333378833184c039f40912ed5b38272a332be0e8/packages/primer-components/src/BinaryTreePlaceholder/BinaryTreePlaceholder.tsx#L3) for an example of how to use this feature.

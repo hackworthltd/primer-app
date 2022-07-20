@@ -37,7 +37,7 @@
         "name": "typescript-eslint-language-service"
       }
     ],
-    "types": ["@honkhonk/vite-plugin-svgr/client"],
+    "types": ["vite-plugin-svgr/client"],
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]

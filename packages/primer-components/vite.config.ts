@@ -1,11 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import svgr from "@honkhonk/vite-plugin-svgr";
+import svgr from "vite-plugin-svgr";
 import checker from "vite-plugin-checker";
 import dts from "vite-plugin-dts";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
-import OptimizationPersist from "vite-plugin-optimize-persist";
 import PkgConfig from "vite-plugin-package-config";
 import { name, version } from "./package.json";
 
@@ -29,7 +28,6 @@ export default defineConfig({
     svgr(),
     tsconfigPaths(),
     PkgConfig(),
-    OptimizationPersist(),
   ],
 
   // Don't write to node_modules, in case someday we can get it from Nix.
