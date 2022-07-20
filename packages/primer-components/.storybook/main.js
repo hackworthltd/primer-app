@@ -1,6 +1,6 @@
 const path = require("path");
 
-const svgr = require("@honkhonk/vite-plugin-svgr").default;
+const svgr = require("vite-plugin-svgr").default;
 
 const tsconfigPaths = require("vite-tsconfig-paths").default;
 

@@ -250,5 +250,3 @@ Other suggestions:
 * Remove any `stroke` or `fill` colors; in React, we can use CSS to control these.
 
 See https://www.youtube.com/watch?v=MbUyHQRq2go&list=PL7CcGwsqRpSM3w9BT_21tUU8JN2SnyckR&index=15 for an 8-minute tutorial.
-
-We use the [`@honkhonk/vite-plugin-svgr`](https://github.com/lucsky/vite-plugin-svgr) Vite plugin to automatically convert SVGs to React components. See [here](https://github.com/hackworthltd/primer-app/blob/333378833184c039f40912ed5b38272a332be0e8/packages/primer-components/src/BinaryTreePlaceholder/BinaryTreePlaceholder.tsx#L3) for an example of how to use this feature.
