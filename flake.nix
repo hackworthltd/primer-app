@@ -157,10 +157,9 @@
           buildInputs = (with pkgs; [
             actionlint
             flyctl
-            nodejs
             nixpkgs-fmt
+            nodejs-18_x
             rnix-lsp
-            nodePackages.pnpm
           ]);
 
           # Make sure the Nix shell includes node_modules's bin dir in
