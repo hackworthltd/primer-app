@@ -1,6 +1,8 @@
 import Axios, { AxiosRequestConfig, AxiosError } from "axios";
 
-export const AXIOS_INSTANCE = Axios.create({ baseURL: "" });
+export const AXIOS_INSTANCE = Axios.create({
+  baseURL: import.meta.env["VITE_API_URL"],
+});
 
 export const useCustomInstance = <T>(): ((
   config: AxiosRequestConfig
