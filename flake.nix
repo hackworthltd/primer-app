@@ -20,7 +20,7 @@
 
     # Note: don't override any of primer's Nix flake inputs, or else
     # we won't hit its binary cache.
-    primer.url = github:hackworthltd/primer/7de88bd8a11773d93a02f6c48a41c7c1093e1994;
+    primer.url = github:hackworthltd/primer/7c5831cabbd9da6f851f299829f29742afdd0d72;
   };
 
   outputs =
@@ -53,11 +53,13 @@
 
       forAllSupportedSystems = flake-utils.lib.eachSystem [
         "x86_64-linux"
+        "aarch64-linux"
         "aarch64-darwin"
       ];
 
       forAllTestSystems = flake-utils.lib.eachSystem [
         "x86_64-linux"
+        "aarch64-linux"
       ];
 
       overlay = hacknix.lib.overlays.combine [
@@ -133,7 +135,7 @@
         };
       in
       {
-        packages = { } // (pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+        packages = { } // (pkgs.lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
           inherit (primerPackages) primer-service-docker-image;
           inherit (scripts) deploy-primer-service;
         });
@@ -183,8 +185,10 @@
             name = "required-nix-ci";
             constituents = builtins.map builtins.attrValues (with self.hydraJobs; [
               packages.x86_64-linux
+              packages.aarch64-linux
               packages.aarch64-darwin
               checks.x86_64-linux
+              checks.aarch64-linux
               checks.aarch64-darwin
             ]);
             meta.description = "Required Nix CI builds";
