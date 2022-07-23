@@ -53,11 +53,13 @@
 
       forAllSupportedSystems = flake-utils.lib.eachSystem [
         "x86_64-linux"
+        "aarch64-linux"
         "aarch64-darwin"
       ];
 
       forAllTestSystems = flake-utils.lib.eachSystem [
         "x86_64-linux"
+        "aarch64-linux"
       ];
 
       overlay = hacknix.lib.overlays.combine [
@@ -133,7 +135,7 @@
         };
       in
       {
-        packages = { } // (pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+        packages = { } // (pkgs.lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
           inherit (primerPackages) primer-service-docker-image;
           inherit (scripts) deploy-primer-service;
         });
@@ -183,8 +185,10 @@
             name = "required-nix-ci";
             constituents = builtins.map builtins.attrValues (with self.hydraJobs; [
               packages.x86_64-linux
+              packages.aarch64-linux
               packages.aarch64-darwin
               checks.x86_64-linux
+              checks.aarch64-linux
               checks.aarch64-darwin
             ]);
             meta.description = "Required Nix CI builds";
