@@ -20,7 +20,7 @@
 
     # Note: don't override any of primer's Nix flake inputs, or else
     # we won't hit its binary cache.
-    primer.url = github:hackworthltd/primer/7de88bd8a11773d93a02f6c48a41c7c1093e1994;
+    primer.url = github:hackworthltd/primer/7c5831cabbd9da6f851f299829f29742afdd0d72;
   };
 
   outputs =
