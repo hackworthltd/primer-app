@@ -5,8 +5,11 @@ import { TreeInteractiveRender } from "@hackworthltd/primer-types";
 export const TreeOutline = (tree: TreeInteractiveRender): JSX.Element => (
   <ul className="ml-2 list-disc list-inside">
     <li onClick={tree.onClick} onContextMenu={tree.onRightClick}>
+      {/*  @ts-expect-error */}
+
       {tree.label}
     </li>
+    {/*  @ts-expect-error */}
     <ChildTrees trees={tree.childTrees} />
   </ul>
 );

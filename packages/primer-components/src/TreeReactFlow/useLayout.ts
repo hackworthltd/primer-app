@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { CSSProperties, useMemo } from "react";
 import { Node, Edge, Position } from "react-flow-renderer/nocss";
 import { graphlib, layout } from "dagre";
 
@@ -18,17 +18,41 @@ const positionMap = {
   B: Position.Bottom,
 };
 
+// TODO copy-pasted
+type PrimerNodeProps = {
+  ann: string;
+  body?: string;
+  width: number;
+  height: number;
+  style: CSSProperties;
+};
+
 function layoutGraph(
-  nodes: Node[],
+  nodes: Node<PrimerNodeProps>[],
   edges: Edge[],
   { direction = "TB", nodeWidth, nodeHeight }: Options
 ) {
-  const dagreGraph = new graphlib.Graph();
+  // const dagreGraph = new graphlib.Graph({ compound: true });
+  const dagreGraph = new graphlib.Graph({ compound: true, directed: true });
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   dagreGraph.setGraph({ rankdir: direction });
 
+  // miniminal example a lot more minimal than suggested: https://github.com/dagrejs/dagre/issues/238
+  // const g = dagreGraph;
+  // g.setNode("a", { label: "A" });
+  // g.setNode("b", { label: "B" });
+
+  // g.setNode("top_group", { label: "Top Group" });
+  // g.setNode("bottom_group", { label: "Group" });
+
+  // g.setParent("b", "bottom_group");
+  // g.setEdge("a", "bottom_group");
+
   nodes.forEach((el) => {
-    dagreGraph.setNode(el.id, { width: nodeWidth, height: nodeHeight });
+    if (el.parentNode) {
+      dagreGraph.setParent(el.id, el.parentNode);
+    }
+    dagreGraph.setNode(el.id, { width: el.data.width, height: el.data.height });
   });
 
   edges.forEach((el) => {

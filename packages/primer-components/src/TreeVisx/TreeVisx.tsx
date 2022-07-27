@@ -41,6 +41,7 @@ export const TreeVisx = ({
   return (
     <svg width={width} height={height}>
       <Group left={mx} top={my}>
+        {/*  @ts-expect-error */}
         <Tree size={[w, h]} root={hierarchy(tree, (t) => t.childTrees)}>
           {(tree) => (
             <>
@@ -68,6 +69,7 @@ export const TreeVisx = ({
 type HierarchyNode = HierarchyPointNode<TreeInteractiveRender>;
 
 function Node({ node }: { node: HierarchyNode }): JSX.Element {
+  // @ts-ignore
   const s = node.data.label;
   const len = getStringWidth(s) || 0;
   return (

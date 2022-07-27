@@ -6,25 +6,38 @@ import * as React from "react";
  * @interface Tree
  */
 export interface Tree {
-  /**
-   *
-   * @type {Array<Tree>}
-   * @memberof Tree
-   */
-  childTrees: Array<Tree>;
-  /**
-   *
-   * @type {number}
-   * @memberof Tree
-   */
+  ann: string;
+  body?: string;
+  childTrees: Pair[];
+  colour: string;
   nodeId: number;
-  /**
-   *
-   * @type {string}
-   * @memberof Tree
-   */
-  label: string;
 }
+
+export interface Pair {
+  fstPair: EitherBoxTree;
+  sndPair: ChildDir;
+}
+
+export type EitherBoxTree = EitherBoxTreeOneOf | EitherBoxTreeOneOfTwo;
+export type EitherBoxTreeOneOf = {
+  Left: Box;
+};
+export type EitherBoxTreeOneOfTwo = {
+  Right: Tree;
+};
+export interface Box {
+  ann: string;
+  childTrees: Pair[];
+  colour: string;
+  inside: Tree;
+}
+export type ChildDir = typeof ChildDir[keyof typeof ChildDir];
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ChildDir = {
+  ChildLeft: "ChildLeft",
+  ChildRight: "ChildRight",
+  ChildBottom: "ChildBottom",
+} as const;
 
 /**
  * TreeInteractiveRender is like Tree, but has added information for frontend
@@ -37,25 +50,14 @@ export interface Tree {
  * @export
  * @interface TreeInteractiveRender
  */
+
 export interface TreeInteractiveRender {
-  /**
-   *
-   * @type {Array<Tree>}
-   * @memberof Tree
-   */
-  childTrees: Array<Tree>;
-  /**
-   *
-   * @type {number}
-   * @memberof Tree
-   */
+  ann: string;
+  body?: string;
+  childTrees: Pair[];
+  colour: string;
   nodeId: number;
-  /**
-   *
-   * @type {string}
-   * @memberof Tree
-   */
-  label: string;
+
   /**
    *
    * @type {React.MouseEventHandler<unknown>}

@@ -147,9 +147,22 @@ const treesDBall: TreeInteractiveRender[] = [
                             inside: {
                               ann: "Con",
                               body: "Succ",
-                              childTrees: [],
+                              childTrees: [
+                                {
+                                  fstPair: {
+                                    Right: {
+                                      ann: "ann",
+                                      body: "n",
+                                      childTrees: [],
+                                      colour: "cyan",
+                                      nodeId: 7,
+                                    },
+                                  },
+                                  sndPair: "ChildRight",
+                                },
+                              ],
                               colour: "turquoise",
-                              nodeId: 11956,
+                              nodeId: 265420,
                             },
                           },
                         },
@@ -162,7 +175,7 @@ const treesDBall: TreeInteractiveRender[] = [
                       body: "Zero",
                       childTrees: [],
                       colour: "turquoise",
-                      nodeId: 11956,
+                      nodeId: 265421,
                     },
                   },
                 },
@@ -366,9 +379,22 @@ const treesDBall: TreeInteractiveRender[] = [
                             inside: {
                               ann: "Con",
                               body: "Succ",
-                              childTrees: [],
+                              childTrees: [
+                                {
+                                  fstPair: {
+                                    Right: {
+                                      ann: "ann",
+                                      body: "n",
+                                      childTrees: [],
+                                      colour: "cyan",
+                                      nodeId: 18,
+                                    },
+                                  },
+                                  sndPair: "ChildRight",
+                                },
+                              ],
                               colour: "turquoise",
-                              nodeId: 11956,
+                              nodeId: 265422,
                             },
                           },
                         },
@@ -381,7 +407,7 @@ const treesDBall: TreeInteractiveRender[] = [
                       body: "Zero",
                       childTrees: [],
                       colour: "turquoise",
-                      nodeId: 11956,
+                      nodeId: 265423,
                     },
                   },
                 },
@@ -400,4 +426,5 @@ const treesDBall: TreeInteractiveRender[] = [
   },
 ];
 
-const treesDB = [treesDBall[0] as TreeInteractiveRender];
+const treesDB = [treesDBall[2]!];
+// const treesDB = treesDBall;

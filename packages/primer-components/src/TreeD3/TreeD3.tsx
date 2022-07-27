@@ -22,6 +22,7 @@ function d3graph(
   // eslint-disable-next-line import/namespace
   const svg = d3.select(svgRef);
 
+  //  @ts-expect-error
   // eslint-disable-next-line import/namespace
   const hier = d3.hierarchy(tree, (d) => d.childTrees);
 
@@ -143,6 +144,7 @@ function d3graph(
   //   compute the transform to put the group into final position.
   nodeEnter
     .append("text")
+    // @ts-expect-error
     .text((d) => d.data.label)
     .attr("x", 0)
     .attr("y", 0)

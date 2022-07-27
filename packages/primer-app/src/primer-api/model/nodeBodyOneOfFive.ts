@@ -5,10 +5,8 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { Session } from "./session";
-import type { PaginatedMeta } from "./paginatedMeta";
+import type { NodeBodyOneOfFiveTag } from "./nodeBodyOneOfFiveTag";
 
-export interface PaginatedSession {
-  items: Session[];
-  meta: PaginatedMeta;
-}
+export type NodeBodyOneOfFive = {
+  tag: NodeBodyOneOfFiveTag;
+};
