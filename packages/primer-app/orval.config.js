@@ -17,6 +17,9 @@ module.exports = {
           path: "./mutator/use-custom-instance.ts",
           name: "useCustomInstance",
         },
+        query: {
+          signal: false,
+        },
       },
     },
   },
