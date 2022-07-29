@@ -315,14 +315,15 @@
         "nix-darwin": "nix-darwin",
         "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs_2",
+        "pre-commit-hooks-nix": "pre-commit-hooks-nix",
         "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1658519753,
-        "narHash": "sha256-2bBLwCHZks/GxTYqDLLhcUyG0fgR47loJrDaSq4C5r8=",
+        "lastModified": 1659103113,
+        "narHash": "sha256-BTYThIhi7jKs5SRIi+C3y6bjfjXqbLcW0xSFdC0sGWY=",
         "owner": "hackworthltd",
         "repo": "hacknix",
-        "rev": "83fab803c417d791f38796d296939dd897f9baee",
+        "rev": "f07ff963a7ae1baa2c0e4025dfc209d379123c00",
         "type": "github"
       },
       "original": {
@@ -697,11 +698,11 @@
     },
     "nixpkgs-22_05": {
       "locked": {
-        "lastModified": 1658029355,
-        "narHash": "sha256-VJcYmkYfzwHrZ76SMH6y9KqoVFOPgZiJgh1rK9cF2mw=",
+        "lastModified": 1658634393,
+        "narHash": "sha256-VW7edeFzA9VU8gZPxPFGpoPsM2AQLYHKhA9H5+OYtno=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "4e329926df7ee5fa49929a83d31ee7d541f8b45c",
+        "rev": "2e14bc76ab41c60ba57fd57ff52badaa29d349f5",
         "type": "github"
       },
       "original": {
@@ -760,11 +761,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1658430343,
-        "narHash": "sha256-cZ7dw+dyHELMnnMQvCE9HTJ4liqwpsIt2VFbnC+GNNk=",
+        "lastModified": 1659072678,
+        "narHash": "sha256-tOAZdTFilNCASEkwS2wCtSQkfWle7JKb4fXgKgTbpRc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e2b34f0f11ed8ad83d9ec9c14260192c3bcccb0d",
+        "rev": "1a1bd86756ca15f8bafdce4499d6a88089bec3b6",
         "type": "github"
       },
       "original": {
@@ -839,18 +840,20 @@
     "pre-commit-hooks-nix": {
       "inputs": {
         "flake-utils": [
+          "hacknix",
           "flake-utils"
         ],
         "nixpkgs": [
+          "hacknix",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1656169028,
-        "narHash": "sha256-y9DRauokIeVHM7d29lwT8A+0YoGUBXV3H0VErxQeA8s=",
+        "lastModified": 1658611562,
+        "narHash": "sha256-jktQ3mRrFAiFzzmVxQXh+8IxZOEE4hfr7St3ncXeVy4=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "db3bd555d3a3ceab208bed48f983ccaa6a71a25e",
+        "rev": "f436e6dbc10bb3500775785072a40eefe057b18e",
         "type": "github"
       },
       "original": {
@@ -860,6 +863,29 @@
       }
     },
     "pre-commit-hooks-nix_2": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1658611562,
+        "narHash": "sha256-jktQ3mRrFAiFzzmVxQXh+8IxZOEE4hfr7St3ncXeVy4=",
+        "owner": "cachix",
+        "repo": "pre-commit-hooks.nix",
+        "rev": "f436e6dbc10bb3500775785072a40eefe057b18e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cachix",
+        "repo": "pre-commit-hooks.nix",
+        "type": "github"
+      }
+    },
+    "pre-commit-hooks-nix_3": {
       "inputs": {
         "flake-utils": [
           "primer",
@@ -896,20 +922,20 @@
           "haskell-nix",
           "nixpkgs-unstable"
         ],
-        "pre-commit-hooks-nix": "pre-commit-hooks-nix_2"
+        "pre-commit-hooks-nix": "pre-commit-hooks-nix_3"
       },
       "locked": {
-        "lastModified": 1658546399,
-        "narHash": "sha256-gxnOHdaVLJkF4cvVLCcc5KbwP2H1PFYHtJP08papNdY=",
+        "lastModified": 1659009450,
+        "narHash": "sha256-mUXOvH2EkB392tQJphy4zitQnT7eEbQsf9TkPjuckvE=",
         "owner": "hackworthltd",
         "repo": "primer",
-        "rev": "7c5831cabbd9da6f851f299829f29742afdd0d72",
+        "rev": "d898ec0d3c62414123c7c899d47910d64d1d9e80",
         "type": "github"
       },
       "original": {
         "owner": "hackworthltd",
         "repo": "primer",
-        "rev": "7c5831cabbd9da6f851f299829f29742afdd0d72",
+        "rev": "d898ec0d3c62414123c7c899d47910d64d1d9e80",
         "type": "github"
       }
     },
@@ -923,7 +949,7 @@
           "hacknix",
           "nixpkgs"
         ],
-        "pre-commit-hooks-nix": "pre-commit-hooks-nix",
+        "pre-commit-hooks-nix": "pre-commit-hooks-nix_2",
         "primer": "primer"
       }
     },
@@ -936,11 +962,11 @@
         "nixpkgs-22_05": "nixpkgs-22_05"
       },
       "locked": {
-        "lastModified": 1658398472,
-        "narHash": "sha256-DjPJ3YQXyV1GRvF3ToBIY+RYdypwNxYchN1HIhDPLe0=",
+        "lastModified": 1658635258,
+        "narHash": "sha256-EC8y3Rg+l9IzIUdOaFSA0LMdDipTRoweg1Y2EL8XhMc=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "6efa719f8d02139ce41398b9e59e06888dc1305a",
+        "rev": "d7f8cf1b77ebe5f287884f17b1ee4cc4f48bad1d",
         "type": "github"
       },
       "original": {
