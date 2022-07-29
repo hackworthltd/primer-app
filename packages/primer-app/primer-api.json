@@ -63,6 +63,90 @@
                 ],
                 "type": "object"
             },
+            "NodeBody": {
+                "oneOf": [
+                    {
+                        "properties": {
+                            "contents": {
+                                "type": "string"
+                            },
+                            "tag": {
+                                "enum": [
+                                    "TextBody"
+                                ],
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "tag",
+                            "contents"
+                        ],
+                        "type": "object"
+                    },
+                    {
+                        "properties": {
+                            "contents": {
+                                "$ref": "#/components/schemas/Tree"
+                            },
+                            "tag": {
+                                "enum": [
+                                    "BoxBody"
+                                ],
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "tag",
+                            "contents"
+                        ],
+                        "type": "object"
+                    },
+                    {
+                        "properties": {
+                            "tag": {
+                                "enum": [
+                                    "NoBody"
+                                ],
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "tag"
+                        ],
+                        "type": "object"
+                    }
+                ],
+                "type": "object"
+            },
+            "NodeStyle": {
+                "enum": [
+                    "StyleHole",
+                    "StyleEmptyHole",
+                    "StyleAnn",
+                    "StyleApp",
+                    "StyleAPP",
+                    "StyleCon",
+                    "StyleLam",
+                    "StyleLAM",
+                    "StyleVar",
+                    "StyleGlobalVarRef",
+                    "StyleLocalVarRef",
+                    "StyleLet",
+                    "StyleLetType",
+                    "StyleLetrec",
+                    "StyleCase",
+                    "StylePrimCon",
+                    "StyleTEmptyHole",
+                    "StyleTHole",
+                    "StyleTCon",
+                    "StyleTFun",
+                    "StyleTVar",
+                    "StyleTApp",
+                    "StyleTForall",
+                    "StylePattern"
+                ],
+                "type": "string"
+            },
             "PaginatedMeta": {
                 "properties": {
                     "firstPage": {
@@ -168,6 +252,9 @@
             },
             "Tree": {
                 "properties": {
+                    "body": {
+                        "$ref": "#/components/schemas/NodeBody"
+                    },
                     "childTrees": {
                         "items": {
                             "$ref": "#/components/schemas/Tree"
@@ -178,14 +265,20 @@
                         "type": "string"
                     },
                     "nodeId": {
-                        "maximum": 9223372036854775807,
-                        "minimum": -9223372036854775808,
-                        "type": "integer"
+                        "type": "string"
+                    },
+                    "rightChild": {
+                        "$ref": "#/components/schemas/Tree"
+                    },
+                    "style": {
+                        "$ref": "#/components/schemas/NodeStyle"
                     }
                 },
                 "required": [
                     "nodeId",
                     "label",
+                    "style",
+                    "body",
                     "childTrees"
                 ],
                 "type": "object"
