@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "./index.css";
@@ -10,8 +10,9 @@ import App from "./App";
 
 const queryClient = new QueryClient();
 const rootElement: HTMLElement | null = document.getElementById("root");
+const root = createRoot(rootElement!);
 
-render(
+root.render(
   <React.StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
@@ -25,6 +26,5 @@ render(
         </Routes>
       </QueryClientProvider>
     </BrowserRouter>
-  </React.StrictMode>,
-  rootElement
+  </React.StrictMode>
 );
