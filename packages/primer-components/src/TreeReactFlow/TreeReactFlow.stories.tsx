@@ -1,6 +1,13 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { TreeReactFlow, TreeReactFlowProps } from "./TreeReactFlow";
-import { tree1, tree2, tree3, tree4, tree5 } from "@/examples/trees";
+import {
+  tree1,
+  tree2,
+  tree3,
+  tree4,
+  tree5,
+  oddEvenTrees,
+} from "@/examples/trees";
 
 export default {
   title: "Application/Component Library/TreeReactFlow",
@@ -27,3 +34,6 @@ export const Tree5: ComponentStory<typeof TreeReactFlow> = (
 export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
 ) => <TreeReactFlow {...props} trees={[tree1, tree2, tree3, tree4, tree5]} />;
+export const OddAndEven: ComponentStory<typeof TreeReactFlow> = (
+  _: TreeReactFlowProps
+) => <TreeReactFlow {...props} trees={oddEvenTrees} />;
