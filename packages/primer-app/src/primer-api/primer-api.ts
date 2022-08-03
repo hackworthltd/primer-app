@@ -15,83 +15,79 @@ import type {
   QueryKey,
 } from "@tanstack/react-query";
 import type {
-  Prog,
-  GetApiProgramParams,
+  Uuid,
   PaginatedSession,
   GetSessionListParams,
-  Uuid,
+  Prog,
 } from "./model";
 import { useCustomInstance } from "./mutator/use-custom-instance";
 import type { ErrorType } from "./mutator/use-custom-instance";
 
-export const useGetApiProgramHook = () => {
-  const getApiProgram = useCustomInstance<Prog>();
+/**
+ * Copy the session whose ID is given in the request body to a new session, and return the new session's ID. Note that this method can be called at any time and is not part of the session-specific API, as it's not scoped by the current session ID like those methods are.
+ * @summary Copy a session to a new session
+ */
+export const useCopySessionHook = () => {
+  const copySession = useCustomInstance<Uuid>();
 
-  return (params: GetApiProgramParams, signal?: AbortSignal) => {
-    return getApiProgram({
-      url: `/api/program`,
-      method: "get",
-      params,
-      ...(signal ? { signal } : {}),
+  return (uuid: Uuid) => {
+    return copySession({
+      url: `/openapi/copy-session`,
+      method: "post",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: uuid,
     });
   };
 };
 
-export const getGetApiProgramQueryKey = (params: GetApiProgramParams) => [
-  `/api/program`,
-  ...(params ? [params] : []),
-];
-
-export type GetApiProgramQueryResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof useGetApiProgramHook>>>
+export type CopySessionMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useCopySessionHook>>>
 >;
-export type GetApiProgramQueryError = ErrorType<void>;
+export type CopySessionMutationBody = Uuid;
+export type CopySessionMutationError = ErrorType<void>;
 
-export const useGetApiProgram = <
-  TData = Awaited<ReturnType<ReturnType<typeof useGetApiProgramHook>>>,
-  TError = ErrorType<void>
->(
-  params: GetApiProgramParams,
-  options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<ReturnType<typeof useGetApiProgramHook>>>,
-      TError,
-      TData
-    >;
-  }
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = queryOptions?.queryKey ?? getGetApiProgramQueryKey(params);
-
-  const getApiProgram = useGetApiProgramHook();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<ReturnType<typeof useGetApiProgramHook>>>
-  > = ({ signal }) => getApiProgram(params, signal);
-
-  const query = useQuery<
-    Awaited<ReturnType<ReturnType<typeof useGetApiProgramHook>>>,
+export const useCopySession = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useCopySessionHook>>>,
     TError,
-    TData
-  >(queryKey, queryFn, queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
+    { data: Uuid },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const copySession = useCopySessionHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useCopySessionHook>>>,
+    { data: Uuid }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return copySession(data);
   };
 
-  query.queryKey = queryKey;
-
-  return query;
+  return useMutation<
+    Awaited<ReturnType<typeof copySession>>,
+    TError,
+    { data: Uuid },
+    TContext
+  >(mutationFn, mutationOptions);
 };
 
 /**
- * @summary List sessions
+ * Get a list of all sessions and their human-readable names. By default, this method returns the list of all sessions in the persistent database, but optionally it can return just the list of all sessions in memory, which is mainly useful for testing. Note that in a production system, this endpoint should obviously be authentication-scoped and only return the list of sessions that the caller is authorized to see.
+ * @summary Get the list of sessions
  */
 export const useGetSessionListHook = () => {
   const getSessionList = useCustomInstance<PaginatedSession>();
 
   return (params?: GetSessionListParams, signal?: AbortSignal) => {
     return getSessionList({
-      url: `/api/sessions`,
+      url: `/openapi/sessions`,
       method: "get",
       params,
       ...(signal ? { signal } : {}),
@@ -100,7 +96,7 @@ export const useGetSessionListHook = () => {
 };
 
 export const getGetSessionListQueryKey = (params?: GetSessionListParams) => [
-  `/api/sessions`,
+  `/openapi/sessions`,
   ...(params ? [params] : []),
 ];
 
@@ -146,13 +142,13 @@ export const useGetSessionList = <
 };
 
 /**
- * @summary Create a new session
+ * @summary Create a new session and return its ID
  */
 export const useCreateSessionHook = () => {
   const createSession = useCustomInstance<Uuid>();
 
   return () => {
-    return createSession({ url: `/api/sessions`, method: "post" });
+    return createSession({ url: `/openapi/sessions`, method: "post" });
   };
 };
 
@@ -191,4 +187,237 @@ export const useCreateSession = <
     TVariables,
     TContext
   >(mutationFn, mutationOptions);
+};
+
+/**
+ * @summary Get the specified session's name
+ */
+export const useGetSessionNameHook = () => {
+  const getSessionName = useCustomInstance<string>();
+
+  return (sessionId: string, signal?: AbortSignal) => {
+    return getSessionName({
+      url: `/openapi/sessions/${sessionId}/name`,
+      method: "get",
+      ...(signal ? { signal } : {}),
+    });
+  };
+};
+
+export const getGetSessionNameQueryKey = (sessionId: string) => [
+  `/openapi/sessions/${sessionId}/name`,
+];
+
+export type GetSessionNameQueryResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>
+>;
+export type GetSessionNameQueryError = ErrorType<void>;
+
+export const useGetSessionName = <
+  TData = Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>,
+  TError = ErrorType<void>
+>(
+  sessionId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetSessionNameQueryKey(sessionId);
+
+  const getSessionName = useGetSessionNameHook();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>
+  > = ({ signal }) => getSessionName(sessionId, signal);
+
+  const query = useQuery<
+    Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>,
+    TError,
+    TData
+  >(queryKey, queryFn, {
+    enabled: !!sessionId,
+    ...queryOptions,
+  }) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryKey;
+
+  return query;
+};
+
+/**
+ * Attempt to set the current session name. Returns the actual new session name. (Note that this may differ from the name provided.)
+ * @summary Set the specified session's name
+ */
+export const useSetSessionNameHook = () => {
+  const setSessionName = useCustomInstance<string>();
+
+  return (sessionId: string, setSessionNameBody: string) => {
+    return setSessionName({
+      url: `/openapi/sessions/${sessionId}/name`,
+      method: "put",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: setSessionNameBody,
+    });
+  };
+};
+
+export type SetSessionNameMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useSetSessionNameHook>>>
+>;
+export type SetSessionNameMutationBody = string;
+export type SetSessionNameMutationError = ErrorType<void>;
+
+export const useSetSessionName = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useSetSessionNameHook>>>,
+    TError,
+    { sessionId: string; data: string },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const setSessionName = useSetSessionNameHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useSetSessionNameHook>>>,
+    { sessionId: string; data: string }
+  > = (props) => {
+    const { sessionId, data } = props ?? {};
+
+    return setSessionName(sessionId, data);
+  };
+
+  return useMutation<
+    Awaited<ReturnType<typeof setSessionName>>,
+    TError,
+    { sessionId: string; data: string },
+    TContext
+  >(mutationFn, mutationOptions);
+};
+
+/**
+ * @summary Get the current program state
+ */
+export const useGetProgramHook = () => {
+  const getProgram = useCustomInstance<Prog>();
+
+  return (sessionId: string, signal?: AbortSignal) => {
+    return getProgram({
+      url: `/openapi/sessions/${sessionId}/program`,
+      method: "get",
+      ...(signal ? { signal } : {}),
+    });
+  };
+};
+
+export const getGetProgramQueryKey = (sessionId: string) => [
+  `/openapi/sessions/${sessionId}/program`,
+];
+
+export type GetProgramQueryResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>
+>;
+export type GetProgramQueryError = ErrorType<void>;
+
+export const useGetProgram = <
+  TData = Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>,
+  TError = ErrorType<void>
+>(
+  sessionId: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetProgramQueryKey(sessionId);
+
+  const getProgram = useGetProgramHook();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>
+  > = ({ signal }) => getProgram(sessionId, signal);
+
+  const query = useQuery<
+    Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>,
+    TError,
+    TData
+  >(queryKey, queryFn, {
+    enabled: !!sessionId,
+    ...queryOptions,
+  }) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Get the current server version
+ */
+export const useGetVersionHook = () => {
+  const getVersion = useCustomInstance<string>();
+
+  return (signal?: AbortSignal) => {
+    return getVersion({
+      url: `/openapi/version`,
+      method: "get",
+      ...(signal ? { signal } : {}),
+    });
+  };
+};
+
+export const getGetVersionQueryKey = () => [`/openapi/version`];
+
+export type GetVersionQueryResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>
+>;
+export type GetVersionQueryError = ErrorType<unknown>;
+
+export const useGetVersion = <
+  TData = Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>,
+  TError = ErrorType<unknown>
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>,
+    TError,
+    TData
+  >;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetVersionQueryKey();
+
+  const getVersion = useGetVersionHook();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>
+  > = ({ signal }) => getVersion(signal);
+
+  const query = useQuery<
+    Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>,
+    TError,
+    TData
+  >(queryKey, queryFn, queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryKey;
+
+  return query;
 };

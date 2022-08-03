@@ -1,21 +1,21 @@
 import { TreeReactFlow, Error } from "@hackworthltd/primer-components";
 import "@hackworthltd/primer-components/style.css";
 import { useParams } from "react-router-dom";
-import { useGetApiProgram } from "./primer-api";
+import { useGetProgram } from "./primer-api";
 
 const App = (): JSX.Element => {
   const params = useParams();
-  const session = params["sessionId"];
+  const sessionId = params["sessionId"];
 
-  if (!session) {
+  if (!sessionId) {
     return (
-      <Error string={"No session id parameter: " + JSON.stringify(params)} />
+      <Error string={"No sessionId parameter: " + JSON.stringify(params)} />
     );
   }
   // This hook is *technically* conditional.
   // But if the condition above fails, then the app is broken anyway.
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const queryRes = useGetApiProgram({ session });
+  const queryRes = useGetProgram(sessionId);
 
   if (!queryRes.isSuccess) {
     return (

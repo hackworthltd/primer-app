@@ -12,6 +12,10 @@ For this project, we use a monorepo containing multiple projects: `@hackworthltd
 
 The main reason for this project organization is so that Hackworth members and other contributors can develop UI components, using mainly HTML, CSS, and a bit of React, without needing to understand all the details of a complicated frontend web application. It also means that we can use tools and third-party integrations to develop and test these components without creating extraneous dependencies in our frontend application, so that our frontend application can remain relatively lightweight and move at the pace of React, rather than being held back by third-party dependencies that might lag behind the rest of the React ecosystem.
 
+### This repo's relationship to the Primer repo
+
+Because the Primer backend project is open source, and this project is not, the 2 projects must live in separate repositories. In order to keep the frontend code in sync with a particular version of the Primer backend/API, we pin the Primer backend repo to a particular git commit/rev via a Nix flake input pin. This ensures that when we run a local `primer-service` instance during development ([see below](#Running-a-local-`primer-service`-instance)), we're running the correct version of the backend for the current frontend, and we don't need to worry about keeping our local copies of these 2 repos in sync. The drawback to this approach is that if we need to make backend changes to accommodate a new frontend feature, we must first commit those changes to the backend repo's `main` branch before we can update the local Nix flake pin. (However, we can always fall back to running the local `primer-service` from a local copy of the backend repo, if necessary.)
+
 ## Build system
 
 All of the packages in this monorepo are built with the [Vite build system](https://vitejs.dev/guide/). While this build system isn't as full-featured as [Create React App](https://create-react-app.dev), it's much simpler, more agile, and significantly faster than [Webpack](https://webpack.js.org), which underpins Create React App and is a major contributor to Create React App's complexity.
@@ -25,6 +29,16 @@ Note that, in this project, we do *not* use Nix in any significant capacity. Nix
 To develop interactively, enter the Nix shell via `nix develop`. Note that due to https://github.com/NixOS/nixpkgs/issues/132456, we cannot use Nix to install `pnpm` with any version of Node.js > 14, so the first time you check out the `primer-app` repo, you'll need to run `npx pnpm install` to bootstrap a new repo. 
 
 After the initial bootstrap, you'll be able to run just `nix develop` and then all the standard `pnpm` command should work.
+
+### Running a local `primer-service` instance
+
+In most circumstances, while developing locally, you'll want to launch the version of `primer-service` that is pinned via this repo's `primer` Nix flake input. To do that, run the following command from this project's top-level directory:
+
+```sh
+nix run .#run-primer
+```
+
+Note that this only works if there's also a local PostgreSQL Docker instance running. Because we expect that developers will generally always be running this PostgreSQL instance, we haven't bothered to include the related Docker helper scripts from the Primer repo in this repo. See the [Primer repo's README file](https://github.com/hackworthltd/primer/blob/main/README.md#local-development) for details on how to manage the PostgreSQL Docker instance.
 
 ### The top-level package
 
