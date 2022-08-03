@@ -7,7 +7,7 @@ export default {
   component: TreeReactFlow,
 } as ComponentMeta<typeof TreeReactFlow>;
 
-const props = { width: 1000, height: 800, nodeWidth: 100, nodeHeight: 40 };
+const props = { width: 1200, height: 800, nodeWidth: 150, nodeHeight: 50 };
 
 export const Tree1: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps

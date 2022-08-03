@@ -7,8 +7,6 @@ export type Direction = "TB" | "LR" | "RL" | "BT";
 
 export type Options = {
   direction: Direction;
-  nodeWidth: number;
-  nodeHeight: number;
 };
 
 const positionMap = {
@@ -21,14 +19,14 @@ const positionMap = {
 function layoutGraph(
   nodes: Node[],
   edges: Edge[],
-  { direction = "TB", nodeWidth, nodeHeight }: Options
+  { direction = "TB" }: Options
 ) {
   const dagreGraph = new graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   dagreGraph.setGraph({ rankdir: direction });
 
   nodes.forEach((el) => {
-    dagreGraph.setNode(el.id, { width: nodeWidth, height: nodeHeight });
+    dagreGraph.setNode(el.id, { width: el.data.width, height: el.data.height });
   });
 
   edges.forEach((el) => {
@@ -43,8 +41,8 @@ function layoutGraph(
     node.sourcePosition = positionMap[direction[1] as never];
 
     node.position = {
-      x: nodeWithPosition.x - nodeWidth / 2,
-      y: nodeWithPosition.y - nodeHeight / 2,
+      x: nodeWithPosition.x - node.data.width / 2,
+      y: nodeWithPosition.y - node.data.height / 2,
     };
 
     return node;
