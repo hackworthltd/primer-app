@@ -20,7 +20,7 @@
 
     # Note: don't override any of primer's Nix flake inputs, or else
     # we won't hit its binary cache.
-    primer.url = github:hackworthltd/primer/d898ec0d3c62414123c7c899d47910d64d1d9e80;
+    primer.url = github:hackworthltd/primer/08bed16526a18541870ae4165b32128fba946ec8;
   };
 
   outputs =
@@ -137,7 +137,7 @@
       in
       {
         packages = { } // (pkgs.lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
-          inherit (primerPackages) primer-service-docker-image;
+          inherit (primerPackages) primer-service-docker-image run-primer;
           inherit (scripts) deploy-primer-service;
         });
 
@@ -154,6 +154,7 @@
           in
           (pkgs.lib.mapAttrs (name: pkg: mkApp pkg name) {
             inherit (scripts) deploy-primer-service;
+            inherit (primerPackages) run-primer;
           });
 
         devShell = pkgs.mkShell {

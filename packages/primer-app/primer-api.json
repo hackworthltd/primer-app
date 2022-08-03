@@ -63,6 +63,92 @@
                 ],
                 "type": "object"
             },
+            "NodeBody": {
+                "oneOf": [
+                    {
+                        "properties": {
+                            "contents": {
+                                "type": "string"
+                            },
+                            "tag": {
+                                "enum": [
+                                    "TextBody"
+                                ],
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "tag",
+                            "contents"
+                        ],
+                        "type": "object"
+                    },
+                    {
+                        "properties": {
+                            "contents": {
+                                "$ref": "#/components/schemas/Tree"
+                            },
+                            "tag": {
+                                "enum": [
+                                    "BoxBody"
+                                ],
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "tag",
+                            "contents"
+                        ],
+                        "type": "object"
+                    },
+                    {
+                        "properties": {
+                            "tag": {
+                                "enum": [
+                                    "NoBody"
+                                ],
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "tag"
+                        ],
+                        "type": "object"
+                    }
+                ],
+                "type": "object"
+            },
+            "NodeFlavor": {
+                "enum": [
+                    "FlavorHole",
+                    "FlavorEmptyHole",
+                    "FlavorAnn",
+                    "FlavorApp",
+                    "FlavorAPP",
+                    "FlavorCon",
+                    "FlavorLam",
+                    "FlavorLAM",
+                    "FlavorGlobalVar",
+                    "FlavorLocalVar",
+                    "FlavorLet",
+                    "FlavorLetType",
+                    "FlavorLetrec",
+                    "FlavorCase",
+                    "FlavorPrimCon",
+                    "FlavorTEmptyHole",
+                    "FlavorTHole",
+                    "FlavorTCon",
+                    "FlavorTFun",
+                    "FlavorTVar",
+                    "FlavorTApp",
+                    "FlavorTForall",
+                    "FlavorPattern",
+                    "FlavorPatternCon",
+                    "FlavorPatternBind",
+                    "FlavorPatternApp"
+                ],
+                "type": "string"
+            },
             "PaginatedMeta": {
                 "properties": {
                     "firstPage": {
@@ -168,24 +254,29 @@
             },
             "Tree": {
                 "properties": {
+                    "body": {
+                        "$ref": "#/components/schemas/NodeBody"
+                    },
                     "childTrees": {
                         "items": {
                             "$ref": "#/components/schemas/Tree"
                         },
                         "type": "array"
                     },
-                    "label": {
-                        "type": "string"
+                    "flavor": {
+                        "$ref": "#/components/schemas/NodeFlavor"
                     },
                     "nodeId": {
-                        "maximum": 9223372036854775807,
-                        "minimum": -9223372036854775808,
-                        "type": "integer"
+                        "type": "string"
+                    },
+                    "rightChild": {
+                        "$ref": "#/components/schemas/Tree"
                     }
                 },
                 "required": [
                     "nodeId",
-                    "label",
+                    "flavor",
+                    "body",
                     "childTrees"
                 ],
                 "type": "object"
@@ -204,38 +295,40 @@
     },
     "openapi": "3.0.0",
     "paths": {
-        "/api/program": {
-            "get": {
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "session",
-                        "required": true,
-                        "schema": {
-                            "format": "uuid",
-                            "type": "string"
+        "/openapi/copy-session": {
+            "post": {
+                "description": "Copy the session whose ID is given in the request body to a new session, and return the new session's ID. Note that this method can be called at any time and is not part of the session-specific API, as it's not scoped by the current session ID like those methods are.",
+                "operationId": "copySession",
+                "requestBody": {
+                    "content": {
+                        "application/json;charset=utf-8": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UUID"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "content": {
                             "application/json;charset=utf-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Prog"
+                                    "$ref": "#/components/schemas/UUID"
                                 }
                             }
                         },
                         "description": ""
                     },
                     "400": {
-                        "description": "Invalid `session`"
+                        "description": "Invalid `body`"
                     }
-                }
+                },
+                "summary": "Copy a session to a new session"
             }
         },
-        "/api/sessions": {
+        "/openapi/sessions": {
             "get": {
+                "description": "Get a list of all sessions and their human-readable names. By default, this method returns the list of all sessions in the persistent database, but optionally it can return just the list of all sessions in memory, which is mainly useful for testing. Note that in a production system, this endpoint should obviously be authentication-scoped and only return the list of sessions that the caller is authorized to see.",
                 "operationId": "getSessionList",
                 "parameters": [
                     {
@@ -285,7 +378,7 @@
                         "description": "Invalid `pageSize` or `page` or `inMemory`"
                     }
                 },
-                "summary": "List sessions"
+                "summary": "Get the list of sessions"
             },
             "post": {
                 "operationId": "createSession",
@@ -301,7 +394,135 @@
                         "description": ""
                     }
                 },
-                "summary": "Create a new session"
+                "summary": "Create a new session and return its ID"
+            }
+        },
+        "/openapi/sessions/{sessionId}/name": {
+            "get": {
+                "operationId": "getSessionName",
+                "parameters": [
+                    {
+                        "description": "The session ID",
+                        "in": "path",
+                        "name": "sessionId",
+                        "required": true,
+                        "schema": {
+                            "format": "uuid",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json;charset=utf-8": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "404": {
+                        "description": "`sessionId` not found"
+                    }
+                },
+                "summary": "Get the specified session's name"
+            },
+            "put": {
+                "description": "Attempt to set the current session name. Returns the actual new session name. (Note that this may differ from the name provided.)",
+                "operationId": "setSessionName",
+                "parameters": [
+                    {
+                        "description": "The session ID",
+                        "in": "path",
+                        "name": "sessionId",
+                        "required": true,
+                        "schema": {
+                            "format": "uuid",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json;charset=utf-8": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json;charset=utf-8": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    },
+                    "404": {
+                        "description": "`sessionId` not found"
+                    }
+                },
+                "summary": "Set the specified session's name"
+            }
+        },
+        "/openapi/sessions/{sessionId}/program": {
+            "get": {
+                "operationId": "getProgram",
+                "parameters": [
+                    {
+                        "description": "The session ID",
+                        "in": "path",
+                        "name": "sessionId",
+                        "required": true,
+                        "schema": {
+                            "format": "uuid",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json;charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Prog"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "404": {
+                        "description": "`sessionId` not found"
+                    }
+                },
+                "summary": "Get the current program state"
+            }
+        },
+        "/openapi/version": {
+            "get": {
+                "operationId": "getVersion",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json;charset=utf-8": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                },
+                "summary": "Get the current server version"
             }
         }
     }
