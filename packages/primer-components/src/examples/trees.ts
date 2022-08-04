@@ -8,138 +8,138 @@ as we'd like to render them simultaneously on one canvas.
 */
 
 export const tree1: Tree = {
-  nodeId: "100",
+  body: { tag: "NoBody" },
   childTrees: [],
   flavor: "FlavorEmptyHole",
-  body: { tag: "NoBody" },
+  nodeId: "100",
 };
 
 export const tree2: Tree = {
-  nodeId: "200",
+  body: { tag: "TextBody", contents: "x" },
   childTrees: [
     {
-      nodeId: "201",
+      body: { tag: "TextBody", contents: "x" },
       childTrees: [],
       flavor: "FlavorLocalVar",
-      body: { tag: "TextBody", contents: "x" },
+      nodeId: "201",
     },
   ],
   flavor: "FlavorLam",
-  body: { tag: "TextBody", contents: "x" },
+  nodeId: "200",
 };
 
 export const tree3: Tree = {
-  nodeId: "300",
+  body: { tag: "TextBody", contents: "y" },
   childTrees: [
     {
-      nodeId: "301",
+      body: { tag: "TextBody", contents: "y" },
       childTrees: [],
       flavor: "FlavorLocalVar",
-      body: { tag: "TextBody", contents: "y" },
+      nodeId: "301",
     },
   ],
   flavor: "FlavorLam",
-  body: { tag: "TextBody", contents: "y" },
+  nodeId: "300",
 };
 
 export const tree4: Tree = {
-  nodeId: "400",
+  body: { tag: "NoBody" },
   childTrees: [
     {
-      nodeId: "401",
+      body: { tag: "NoBody" },
       childTrees: [
         {
-          nodeId: "402",
+          body: { tag: "TextBody", contents: "a" },
           childTrees: [
             {
-              nodeId: "403",
+              body: { tag: "TextBody", contents: "x" },
               childTrees: [
                 {
-                  nodeId: "404",
+                  body: { tag: "TextBody", contents: "x" },
                   childTrees: [],
                   flavor: "FlavorLocalVar",
-                  body: { tag: "TextBody", contents: "x" },
+                  nodeId: "404",
                 },
               ],
               flavor: "FlavorLam",
-              body: { tag: "TextBody", contents: "x" },
+              nodeId: "403",
             },
           ],
           flavor: "FlavorLAM",
-          body: { tag: "TextBody", contents: "a" },
+          nodeId: "402",
         },
         {
-          nodeId: "405",
+          body: { tag: "NoBody" },
           childTrees: [
             {
-              nodeId: "406",
+              body: { tag: "NoBody" },
               childTrees: [
                 {
-                  nodeId: "407",
+                  body: { tag: "TextBody", contents: "a" },
                   childTrees: [],
                   flavor: "FlavorTVar",
-                  body: { tag: "TextBody", contents: "a" },
+                  nodeId: "407",
                 },
                 {
-                  nodeId: "408",
+                  body: { tag: "TextBody", contents: "a" },
                   childTrees: [],
                   flavor: "FlavorTVar",
-                  body: { tag: "TextBody", contents: "a" },
+                  nodeId: "408",
                 },
               ],
               flavor: "FlavorTFun",
-              body: { tag: "NoBody" },
+              nodeId: "406",
             },
           ],
           flavor: "FlavorTForall",
-          body: { tag: "NoBody" },
+          nodeId: "405",
         },
       ],
       flavor: "FlavorAnn",
-      body: { tag: "NoBody" },
+      nodeId: "401",
     },
     {
-      nodeId: "409",
+      body: { tag: "TextBody", contents: "Unit" },
       childTrees: [],
       flavor: "FlavorCon",
-      body: { tag: "TextBody", contents: "Unit" },
+      nodeId: "409",
     },
   ],
   flavor: "FlavorApp",
-  body: { tag: "NoBody" },
+  nodeId: "400",
 };
 
 export const tree5: TreeInteractiveRender = {
-  nodeId: "500",
+  body: { tag: "TextBody", contents: "x" },
   childTrees: [
     {
-      nodeId: "501",
+      body: { tag: "NoBody" },
       childTrees: [
         {
-          nodeId: "502",
+          body: { tag: "TextBody", contents: "x" },
           childTrees: [],
           flavor: "FlavorLocalVar",
-          body: { tag: "TextBody", contents: "x" },
+          nodeId: "502",
         },
         {
+          body: { tag: "NoBody" },
+          childTrees: [],
+          flavor: "FlavorEmptyHole",
           nodeId: "503",
-          childTrees: [],
-          flavor: "FlavorEmptyHole",
-          body: { tag: "NoBody" },
         },
         {
-          nodeId: "506",
+          body: { tag: "NoBody" },
           childTrees: [],
           flavor: "FlavorEmptyHole",
-          body: { tag: "NoBody" },
+          nodeId: "506",
         },
       ],
       flavor: "FlavorCase",
-      body: { tag: "NoBody" },
+      nodeId: "501",
     },
   ],
   flavor: "FlavorLam",
-  body: { tag: "TextBody", contents: "x" },
+  nodeId: "500",
   onClick: (e) => console.log("Clicked: " + e),
 };
 
@@ -153,18 +153,19 @@ export const oddEvenTrees: Tree[] = [
           {
             body: { contents: "x", tag: "TextBody" },
             childTrees: [],
-            nodeId: "5",
             flavor: "FlavorLocalVar",
+            nodeId: "5",
           },
         ],
+        flavor: "FlavorCase",
         nodeId: "4",
         rightChild: {
           body: {
             contents: {
               body: { contents: "Builtins.Zero", tag: "TextBody" },
               childTrees: [],
+              flavor: "FlavorPatternCon",
               nodeId: "4P0B",
-              flavor: "FlavorCon",
             },
             tag: "BoxBody",
           },
@@ -172,10 +173,11 @@ export const oddEvenTrees: Tree[] = [
             {
               body: { contents: "Builtins.True", tag: "TextBody" },
               childTrees: [],
-              nodeId: "6",
               flavor: "FlavorCon",
+              nodeId: "6",
             },
           ],
+          flavor: "FlavorPattern",
           nodeId: "4P0",
           rightChild: {
             body: {
@@ -185,12 +187,12 @@ export const oddEvenTrees: Tree[] = [
                   {
                     body: { contents: "n", tag: "TextBody" },
                     childTrees: [],
+                    flavor: "FlavorPatternBind",
                     nodeId: "7",
-                    flavor: "FlavorLocalVar",
                   },
                 ],
+                flavor: "FlavorPatternCon",
                 nodeId: "4P1B",
-                flavor: "FlavorCon",
               },
               tag: "BoxBody",
             },
@@ -201,30 +203,28 @@ export const oddEvenTrees: Tree[] = [
                   {
                     body: { contents: "Even3.odd", tag: "TextBody" },
                     childTrees: [],
-                    nodeId: "9",
                     flavor: "FlavorGlobalVar",
+                    nodeId: "9",
                   },
                   {
                     body: { contents: "n", tag: "TextBody" },
                     childTrees: [],
-                    nodeId: "10",
                     flavor: "FlavorLocalVar",
+                    nodeId: "10",
                   },
                 ],
-                nodeId: "8",
                 flavor: "FlavorApp",
+                nodeId: "8",
               },
             ],
-            nodeId: "4P1",
             flavor: "FlavorPattern",
+            nodeId: "4P1",
           },
-          flavor: "FlavorPattern",
         },
-        flavor: "FlavorCase",
       },
     ],
-    nodeId: "3",
     flavor: "FlavorLam",
+    nodeId: "3",
   },
   {
     body: { tag: "NoBody" },
@@ -232,8 +232,8 @@ export const oddEvenTrees: Tree[] = [
       {
         body: { contents: "Even3.even", tag: "TextBody" },
         childTrees: [],
-        nodeId: "24",
         flavor: "FlavorGlobalVar",
+        nodeId: "24",
       },
       {
         body: { tag: "NoBody" },
@@ -241,8 +241,8 @@ export const oddEvenTrees: Tree[] = [
           {
             body: { contents: "Builtins.Succ", tag: "TextBody" },
             childTrees: [],
-            nodeId: "26",
             flavor: "FlavorCon",
+            nodeId: "26",
           },
           {
             body: { tag: "NoBody" },
@@ -250,8 +250,8 @@ export const oddEvenTrees: Tree[] = [
               {
                 body: { contents: "Builtins.Succ", tag: "TextBody" },
                 childTrees: [],
-                nodeId: "28",
                 flavor: "FlavorCon",
+                nodeId: "28",
               },
               {
                 body: { tag: "NoBody" },
@@ -259,30 +259,30 @@ export const oddEvenTrees: Tree[] = [
                   {
                     body: { contents: "Builtins.Succ", tag: "TextBody" },
                     childTrees: [],
-                    nodeId: "30",
                     flavor: "FlavorCon",
+                    nodeId: "30",
                   },
                   {
                     body: { contents: "Builtins.Zero", tag: "TextBody" },
                     childTrees: [],
-                    nodeId: "31",
                     flavor: "FlavorCon",
+                    nodeId: "31",
                   },
                 ],
-                nodeId: "29",
                 flavor: "FlavorApp",
+                nodeId: "29",
               },
             ],
-            nodeId: "27",
             flavor: "FlavorApp",
+            nodeId: "27",
           },
         ],
-        nodeId: "25",
         flavor: "FlavorApp",
+        nodeId: "25",
       },
     ],
-    nodeId: "23",
     flavor: "FlavorApp",
+    nodeId: "23",
   },
   {
     body: { contents: "x", tag: "TextBody" },
@@ -293,18 +293,19 @@ export const oddEvenTrees: Tree[] = [
           {
             body: { contents: "x", tag: "TextBody" },
             childTrees: [],
-            nodeId: "16",
             flavor: "FlavorLocalVar",
+            nodeId: "16",
           },
         ],
+        flavor: "FlavorCase",
         nodeId: "15",
         rightChild: {
           body: {
             contents: {
               body: { contents: "Builtins.Zero", tag: "TextBody" },
               childTrees: [],
+              flavor: "FlavorPatternCon",
               nodeId: "15P0B",
-              flavor: "FlavorCon",
             },
             tag: "BoxBody",
           },
@@ -312,10 +313,11 @@ export const oddEvenTrees: Tree[] = [
             {
               body: { contents: "Builtins.False", tag: "TextBody" },
               childTrees: [],
-              nodeId: "17",
               flavor: "FlavorCon",
+              nodeId: "17",
             },
           ],
+          flavor: "FlavorPattern",
           nodeId: "15P0",
           rightChild: {
             body: {
@@ -325,12 +327,12 @@ export const oddEvenTrees: Tree[] = [
                   {
                     body: { contents: "n", tag: "TextBody" },
                     childTrees: [],
+                    flavor: "FlavorPatternBind",
                     nodeId: "18",
-                    flavor: "FlavorLocalVar",
                   },
                 ],
+                flavor: "FlavorPatternCon",
                 nodeId: "15P1B",
-                flavor: "FlavorCon",
               },
               tag: "BoxBody",
             },
@@ -341,29 +343,27 @@ export const oddEvenTrees: Tree[] = [
                   {
                     body: { contents: "Even3.even", tag: "TextBody" },
                     childTrees: [],
-                    nodeId: "20",
                     flavor: "FlavorGlobalVar",
+                    nodeId: "20",
                   },
                   {
                     body: { contents: "n", tag: "TextBody" },
                     childTrees: [],
-                    nodeId: "21",
                     flavor: "FlavorLocalVar",
+                    nodeId: "21",
                   },
                 ],
-                nodeId: "19",
                 flavor: "FlavorApp",
+                nodeId: "19",
               },
             ],
-            nodeId: "15P1",
             flavor: "FlavorPattern",
+            nodeId: "15P1",
           },
-          flavor: "FlavorPattern",
         },
-        flavor: "FlavorCase",
       },
     ],
-    nodeId: "14",
     flavor: "FlavorLam",
+    nodeId: "14",
   },
 ];
