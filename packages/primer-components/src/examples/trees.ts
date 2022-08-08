@@ -182,8 +182,14 @@ export const oddEvenTrees: Tree[] = [
           rightChild: {
             body: {
               contents: {
-                body: { contents: "Builtins.Succ", tag: "TextBody" },
+                body: { tag: "NoBody" },
                 childTrees: [
+                  {
+                    body: { contents: "Builtins.Succ", tag: "TextBody" },
+                    childTrees: [],
+                    flavor: "FlavorPatternCon",
+                    nodeId: "4P1B",
+                  },
                   {
                     body: { contents: "n", tag: "TextBody" },
                     childTrees: [],
@@ -191,8 +197,8 @@ export const oddEvenTrees: Tree[] = [
                     nodeId: "7",
                   },
                 ],
-                flavor: "FlavorPatternCon",
-                nodeId: "4P1B",
+                flavor: "FlavorPatternApp",
+                nodeId: "7A",
               },
               tag: "BoxBody",
             },
