@@ -162,6 +162,47 @@ As the top-level equivalents.
 
 You can use `pnpm` to run scripts and commands that are installed by the various packages in the repo. For example, to use `tsc`, the TypeScript compiler, you can run `pnpm tsc`.
 
+## Deployments
+
+### Backend
+
+We deploy the Primer service into production via this repo. Our current deployment platform is [Fly.io](https://fly.io). Fly.io support multiple deployment regions, but for the moment, we're only deploying to LHR (London). For database performance reasons, once we host a significant number of non-UK schools, we'll need to consider deploying to other regions.
+
+The initial creation of a new Fly.io app is [relatively simple](https://fly.io/docs/getting-started/launch-app/), especially in our case, as we already build a Docker image for Primer using Nix, and can simply point `flyctl deploy` to an existing Docker image. Creating a new PostgreSQL database on Fly.io is [slightly more complicated](https://fly.io/docs/reference/postgres/), but still relatively easy. As these topics are specific to Fly.io, have nothing to do with Primer per se, and are covered in the Fly.io documentation, we will not replicate those instructions here.
+
+Once an instance of the Primer service is deployed into a particular region, subsequent deployments are very straightforward. There is a `deploy-primer-service` script in this repo that handles the details. Note that you should never need to run this script by hand: it is run after every merge to the `main` branch of this repo via an automated GitHub Deployment and Buildkite process.
+
+There are two wrinkles:
+
+1. A brand new database doesn't contain any programs. This is relatively easy to fix, as we can use `primer-client` to seed a few example programs. (We currently must do this by hand, however.)
+
+2. We occasionally require database migrations. These have been incorporated into the deployment script so that a database is migrated before the new version of `primer-service` is deployed (assuming the migrated database is backwards compatible, but that is out of scope for this document). However, this requires a) that a suitable `DATABASE_URL` is available to the deployment script for the Fly.io PostgreSQL instance to be migrated; and b) that the deployment script can connect to the PostgreSQL instance. Normally neither of these is available outside of Fly.io's execution environment, but our deployment script and Vault server can make the required secrets available to the deployment script at deployment time.
+
+For security reasons, we run the database migrations as a PostgreSQL user created for this specific purpose. Fly.io does not create this PostgreSQL user automatically for us like it does for Fly.io apps, so whenever we create a new database from scratch, we need to run the following steps manually (assuming a Fly.io personal access token is available) from the top-level directory of this repo:
+
+```
+ flyctl postgres connect -a hackworth-code-postgres
+WARN app flag 'hackworth-code-postgres' does not match app name in config file 'hackworth-code'
+? Continue using 'hackworth-code-postgres' Yes
+Connecting to hackworth-code-postgres.internal... complete
+psql (14.4 (Debian 14.4-1.pgdg110+1))
+Type "help" for help.
+
+postgres=# CREATE USER migratedb WITH PASSWORD 'xxx';
+CREATE ROLE
+postgres=# GRANT ALL PRIVILEGES ON DATABASE hackworth_code TO migratedb;
+GRANT
+postgres=# ^D
+\q
+
+```
+
+Note that these steps only need to be run after the initial database creation (i.e., after `flyctl postgres create`), and never again.
+
+Then store a `DATABASE_URL` for the newly-created `migratedb` user in our Vault service. Its value should be `postgres://migratedb:xxx@localhost:5432` where `xxx` is the password value you used in the previous step. This secret should be stored at a Vault path where the Buildkite agent that runs our Fly.io deployments can read it. (The Vault config for this step is out of scope for this document, and should be implemented in our `hackworth-nix` and `hackworth-ops` repo.)
+
+Note that the `DATABASE_URL` we store in Vault uses `localhost` as the PostgreSQL server address, because our deployment script runs database migrations against the proxy created by the `flyctl proxy` command. See [this link](https://fly.io/docs/reference/postgres/#on-a-machine-with-flyctl-installed) for details of how the proxy works.
+
 ## Other notes
 
 ### Updating the backend API & bindings
