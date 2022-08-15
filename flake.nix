@@ -136,8 +136,10 @@
         };
       in
       {
-        packages = { } // (pkgs.lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
-          inherit (primerPackages) primer-service-docker-image run-primer;
+        packages = {
+          inherit (primerPackages) run-primer primer-openapi-spec;
+        } // (pkgs.lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
+          inherit (primerPackages) primer-service-docker-image;
           inherit (scripts) deploy-primer-service;
         });
 
@@ -154,7 +156,7 @@
           in
           (pkgs.lib.mapAttrs (name: pkg: mkApp pkg name) {
             inherit (scripts) deploy-primer-service;
-            inherit (primerPackages) run-primer;
+            inherit (primerPackages) run-primer primer-openapi-spec;
           });
 
         devShell = pkgs.mkShell {
@@ -169,9 +171,18 @@
           # Make sure the Nix shell includes node_modules's bin dir in
           # the path, or else our editors may not see the editor
           # tooling that we include in the Node packaging.
-          shellHook = ''
-            export PATH="$(pwd)/node_modules/.bin:$PATH"
-          '';
+          shellHook =
+            let
+              local-spec = "./packages/primer-app/primer-api.json";
+            in
+            ''
+              export PATH="$(pwd)/node_modules/.bin:$PATH"
+
+              OPENAPI_SPEC=$(nix-build -A packages.${system}.primer-openapi-spec)
+              rm -f ${local-spec}
+              ln -s $OPENAPI_SPEC ${local-spec}
+              cd packages/primer-app && pnpm generate
+            '';
         };
       })
 
