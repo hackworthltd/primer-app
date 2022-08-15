@@ -10,7 +10,8 @@ module.exports = {
       target: "./primer-api.ts",
       schemas: "model",
       client: "react-query",
-      mock: true,
+      // We do not yet use the generated mocks.
+      mock: false,
       prettier: true,
       override: {
         mutator: {
