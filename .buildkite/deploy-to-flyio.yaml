@@ -8,4 +8,6 @@ steps:
     concurrency: 1
     concurrency_group: "deploy-to-flyio"
     command: |
+      source ~/.fly/env
+      export DATABASE_URL
       nix run .#deploy-primer-service
