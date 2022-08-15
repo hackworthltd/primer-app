@@ -15,6 +15,7 @@ let
       docker
       flyctl
       gnugrep
+      primer-sqitch
       procps
     ];
     text = ''
