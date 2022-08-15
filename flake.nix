@@ -132,12 +132,12 @@
 
         scripts = pkgs.callPackage nix/pkgs/scripts {
           primer-service-rev = primer.rev;
-          inherit (primerPackages) primer-service-docker-image;
+          inherit (primerPackages) primer-service-docker-image primer-sqitch;
         };
       in
       {
         packages = {
-          inherit (primerPackages) run-primer primer-openapi-spec;
+          inherit (primerPackages) run-primer primer-openapi-spec primer-sqitch;
         } // (pkgs.lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
           inherit (primerPackages) primer-service-docker-image;
           inherit (scripts) deploy-primer-service;
