@@ -181,6 +181,7 @@
               OPENAPI_SPEC=$(nix-build -A packages.${system}.primer-openapi-spec)
               rm -f ${local-spec}
               ln -s $OPENAPI_SPEC ${local-spec}
+              cd packages/primer-app && pnpm generate
             '';
         };
       })

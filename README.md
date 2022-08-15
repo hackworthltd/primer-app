@@ -166,7 +166,7 @@ You can use `pnpm` to run scripts and commands that are installed by the various
 
 ### Updating the backend API & bindings
 
-We use [Orval](https://github.com/anymaniax/orval) to automatically generate TypeScript bindings for the Primer backend API. Upon entering the `nix develop` shell, the shell hook will ensure that the local `primer-api.json` file is up-to-date with the latest Primer version pin. (If you update the pin, you'll need to re-enter the shell, but this is normally required, anyway.) You will still need to run the `pnpm generate` command from the `packages/primer-app` directory to ensure that the generated OpenAPI bindings are also up-to-date:
+We use [Orval](https://github.com/anymaniax/orval) to automatically generate TypeScript bindings for the Primer backend API. Upon entering the `nix develop` shell, the shell hook will ensure that the local `primer-api.json` file is up-to-date with the latest Primer version pin. (If you update the pin, you'll need to re-enter the shell, but this is normally required, anyway.) It will also re-generate the OpenAPI client bindings for the frontend. If, for some reason, you ever need to generate the frontend bindings again (e.g., because you've changed the Orval settings), you can run:
 
 ```sh
 nix develop
