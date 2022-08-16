@@ -178,7 +178,7 @@ There are two wrinkles:
 
 2. We occasionally require database migrations. These have been incorporated into the deployment script so that a database is migrated before the new version of `primer-service` is deployed (assuming the migrated database is backwards compatible, but that is out of scope for this document). However, this requires a) that a suitable `DATABASE_URL` is available to the deployment script for the Fly.io PostgreSQL instance to be migrated; and b) that the deployment script can connect to the PostgreSQL instance. Normally neither of these is available outside of Fly.io's execution environment, but our deployment script and Vault server can make the required secrets available to the deployment script at deployment time.
 
-For security reasons, we run the database migrations as a PostgreSQL user created for this specific purpose. Fly.io does not create this PostgreSQL user automatically for us like it does for Fly.io apps, so whenever we create a new database from scratch, we need to run the following steps manually (assuming a Fly.io personal access token is available) from the top-level directory of this repo:
+For security reasons, we run the database migrations as a PostgreSQL user created for this specific purpose. (However, note that at the time of writing, it's not clear whether [sqitch](https://sqitch.org/docs/manual/sqitchtutorial/), our schema management tool, works with any privileges less than `SUPERUSER`, so that is what we use for now.) Fly.io does not create this PostgreSQL user automatically for us like it does for Fly.io apps, so whenever we create a new database from scratch, we need to run the following steps manually (assuming a Fly.io personal access token is available) from the top-level directory of this repo:
 
 ```
  flyctl postgres connect -a hackworth-code-postgres
@@ -188,10 +188,8 @@ Connecting to hackworth-code-postgres.internal... complete
 psql (14.4 (Debian 14.4-1.pgdg110+1))
 Type "help" for help.
 
-postgres=# CREATE USER migratedb WITH PASSWORD 'xxx';
+postgres=# CREATE ROLE deploydb WITH LOGIN SUPERUSER PASSWORD 'xxx';
 CREATE ROLE
-postgres=# GRANT ALL PRIVILEGES ON DATABASE hackworth_code TO migratedb;
-GRANT
 postgres=# ^D
 \q
 
@@ -199,7 +197,7 @@ postgres=# ^D
 
 Note that these steps only need to be run after the initial database creation (i.e., after `flyctl postgres create`), and never again.
 
-Then store a `DATABASE_URL` for the newly-created `migratedb` user in our Vault service. Its value should be `postgres://migratedb:xxx@localhost:5432` where `xxx` is the password value you used in the previous step. This secret should be stored at a Vault path where the Buildkite agent that runs our Fly.io deployments can read it. (The Vault config for this step is out of scope for this document, and should be implemented in our `hackworth-nix` and `hackworth-ops` repo.)
+Then store a `DATABASE_URL` for the newly-created `deploydb` user in our Vault service. Its value should be `postgres://deploydb:xxx@localhost:5432/hackworth_code` where `xxx` is the password value you used in the previous step. This secret should be stored at a Vault path where the Buildkite agent that runs our Fly.io deployments can read it. (The Vault config for this step is out of scope for this document, and should be implemented in our `hackworth-nix` and `hackworth-ops` repo.)
 
 Note that the `DATABASE_URL` we store in Vault uses `localhost` as the PostgreSQL server address, because our deployment script runs database migrations against the proxy created by the `flyctl proxy` command. See [this link](https://fly.io/docs/reference/postgres/#on-a-machine-with-flyctl-installed) for details of how the proxy works.
 
