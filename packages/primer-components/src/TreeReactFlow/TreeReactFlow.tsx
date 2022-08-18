@@ -179,8 +179,8 @@ const convertTree = (
   nodeWidth: number,
   nodeHeight: number
 ): {
-  nodes: Node[];
-  edges: Edge[];
+  nodes: Node<PrimerNodeProps>[];
+  edges: Edge<{}>[];
 } => {
   const childTrees = tree.childTrees.concat(
     tree.rightChild ? [tree.rightChild] : []
@@ -195,7 +195,7 @@ const convertTree = (
       position: { x: 0, y: 0 }, // this gets overwritten by layout algorithm
     };
   };
-  const thisToChildren: Edge[] = childTrees.map((t) => {
+  const thisToChildren: Edge<{}>[] = childTrees.map((t) => {
     const target = t.nodeId.toString();
     return {
       id: JSON.stringify([id, target]),

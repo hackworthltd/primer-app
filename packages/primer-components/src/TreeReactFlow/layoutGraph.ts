@@ -1,7 +1,13 @@
 import { Node, Edge, Position } from "react-flow-renderer/nocss";
 import { graphlib, layout } from "dagre";
 
-export function layoutGraph(nodes: Node[], edges: Edge[]) {
+export function layoutGraph<
+  N extends {
+    width: number;
+    height: number;
+  },
+  E
+>(nodes: Node<N>[], edges: Edge<E>[]): Node<N>[] {
   const dagreGraph = new graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   dagreGraph.setGraph({ rankdir: "TB" });
