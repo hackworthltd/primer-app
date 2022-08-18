@@ -1,8 +1,7 @@
-import { useMemo } from "react";
 import { Node, Edge, Position } from "react-flow-renderer/nocss";
 import { graphlib, layout } from "dagre";
 
-function layoutGraph(nodes: Node[], edges: Edge[]) {
+export function layoutGraph(nodes: Node[], edges: Edge[]) {
   const dagreGraph = new graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   dagreGraph.setGraph({ rankdir: "TB" });
@@ -32,9 +31,3 @@ function layoutGraph(nodes: Node[], edges: Edge[]) {
 
   return layoutNodes;
 }
-
-function useLayout(nodes: Node[], edges: Edge[]) {
-  return useMemo(() => layoutGraph(nodes, edges), [nodes, edges]);
-}
-
-export default useLayout;

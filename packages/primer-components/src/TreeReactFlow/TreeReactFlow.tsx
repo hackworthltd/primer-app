@@ -7,7 +7,8 @@ import ReactFlow, {
   NodeProps,
 } from "react-flow-renderer/nocss";
 import "react-flow-renderer/dist/style.css";
-import useLayout from "./useLayout";
+import { layoutGraph } from "./layoutGraph";
+import { useMemo } from "react";
 
 export type TreeReactFlowProps = {
   trees: TreeInteractiveRender[];
@@ -255,18 +256,21 @@ const convertTree = (
 };
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
-  const trees = p.trees.map((t) => convertTree(t, p.nodeWidth, p.nodeHeight));
-  const forest = {
-    nodes: trees.flatMap(({ nodes }) => nodes),
-    edges: trees.flatMap(({ edges }) => edges),
-  };
-  const layoutedNodes = useLayout(forest.nodes, forest.edges);
+  const { nodes, edges } = useMemo(() => {
+    const trees = p.trees.map((t) => convertTree(t, p.nodeWidth, p.nodeHeight));
+    const edges = trees.flatMap(({ edges }) => edges);
+    const nodes = trees.flatMap(({ nodes }) => nodes);
+    return {
+      nodes: layoutGraph(nodes, edges),
+      edges,
+    };
+  }, [p]);
 
   return (
     <div style={{ height: p.height, width: p.width }}>
       <ReactFlow
-        nodes={layoutedNodes}
-        edges={forest.edges}
+        nodes={nodes}
+        edges={edges}
         nodeTypes={nodeTypes}
         proOptions={{ hideAttribution: true, account: "paid-pro" }}
       ></ReactFlow>
