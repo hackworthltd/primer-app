@@ -7,7 +7,10 @@ export function layoutGraph<
     height: number;
   },
   E
->(nodes: Node<N>[], edges: Edge<E>[]): Node<N>[] {
+>(
+  nodes: Node<N>[],
+  edges: Edge<E>[]
+): { nodes: Node<N>[]; width: number; height: number } {
   const dagreGraph = new graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   dagreGraph.setGraph({ rankdir: "TB" });
@@ -21,16 +24,20 @@ export function layoutGraph<
 
   layout(dagreGraph);
 
-  return nodes.map((node) => {
-    const nodeWithPosition = dagreGraph.node(node.id);
+  return {
+    nodes: nodes.map((node) => {
+      const nodeWithPosition = dagreGraph.node(node.id);
 
-    node.targetPosition = Position.Top;
-    node.sourcePosition = Position.Bottom;
-    node.position = {
-      x: nodeWithPosition.x - node.data.width / 2,
-      y: nodeWithPosition.y - node.data.height / 2,
-    };
+      node.targetPosition = Position.Top;
+      node.sourcePosition = Position.Bottom;
+      node.position = {
+        x: nodeWithPosition.x - node.data.width / 2,
+        y: nodeWithPosition.y - node.data.height / 2,
+      };
 
-    return node;
-  });
+      return node;
+    }),
+    width: dagreGraph.graph().width!,
+    height: dagreGraph.graph().height!,
+  };
 }

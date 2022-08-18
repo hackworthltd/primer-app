@@ -261,7 +261,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
     const edges = trees.flatMap(({ edges }) => edges);
     const nodes = trees.flatMap(({ nodes }) => nodes);
     return {
-      nodes: layoutGraph(nodes, edges),
+      ...layoutGraph(nodes, edges),
       edges,
     };
   }, [p]);
