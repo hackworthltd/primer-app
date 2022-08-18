@@ -69,7 +69,7 @@ export const tree4: Tree = {
           nodeId: "402",
         },
         {
-          body: { tag: "NoBody" },
+          body: { tag: "TextBody", contents: "a" },
           childTrees: [
             {
               body: { tag: "NoBody" },
