@@ -2,28 +2,10 @@ import { useMemo } from "react";
 import { Node, Edge, Position } from "react-flow-renderer/nocss";
 import { graphlib, layout } from "dagre";
 
-// the layout direction (T = top, R = right, B = bottom, L = left, TB = top to bottom, ...)
-export type Direction = "TB" | "LR" | "RL" | "BT";
-
-export type Options = {
-  direction: Direction;
-};
-
-const positionMap = {
-  T: Position.Top,
-  L: Position.Left,
-  R: Position.Right,
-  B: Position.Bottom,
-};
-
-function layoutGraph(
-  nodes: Node[],
-  edges: Edge[],
-  { direction = "TB" }: Options
-) {
+function layoutGraph(nodes: Node[], edges: Edge[]) {
   const dagreGraph = new graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
-  dagreGraph.setGraph({ rankdir: direction });
+  dagreGraph.setGraph({ rankdir: "TB" });
 
   nodes.forEach((el) => {
     dagreGraph.setNode(el.id, { width: el.data.width, height: el.data.height });
@@ -37,8 +19,8 @@ function layoutGraph(
 
   const layoutNodes = nodes.map((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
-    node.targetPosition = positionMap[direction[0] as never];
-    node.sourcePosition = positionMap[direction[1] as never];
+    node.targetPosition = Position.Top;
+    node.sourcePosition = Position.Bottom;
 
     node.position = {
       x: nodeWithPosition.x - node.data.width / 2,
@@ -51,11 +33,8 @@ function layoutGraph(
   return layoutNodes;
 }
 
-function useLayout(nodes: Node[], edges: Edge[], options: Options) {
-  return useMemo(
-    () => layoutGraph(nodes, edges, options),
-    [nodes, edges, options]
-  );
+function useLayout(nodes: Node[], edges: Edge[]) {
+  return useMemo(() => layoutGraph(nodes, edges), [nodes, edges]);
 }
 
 export default useLayout;

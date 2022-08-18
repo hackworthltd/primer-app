@@ -260,9 +260,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
     nodes: trees.flatMap(({ nodes }) => nodes),
     edges: trees.flatMap(({ edges }) => edges),
   };
-  const layoutedNodes = useLayout(forest.nodes, forest.edges, {
-    direction: "TB",
-  });
+  const layoutedNodes = useLayout(forest.nodes, forest.edges);
 
   return (
     <div style={{ height: p.height, width: p.width }}>
