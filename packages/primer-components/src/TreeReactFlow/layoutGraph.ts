@@ -27,15 +27,15 @@ export function layoutGraph<
   return {
     nodes: nodes.map((node) => {
       const nodeWithPosition = dagreGraph.node(node.id);
-
-      node.targetPosition = Position.Top;
-      node.sourcePosition = Position.Bottom;
-      node.position = {
-        x: nodeWithPosition.x - node.data.width / 2,
-        y: nodeWithPosition.y - node.data.height / 2,
+      return {
+        ...node,
+        targetPosition: Position.Top,
+        sourcePosition: Position.Bottom,
+        position: {
+          x: nodeWithPosition.x - node.data.width / 2,
+          y: nodeWithPosition.y - node.data.height / 2,
+        },
       };
-
-      return node;
     }),
     width: dagreGraph.graph().width!,
     height: dagreGraph.graph().height!,
