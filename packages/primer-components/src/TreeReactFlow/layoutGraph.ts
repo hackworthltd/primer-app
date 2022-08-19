@@ -1,6 +1,8 @@
 import { Node, Edge, Position } from "react-flow-renderer/nocss";
 import { graphlib, layout } from "dagre";
 
+export type NodeNoPos<T> = Omit<Node<T>, "position">;
+
 export function layoutGraph<
   N extends {
     width: number;
@@ -8,7 +10,7 @@ export function layoutGraph<
   },
   E
 >(
-  nodes: Node<N>[],
+  nodes: NodeNoPos<N>[],
   edges: Edge<E>[]
 ): { nodes: Node<N>[]; width: number; height: number } {
   const dagreGraph = new graphlib.Graph();

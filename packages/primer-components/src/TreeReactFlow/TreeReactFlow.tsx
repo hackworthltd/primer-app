@@ -1,13 +1,12 @@
 import { NodeFlavor, TreeInteractiveRender } from "@hackworthltd/primer-types";
 import ReactFlow, {
-  Node,
   Edge,
   Handle,
   Position,
   NodeProps,
 } from "react-flow-renderer/nocss";
 import "react-flow-renderer/dist/style.css";
-import { layoutGraph } from "./layoutGraph";
+import { layoutGraph, NodeNoPos } from "./layoutGraph";
 import { useMemo } from "react";
 
 export type TreeReactFlowProps = {
@@ -179,7 +178,7 @@ const convertTree = (
   nodeWidth: number,
   nodeHeight: number
 ): {
-  nodes: Node<PrimerNodeProps>[];
+  nodes: NodeNoPos<PrimerNodeProps>[];
   edges: Edge<{}>[];
 } => {
   const childTrees = tree.childTrees.concat(
@@ -187,12 +186,11 @@ const convertTree = (
   );
   const children = childTrees.map((t) => convertTree(t, nodeWidth, nodeHeight));
   const id = tree.nodeId.toString();
-  const thisNode = (data: PrimerNodeProps): Node<PrimerNodeProps> => {
+  const thisNode = (data: PrimerNodeProps): NodeNoPos<PrimerNodeProps> => {
     return {
       id,
       type: primerNodeTypeName,
       data,
-      position: { x: 0, y: 0 }, // this gets overwritten by layout algorithm
     };
   };
   const thisToChildren: Edge<{}>[] = childTrees.map((t) => {
