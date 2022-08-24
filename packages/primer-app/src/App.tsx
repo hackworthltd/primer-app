@@ -49,8 +49,8 @@ const App = (): JSX.Element => {
         trees={trees}
         width={1500}
         height={800}
-        nodeWidth={200}
-        nodeHeight={100}
+        nodeWidth={150}
+        nodeHeight={50}
         boxPadding={50}
       ></TreeReactFlow>
     </div>
