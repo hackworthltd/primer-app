@@ -10,13 +10,15 @@ import "react-flow-renderer/dist/style.css";
 import { layoutGraph, NodeNoPos } from "./layoutGraph";
 import { useMemo } from "react";
 
+type NodeParams = {
+  nodeWidth: number;
+  nodeHeight: number;
+};
 export type TreeReactFlowProps = {
   trees: TreeInteractiveRender[];
   width: number;
   height: number;
-  nodeWidth: number;
-  nodeHeight: number;
-};
+} & NodeParams;
 
 function flavorColor(flavor: NodeFlavor): string {
   switch (flavor) {
@@ -176,8 +178,7 @@ const nodeTypes = { [primerNodeTypeName]: PrimerNode };
 
 const convertTree = (
   tree: TreeInteractiveRender,
-  nodeWidth: number,
-  nodeHeight: number
+  p: NodeParams
 ): {
   nodes: NodeNoPos<PrimerNodeProps>[];
   edges: Edge<{}>[];
@@ -188,7 +189,7 @@ const convertTree = (
   const childTrees = tree.childTrees.concat(
     tree.rightChild ? [tree.rightChild] : []
   );
-  const children = childTrees.map((t) => convertTree(t, nodeWidth, nodeHeight));
+  const children = childTrees.map((t) => convertTree(t, p));
   const id = tree.nodeId.toString();
   const thisNode = (data: PrimerNodeProps): NodeNoPos<PrimerNodeProps> => {
     return {
@@ -220,8 +221,8 @@ const convertTree = (
           thisNode({
             label: flavorLabel(tree.flavor),
             contents: tree.body.contents,
-            width: nodeWidth,
-            height: nodeHeight,
+            width: p.nodeWidth,
+            height: p.nodeHeight,
             color: flavorColor(tree.flavor),
           }),
           ...childNodes,
@@ -234,8 +235,8 @@ const convertTree = (
         nodes: [
           thisNode({
             contents: flavorLabel(tree.flavor),
-            width: nodeWidth / 2,
-            height: nodeHeight / 2,
+            width: p.nodeWidth / 2,
+            height: p.nodeHeight / 2,
             color: flavorColor(tree.flavor),
           }),
           ...childNodes,
@@ -244,7 +245,7 @@ const convertTree = (
         nested: childNested,
       };
     case "BoxBody":
-      const bodyTree = convertTree(tree.body.contents, nodeWidth, nodeHeight);
+      const bodyTree = convertTree(tree.body.contents, p);
       const bodyLayout = layoutGraph(
         bodyTree.nodes.map((node) => {
           return {
@@ -272,7 +273,7 @@ const convertTree = (
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const { nodes, edges } = useMemo(() => {
-    const trees = p.trees.map((t) => convertTree(t, p.nodeWidth, p.nodeHeight));
+    const trees = p.trees.map((t) => convertTree(t, p));
     const edges = trees.flatMap(({ edges }) => edges);
     const nodes = trees.flatMap(({ nodes }) => nodes);
     const nested = trees.flatMap(({ nested }) => nested);
