@@ -19,7 +19,7 @@ const Template: ComponentStory<typeof GroupedButtonList> = (args) => (
      component. See:
      https://github.com/hackworthltd/primer-app/issues/140
      */}
-    <div className="p-8 w-1/2 bg-grey-primary">
+    <div className="w-1/2 bg-grey-primary p-8">
       <GroupedButtonList {...args} />
     </div>
   </>

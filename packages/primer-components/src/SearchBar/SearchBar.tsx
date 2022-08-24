@@ -34,16 +34,16 @@ export const SearchBar = (p: SearchBarProps): JSX.Element => (
       {p.ariaLabel}
     </label>
     <div className="relative">
-      <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
         <SearchIcon
-          className="w-5 h-5 text-grey-secondary"
+          className="h-5 w-5 text-grey-secondary"
           aria-hidden="true"
         />
       </div>
       <input
         id="search"
         name="search"
-        className="block py-2 pr-3 pl-10 w-full text-sm placeholder:text-grey-secondary focus:text-grey-secondary focus:placeholder:text-grey-secondary bg-white-primary rounded-md border border-grey-secondary focus:border-blue-primary focus:outline-none focus:ring-1 focus:ring-blue-primary sm:text-sm"
+        className="block w-full rounded-md border border-grey-secondary bg-white-primary py-2 pr-3 pl-10 text-sm placeholder:text-grey-secondary focus:border-blue-primary focus:text-grey-secondary focus:outline-none focus:ring-1 focus:ring-blue-primary focus:placeholder:text-grey-secondary sm:text-sm"
         placeholder={p.placeholder}
         type="search"
       />

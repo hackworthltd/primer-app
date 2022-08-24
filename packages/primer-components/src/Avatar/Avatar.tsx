@@ -112,7 +112,7 @@ export const Avatar = (p: AvatarProps): JSX.Element => {
   const src = p.imgSrc ? p.imgSrc : avatar;
 
   return (
-    <span className="inline-block relative">
+    <span className="relative inline-block">
       <img className={imgClasses(p.size)} src={src} alt={p.id} />
       <span className={decorationClasses(p.size, p.decoration)} />
     </span>

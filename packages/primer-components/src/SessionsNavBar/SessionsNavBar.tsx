@@ -34,18 +34,18 @@ const accountNavigation = [
 
 export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
   <>
-    <div className="flex overflow-y-visible relative justify-between">
+    <div className="relative flex justify-between overflow-y-visible">
       <div className="flex py-6">
         <PrimerBranding size="responsive" />
       </div>
-      <div className="flex-1 items-center p-6 min-w-0">
+      <div className="min-w-0 flex-1 items-center p-6">
         <SearchBar ariaLabel="Search programs" placeholder="Program name" />
       </div>
-      <div className="flex justify-end items-center">
+      <div className="flex items-center justify-end">
         {/* Profile dropdown */}
         <Menu as="div" className="relative shrink-0">
           <div>
-            <Menu.Button className="flex bg-white-primary rounded-full focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2">
+            <Menu.Button className="flex rounded-full bg-white-primary focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2">
               <span className="sr-only">Open account menu</span>
               <Avatar
                 id={p.account.email}
@@ -65,7 +65,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Menu.Items className="absolute right-0 z-10 py-1 mt-2 w-48 text-blue-primary bg-white-primary rounded-md focus:outline-none ring-1 ring-blue-primary/5 shadow-lg origin-top-right">
+            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white-primary py-1 text-blue-primary shadow-lg ring-1 ring-blue-primary/5 focus:outline-none">
               {accountNavigation.map((item) => (
                 <Menu.Item key={item.name}>
                   {({ active }) => (

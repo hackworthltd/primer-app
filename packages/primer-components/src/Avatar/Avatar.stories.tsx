@@ -82,7 +82,7 @@ const zipSizeImgSrcs: [Size, string | undefined][] = zipWith(
 const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
   <>
     <h1 className="text-xl">Identicon</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {zipSizeIDs.map(([sz, id]) => (
         <Avatar
           id={id}
@@ -96,7 +96,7 @@ const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
     </div>
 
     <h1 className="text-xl">Jdenticon</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {zipSizeIDs.map(([sz, id]) => (
         <Avatar
           id={id}
@@ -110,7 +110,7 @@ const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
     </div>
 
     <h1 className="text-xl">Bottts</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {zipSizeIDs.map(([sz, id]) => (
         <Avatar
           id={id}
@@ -124,7 +124,7 @@ const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
     </div>
 
     <h1 className="text-xl">Image</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {zipSizeImgSrcs.map(([sz, imgSrc]) => (
         <Avatar
           id="student1@gmail.com"
@@ -144,7 +144,7 @@ export const Showcase = AllButtonsTemplate.bind({});
 const AllButtonsWithAlertTemplate: ComponentStory<typeof Avatar> = () => (
   <>
     <h1 className="text-xl">Identicon with alert</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {zipSizeIDs.map(([sz, id]) => (
         <Avatar
           id={id}
@@ -158,7 +158,7 @@ const AllButtonsWithAlertTemplate: ComponentStory<typeof Avatar> = () => (
     </div>
 
     <h1 className="text-xl">Jdenticon with alert</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {zipSizeIDs.map(([sz, id]) => (
         <Avatar
           id={id}
@@ -172,7 +172,7 @@ const AllButtonsWithAlertTemplate: ComponentStory<typeof Avatar> = () => (
     </div>
 
     <h1 className="text-xl">Bottts with alert</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {zipSizeIDs.map(([sz, id]) => (
         <Avatar
           id={id}
@@ -186,7 +186,7 @@ const AllButtonsWithAlertTemplate: ComponentStory<typeof Avatar> = () => (
     </div>
 
     <h1 className="text-xl">Image with alert</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {zipSizeImgSrcs.map(([sz, imgSrc]) => (
         <Avatar
           id="student1@gmail.com"

@@ -151,7 +151,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     <>
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
-        className="flex justify-center items-center text-grey-tertiary rounded border-[3px]"
+        className="flex items-center justify-center rounded border-[3px] text-grey-tertiary"
         style={{
           width: p.data.width,
           height: p.data.height,
