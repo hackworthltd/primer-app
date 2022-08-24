@@ -39,7 +39,7 @@ export function layoutGraph<
         },
       };
     }),
-    width: dagreGraph.graph().width!,
-    height: dagreGraph.graph().height!,
+    width: dagreGraph.graph().width || 0,
+    height: dagreGraph.graph().height || 0,
   };
 }

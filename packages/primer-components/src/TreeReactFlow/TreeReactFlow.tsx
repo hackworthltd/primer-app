@@ -182,7 +182,7 @@ const convertTree = (
   p: NodeParams
 ): {
   nodes: NodeNoPos<PrimerNodeProps>[];
-  edges: Edge<{}>[];
+  edges: Edge<never>[];
   /* Nodes of nested trees, already positioned.
   We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
   nested: Node<PrimerNodeProps>[];
@@ -199,7 +199,7 @@ const convertTree = (
       data,
     };
   };
-  const thisToChildren: Edge<{}>[] = childTrees.map((t) => {
+  const thisToChildren: Edge<never>[] = childTrees.map((t) => {
     const target = t.nodeId.toString();
     return {
       id: JSON.stringify([id, target]),
@@ -245,7 +245,7 @@ const convertTree = (
         edges,
         nested: childNested,
       };
-    case "BoxBody":
+    case "BoxBody": {
       const bodyTree = convertTree(tree.body.contents, p);
       const bodyLayout0 = layoutGraph(
         bodyTree.nodes.map((node) => {
@@ -281,6 +281,7 @@ const convertTree = (
         edges: edges.concat(bodyTree.edges),
         nested: childNested.concat(bodyLayout.nodes),
       };
+    }
   }
 };
 
