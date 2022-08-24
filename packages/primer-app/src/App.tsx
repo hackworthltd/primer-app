@@ -51,6 +51,7 @@ const App = (): JSX.Element => {
         height={800}
         nodeWidth={200}
         nodeHeight={100}
+        boxPadding={50}
       ></TreeReactFlow>
     </div>
   );

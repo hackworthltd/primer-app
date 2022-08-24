@@ -13,6 +13,7 @@ import { useMemo } from "react";
 type NodeParams = {
   nodeWidth: number;
   nodeHeight: number;
+  boxPadding: number;
 };
 export type TreeReactFlowProps = {
   trees: TreeInteractiveRender[];
@@ -246,7 +247,7 @@ const convertTree = (
       };
     case "BoxBody":
       const bodyTree = convertTree(tree.body.contents, p);
-      const bodyLayout = layoutGraph(
+      const bodyLayout0 = layoutGraph(
         bodyTree.nodes.map((node) => {
           return {
             ...node,
@@ -255,12 +256,24 @@ const convertTree = (
         }),
         bodyTree.edges
       );
+      const bodyLayout = {
+        ...bodyLayout0,
+        nodes: bodyLayout0.nodes.map((node) => {
+          return {
+            ...node,
+            position: {
+              x: node.position.x + p.boxPadding / 2,
+              y: node.position.y + p.boxPadding / 2,
+            },
+          };
+        }),
+      };
       return {
         nodes: [
           thisNode({
             label: flavorLabel(tree.flavor),
-            width: bodyLayout.width,
-            height: bodyLayout.height,
+            width: bodyLayout.width + p.boxPadding,
+            height: bodyLayout.height + p.boxPadding,
             color: flavorColor(tree.flavor),
           }),
           ...childNodes,
