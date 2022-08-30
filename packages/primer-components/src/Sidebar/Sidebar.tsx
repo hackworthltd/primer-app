@@ -51,17 +51,17 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
       )}
       onClick={(_) => switchTab(tab)}
     >
-      <div className="flex flex-col self-center w-full">{element}</div>
+      <div className="flex w-full flex-col self-center">{element}</div>
     </button>
   );
 
   return (
-    <div className="flex flex-col w-96 h-[800px]">
-      <div className="grid shrink-0 grid-cols-2 h-16 text-grey-secondary">
-        {tab("T&D", <div className="text-xl font-bold text-center">T&D</div>)}
+    <div className="flex h-[800px] w-96 flex-col">
+      <div className="grid h-16 shrink-0 grid-cols-2 text-grey-secondary">
+        {tab("T&D", <div className="text-center text-xl font-bold">T&D</div>)}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
       </div>
-      <div className="p-6 pr-4 h-full bg-grey-primary">
+      <div className="h-full bg-grey-primary p-6 pr-4">
         {(() => {
           switch (currentTab) {
             case "T&D":
@@ -81,7 +81,7 @@ const TypesAndDefinitions = ({
   prog,
 }: TypesAndDefinitionsProps): JSX.Element => {
   return (
-    <div className="overflow-auto h-full">
+    <div className="h-full overflow-auto">
       <div className={headerStyle}>Types & Definitions</div>
 
       <div className="flex flex-col gap-5 p-2 leading-8">
@@ -155,7 +155,7 @@ const DefList = ({
           []
         )}
       </div>
-      <div className="flex flex-col gap-3 items-start">
+      <div className="flex flex-col items-start gap-3">
         {expanded
           ? p.elems.map((def) => (
               <button
@@ -176,11 +176,11 @@ const DefList = ({
 
 const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
   return (
-    <div className="overflow-auto h-full">
+    <div className="h-full overflow-auto">
       <div className={headerStyle}>Selection Info</div>
       <div className="flex flex-col gap-5 p-2 leading-8">
         {shadowed ? (
-          <div className="text-red-primary flex items-center gap-1">
+          <div className="flex items-center gap-1 text-red-primary">
             <InformationCircleIcon className="h-4" />
             <div>
               <span>The definition has been </span>

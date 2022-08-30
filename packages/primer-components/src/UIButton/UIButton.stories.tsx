@@ -58,7 +58,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
 ) => (
   <>
     <h1 className="text-xl">Primary</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {fixedSizes.map((sz) => (
         <UIButton
           onClick={args.onClick}
@@ -71,7 +71,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
     </div>
 
     <h1 className="text-xl">Secondary</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {fixedSizes.map((sz) => (
         <UIButton
           onClick={args.onClick}
@@ -84,7 +84,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
     </div>
 
     <h1 className="text-xl">Warning</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {fixedSizes.map((sz) => (
         <UIButton
           onClick={args.onClick}
@@ -97,7 +97,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
     </div>
 
     <h1 className="text-xl">Danger</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {fixedSizes.map((sz) => (
         <UIButton
           onClick={args.onClick}
@@ -110,7 +110,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
     </div>
 
     <h1 className="text-xl">Plain</h1>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {fixedSizes.map((sz) => (
         <UIButton
           onClick={args.onClick}

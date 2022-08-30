@@ -1,21 +1,25 @@
 import { NodeFlavor, TreeInteractiveRender } from "@hackworthltd/primer-types";
 import ReactFlow, {
-  Node,
   Edge,
+  Node,
   Handle,
   Position,
   NodeProps,
 } from "react-flow-renderer/nocss";
 import "react-flow-renderer/dist/style.css";
-import useLayout from "./useLayout";
+import { layoutGraph, NodeNoPos } from "./layoutGraph";
+import { useMemo } from "react";
 
+type NodeParams = {
+  nodeWidth: number;
+  nodeHeight: number;
+  boxPadding: number;
+};
 export type TreeReactFlowProps = {
   trees: TreeInteractiveRender[];
   width: number;
   height: number;
-  nodeWidth: number;
-  nodeHeight: number;
-};
+} & NodeParams;
 
 function flavorColor(flavor: NodeFlavor): string {
   switch (flavor) {
@@ -147,7 +151,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     <>
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
-        className="flex justify-center items-center text-grey-tertiary rounded border-[3px]"
+        className="flex items-center justify-center rounded border-[3px] text-grey-tertiary"
         style={{
           width: p.data.width,
           height: p.data.height,
@@ -175,26 +179,27 @@ const nodeTypes = { [primerNodeTypeName]: PrimerNode };
 
 const convertTree = (
   tree: TreeInteractiveRender,
-  nodeWidth: number,
-  nodeHeight: number
+  p: NodeParams
 ): {
-  nodes: Node[];
-  edges: Edge[];
+  nodes: NodeNoPos<PrimerNodeProps>[];
+  edges: Edge<never>[];
+  /* Nodes of nested trees, already positioned.
+  We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
+  nested: Node<PrimerNodeProps>[];
 } => {
   const childTrees = tree.childTrees.concat(
     tree.rightChild ? [tree.rightChild] : []
   );
-  const children = childTrees.map((t) => convertTree(t, nodeWidth, nodeHeight));
+  const children = childTrees.map((t) => convertTree(t, p));
   const id = tree.nodeId.toString();
-  const thisNode = (data: PrimerNodeProps): Node<PrimerNodeProps> => {
+  const thisNode = (data: PrimerNodeProps): NodeNoPos<PrimerNodeProps> => {
     return {
       id,
       type: primerNodeTypeName,
       data,
-      position: { x: 0, y: 0 }, // this gets overwritten by layout algorithm
     };
   };
-  const thisToChildren: Edge[] = childTrees.map((t) => {
+  const thisToChildren: Edge<never>[] = childTrees.map((t) => {
     const target = t.nodeId.toString();
     return {
       id: JSON.stringify([id, target]),
@@ -207,6 +212,7 @@ const convertTree = (
   });
   const childNodes = children.flatMap(({ nodes }) => nodes);
   const childEdges = children.flatMap(({ edges }) => edges);
+  const childNested = children.flatMap(({ nested }) => nested);
   const edges = childEdges.concat(thisToChildren);
 
   switch (tree.body.tag) {
@@ -216,59 +222,86 @@ const convertTree = (
           thisNode({
             label: flavorLabel(tree.flavor),
             contents: tree.body.contents,
-            width: nodeWidth,
-            height: nodeHeight,
+            width: p.nodeWidth,
+            height: p.nodeHeight,
             color: flavorColor(tree.flavor),
           }),
           ...childNodes,
         ],
         edges,
+        nested: childNested,
       };
     case "NoBody":
       return {
         nodes: [
           thisNode({
             contents: flavorLabel(tree.flavor),
-            width: nodeWidth / 2,
-            height: nodeHeight / 2,
+            width: p.nodeWidth / 2,
+            height: p.nodeHeight / 2,
             color: flavorColor(tree.flavor),
           }),
           ...childNodes,
         ],
         edges,
+        nested: childNested,
       };
-    case "BoxBody":
+    case "BoxBody": {
+      const bodyTree = convertTree(tree.body.contents, p);
+      const bodyLayout0 = layoutGraph(
+        bodyTree.nodes.map((node) => {
+          return {
+            ...node,
+            parentNode: id,
+          };
+        }),
+        bodyTree.edges
+      );
+      const bodyLayout = {
+        ...bodyLayout0,
+        nodes: bodyLayout0.nodes.map((node) => {
+          return {
+            ...node,
+            position: {
+              x: node.position.x + p.boxPadding / 2,
+              y: node.position.y + p.boxPadding / 2,
+            },
+          };
+        }),
+      };
       return {
         nodes: [
           thisNode({
-            contents: "pattern placeholder",
             label: flavorLabel(tree.flavor),
-            width: nodeWidth * 1.5,
-            height: nodeHeight * 2.5,
+            width: bodyLayout.width + p.boxPadding,
+            height: bodyLayout.height + p.boxPadding,
             color: flavorColor(tree.flavor),
           }),
           ...childNodes,
         ],
-        edges,
+        edges: edges.concat(bodyTree.edges),
+        nested: childNested.concat(bodyLayout.nodes),
       };
+    }
   }
 };
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
-  const trees = p.trees.map((t) => convertTree(t, p.nodeWidth, p.nodeHeight));
-  const forest = {
-    nodes: trees.flatMap(({ nodes }) => nodes),
-    edges: trees.flatMap(({ edges }) => edges),
-  };
-  const layoutedNodes = useLayout(forest.nodes, forest.edges, {
-    direction: "TB",
-  });
+  const { nodes, edges } = useMemo(() => {
+    const trees = p.trees.map((t) => convertTree(t, p));
+    const edges = trees.flatMap(({ edges }) => edges);
+    const nodes = trees.flatMap(({ nodes }) => nodes);
+    const nested = trees.flatMap(({ nested }) => nested);
+    return {
+      nodes: layoutGraph(nodes, edges).nodes.concat(nested),
+      edges,
+    };
+  }, [p]);
 
   return (
     <div style={{ height: p.height, width: p.width }}>
       <ReactFlow
-        nodes={layoutedNodes}
-        edges={forest.edges}
+        nodes={nodes}
+        edges={edges}
         nodeTypes={nodeTypes}
         proOptions={{ hideAttribution: true, account: "paid-pro" }}
       ></ReactFlow>

@@ -26,7 +26,7 @@ const modeSvg = (m: Mode) => {
     case "text":
       return <CodeIcon className="p-0.5" />;
     case "tree":
-      return <ShareIcon className="p-1 rotate-90" />;
+      return <ShareIcon className="rotate-90 p-1" />;
   }
 };
 const nextMode = (m: Mode): Mode => {
@@ -75,8 +75,8 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
             setMode(m);
             p.onModeChange(m, e);
           }}
-          className="flex flex-col items-center
-            w-12 h-6 text-white-primary bg-blue-primary hover:bg-blue-secondary rounded shadow-lg"
+          className="flex h-6 w-12
+            flex-col items-center rounded bg-blue-primary text-white-primary shadow-lg hover:bg-blue-secondary"
         >
           {modeSvg(mode)}
         </button>

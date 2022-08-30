@@ -16,14 +16,14 @@ export const SessionPreview = ({
   return (
     <div>
       <Link to={`/sessions/${session.id}`} key={session.id}>
-        <div className="group flex overflow-hidden flex-row justify-center w-full max-w-md bg-grey-primary rounded-lg">
-          <BinaryTreePlaceholder className="w-16 h-16 text-white-primary group-hover:text-blue-primary fill-current md:w-48 md:h-48" />
+        <div className="group flex w-full max-w-md flex-row justify-center overflow-hidden rounded-lg bg-grey-primary">
+          <BinaryTreePlaceholder className="h-16 w-16 fill-current text-white-primary group-hover:text-blue-primary md:h-48 md:w-48" />
         </div>
       </Link>
-      <p className="block mt-2 text-sm font-medium text-blue-primary truncate pointer-events-none">
+      <p className="pointer-events-none mt-2 block truncate text-sm font-medium text-blue-primary">
         {session.name}
       </p>
-      <p className="block text-sm font-medium text-blue-primary pointer-events-none">
+      <p className="pointer-events-none block text-sm font-medium text-blue-primary">
         {new Intl.DateTimeFormat(locale, {
           dateStyle: "medium",
           timeStyle: "medium",

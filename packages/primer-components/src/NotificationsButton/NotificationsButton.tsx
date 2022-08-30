@@ -39,7 +39,7 @@ export const NotificationsButton = (
 ): JSX.Element => (
   <button
     type="button"
-    className="shrink-0 p-1 ml-5 bg-white-primary rounded-full focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 md:ml-auto"
+    className="ml-5 shrink-0 rounded-full bg-white-primary p-1 focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 md:ml-auto"
   >
     <span className="sr-only">View notifications</span>
     <BellIcon className={iconClasses(p.appearance)} aria-hidden="true" />

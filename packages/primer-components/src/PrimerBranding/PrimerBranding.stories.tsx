@@ -29,7 +29,7 @@ Single.args = {
 
 const AllSizesTemplate: ComponentStory<typeof PrimerBranding> = () => (
   <>
-    <div className="flex flex-row justify-around items-center mb-8">
+    <div className="mb-8 flex flex-row items-center justify-around">
       {fixedSizes.map((sz) => (
         <PrimerBranding size={sz} key={sz} />
       ))}
