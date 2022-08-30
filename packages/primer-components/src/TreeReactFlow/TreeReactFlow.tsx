@@ -32,7 +32,7 @@ function flavorColor(flavor: NodeFlavor): string {
     case "FlavorApp":
       return "#2c6a85";
     case "FlavorAPP":
-      return "e5a34f";
+      return "#e5a34f";
     case "FlavorCon":
       return "#62e2b4";
     case "FlavorLam":
