@@ -5,11 +5,8 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { GlobalName } from "./globalName";
-import type { Tree } from "./tree";
 
-export interface Def {
-  name: GlobalName;
-  term?: Tree;
-  type_: Tree;
+export interface GlobalName {
+  baseName: string;
+  qualifiedModule: string[];
 }

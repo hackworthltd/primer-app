@@ -6,11 +6,11 @@
  * OpenAPI spec version: 0.7
  */
 import type { Def } from "./def";
-import type { ModuleName } from "./moduleName";
+import type { GlobalName } from "./globalName";
 
 export interface Module {
   defs: Def[];
   editable: boolean;
-  modname: ModuleName;
-  types: string[];
+  modname: string[];
+  types: GlobalName[];
 }
