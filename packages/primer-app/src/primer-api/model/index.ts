@@ -19,3 +19,4 @@ export * from "./nodeFlavor";
 export * from "./nodeBodyOneOf";
 export * from "./nodeBody";
 export * from "./nodeBodyOneOfTag";
+export * from "./globalName";
