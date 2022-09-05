@@ -20,3 +20,4 @@ export * from "./nodeBodyOneOf";
 export * from "./nodeBody";
 export * from "./nodeBodyOneOfTag";
 export * from "./globalName";
+export * from "./getProgramParams";

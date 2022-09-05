@@ -156,6 +156,259 @@ export const oddEvenTrees: Tree[] = [
             flavor: "FlavorLocalVar",
             nodeId: "5",
           },
+          {
+            body: { tag: "NoBody" },
+            childTrees: [
+              {
+                body: {
+                  contents: {
+                    body: { contents: "Builtins.Zero", tag: "TextBody" },
+                    childTrees: [],
+                    flavor: "FlavorPatternCon",
+                    nodeId: "4P0B",
+                  },
+                  tag: "BoxBody",
+                },
+                childTrees: [
+                  {
+                    body: { contents: "Builtins.True", tag: "TextBody" },
+                    childTrees: [],
+                    flavor: "FlavorCon",
+                    nodeId: "6",
+                  },
+                ],
+                flavor: "FlavorPattern",
+                nodeId: "4P0",
+              },
+              {
+                body: {
+                  contents: {
+                    body: { tag: "NoBody" },
+                    childTrees: [
+                      {
+                        body: { contents: "Builtins.Succ", tag: "TextBody" },
+                        childTrees: [],
+                        flavor: "FlavorPatternCon",
+                        nodeId: "4P1B",
+                      },
+                      {
+                        body: { contents: "n", tag: "TextBody" },
+                        childTrees: [],
+                        flavor: "FlavorPatternBind",
+                        nodeId: "7",
+                      },
+                    ],
+                    flavor: "FlavorPatternApp",
+                    nodeId: "7A",
+                  },
+                  tag: "BoxBody",
+                },
+                childTrees: [
+                  {
+                    body: { tag: "NoBody" },
+                    childTrees: [
+                      {
+                        body: { contents: "Even3.odd", tag: "TextBody" },
+                        childTrees: [],
+                        flavor: "FlavorGlobalVar",
+                        nodeId: "9",
+                      },
+                      {
+                        body: { contents: "n", tag: "TextBody" },
+                        childTrees: [],
+                        flavor: "FlavorLocalVar",
+                        nodeId: "10",
+                      },
+                    ],
+                    flavor: "FlavorApp",
+                    nodeId: "8",
+                  },
+                ],
+                flavor: "FlavorPattern",
+                nodeId: "4P1",
+              },
+            ],
+            flavor: "FlavorCaseWith",
+            nodeId: "4W",
+          },
+        ],
+        flavor: "FlavorCase",
+        nodeId: "4",
+      },
+    ],
+    flavor: "FlavorLam",
+    nodeId: "3",
+  },
+  {
+    body: { tag: "NoBody" },
+    childTrees: [
+      {
+        body: { contents: "Even3.even", tag: "TextBody" },
+        childTrees: [],
+        flavor: "FlavorGlobalVar",
+        nodeId: "24",
+      },
+      {
+        body: { tag: "NoBody" },
+        childTrees: [
+          {
+            body: { contents: "Builtins.Succ", tag: "TextBody" },
+            childTrees: [],
+            flavor: "FlavorCon",
+            nodeId: "26",
+          },
+          {
+            body: { tag: "NoBody" },
+            childTrees: [
+              {
+                body: { contents: "Builtins.Succ", tag: "TextBody" },
+                childTrees: [],
+                flavor: "FlavorCon",
+                nodeId: "28",
+              },
+              {
+                body: { tag: "NoBody" },
+                childTrees: [
+                  {
+                    body: { contents: "Builtins.Succ", tag: "TextBody" },
+                    childTrees: [],
+                    flavor: "FlavorCon",
+                    nodeId: "30",
+                  },
+                  {
+                    body: { contents: "Builtins.Zero", tag: "TextBody" },
+                    childTrees: [],
+                    flavor: "FlavorCon",
+                    nodeId: "31",
+                  },
+                ],
+                flavor: "FlavorApp",
+                nodeId: "29",
+              },
+            ],
+            flavor: "FlavorApp",
+            nodeId: "27",
+          },
+        ],
+        flavor: "FlavorApp",
+        nodeId: "25",
+      },
+    ],
+    flavor: "FlavorApp",
+    nodeId: "23",
+  },
+  {
+    body: { contents: "x", tag: "TextBody" },
+    childTrees: [
+      {
+        body: { tag: "NoBody" },
+        childTrees: [
+          {
+            body: { contents: "x", tag: "TextBody" },
+            childTrees: [],
+            flavor: "FlavorLocalVar",
+            nodeId: "16",
+          },
+          {
+            body: { tag: "NoBody" },
+            childTrees: [
+              {
+                body: {
+                  contents: {
+                    body: { contents: "Builtins.Zero", tag: "TextBody" },
+                    childTrees: [],
+                    flavor: "FlavorPatternCon",
+                    nodeId: "15P0B",
+                  },
+                  tag: "BoxBody",
+                },
+                childTrees: [
+                  {
+                    body: { contents: "Builtins.False", tag: "TextBody" },
+                    childTrees: [],
+                    flavor: "FlavorCon",
+                    nodeId: "17",
+                  },
+                ],
+                flavor: "FlavorPattern",
+                nodeId: "15P0",
+              },
+              {
+                body: {
+                  contents: {
+                    body: {
+                      tag: "NoBody",
+                    },
+                    childTrees: [
+                      {
+                        body: { contents: "Builtins.Succ", tag: "TextBody" },
+                        childTrees: [],
+                        flavor: "FlavorPatternCon",
+                        nodeId: "15P1B",
+                      },
+                      {
+                        body: { contents: "n", tag: "TextBody" },
+                        childTrees: [],
+                        flavor: "FlavorPatternBind",
+                        nodeId: "18",
+                      },
+                    ],
+                    flavor: "FlavorPatternApp",
+                    nodeId: "18A",
+                  },
+                  tag: "BoxBody",
+                },
+                childTrees: [
+                  {
+                    body: { tag: "NoBody" },
+                    childTrees: [
+                      {
+                        body: { contents: "Even3.even", tag: "TextBody" },
+                        childTrees: [],
+                        flavor: "FlavorGlobalVar",
+                        nodeId: "20",
+                      },
+                      {
+                        body: { contents: "n", tag: "TextBody" },
+                        childTrees: [],
+                        flavor: "FlavorLocalVar",
+                        nodeId: "21",
+                      },
+                    ],
+                    flavor: "FlavorApp",
+                    nodeId: "19",
+                  },
+                ],
+                flavor: "FlavorPattern",
+                nodeId: "15P1",
+              },
+            ],
+            flavor: "FlavorCaseWith",
+            nodeId: "15W",
+          },
+        ],
+        flavor: "FlavorCase",
+        nodeId: "15",
+      },
+    ],
+    flavor: "FlavorLam",
+    nodeId: "14",
+  },
+];
+
+export const oddEvenTreesMiscStyles: Tree[] = [
+  {
+    body: { contents: "x", tag: "TextBody" },
+    childTrees: [
+      {
+        body: { tag: "NoBody" },
+        childTrees: [
+          {
+            body: { contents: "x", tag: "TextBody" },
+            childTrees: [],
+            flavor: "FlavorLocalVar",
+            nodeId: "5",
+          },
         ],
         flavor: "FlavorCase",
         nodeId: "4",

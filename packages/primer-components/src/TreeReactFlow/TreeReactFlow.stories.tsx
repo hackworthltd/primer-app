@@ -7,6 +7,7 @@ import {
   tree4,
   tree5,
   oddEvenTrees,
+  oddEvenTreesMiscStyles,
 } from "@/examples/trees";
 
 export default {
@@ -43,3 +44,6 @@ export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
 export const OddAndEven: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
 ) => <TreeReactFlow {...props} trees={oddEvenTrees} />;
+export const OddAndEvenMiscStyles: ComponentStory<typeof TreeReactFlow> = (
+  _: TreeReactFlowProps
+) => <TreeReactFlow {...props} trees={oddEvenTreesMiscStyles} />;
