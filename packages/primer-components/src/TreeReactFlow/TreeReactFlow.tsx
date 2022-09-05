@@ -51,6 +51,8 @@ function flavorColor(flavor: NodeFlavor): string {
       return "#64b0c8";
     case "FlavorCase":
       return "#ffb961";
+    case "FlavorCaseWith":
+      return "#ffb961";
     case "FlavorPrimCon":
       return "black";
     case "FlavorTEmptyHole":
@@ -108,6 +110,8 @@ function flavorLabel(flavor: NodeFlavor): string {
       return "let rec";
     case "FlavorCase":
       return "match";
+    case "FlavorCaseWith":
+      return "with";
     case "FlavorPrimCon":
       return "V";
     case "FlavorTEmptyHole":

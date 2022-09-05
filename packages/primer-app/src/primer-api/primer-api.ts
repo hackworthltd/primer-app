@@ -19,6 +19,7 @@ import type {
   PaginatedSession,
   GetSessionListParams,
   Prog,
+  GetProgramParams,
 } from "./model";
 import { useCustomInstance } from "./mutator/use-custom-instance";
 import type { ErrorType } from "./mutator/use-custom-instance";
@@ -312,18 +313,24 @@ export const useSetSessionName = <
 export const useGetProgramHook = () => {
   const getProgram = useCustomInstance<Prog>();
 
-  return (sessionId: string, signal?: AbortSignal) => {
+  return (
+    sessionId: string,
+    params?: GetProgramParams,
+    signal?: AbortSignal
+  ) => {
     return getProgram({
       url: `/openapi/sessions/${sessionId}/program`,
       method: "get",
+      params,
       ...(signal ? { signal } : {}),
     });
   };
 };
 
-export const getGetProgramQueryKey = (sessionId: string) => [
-  `/openapi/sessions/${sessionId}/program`,
-];
+export const getGetProgramQueryKey = (
+  sessionId: string,
+  params?: GetProgramParams
+) => [`/openapi/sessions/${sessionId}/program`, ...(params ? [params] : [])];
 
 export type GetProgramQueryResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>
@@ -335,6 +342,7 @@ export const useGetProgram = <
   TError = ErrorType<void>
 >(
   sessionId: string,
+  params?: GetProgramParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>,
@@ -345,13 +353,14 @@ export const useGetProgram = <
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetProgramQueryKey(sessionId);
+  const queryKey =
+    queryOptions?.queryKey ?? getGetProgramQueryKey(sessionId, params);
 
   const getProgram = useGetProgramHook();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>
-  > = ({ signal }) => getProgram(sessionId, signal);
+  > = ({ signal }) => getProgram(sessionId, params, signal);
 
   const query = useQuery<
     Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>,

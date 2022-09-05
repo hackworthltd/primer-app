@@ -85,6 +85,7 @@ export const NodeFlavor = {
   FlavorLetType: "FlavorLetType",
   FlavorLetrec: "FlavorLetrec",
   FlavorCase: "FlavorCase",
+  FlavorCaseWith: "FlavorCaseWith",
   FlavorPrimCon: "FlavorPrimCon",
   FlavorTEmptyHole: "FlavorTEmptyHole",
   FlavorTHole: "FlavorTHole",
