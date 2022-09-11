@@ -1,10 +1,10 @@
 import {
-  CodeIcon,
+  CodeBracketIcon,
   ShareIcon,
-  ReplyIcon,
+  ArrowUturnLeftIcon,
   ChevronDownIcon,
-  DotsHorizontalIcon,
-} from "@heroicons/react/outline";
+  EllipsisHorizontalIcon,
+} from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import { MouseEventHandler, useState } from "react";
 import Draggable from "react-draggable";
@@ -24,7 +24,7 @@ export type Mode = "text" | "tree";
 const modeSvg = (m: Mode) => {
   switch (m) {
     case "text":
-      return <CodeIcon className="p-0.5" />;
+      return <CodeBracketIcon className="p-0.5" />;
     case "tree":
       return <ShareIcon className="rotate-90 p-1" />;
   }
@@ -40,7 +40,7 @@ const nextMode = (m: Mode): Mode => {
 
 // https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/130
 // eslint-disable-next-line tailwindcss/no-custom-classname
-const arrow = <ReplyIcon className="w-6 stroke-[3]" />;
+const arrow = <ArrowUturnLeftIcon className="w-6 stroke-[3]" />;
 const undoRedoClasses =
   "flex flex-col items-center w-12 hover:bg-grey-primary-hover rounded";
 
@@ -65,8 +65,8 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
         )}
       >
         <div className="-mt-2 -mb-1 w-6">
-          <DotsHorizontalIcon className="stroke-grey-secondary" />
-          <DotsHorizontalIcon className="-mt-4 stroke-grey-secondary" />
+          <EllipsisHorizontalIcon className="stroke-grey-secondary" />
+          <EllipsisHorizontalIcon className="-mt-4 stroke-grey-secondary" />
         </div>
         <button
           type="button"

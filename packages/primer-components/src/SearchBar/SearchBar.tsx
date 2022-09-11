@@ -1,6 +1,6 @@
 import "@/index.css";
 
-import { SearchIcon } from "@heroicons/react/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 export interface SearchBarProps {
   /**
@@ -35,7 +35,7 @@ export const SearchBar = (p: SearchBarProps): JSX.Element => (
     </label>
     <div className="relative">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <SearchIcon
+        <MagnifyingGlassIcon
           className="h-5 w-5 text-grey-secondary"
           aria-hidden="true"
         />
