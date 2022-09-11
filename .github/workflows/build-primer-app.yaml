@@ -31,7 +31,7 @@ jobs:
       # Note: linting must come after building, or else eslint won't
       # be able to resolve some paths.
       - name: Lint
-        run: pnpm lint
+        run: pnpm lint --max-warnings=0
 
       # Note: we only audit non-dev dependencies, because there are
       # nearly always dev dependency vulnerabilities, but they're very
