@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
-import checker from "vite-plugin-checker";
+import { checker } from "vite-plugin-checker";
 import dts from "vite-plugin-dts";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";

@@ -10,7 +10,13 @@ import App from "./App";
 
 const queryClient = new QueryClient();
 const rootElement: HTMLElement | null = document.getElementById("root");
-const root = createRoot(rootElement!);
+if (!rootElement) {
+  throw new Error(
+    "The HTML root element doesn't exist. Please report this error!"
+  );
+}
+
+const root = createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
