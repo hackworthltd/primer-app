@@ -1,6 +1,5 @@
 import type { MouseEventHandler } from "react";
 import { Fragment } from "react";
-import classNames from "classnames";
 import { Menu, Transition } from "@headlessui/react";
 import type { Account } from "@hackworthltd/primer-types";
 import { Avatar } from "@/Avatar/Avatar";
@@ -68,17 +67,12 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
             <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white-primary py-1 text-blue-primary shadow-lg ring-1 ring-blue-primary/5 focus:outline-none">
               {accountNavigation.map((item) => (
                 <Menu.Item key={item.name}>
-                  {({ active }) => (
-                    <a
-                      href={item.href}
-                      className={classNames(
-                        active ? "bg-white-primary" : "",
-                        "block py-2 px-4 text-sm text-blue-primary hover:text-white-primary hover:bg-blue-secondary"
-                      )}
-                    >
-                      {item.name}
-                    </a>
-                  )}
+                  <a
+                    href={item.href}
+                    className="ui-active:bg-white-primary block py-2 px-4 text-sm text-blue-primary hover:bg-blue-secondary hover:text-white-primary"
+                  >
+                    {item.name}
+                  </a>
                 </Menu.Item>
               ))}
             </Menu.Items>
