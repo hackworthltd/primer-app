@@ -59,6 +59,7 @@ importers:
     specifiers:
       '@hackworthltd/primer-components': workspace:*
       '@hackworthltd/primer-types': workspace:*
+      '@headlessui/tailwindcss': ^0.1.1
       '@tanstack/react-query': ^4.3.3
       '@types/react': ^18.0.19
       '@types/react-dom': ^18.0.6
@@ -92,6 +93,7 @@ importers:
     devDependencies:
       '@hackworthltd/primer-components': link:../primer-components
       '@hackworthltd/primer-types': link:../primer-types
+      '@headlessui/tailwindcss': 0.1.1_tailwindcss@3.1.8
       '@types/react': 18.0.19
       '@types/react-dom': 18.0.6
       '@vitejs/plugin-react': 2.1.0_vite@3.1.0
@@ -117,6 +119,7 @@ importers:
       '@dicebear/avatars-jdenticon-sprites': ^4.10.3
       '@hackworthltd/primer-types': workspace:*
       '@headlessui/react': ^1.7.0
+      '@headlessui/tailwindcss': ^0.1.1
       '@heroicons/react': ^2.0.10
       '@storybook/addon-actions': ^6.5.10
       '@storybook/addon-essentials': ^6.5.10
@@ -183,6 +186,7 @@ importers:
       '@babel/core': 7.19.0
       '@hackworthltd/primer-types': link:../primer-types
       '@headlessui/react': 1.7.0_biqbaboplfbrettd7655fr4n2y
+      '@headlessui/tailwindcss': 0.1.1_tailwindcss@3.1.8
       '@heroicons/react': 2.0.10_react@18.2.0
       '@storybook/addon-actions': 6.5.10_biqbaboplfbrettd7655fr4n2y
       '@storybook/addon-essentials': 6.5.10_egylh36sdq24fx33ubgiwxu6fa
@@ -2040,6 +2044,15 @@ packages:
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: true
+
+  /@headlessui/tailwindcss/0.1.1_tailwindcss@3.1.8:
+    resolution: {integrity: sha512-MJbc/MG1iVDow0IQYdsZNVY2xiTa2fDpXLF01xIAyNH6M+Ks0c6X0k3x6PqAvwvKWKEFhS0MlMzrDUVTU6cXDA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      tailwindcss: ^3.0
+    dependencies:
+      tailwindcss: 3.1.8_57znarxsqwmnneadci5z5fd5gu
     dev: true
 
   /@heroicons/react/2.0.10_react@18.2.0:
