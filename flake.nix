@@ -156,7 +156,7 @@
           in
           (pkgs.lib.mapAttrs (name: pkg: mkApp pkg name) {
             inherit (scripts) deploy-primer-service;
-            inherit (primerPackages) run-primer primer-openapi-spec;
+            inherit (primerPackages) run-primer primer-openapi-spec primer-sqitch;
           });
 
         devShell = pkgs.mkShell {
