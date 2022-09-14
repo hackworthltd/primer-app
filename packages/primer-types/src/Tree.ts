@@ -94,6 +94,7 @@ export const NodeFlavor = {
   FlavorTVar: "FlavorTVar",
   FlavorTApp: "FlavorTApp",
   FlavorTForall: "FlavorTForall",
+  FlavorTLet: "FlavorTLet",
   FlavorPattern: "FlavorPattern",
   FlavorPatternCon: "FlavorPatternCon",
   FlavorPatternBind: "FlavorPatternBind",

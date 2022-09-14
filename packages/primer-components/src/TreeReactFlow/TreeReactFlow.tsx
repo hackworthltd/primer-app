@@ -69,6 +69,8 @@ function flavorColor(flavor: NodeFlavor): string {
       return "black";
     case "FlavorTForall":
       return "black";
+    case "FlavorTLet":
+      return "black";
     case "FlavorPattern":
       return "#ffb961";
     case "FlavorPatternCon":
@@ -128,6 +130,8 @@ function flavorLabel(flavor: NodeFlavor): string {
       return "@";
     case "FlavorTForall":
       return "∀";
+    case "FlavorTLet":
+      return "let";
     case "FlavorPattern":
       return "P";
     case "FlavorPatternCon":
