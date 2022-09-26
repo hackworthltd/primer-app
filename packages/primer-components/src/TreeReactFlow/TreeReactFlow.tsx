@@ -11,6 +11,7 @@ import ReactFlow, {
   Handle,
   Position,
   NodeProps,
+  Background,
 } from "react-flow-renderer/nocss";
 import "react-flow-renderer/dist/style.css";
 import { layoutGraph, NodeNoPos } from "./layoutGraph";
@@ -174,7 +175,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
         className={classNames(
-          "flex items-center justify-center rounded border-4 text-grey-tertiary",
+          "flex items-center justify-center rounded border-4 text-grey-tertiary bg-white-primary",
           p.data.selected && "outline outline-4 outline-offset-4"
         )}
         style={{
@@ -239,9 +240,10 @@ const convertTree = (
       id: JSON.stringify([id, target]),
       source: id,
       target,
-      type: "step",
       style: { stroke: flavorColor(tree.flavor) },
       className: "stroke-[0.25rem]",
+      // We draw edges above nodes, so that they aren't hidden by nodes' solid backgrounds.
+      zIndex: 1,
     };
   });
   const childNodes = children.flatMap(({ nodes }) => nodes);
@@ -340,6 +342,8 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       edges={edges}
       nodeTypes={nodeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
-    ></ReactFlow>
+    >
+      <Background gap={25} size={0.8} />
+    </ReactFlow>
   );
 };
