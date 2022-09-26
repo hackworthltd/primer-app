@@ -157,7 +157,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     <>
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
-        className="flex items-center justify-center rounded border-[3px] text-grey-tertiary"
+        className="flex items-center justify-center rounded border-4 text-grey-tertiary"
         style={{
           width: p.data.width,
           height: p.data.height,
@@ -166,7 +166,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
       >
         {p.data.contents}
         {p.data.label ? (
-          <div className="absolute right-0 top-0 rounded border-[3px]">
+          <div className="absolute right-0 top-0 rounded border-4">
             {p.data.label}
           </div>
         ) : (
@@ -213,7 +213,7 @@ const convertTree = (
       target,
       type: "step",
       style: { stroke: flavorColor(tree.flavor) },
-      className: "stroke-[4px]",
+      className: "stroke-[0.25rem]",
     };
   });
   const childNodes = children.flatMap(({ nodes }) => nodes);
