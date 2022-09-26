@@ -23,7 +23,7 @@ export const buttonClassesSecondary = classNames(
   buttonClassesBase,
   buttonClassesSecondaryExtra
 );
-export const buttonClassesPad = "px-1 py-6 pl-7";
+export const buttonClassesPad = "px-3 py-6";
 
 const buttonClasses = (appearance: ActionType) =>
   classNames({
@@ -36,7 +36,7 @@ const buttonClasses = (appearance: ActionType) =>
 
 export const ActionButton = (p: ActionButtonProps): JSX.Element => (
   <button type="button" className={buttonClasses(p.actionType)}>
-    <div className="mr-4 -ml-4 w-8 flex-none" aria-hidden="true">
+    <div className="mr-4 w-8 flex-none" aria-hidden="true">
       {p.name.contents}
     </div>
     <p className="text-left">{p.description}</p>
