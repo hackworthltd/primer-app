@@ -11,6 +11,7 @@ import ReactFlow, {
   Handle,
   Position,
   NodeProps,
+  Background,
 } from "react-flow-renderer/nocss";
 import "react-flow-renderer/dist/style.css";
 import { layoutGraph, NodeNoPos } from "./layoutGraph";
@@ -239,7 +240,6 @@ const convertTree = (
       id: JSON.stringify([id, target]),
       source: id,
       target,
-      type: "step",
       style: { stroke: flavorColor(tree.flavor) },
       className: "stroke-[0.25rem]",
     };
@@ -340,6 +340,8 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       edges={edges}
       nodeTypes={nodeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
-    ></ReactFlow>
+    >
+      <Background gap={25} size={0.8} />
+    </ReactFlow>
   );
 };
