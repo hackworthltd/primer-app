@@ -17,8 +17,6 @@ type NodeParams = {
 };
 export type TreeReactFlowProps = {
   trees: TreeInteractiveRender[];
-  width: number;
-  height: number;
 } & NodeParams;
 
 function flavorColor(flavor: NodeFlavor): string {
@@ -306,13 +304,11 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
   }, [p]);
 
   return (
-    <div style={{ height: p.height, width: p.width }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeTypes}
-        proOptions={{ hideAttribution: true, account: "paid-pro" }}
-      ></ReactFlow>
-    </div>
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={nodeTypes}
+      proOptions={{ hideAttribution: true, account: "paid-pro" }}
+    ></ReactFlow>
   );
 };

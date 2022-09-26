@@ -16,34 +16,38 @@ export default {
 } as ComponentMeta<typeof TreeReactFlow>;
 
 const props = {
-  width: 1200,
-  height: 800,
   nodeWidth: 150,
   nodeHeight: 50,
   boxPadding: 50,
 };
 
+const treeSized = (args: TreeReactFlowProps) => (
+  <div className="h-[30rem] w-full">
+    <TreeReactFlow {...args} />
+  </div>
+);
+
 export const Tree1: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} trees={[tree1]} />;
+) => treeSized({ ...props, trees: [tree1] });
 export const Tree2: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} trees={[tree2]} />;
+) => treeSized({ ...props, trees: [tree2] });
 export const Tree3: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} trees={[tree3]} />;
+) => treeSized({ ...props, trees: [tree3] });
 export const Tree4: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} trees={[tree4]} />;
+) => treeSized({ ...props, trees: [tree4] });
 export const Tree5: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} trees={[tree5]} />;
+) => treeSized({ ...props, trees: [tree5] });
 export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} trees={[tree1, tree2, tree3, tree4, tree5]} />;
+) => treeSized({ ...props, trees: [tree1, tree2, tree3, tree4, tree5] });
 export const OddAndEven: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} trees={oddEvenTrees} />;
+) => treeSized({ ...props, trees: oddEvenTrees });
 export const OddAndEvenMiscStyles: ComponentStory<typeof TreeReactFlow> = (
   _: TreeReactFlowProps
-) => <TreeReactFlow {...props} trees={oddEvenTreesMiscStyles} />;
+) => treeSized({ ...props, trees: oddEvenTreesMiscStyles });
