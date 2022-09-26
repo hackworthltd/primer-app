@@ -86,7 +86,7 @@ export const Tree1: ComponentStory<typeof TreeReactFlow> = (
 ) => treeSized({ ...args, defs: [def1], selection: "100" });
 export const Tree2: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
-) => treeSized({ ...args, defs: [def2], selection: "201" });
+) => treeSized({ ...args, defs: [def2] });
 export const Tree3: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
 ) => treeSized({ ...args, defs: [def3], selection: "301" });

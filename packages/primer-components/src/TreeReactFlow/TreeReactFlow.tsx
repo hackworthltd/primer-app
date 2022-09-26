@@ -21,7 +21,7 @@ type NodeParams = {
   nodeWidth: number;
   nodeHeight: number;
   boxPadding: number;
-  selection: string;
+  selection?: string;
 };
 export type TreeReactFlowProps = {
   defs: Def[];
