@@ -1,31 +1,9 @@
 import "@/index.css";
 
 import classNames from "classnames";
+import { ActionType, OfferedAction } from "@hackworthltd/primer-types";
 
-export type Appearance = "primary" | "warning";
-
-export interface ActionButtonProps {
-  /**
-   * Pre-defined button appearances.
-   *
-   * @type {Appearance}
-   */
-  appearance: Appearance;
-
-  /**
-   * The button label.
-   *
-   * @type {string}
-   */
-  label: string;
-
-  /**
-   * The action description.
-   *
-   * @type {string}
-   */
-  description: string;
-}
+export type ActionButtonProps = Omit<OfferedAction, "priority">;
 
 const buttonClassesBase =
   "inline-flex items-center text-base rounded border font-medium shadow-sm bg-white-primary focus:outline-none focus:ring-2 focus:ring-offset-2";
@@ -45,21 +23,21 @@ export const buttonClassesSecondary = classNames(
   buttonClassesBase,
   buttonClassesSecondaryExtra
 );
-export const buttonClassesPad = "px-1 py-6 pl-7";
+export const buttonClassesPad = "px-3 py-6";
 
-const buttonClasses = (appearance: Appearance) =>
+const buttonClasses = (appearance: ActionType) =>
   classNames({
-    [buttonClassesPrimaryExtra]: appearance === "primary",
-    [buttonClassesSecondaryExtra]: appearance === "warning",
+    [buttonClassesPrimaryExtra]: appearance === "Primary",
+    [buttonClassesSecondaryExtra]: appearance === "Destructive",
     [buttonClassesBase]: true,
     [buttonClassesWidth]: true,
     [buttonClassesPad]: true,
   });
 
 export const ActionButton = (p: ActionButtonProps): JSX.Element => (
-  <button type="button" className={buttonClasses(p.appearance)}>
-    <div className="mr-4 -ml-4 w-8 flex-none" aria-hidden="true">
-      {p.label}
+  <button type="button" className={buttonClasses(p.actionType)}>
+    <div className="mr-4 w-8 flex-none" aria-hidden="true">
+      {p.name.contents}
     </div>
     <p className="text-left">{p.description}</p>
   </button>

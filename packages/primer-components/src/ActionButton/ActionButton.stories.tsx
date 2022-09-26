@@ -1,9 +1,10 @@
+import { ActionType } from "@hackworthltd/primer-types";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { Appearance, ActionButtonProps } from "./ActionButton";
+import type { ActionButtonProps } from "./ActionButton";
 import { ActionButton } from "./ActionButton";
 
-const appearances: Array<Appearance> = ["primary", "warning"];
+const appearances: Array<ActionType> = ["Primary", "Destructive"];
 
 export default {
   title: "Application/Component Library/Buttons/ActionButton",
@@ -43,8 +44,8 @@ const Template: ComponentStory<typeof ActionButton> = (
 
 export const Single = Template.bind({});
 Single.args = {
-  appearance: "primary",
-  label: "λx",
+  actionType: "Primary",
+  name: { tag: "Code", contents: "λx" },
   description: "Make a function with an input",
 };
 
@@ -59,15 +60,19 @@ const AllButtonsTemplate: ComponentStory<typeof ActionButton> = () => (
     <h1 className="text-xl">Primary</h1>
     <div className="mt-4 mb-8 flex w-1/2 flex-row items-center justify-around bg-grey-primary p-8">
       <ActionButton
-        label="λx"
+        name={{ tag: "Code", contents: "λx" }}
         description="Make a function with an input"
-        appearance="primary"
+        actionType="Primary"
       />
     </div>
 
     <h1 className="text-xl">Warning</h1>
     <div className="mt-4 mb-8 flex w-1/2 flex-row items-center justify-around bg-grey-primary p-8">
-      <ActionButton label="⌦" description="Delete" appearance="warning" />
+      <ActionButton
+        name={{ tag: "Prose", contents: "⌦" }}
+        description="Delete"
+        actionType="Destructive"
+      />
     </div>
   </>
 );

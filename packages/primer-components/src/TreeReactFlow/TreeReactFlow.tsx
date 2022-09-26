@@ -1,4 +1,10 @@
-import { NodeFlavor, TreeInteractiveRender } from "@hackworthltd/primer-types";
+import {
+  Def,
+  GlobalName,
+  NodeFlavor,
+  NodeType,
+  Tree,
+} from "@hackworthltd/primer-types";
 import ReactFlow, {
   Edge,
   Node,
@@ -9,16 +15,17 @@ import ReactFlow, {
 import "react-flow-renderer/dist/style.css";
 import { layoutGraph, NodeNoPos } from "./layoutGraph";
 import { useMemo } from "react";
+import classNames from "classnames";
 
 type NodeParams = {
   nodeWidth: number;
   nodeHeight: number;
   boxPadding: number;
+  selection?: string;
 };
 export type TreeReactFlowProps = {
-  trees: TreeInteractiveRender[];
-  width: number;
-  height: number;
+  defs: Def[];
+  onNodeClick: (event: React.MouseEvent, node: Node<PrimerNodeProps>) => void;
 } & NodeParams;
 
 function flavorColor(flavor: NodeFlavor): string {
@@ -144,13 +151,20 @@ function flavorLabel(flavor: NodeFlavor): string {
 }
 
 const primerNodeTypeName = "primer";
-type PrimerNodeProps = {
+type PrimerNodePropsNode = {
   label?: string;
   contents?: string;
   width: number;
   height: number;
   color: string;
+  selected: boolean;
 };
+type PrimerNodePropsTree = {
+  // Invariant: these will be the same for all nodes in a single tree.
+  def: GlobalName;
+  nodeType: NodeType;
+};
+type PrimerNodeProps = PrimerNodePropsTree & PrimerNodePropsNode;
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   // these properties are necessary due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
   const handleStyle = "absolute border-[2px] border-solid border-grey-tertiary";
@@ -159,7 +173,10 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     <>
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
-        className="flex items-center justify-center rounded border-[3px] text-grey-tertiary"
+        className={classNames(
+          "flex items-center justify-center rounded border-4 text-grey-tertiary",
+          p.data.selected && "outline outline-4 outline-offset-4"
+        )}
         style={{
           width: p.data.width,
           height: p.data.height,
@@ -168,7 +185,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
       >
         {p.data.contents}
         {p.data.label ? (
-          <div className="absolute right-0 top-0 rounded border-[3px]">
+          <div className="absolute right-0 top-0 rounded border-4">
             {p.data.label}
           </div>
         ) : (
@@ -186,7 +203,9 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
 const nodeTypes = { [primerNodeTypeName]: PrimerNode };
 
 const convertTree = (
-  tree: TreeInteractiveRender,
+  tree: Tree,
+  def: GlobalName,
+  nodeType: NodeType,
   p: NodeParams
 ): {
   nodes: NodeNoPos<PrimerNodeProps>[];
@@ -198,13 +217,20 @@ const convertTree = (
   const childTrees = tree.childTrees.concat(
     tree.rightChild ? [tree.rightChild] : []
   );
-  const children = childTrees.map((t) => convertTree(t, p));
+  const children = childTrees.map((t) => convertTree(t, def, nodeType, p));
   const id = tree.nodeId.toString();
-  const thisNode = (data: PrimerNodeProps): NodeNoPos<PrimerNodeProps> => {
+  const thisNode = (
+    data: Omit<PrimerNodePropsNode, "selected">
+  ): NodeNoPos<PrimerNodeProps> => {
     return {
       id,
       type: primerNodeTypeName,
-      data,
+      data: {
+        def,
+        nodeType,
+        selected: p.selection == tree.nodeId,
+        ...data,
+      },
     };
   };
   const thisToChildren: Edge<never>[] = childTrees.map((t) => {
@@ -215,7 +241,7 @@ const convertTree = (
       target,
       type: "step",
       style: { stroke: flavorColor(tree.flavor) },
-      className: "stroke-[4px]",
+      className: "stroke-[0.25rem]",
     };
   });
   const childNodes = children.flatMap(({ nodes }) => nodes);
@@ -254,7 +280,7 @@ const convertTree = (
         nested: childNested,
       };
     case "BoxBody": {
-      const bodyTree = convertTree(tree.body.contents, p);
+      const bodyTree = convertTree(tree.body.contents, def, nodeType, p);
       const bodyLayout0 = layoutGraph(
         bodyTree.nodes.map((node) => {
           return {
@@ -295,7 +321,9 @@ const convertTree = (
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const { nodes, edges } = useMemo(() => {
-    const trees = p.trees.map((t) => convertTree(t, p));
+    const trees = p.defs.flatMap((t) =>
+      t.term ? convertTree(t.term, t.name, "BodyNode", p) : []
+    );
     const edges = trees.flatMap(({ edges }) => edges);
     const nodes = trees.flatMap(({ nodes }) => nodes);
     const nested = trees.flatMap(({ nested }) => nested);
@@ -306,13 +334,12 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
   }, [p]);
 
   return (
-    <div style={{ height: p.height, width: p.width }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeTypes}
-        proOptions={{ hideAttribution: true, account: "paid-pro" }}
-      ></ReactFlow>
-    </div>
+    <ReactFlow
+      onNodeClick={p.onNodeClick}
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={nodeTypes}
+      proOptions={{ hideAttribution: true, account: "paid-pro" }}
+    ></ReactFlow>
   );
 };
