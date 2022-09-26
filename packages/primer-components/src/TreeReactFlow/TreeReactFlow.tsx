@@ -9,14 +9,17 @@ import ReactFlow, {
 import "react-flow-renderer/dist/style.css";
 import { layoutGraph, NodeNoPos } from "./layoutGraph";
 import { useMemo } from "react";
+import classNames from "classnames";
 
 type NodeParams = {
   nodeWidth: number;
   nodeHeight: number;
   boxPadding: number;
+  selection: string;
 };
 export type TreeReactFlowProps = {
   defs: Def[];
+  onNodeClick: (event: React.MouseEvent, node: Node<PrimerNodeProps>) => void;
 } & NodeParams;
 
 function flavorColor(flavor: NodeFlavor): string {
@@ -148,6 +151,7 @@ type PrimerNodeProps = {
   width: number;
   height: number;
   color: string;
+  selected: boolean;
 };
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   // these properties are necessary due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
@@ -157,7 +161,10 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     <>
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
-        className="flex items-center justify-center rounded border-4 text-grey-tertiary"
+        className={classNames(
+          "flex items-center justify-center rounded border-4 text-grey-tertiary",
+          p.data.selected && "outline outline-4 outline-offset-4"
+        )}
         style={{
           width: p.data.width,
           height: p.data.height,
@@ -198,11 +205,17 @@ const convertTree = (
   );
   const children = childTrees.map((t) => convertTree(t, p));
   const id = tree.nodeId.toString();
-  const thisNode = (data: PrimerNodeProps): NodeNoPos<PrimerNodeProps> => {
+  const thisNode = (
+    data: Omit<PrimerNodeProps, "selected">
+  ): NodeNoPos<PrimerNodeProps> => {
+    console.log("current", p.selection);
     return {
       id,
       type: primerNodeTypeName,
-      data,
+      data: {
+        selected: p.selection == tree.nodeId,
+        ...data,
+      },
     };
   };
   const thisToChildren: Edge<never>[] = childTrees.map((t) => {
@@ -305,6 +318,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
 
   return (
     <ReactFlow
+      onNodeClick={p.onNodeClick}
       nodes={nodes}
       edges={edges}
       nodeTypes={nodeTypes}

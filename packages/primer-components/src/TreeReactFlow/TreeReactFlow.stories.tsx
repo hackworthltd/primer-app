@@ -14,6 +14,12 @@ import { Tree } from "@hackworthltd/primer-types";
 export default {
   title: "Application/Component Library/TreeReactFlow",
   component: TreeReactFlow,
+  argTypes: {
+    onNodeClick: {
+      description: "The event handler for a node click.",
+      action: "node",
+    },
+  },
 } as ComponentMeta<typeof TreeReactFlow>;
 
 const props = {
@@ -72,31 +78,35 @@ const oddEvenDefsMiscStyles = oddEvenTreesMiscStyles.map((t, n) => {
 
 const treeSized = (args: TreeReactFlowProps) => (
   <div className="h-[30rem] w-full">
-    <TreeReactFlow {...args} />
+    <TreeReactFlow {...{ ...props, ...args }} />
   </div>
 );
-
 export const Tree1: ComponentStory<typeof TreeReactFlow> = (
-  _: TreeReactFlowProps
-) => treeSized({ ...props, defs: [def1] });
+  args: TreeReactFlowProps
+) => treeSized({ ...args, defs: [def1], selection: "100" });
 export const Tree2: ComponentStory<typeof TreeReactFlow> = (
-  _: TreeReactFlowProps
-) => treeSized({ ...props, defs: [def2] });
+  args: TreeReactFlowProps
+) => treeSized({ ...args, defs: [def2], selection: "201" });
 export const Tree3: ComponentStory<typeof TreeReactFlow> = (
-  _: TreeReactFlowProps
-) => treeSized({ ...props, defs: [def3] });
+  args: TreeReactFlowProps
+) => treeSized({ ...args, defs: [def3], selection: "301" });
 export const Tree4: ComponentStory<typeof TreeReactFlow> = (
-  _: TreeReactFlowProps
-) => treeSized({ ...props, defs: [def4] });
+  args: TreeReactFlowProps
+) => treeSized({ ...args, defs: [def4], selection: "409" });
 export const Tree5: ComponentStory<typeof TreeReactFlow> = (
-  _: TreeReactFlowProps
-) => treeSized({ ...props, defs: [def5] });
+  args: TreeReactFlowProps
+) => treeSized({ ...args, defs: [def5], selection: "503" });
 export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
-  _: TreeReactFlowProps
-) => treeSized({ ...props, defs: [def1, def2, def3, def4, def5] });
+  args: TreeReactFlowProps
+) =>
+  treeSized({
+    ...args,
+    defs: [def1, def2, def3, def4, def5],
+    selection: "301",
+  });
 export const OddAndEven: ComponentStory<typeof TreeReactFlow> = (
-  _: TreeReactFlowProps
-) => treeSized({ ...props, defs: oddEvenDefs });
+  args: TreeReactFlowProps
+) => treeSized({ ...args, defs: oddEvenDefs, selection: "5" });
 export const OddAndEvenMiscStyles: ComponentStory<typeof TreeReactFlow> = (
-  _: TreeReactFlowProps
-) => treeSized({ ...props, defs: oddEvenDefsMiscStyles });
+  args: TreeReactFlowProps
+) => treeSized({ ...args, defs: oddEvenDefsMiscStyles, selection: "5" });
