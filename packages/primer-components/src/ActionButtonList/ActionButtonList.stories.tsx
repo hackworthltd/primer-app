@@ -1,5 +1,5 @@
+import { OfferedAction } from "@hackworthltd/primer-types";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import type { ActionButtonProps } from "@/ActionButton/ActionButton";
 
 import { ActionButtonList } from "./ActionButtonList";
 
@@ -11,77 +11,90 @@ export default {
   },
 } as ComponentMeta<typeof ActionButtonList>;
 
-const exampleTypeActions = (): ActionButtonProps[] => {
+const exampleTypeActions = (): OfferedAction[] => {
   return [
     {
-      appearance: "primary",
-      label: "→",
+      actionType: "Primary",
+      name: { tag: "Code", contents: "→" },
       description: "Construct a function type",
+      priority: 0,
     },
     {
-      appearance: "primary",
-      label: "$",
+      actionType: "Primary",
+      name: { tag: "Code", contents: "$" },
       description: "Construct a type application",
+      priority: 1,
     },
     {
-      appearance: "primary",
-      label: "∀",
+      actionType: "Primary",
+      name: { tag: "Code", contents: "∀" },
       description: "Construct a polymorphic type",
+      priority: 2,
     },
     {
-      appearance: "warning",
-      label: "↑",
+      actionType: "Destructive",
+      name: { tag: "Prose", contents: "↑" },
       description: "Replace parent with this subtree",
+      priority: 3,
     },
     {
-      appearance: "warning",
-      label: "⌦",
+      actionType: "Destructive",
+      name: { tag: "Prose", contents: "⌦" },
       description: "Delete this type constructor",
+      priority: 4,
     },
   ];
 };
 
-const exampleTermActions = (): ActionButtonProps[] => {
+const exampleTermActions = (): OfferedAction[] => {
   return [
     {
-      appearance: "primary",
-      label: "λx",
+      actionType: "Primary",
+      name: { tag: "Code", contents: "λx" },
       description: "Make a function with an input",
+      priority: 0,
     },
     {
-      appearance: "primary",
-      label: "m",
+      actionType: "Primary",
+      name: { tag: "Code", contents: "m" },
       description: "Pattern match",
+      priority: 1,
     },
     {
-      appearance: "primary",
-      label: "$",
+      actionType: "Primary",
+      name: { tag: "Code", contents: "$" },
       description: "Apply function",
+      priority: 2,
     },
     {
-      appearance: "primary",
-      label: "@",
+      actionType: "Primary",
+      name: { tag: "Code", contents: "@" },
       description: "Apply type",
+      priority: 3,
     },
     {
-      appearance: "primary",
-      label: "Λx",
+      actionType: "Primary",
+      name: { tag: "Code", contents: "Λx" },
       description: "Make a type abstraction",
+      priority: 4,
     },
     {
-      appearance: "primary",
-      label: ":",
+      actionType: "Primary",
+      name: { tag: "Code", contents: ":" },
       description: "Annotate this expression with a type",
+      priority: 5,
     },
     {
-      appearance: "warning",
-      label: "↑",
+      actionType: "Destructive",
+      name: { tag: "Prose", contents: "↑" },
       description: "Replace parent with this subtree",
+      priority: 6,
     },
     {
-      appearance: "warning",
-      label: "⌦",
+      actionType: "Destructive",
+      name: { tag: "Prose", contents: "⌦" },
       description: "Delete this expression",
+      priority: 7,
     },
   ];
 };
