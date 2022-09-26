@@ -1,3 +1,20 @@
+// For some complex requests, we use POST in order to send a body with what would otherwise be a GET.
+// This lists the operation IDs for such requests.
+// We configure Orval to generate simple `useQuery`-based code, as it would for a GET request,
+// rather than its default `useMutation` approach for POSTs.
+const getStylePostRequests = ["getAvailableActions"];
+const useQueryPost = Object.assign(
+  ...getStylePostRequests.map((op) => {
+    return {
+      [op]: {
+        query: {
+          useQuery: true,
+        },
+      },
+    };
+  })
+);
+
 module.exports = {
   "primer-api": {
     input: {
@@ -17,6 +34,9 @@ module.exports = {
         mutator: {
           path: "./mutator/use-custom-instance.ts",
           name: "useCustomInstance",
+        },
+        operations: {
+          ...useQueryPost,
         },
       },
     },
