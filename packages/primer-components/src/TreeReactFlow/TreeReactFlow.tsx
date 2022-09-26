@@ -1,4 +1,8 @@
-import { NodeFlavor, TreeInteractiveRender } from "@hackworthltd/primer-types";
+import {
+  Def,
+  NodeFlavor,
+  TreeInteractiveRender,
+} from "@hackworthltd/primer-types";
 import ReactFlow, {
   Edge,
   Node,
@@ -16,7 +20,7 @@ type NodeParams = {
   boxPadding: number;
 };
 export type TreeReactFlowProps = {
-  trees: TreeInteractiveRender[];
+  defs: Def[];
 } & NodeParams;
 
 function flavorColor(flavor: NodeFlavor): string {
@@ -293,7 +297,7 @@ const convertTree = (
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const { nodes, edges } = useMemo(() => {
-    const trees = p.trees.map((t) => convertTree(t, p));
+    const trees = p.defs.flatMap((t) => (t.term ? convertTree(t.term, p) : []));
     const edges = trees.flatMap(({ edges }) => edges);
     const nodes = trees.flatMap(({ nodes }) => nodes);
     const nested = trees.flatMap(({ nested }) => nested);
