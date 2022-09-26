@@ -1,7 +1,18 @@
-import { TreeReactFlow, Error } from "@hackworthltd/primer-components";
+import {
+  TreeReactFlow,
+  Error,
+  ActionButtonList,
+  Sidebar,
+} from "@hackworthltd/primer-components";
 import "@hackworthltd/primer-components/style.css";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetProgram } from "./primer-api";
+import {
+  useGetAvailableActions,
+  useGetProgram,
+  Selection,
+  Module,
+} from "./primer-api";
 
 const App = (): JSX.Element => {
   const params = useParams();
@@ -41,20 +52,66 @@ const App = (): JSX.Element => {
   if (!module) {
     return <Error string="No editable modules" />;
   }
-  const trees = module.defs.flatMap((def) => def.term || []);
 
+  return <AppNoError sessionId={sessionId} module={module} />;
+};
+
+const AppNoError = (p: { sessionId: string; module: Module }): JSX.Element => {
+  const [selection, setSelection] = useState<Selection | undefined>(undefined);
+  const selectedNodeId = selection?.node?.id;
   return (
-    <div>
+    <div className="grid h-screen grid-cols-[22rem_auto_22rem]">
+      <div className="overflow-scroll">
+        <Sidebar
+          initialMode="T&D"
+          prog={{
+            defs: p.module.defs.map((d) => d.name.baseName),
+            types: p.module.types.map((t) => t.baseName),
+            importedDefs: [],
+            importedTypes: [],
+          }}
+          onClickDef={(_label, _event) => ({})}
+          onClickAdd={(_label, _event) => ({})}
+          shadowed={false}
+          type="?"
+          folder="unknown"
+        />
+      </div>
       <TreeReactFlow
-        trees={trees}
-        width={1500}
-        height={800}
+        {...(selectedNodeId && { selection: selectedNodeId.toString() })}
+        onNodeClick={(_e, node) => {
+          const id = Number(node.id);
+          // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
+          if (!isNaN(id)) {
+            setSelection({
+              def: node.data.def,
+              node: { id, nodeType: node.data.nodeType },
+            });
+          }
+        }}
+        defs={p.module.defs}
         nodeWidth={150}
         nodeHeight={50}
         boxPadding={50}
-      ></TreeReactFlow>
+      />
+      {selection ? (
+        <ActionsListSelection selection={selection} sessionId={p.sessionId} />
+      ) : (
+        <ActionButtonList actions={[]} />
+      )}
     </div>
   );
+};
+
+const ActionsListSelection = (p: {
+  selection: Selection;
+  sessionId: string;
+}) => {
+  const queryRes = useGetAvailableActions(p.sessionId, p.selection, {
+    level: "Expert",
+  });
+  const actions = queryRes.isSuccess ? queryRes.data : [];
+  return <ActionButtonList actions={actions} />;
 };
 
 export default App;
