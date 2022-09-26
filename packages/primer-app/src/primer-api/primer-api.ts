@@ -18,6 +18,9 @@ import type {
   Uuid,
   PaginatedSession,
   GetSessionListParams,
+  OfferedAction,
+  Selection,
+  GetAvailableActionsParams,
   Prog,
   GetProgramParams,
 } from "./model";
@@ -188,6 +191,83 @@ export const useCreateSession = <
     TVariables,
     TContext
   >(mutationFn, mutationOptions);
+};
+
+/**
+ * @summary Get available actions for the definition, or a node within it
+ */
+export const useGetAvailableActionsHook = () => {
+  const getAvailableActions = useCustomInstance<OfferedAction[]>();
+
+  return (
+    sessionId: string,
+    selection: Selection,
+    params: GetAvailableActionsParams
+  ) => {
+    return getAvailableActions({
+      url: `/openapi/sessions/${sessionId}/action/available/available`,
+      method: "post",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: selection,
+      params,
+    });
+  };
+};
+
+export const getGetAvailableActionsQueryKey = (
+  sessionId: string,
+  selection: Selection,
+  params: GetAvailableActionsParams
+) => [
+  `/openapi/sessions/${sessionId}/action/available/available`,
+  ...(params ? [params] : []),
+  selection,
+];
+
+export type GetAvailableActionsQueryResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>
+>;
+export type GetAvailableActionsQueryError = ErrorType<void>;
+
+export const useGetAvailableActions = <
+  TData = Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>,
+  TError = ErrorType<void>
+>(
+  sessionId: string,
+  selection: Selection,
+  params: GetAvailableActionsParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>,
+      TError,
+      TData
+    >;
+  }
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { query: queryOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetAvailableActionsQueryKey(sessionId, selection, params);
+
+  const getAvailableActions = useGetAvailableActionsHook();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>
+  > = () => getAvailableActions(sessionId, selection, params);
+
+  const query = useQuery<
+    Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>,
+    TError,
+    TData
+  >(queryKey, queryFn, {
+    enabled: !!sessionId,
+    ...queryOptions,
+  }) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryKey;
+
+  return query;
 };
 
 /**
