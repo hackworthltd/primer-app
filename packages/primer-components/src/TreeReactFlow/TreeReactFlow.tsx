@@ -1,4 +1,10 @@
-import { Def, NodeFlavor, Tree } from "@hackworthltd/primer-types";
+import {
+  Def,
+  GlobalName,
+  NodeFlavor,
+  NodeType,
+  Tree,
+} from "@hackworthltd/primer-types";
 import ReactFlow, {
   Edge,
   Node,
@@ -152,6 +158,10 @@ type PrimerNodeProps = {
   height: number;
   color: string;
   selected: boolean;
+
+  // Invariant: these will be the same for all nodes in a single tree.
+  def: GlobalName;
+  nodeType: NodeType;
 };
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   // these properties are necessary due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
@@ -192,6 +202,8 @@ const nodeTypes = { [primerNodeTypeName]: PrimerNode };
 
 const convertTree = (
   tree: Tree,
+  def: GlobalName,
+  nodeType: NodeType,
   p: NodeParams
 ): {
   nodes: NodeNoPos<PrimerNodeProps>[];
@@ -203,16 +215,17 @@ const convertTree = (
   const childTrees = tree.childTrees.concat(
     tree.rightChild ? [tree.rightChild] : []
   );
-  const children = childTrees.map((t) => convertTree(t, p));
+  const children = childTrees.map((t) => convertTree(t, def, nodeType, p));
   const id = tree.nodeId.toString();
   const thisNode = (
-    data: Omit<PrimerNodeProps, "selected">
+    data: Omit<Omit<Omit<PrimerNodeProps, "def">, "selected">, "nodeType">
   ): NodeNoPos<PrimerNodeProps> => {
-    console.log("current", p.selection);
     return {
       id,
       type: primerNodeTypeName,
       data: {
+        def,
+        nodeType,
         selected: p.selection == tree.nodeId,
         ...data,
       },
@@ -265,7 +278,7 @@ const convertTree = (
         nested: childNested,
       };
     case "BoxBody": {
-      const bodyTree = convertTree(tree.body.contents, p);
+      const bodyTree = convertTree(tree.body.contents, def, nodeType, p);
       const bodyLayout0 = layoutGraph(
         bodyTree.nodes.map((node) => {
           return {
@@ -306,7 +319,9 @@ const convertTree = (
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const { nodes, edges } = useMemo(() => {
-    const trees = p.defs.flatMap((t) => (t.term ? convertTree(t.term, p) : []));
+    const trees = p.defs.flatMap((t) =>
+      t.term ? convertTree(t.term, t.name, "BodyNode", p) : []
+    );
     const edges = trees.flatMap(({ edges }) => edges);
     const nodes = trees.flatMap(({ nodes }) => nodes);
     const nested = trees.flatMap(({ nested }) => nested);

@@ -21,3 +21,5 @@ export type OfferedAction = {
   priority: number;
 };
 export type ActionType = "Primary" | "Destructive";
+
+export type NodeType = "BodyNode" | "SigNode";
