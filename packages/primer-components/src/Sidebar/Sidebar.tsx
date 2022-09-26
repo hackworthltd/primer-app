@@ -56,12 +56,12 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
   );
 
   return (
-    <div className="flex h-[800px] w-96 flex-col">
-      <div className="grid h-16 shrink-0 grid-cols-2 text-grey-secondary">
+    <div className="flex h-full flex-col">
+      <div className="grid h-20 grid-cols-2 text-grey-secondary">
         {tab("T&D", <div className="text-center text-xl font-bold">T&D</div>)}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
       </div>
-      <div className="h-full bg-grey-primary p-6 pr-4">
+      <div className="h-full overflow-scroll bg-grey-primary p-6 pr-4">
         {(() => {
           switch (currentTab) {
             case "T&D":
