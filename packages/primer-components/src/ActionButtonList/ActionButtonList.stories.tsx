@@ -106,7 +106,7 @@ const Template: ComponentStory<typeof ActionButtonList> = (args) => (
      ActionPanel component. See:
      https://github.com/hackworthltd/primer-app/issues/140
      */}
-    <div className="flex w-1/2 flex-col bg-grey-primary p-8">
+    <div className="flex w-1/2 flex-col bg-grey-primary p-4 pt-2">
       <ActionButtonList {...args} />
     </div>
   </>

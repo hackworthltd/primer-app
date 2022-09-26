@@ -13,7 +13,7 @@ export const ActionButtonList = ({
 }: ActionButtonListProps): JSX.Element => (
   <ul role="list">
     {sortActions(actions).map((action) => (
-      <li key={action.description} className="py-1">
+      <li key={action.description} className="pt-2">
         <ActionButton {...action} />
       </li>
     ))}
