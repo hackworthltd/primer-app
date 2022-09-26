@@ -151,18 +151,20 @@ function flavorLabel(flavor: NodeFlavor): string {
 }
 
 const primerNodeTypeName = "primer";
-type PrimerNodeProps = {
+type PrimerNodePropsNode = {
   label?: string;
   contents?: string;
   width: number;
   height: number;
   color: string;
   selected: boolean;
-
+};
+type PrimerNodePropsTree = {
   // Invariant: these will be the same for all nodes in a single tree.
   def: GlobalName;
   nodeType: NodeType;
 };
+type PrimerNodeProps = PrimerNodePropsTree & PrimerNodePropsNode;
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   // these properties are necessary due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
   const handleStyle = "absolute border-[2px] border-solid border-grey-tertiary";
@@ -218,7 +220,7 @@ const convertTree = (
   const children = childTrees.map((t) => convertTree(t, def, nodeType, p));
   const id = tree.nodeId.toString();
   const thisNode = (
-    data: Omit<Omit<Omit<PrimerNodeProps, "def">, "selected">, "nodeType">
+    data: Omit<PrimerNodePropsNode, "selected">
   ): NodeNoPos<PrimerNodeProps> => {
     return {
       id,
