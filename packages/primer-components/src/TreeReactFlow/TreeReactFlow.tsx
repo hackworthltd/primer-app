@@ -175,7 +175,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
         className={classNames(
-          "flex items-center justify-center rounded border-4 text-grey-tertiary",
+          "flex items-center justify-center rounded border-4 text-grey-tertiary bg-white-primary",
           p.data.selected && "outline outline-4 outline-offset-4"
         )}
         style={{
@@ -242,6 +242,8 @@ const convertTree = (
       target,
       style: { stroke: flavorColor(tree.flavor) },
       className: "stroke-[0.25rem]",
+      // We draw edges above nodes, so that they aren't hidden by nodes' solid backgrounds.
+      zIndex: 1,
     };
   });
   const childNodes = children.flatMap(({ nodes }) => nodes);
