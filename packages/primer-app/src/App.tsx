@@ -53,6 +53,8 @@ const App = (): JSX.Element => {
     return <Error string="No editable modules" />;
   }
 
+  // At this point, we have successfully loaded a program.
+  // `AppNoError` needs to be its own component because of the rules around conditional hooks in React.
   return <AppNoError sessionId={sessionId} module={module} />;
 };
 
