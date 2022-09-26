@@ -1,5 +1,3 @@
-import * as React from "react";
-
 /**
  *
  * @export
@@ -11,27 +9,6 @@ export interface Tree {
   nodeId: string;
   rightChild?: Tree;
   flavor: NodeFlavor;
-}
-
-/**
- * TreeInteractiveRender is like Tree, but has added information for frontend
- * purposes. We add some click handlers, primarily to help visualise how trees
- * dynamically respond to nodes being added and removed. This is only intended
- * for development use, since 'onRightClick' (which is intended to be
- * implemented via 'oncontextmenu') is not usable across all touch/mobile
- * devices.
- *
- * @export
- * @interface TreeInteractiveRender
- */
-export interface TreeInteractiveRender {
-  body: NodeBody;
-  childTrees: Tree[];
-  nodeId: string;
-  rightChild?: Tree;
-  flavor: NodeFlavor;
-  onClick?: React.MouseEventHandler<unknown>;
-  onRightClick?: React.MouseEventHandler<unknown>;
 }
 
 export type NodeBody = NodeBodyOneOf | NodeBodyOneOfThree | NodeBodyOneOfFive;

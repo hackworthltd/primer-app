@@ -1,8 +1,4 @@
-import {
-  Def,
-  NodeFlavor,
-  TreeInteractiveRender,
-} from "@hackworthltd/primer-types";
+import { Def, NodeFlavor, Tree } from "@hackworthltd/primer-types";
 import ReactFlow, {
   Edge,
   Node,
@@ -188,7 +184,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
 const nodeTypes = { [primerNodeTypeName]: PrimerNode };
 
 const convertTree = (
-  tree: TreeInteractiveRender,
+  tree: Tree,
   p: NodeParams
 ): {
   nodes: NodeNoPos<PrimerNodeProps>[];

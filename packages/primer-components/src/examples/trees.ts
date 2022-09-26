@@ -1,4 +1,4 @@
-import type { Tree, TreeInteractiveRender } from "@hackworthltd/primer-types";
+import type { Tree } from "@hackworthltd/primer-types";
 
 /*
 Some example trees.
@@ -109,7 +109,7 @@ export const tree4: Tree = {
   nodeId: "400",
 };
 
-export const tree5: TreeInteractiveRender = {
+export const tree5: Tree = {
   body: { tag: "TextBody", contents: "x" },
   childTrees: [
     {
@@ -140,7 +140,6 @@ export const tree5: TreeInteractiveRender = {
   ],
   flavor: "FlavorLam",
   nodeId: "500",
-  onClick: (e) => console.log("Clicked: " + e),
 };
 
 export const oddEvenTrees: Tree[] = [
