@@ -100,16 +100,9 @@ const exampleTermActions = (): OfferedAction[] => {
 };
 
 const Template: ComponentStory<typeof ActionButtonList> = (args) => (
-  <>
-    {/*
-     Let's replace this background color hack with a proper
-     ActionPanel component. See:
-     https://github.com/hackworthltd/primer-app/issues/140
-     */}
-    <div className="flex w-1/2 flex-col bg-grey-primary p-4 pt-2">
-      <ActionButtonList {...args} />
-    </div>
-  </>
+  <div className="h-[32rem] w-[22rem]">
+    <ActionButtonList {...args} />
+  </div>
 );
 
 export const TypeExamples = Template.bind({});

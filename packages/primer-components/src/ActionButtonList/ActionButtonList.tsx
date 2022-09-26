@@ -11,7 +11,7 @@ export interface ActionButtonListProps {
 export const ActionButtonList = ({
   actions,
 }: ActionButtonListProps): JSX.Element => (
-  <ul role="list">
+  <ul role="list" className="h-full overflow-scroll bg-grey-primary p-4 pt-2">
     {sortActions(actions).map((action) => (
       <li key={action.description} className="pt-2">
         <ActionButton {...action} />
