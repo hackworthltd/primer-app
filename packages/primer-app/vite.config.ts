@@ -12,6 +12,7 @@ export default ({ mode }) => {
     plugins: [
       checker({
         typescript: true,
+        overlay: false,
       }),
       react(),
       tsconfigPaths(),
