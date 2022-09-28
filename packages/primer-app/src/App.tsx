@@ -62,7 +62,7 @@ const AppNoError = (p: { sessionId: string; module: Module }): JSX.Element => {
   const [selection, setSelection] = useState<Selection | undefined>(undefined);
   const selectedNodeId = selection?.node?.id;
   return (
-    <div className="grid h-screen grid-cols-[22rem_auto_22rem]">
+    <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="overflow-scroll">
         <Sidebar
           initialMode="T&D"
