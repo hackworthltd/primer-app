@@ -219,7 +219,7 @@ const convertTree = (
     tree.rightChild ? [tree.rightChild] : []
   );
   const children = childTrees.map((t) => convertTree(t, def, nodeType, p));
-  const id = tree.nodeId.toString();
+  const id = tree.nodeId;
   const thisNode = (
     data: Omit<PrimerNodePropsNode, "selected">
   ): NodeNoPos<PrimerNodeProps> => {
@@ -235,7 +235,7 @@ const convertTree = (
     };
   };
   const thisToChildren: Edge<never>[] = childTrees.map((t) => {
-    const target = t.nodeId.toString();
+    const target = t.nodeId;
     return {
       id: JSON.stringify([id, target]),
       source: id,
