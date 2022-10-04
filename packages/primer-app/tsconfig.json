@@ -45,9 +45,6 @@
   "include": ["./src"],
   "references": [
     {
-      "path": "../primer-components"
-    },
-    {
       "path": "../primer-types"
     }
   ]

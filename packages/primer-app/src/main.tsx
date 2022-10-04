@@ -1,36 +1,20 @@
-import * as React from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "./index.css";
+import { useState } from "react";
+import { hook1 } from "@hackworthltd/primer-types";
 
-import { NoMatch } from "@hackworthltd/primer-components";
-import ChooseSession from "./ChooseSession";
-import App from "./App";
+const hook2 = useState;
 
-const queryClient = new QueryClient();
-const rootElement: HTMLElement | null = document.getElementById("root");
+const Component = (): JSX.Element => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const res1 = hook1({}); // external - crashes
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const res2 = hook2({}); // local - fine
+  return <div>Success!</div>;
+};
+
+const rootElement = document.getElementById("root");
 if (!rootElement) {
-  throw new Error(
-    "The HTML root element doesn't exist. Please report this error!"
-  );
+  throw new Error("No root!");
 }
-
 const root = createRoot(rootElement);
-
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <Routes>
-          <Route path="/" element={<Navigate to="/sessions" />} />
-          <Route path="/sessions">
-            <Route index element={<ChooseSession />} />
-            <Route path=":sessionId" element={<App />} />
-          </Route>
-          <Route path="*" element={<NoMatch />} />
-        </Routes>
-      </QueryClientProvider>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+root.render(<Component />);
