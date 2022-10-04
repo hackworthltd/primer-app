@@ -19,7 +19,7 @@ jobs:
       - name: Setup nodejs
         uses: actions/setup-node@v3.5.0
         with:
-          node-version: 18
+          node-version-file: package.json
           cache: "pnpm"
 
       - name: Install dependencies
