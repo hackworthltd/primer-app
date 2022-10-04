@@ -1,20 +1,3 @@
-# Emacs
-*~
-.dir-locals.el
-
-# Vim
-.*.swp
-
-# macOS
-.DS_Store
-
-# Nix
-result*
-
-# direnv.
-.direnv/
-.envrc
-
 # tsc
 tsconfig.tsbuildinfo
 
@@ -29,17 +12,3 @@ node_modules/
 # vite
 .vite/
 dist/
-
-# eslint
-.eslintcache
-
-# Storybook.js
-storybook-static/
-build-storybook.log
-
-# VSCode
-*.code-workspace
-.vscode
-
-# Generated files
-primer-api.json
