@@ -177,6 +177,7 @@
             in
             ''
               export PATH="$(pwd)/node_modules/.bin:$PATH"
+              pnpm install
 
               OPENAPI_SPEC=$(nix-build -A packages.${system}.primer-openapi-spec)
               rm -f ${local-spec}
