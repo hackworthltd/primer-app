@@ -218,7 +218,7 @@ We use [Orval](https://github.com/anymaniax/orval) to automatically generate Typ
 
 ```sh
 nix develop
-cd packages/primer-app && pnpm generate
+cd packages/primer-types && pnpm generate
 ```
 
 (Note that Orval will update the generated bindings even if there's only been an Orval version bump and no functional changes, which is annoying.)

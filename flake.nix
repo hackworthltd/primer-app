@@ -173,7 +173,7 @@
           # tooling that we include in the Node packaging.
           shellHook =
             let
-              local-spec = "./packages/primer-app/primer-api.json";
+              local-spec = "./packages/primer-types/primer-api.json";
             in
             ''
               export PATH="$(pwd)/node_modules/.bin:$PATH"
@@ -181,7 +181,7 @@
               OPENAPI_SPEC=$(nix-build -A packages.${system}.primer-openapi-spec)
               rm -f ${local-spec}
               ln -s $OPENAPI_SPEC ${local-spec}
-              cd packages/primer-app && pnpm generate
+              cd packages/primer-types && pnpm generate
             '';
         };
       })

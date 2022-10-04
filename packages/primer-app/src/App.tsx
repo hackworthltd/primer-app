@@ -12,7 +12,7 @@ import {
   useGetProgram,
   Selection,
   Module,
-} from "./primer-api";
+} from "@hackworthltd/primer-types";
 
 const App = (): JSX.Element => {
   const params = useParams();

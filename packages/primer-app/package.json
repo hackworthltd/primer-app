@@ -8,12 +8,10 @@
     "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "generate": "orval --config ./orval.config.js"
+    "lint:fix": "eslint --fix ."
   },
   "dependencies": {
     "@tanstack/react-query": "^4.3.9",
-    "axios": "^0.27.2",
     "history": "^5.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,7 +27,6 @@
     "@vitejs/plugin-react": "^2.1.0",
     "autoprefixer": "^10.4.12",
     "classnames": "^2.3.2",
-    "orval": "^6.10.1",
     "postcss": "^8.4.16",
     "postcss-import": "^15.0.0",
     "tailwindcss": "3.1.8",

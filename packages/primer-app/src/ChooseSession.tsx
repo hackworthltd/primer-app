@@ -1,13 +1,13 @@
 import type { MouseEventHandler } from "react";
 import { useState } from "react";
-import type { SessionMeta } from "@hackworthltd/primer-types";
 import { exampleAccount, SessionsPage } from "@hackworthltd/primer-components";
 import type {
+  SessionMeta,
   GetSessionListParams,
   PaginatedMeta,
   Session,
-} from "@/primer-api";
-import { useGetSessionList } from "@/primer-api";
+} from "@hackworthltd/primer-types";
+import { useGetSessionList } from "@hackworthltd/primer-types";
 
 import "@hackworthltd/primer-components/style.css";
 

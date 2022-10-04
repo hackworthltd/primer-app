@@ -23,7 +23,7 @@ module.exports = {
     },
     output: {
       mode: "split",
-      workspace: "./src/primer-api",
+      workspace: "./src",
       target: "./primer-api.ts",
       schemas: "model",
       client: "react-query",
