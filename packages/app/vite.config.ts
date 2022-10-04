@@ -38,13 +38,6 @@ export default ({ mode }) => {
 
     build: {
       sourcemap: true,
-
-      // Workaround a dagre issue. See:
-      //
-      // https://github.com/vitejs/vite/issues/5759#issuecomment-1034461225
-      commonjsOptions: {
-        ignoreTryCatch: false,
-      },
     },
   });
 };

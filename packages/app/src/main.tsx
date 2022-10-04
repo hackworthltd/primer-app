@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
-import { hook1 } from "@hackworthltd/primer-types";
+import { hook1 } from "@georgefst/lib";
 
 const hook2 = useState;
 

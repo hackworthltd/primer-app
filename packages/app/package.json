@@ -1,0 +1,7 @@
+{
+  "name": "@georgefst/app",
+  "version": "1.0.0",
+  "dependencies": {
+    "@georgefst/lib": "workspace:1.0.0"
+  }
+}

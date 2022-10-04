@@ -2,6 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
+    "declarationDir": "./dist",
     "declarationMap": true,
     "sourceMap": true,
     "target": "ESNext",
@@ -17,7 +18,6 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "alwaysStrict": true,
@@ -36,16 +36,10 @@
         "name": "typescript-eslint-language-service"
       }
     ],
-    "noEmit": true,
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src"],
-  "references": [
-    {
-      "path": "../primer-types"
-    }
-  ]
+  "include": ["./src"]
 }
