@@ -1,3 +1,3 @@
 import { useState } from "react";
 
-export const hook1 = useState;
+export const hookLib = useState;

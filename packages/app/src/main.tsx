@@ -1,14 +1,14 @@
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
-import { hook1 } from "@georgefst/lib";
+import { hookLib } from "@georgefst/lib";
 
-const hook2 = useState;
+const hookApp = useState;
 
 const Component = (): JSX.Element => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const res1 = hook1({}); // external - crashes
+  const resLib = hookLib({}); // external - crashes
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const res2 = hook2({}); // local - fine
+  const resApp = hookApp({}); // local - fine
   return <div>Success!</div>;
 };
 
