@@ -186,7 +186,7 @@
 
                 rm -f ${local-spec}
                 ln -s ${spec} ${local-spec}
-                cd packages/primer-app && pnpm generate && cd -
+                cd packages/primer-app && { pnpm generate ; cd ../.. ; }
               fi
             '';
         };
