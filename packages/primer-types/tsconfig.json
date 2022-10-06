@@ -36,6 +36,7 @@
         "name": "typescript-eslint-language-service"
       }
     ],
+    "types": ["vite/client"],
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]

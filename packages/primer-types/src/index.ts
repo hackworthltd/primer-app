@@ -1,25 +1,20 @@
-import { Tree } from "./Tree";
+export * from "./primer-api";
+export * from "./model";
 
-export * from "./Account";
-export * from "./Session";
-export * from "./Tree";
+// Abstract avatar styles.
+export type AvatarStyle = "bottts" | "identicon" | "jdenticon";
 
-export interface Def {
-  name: GlobalName;
-  term?: Tree;
-  type_: Tree;
+// Placeholder account type.
+export interface Account {
+  name: string;
+  email: string;
+  avatarStyle: AvatarStyle;
+  imageUrl: string | undefined;
 }
-export type GlobalName = {
-  baseName: string;
-  qualifiedModule: string[];
-};
 
-export type OfferedAction = {
-  actionType: ActionType;
-  description: string;
-  name: { tag: "Code"; contents: string } | { tag: "Prose"; contents: string };
-  priority: number;
-};
-export type ActionType = "Primary" | "Destructive";
-
-export type NodeType = "BodyNode" | "SigNode";
+// Placeholder type for our backend session type.
+export interface SessionMeta {
+  id: string;
+  name: string;
+  lastModified: Date;
+}
