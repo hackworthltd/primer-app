@@ -35,9 +35,10 @@ Note that, in this project, we do *not* use Nix in any significant capacity. Nix
 
 ## Interactive development
 
-To develop interactively, enter the Nix shell via `nix develop`. Note that due to https://github.com/NixOS/nixpkgs/issues/132456, we cannot use Nix to install `pnpm` with any version of Node.js > 14, so the first time you check out the `primer-app` repo, you'll need to run `npx pnpm install` to bootstrap a new repo. 
+To develop interactively, enter the Nix shell via `nix develop`. Note that due to https://github.com/NixOS/nixpkgs/issues/132456, we cannot use Nix to install `pnpm` with any version of Node.js > 14, so the first time you check out the `primer-app` repo, you'll need to run `npx pnpm install` (in a `nix develop` shell) to bootstrap a new repo.
+After the initial bootstrap, you should exit the `nix develop` shell, as `nix develop` does some setup that relies on `pnpm` being available.
 
-After the initial bootstrap, you'll be able to run just `nix develop` and then all the standard `pnpm` command should work.
+Then you'll be able to run just `nix develop` and all the standard `pnpm` command should work.
 
 ### Running a local `primer-service` instance
 

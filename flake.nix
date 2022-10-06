@@ -178,11 +178,16 @@
             in
             ''
               export PATH="$(pwd)/node_modules/.bin:$PATH"
-              pnpm install
 
-              rm -f ${local-spec}
-              ln -s ${spec} ${local-spec}
-              cd packages/primer-app && pnpm generate && cd -
+              if ! type -P pnpm ; then
+                echo "'pnpm' not found: there is some one-time setup required, see README.md"
+              else
+                pnpm install
+
+                rm -f ${local-spec}
+                ln -s ${spec} ${local-spec}
+                cd packages/primer-app && pnpm generate && cd -
+              fi
             '';
         };
       })
