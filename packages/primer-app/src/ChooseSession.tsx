@@ -1,15 +1,13 @@
 import type { MouseEventHandler } from "react";
 import { useState } from "react";
-import type { SessionMeta } from "@hackworthltd/primer-types";
-import { exampleAccount, SessionsPage } from "@hackworthltd/primer-components";
+import type { SessionMeta } from "@/Types";
+import { exampleAccount, SessionsPage } from "@/components";
 import type {
   GetSessionListParams,
   PaginatedMeta,
   Session,
 } from "@/primer-api";
 import { useGetSessionList } from "@/primer-api";
-
-import "@hackworthltd/primer-components/style.css";
 
 const ChooseSession = (): JSX.Element => {
   // NOTE: pagination in our API is 1-indexed.

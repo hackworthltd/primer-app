@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from "vite";
+import svgr from "vite-plugin-svgr";
 import react from "@vitejs/plugin-react";
 import { checker } from "vite-plugin-checker";
 import PkgConfig from "vite-plugin-package-config";
@@ -15,6 +16,7 @@ export default ({ mode }) => {
         overlay: false,
       }),
       react(),
+      svgr(),
       tsconfigPaths(),
       PkgConfig(),
     ],

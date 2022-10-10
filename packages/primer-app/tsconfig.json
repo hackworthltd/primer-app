@@ -2,6 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
+    "declarationDir": "./dist",
     "declarationMap": true,
     "sourceMap": true,
     "target": "ESNext",
@@ -36,6 +37,7 @@
         "name": "typescript-eslint-language-service"
       }
     ],
+    "types": ["vite-plugin-svgr/client"],
     "noEmit": true,
     "baseUrl": "./",
     "paths": {
@@ -43,12 +45,9 @@
     }
   },
   "include": ["./src"],
-  "references": [
-    {
-      "path": "../primer-components"
-    },
-    {
-      "path": "../primer-types"
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
     }
-  ]
+  }
 }

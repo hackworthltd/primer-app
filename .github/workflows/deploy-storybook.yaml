@@ -35,9 +35,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build the frontend
+      - name: Build Storybook
         run: pnpm build-storybook
-        working-directory: packages/primer-components
+        working-directory: packages/primer-app
 
       - name: Import secrets from Vault
         uses: hashicorp/vault-action@v2.4.2
@@ -54,7 +54,7 @@ jobs:
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:
-          storybookBuildDir: packages/primer-components/storybook-static
+          storybookBuildDir: packages/primer-app/storybook-static
           projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           exitOnceUploaded: true
           exitZeroOnChanges: true

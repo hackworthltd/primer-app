@@ -1,10 +1,4 @@
-import {
-  TreeReactFlow,
-  Error,
-  ActionButtonList,
-  Sidebar,
-} from "@hackworthltd/primer-components";
-import "@hackworthltd/primer-components/style.css";
+import { TreeReactFlow, Error, ActionButtonList, Sidebar } from "@/components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
