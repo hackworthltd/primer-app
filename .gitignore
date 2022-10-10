@@ -13,7 +13,6 @@ result*
 
 # direnv.
 .direnv/
-.envrc
 
 # tsc
 tsconfig.tsbuildinfo
