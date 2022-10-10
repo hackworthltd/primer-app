@@ -1,4 +1,5 @@
 .vite/
+.direnv/
 node_modules/
 dist/
 .eslintrc.js

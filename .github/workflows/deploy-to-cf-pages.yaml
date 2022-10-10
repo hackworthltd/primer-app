@@ -50,5 +50,5 @@ jobs:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: primer-app
-          directory: packages/primer-app/dist
+          directory: dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

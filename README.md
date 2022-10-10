@@ -6,13 +6,7 @@ This repo contains the Primer frontend application and related packages.
 
 Unlike Primer's backend, this project is covered by a proprietary license; see [LICENSE.md](LICENSE.md). This project should not be distributed outside the company.
 
-## Project organization
-
-For this project, we use a monorepo containing multiple projects: `@hackworthltd/primer-types`, `@hackworthltd/primer-components`, and `@hackworthltd/primer-app`.
-
-The main reason for this project organization is so that Hackworth members and other contributors can develop UI components, using mainly HTML, CSS, and a bit of React, without needing to understand all the details of a complicated frontend web application. It also means that we can use tools and third-party integrations to develop and test these components without creating extraneous dependencies in our frontend application, so that our frontend application can remain relatively lightweight and move at the pace of React, rather than being held back by third-party dependencies that might lag behind the rest of the React ecosystem.
-
-### This repo's relationship to the Primer repo
+## This repo's relationship to the Primer repo
 
 Because the Primer backend project is open source, and this project is not, the 2 projects must live in separate repositories. In order to keep the frontend code in sync with a particular version of the Primer backend/API, we pin the Primer backend repo to a particular git commit/rev via a Nix flake input pin. This ensures that when we run a local `primer-service` instance during development ([see below](#Running-a-local-`primer-service`-instance)), we're running the correct version of the backend for the current frontend, and we don't need to worry about keeping our local copies of these 2 repos in sync. The drawback to this approach is that if we need to make backend changes to accommodate a new frontend feature, we must first commit those changes to the backend repo's `main` branch before we can update the local Nix flake pin. (However, we can always fall back to running the local `primer-service` from a local copy of the backend repo, if necessary.)
 
@@ -27,7 +21,7 @@ nix develop
 
 ## Build system
 
-All of the packages in this monorepo are built with the [Vite build system](https://vitejs.dev/guide/). While this build system isn't as full-featured as [Create React App](https://create-react-app.dev), it's much simpler, more agile, and significantly faster than [Webpack](https://webpack.js.org), which underpins Create React App and is a major contributor to Create React App's complexity.
+We use the [Vite build system](https://vitejs.dev/guide/). While this build system isn't as full-featured as [Create React App](https://create-react-app.dev), it's much simpler, more agile, and significantly faster than [Webpack](https://webpack.js.org), which underpins Create React App and is a major contributor to Create React App's complexity.
 
 We use [`pnpm`](https://pnpm.io/) to manage packages and run commands.
 
@@ -35,7 +29,7 @@ Note that, in this project, we do *not* use Nix in any significant capacity. Nix
 
 ## Interactive development
 
-To develop interactively, enter the Nix shell via `nix develop`. Note that due to https://github.com/NixOS/nixpkgs/issues/132456, we cannot use Nix to install `pnpm` with any version of Node.js > 14, so the first time you check out the `primer-app` repo, you'll need to run `npx pnpm install` to bootstrap a new repo. 
+To develop interactively, enter the Nix shell via `nix develop`. Note that we do not use Nix to install `pnpm`, as we've had issues with Nix and Node.js integration in the past, so the first time you check out the `primer-app` repo, you'll need to run `npx pnpm install` to bootstrap a new repo. 
 
 After the initial bootstrap, you'll be able to run just `nix develop` and then all the standard `pnpm` command should work.
 
@@ -49,41 +43,9 @@ nix run .#run-primer
 
 Note that this only works if there's also a local PostgreSQL Docker instance running. Because we expect that developers will generally always be running this PostgreSQL instance, we haven't bothered to include the related Docker helper scripts from the Primer repo in this repo. See the [Primer repo's README file](https://github.com/hackworthltd/primer/blob/main/README.md#local-development) for details on how to manage the PostgreSQL Docker instance.
 
-### The top-level package
-
-Note: only project-wide development dependencies such as TypeScript should be installed in the top-level package.
-
-There are a few commands that work in the top-level package.
-
-#### `pnpm build`
-
-This command builds all the packages in the workspace sequentially, in dependency order.
-
-#### `pnpm format`
-
-This runs `prettier --write` on all packages in the workspace, using project-wide `prettier` settings.
-
-#### `pnpm lint` and `pnpm lint:fix`
-
-Runs `eslint` on all source files in the workspace. The `lint:fix` variant will also attempt to fix any linting issues.
-
-### The `@hackworthltd/primer-app` package
-
-This package contains the actual frontend application. It lives in the `packages/primer-app` subdirectory of the repo.
-
-The following commands are useful in this workspace.
-
-#### `pnpm build`
-
-This command builds a production version of the frontend application only, and not its dependencies. You'll normally want to run this command at top level, to ensure that the frontend application bundle includes up-to-date dependencies on the other packages in the monorepo.
-
-Once you've built the production version, you can then run `pnpm serve` and open [http://localhost:5000](http://localhost:5000) in a browser to see the production build. (Note: `pnpm serve` does not appear to be compatible with Safari on macOS. You may need to use Firefox or Chrome to view the production build on this platform.) 
-
-In theory, the local production version of the application should be no different than the `watch` HMR version, so unless you're trying to debug a production issue locally, `pnpm serve` is probably not what you want.
+### Scripts
 
 #### `pnpm watch`
-
-Note: you may need to do a `pnpm build` on the `@hackworthltd/primer-components` and `@hackworthltd/primer-types` packages before this will work.
 
 This command runs the app in development mode. Open [http://localhost:5173](http://localhost:5173) in a browser to interact with it. You can run `pnpm watch --open` to automatically open a browser window.
 
@@ -91,81 +53,39 @@ Thanks to Vite's [hot module reloading feature (HMR)](https://vitejs.dev/guide/f
 
 In development mode, Vite also runs TypeScript and `eslint` when files change, so you'll see warnings and errors in the console where the `pnpm watch` command is running. There is sometimes a lag between when the browser reloads and the errors & warnings show up, however.
 
-Note that if you make changes to one of the app's dependencies (i.e., one of the other packages in the monorepo), this will not be automatically picked up by `pnpm watch` running in the `@hackworthltd/primer-app` package. You'll need to rebuild that package separately, at which point the `pnpm watch` command on `@hackworthltd/primer-app` *will* see the changes. We used to have a command that could run a `watch` on all of the projects at once, but that only worked with Yarn, so its functionality is now lost. You can (clumsily) replicate this by opening 3 shells, one for each project in the repo, and running `pnpm watch` in each, simultaneously.
+#### `pnpm format`
+
+This runs `prettier --write` on all source files in the project.
+
+#### `pnpm lint` and `pnpm lint:fix`
+
+Runs `eslint` on all source files in the project. The `lint:fix` variant will also attempt to fix any linting issues.
+
+#### `pnpm storybook`
+
+This command builds the project's Storybook, and then serves a local instance of it, which includes support for HMR.  It will automatically open a browser window.  This can be disabled by `pnpm storybook --no-open`.
+
+#### `pnpm build`
+
+This command builds a production version of the frontend application
+
+Once you've built the production version, you can then run `pnpm serve` and open [http://localhost:5000](http://localhost:5000) in a browser to see the production build. (Note: `pnpm serve` does not appear to be compatible with Safari on macOS. You may need to use Firefox or Chrome to view the production build on this platform.) 
+
+In theory, the local production version of the application should be no different than the `watch` HMR version, so unless you're trying to debug a production issue locally, `pnpm serve` is probably not what you want.
 
 #### `pnpm generate`
 
 This command automatically generates Primer API bindings for the frontend application. You need only run this whenever you update the `primer-api.json` file, which is generated by our `primer` backend repo. See below for more details.
 
-#### `pnpm lint` and `pnpm lint:fix`
-
-As the top-level equivalents.
-
-### The `@hackworthltd/primer-components` package
-
-This package's name is `@hackworthltd/primer-components`, but it lives in the `packages/primer-components` subdirectory of the repo.
-
-This package is a component library for the frontend application. It is used as a dependency by the `@hackworthltd/primer-app` package, so it is built as a library, rather than a standalone application. It also includes a [Storybook.js](https://storybook.js.org) application for rapid component-based development and visual testing.
-
-The following commands are useful in this workspace.
-
-#### `pnpm build`
-
-This command builds a production-ready distribution of the library. This will output not only the minified JavaScript for the component library, but also any TypeScript type definitions (`.d.ts` files) for types that the library exports.
-
-In general, this is probably not a very useful interactive command.
-
-#### `pnpm watch`
-
-Note: you may need to do a `pnpm build` on the `@hackworthltd/primer-types` package before this will work.
-
-This command builds the package in development mode. It's only something you'll need to run when you're running the frontend application in `pnpm watch` mode, as well. See the instructions for that package for details.
-
-#### `pnpm storybook`
-
-This command builds the component Storybook and then serves a local instance of it, which includes support for HMR.  It will automatically open a browser window.  This can be disabled by `pnpm storybook --no-open`.
-
-Note that you'll need to run the corresponding command in the `@hackworthltd/primer-types` package in order for the Storybook to pick up any changes you make to the types in that package. We may add a command in the future which does all of this automatically.
+Note that this command is run automatically every time you enter the `nix develop` shell, to help ensure your generated files are up-to-date with the latest API at all times.
 
 #### `pnpm build-storybook`
 
 This is the deployment-ready version of the component Storybook, the same as the one we deploy to Chromatic for CI builds (see below). You probably won't need to run this command very often.
 
-#### `pnpm lint` and `pnpm lint:fix`
-
-As the top-level equivalents.
-
 #### `pnpm chromatic`
 
 This command performs a manual Chromatic deployment. You should never need to do this (and it probably won't work, anyway, as you likely don't have the necessary credentials to deploy to Chromatic).
-
-### The `@hackworthltd/primer-types` package
-
-This package's name is `@hackworthltd/primer-types`, but it lives in the `packages/primer-types` subdirectory of the repo.
-
-This package contains some low-level types that are compatible with corresponding types in the Primer API. It is used as a dependency by both the `@hackworthltd/primer-app` and `@hackworthltd/primer-components` packages, so it is built as a library, rather than a standalone application.
-
-It's possible this package will eventually go away and be replaced entirely with code that's automatically generated by `orval` from the Primer API OpenAPI spec, but while we're bootstrapping, it's useful as a standalone package.
-
-The following commands are useful in this workspace.
-
-#### `pnpm build`
-
-This command builds a production-ready distribution of the library. This will output not only the minified JavaScript for the component library, but also any TypeScript type definitions (`.d.ts` files) for types that the library exports.
-
-In general, this is probably not a very useful interactive command.
-
-#### `pnpm watch`
-
-This command builds the package in development mode. It's only something you'll need to run when you're running the frontend application in `pnpm watch` mode, or when running the project's Storybook in HMR mode. See the corresponding instructions elsewhere in this README for details.
-
-#### `pnpm storybook`
-
-This is a convenient alias for the `pnpm watch` command.
-
-#### `pnpm lint` and `pnpm lint:fix`
-
-As the top-level equivalents.
 
 ### Running package scripts & commands
 
@@ -212,53 +132,39 @@ Note that the `DATABASE_URL` we store in Vault uses `localhost` as the PostgreSQ
 
 ## Other notes
 
-### Updating the backend API & bindings
-
-We use [Orval](https://github.com/anymaniax/orval) to automatically generate TypeScript bindings for the Primer backend API. Upon entering the `nix develop` shell, the shell hook will ensure that the local `primer-api.json` file is up-to-date with the latest Primer version pin. (If you update the pin, you'll need to re-enter the shell, but this is normally required, anyway.) It will also re-generate the OpenAPI client bindings for the frontend. If, for some reason, you ever need to generate the frontend bindings again (e.g., because you've changed the Orval settings), you can run:
-
-```sh
-nix develop
-cd packages/primer-app && pnpm generate
-```
-
-(Note that Orval will update the generated bindings even if there's only been an Orval version bump and no functional changes, which is annoying.)
-
 ### Calculating reverse dependencies
 
 To find out why one of our packages has a dependency on a particular package, run `pnpm why <package-name>` in that package's subdirectory. For example:
 
 ```sh
-~/git/primer-app/packages/primer-app  pnpm why react                                                Legend: production dependency, optional only, dev only
+ pnpm why react
 
-@hackworthltd/primer-app@0.2.0 /Users/dhess/git/primer-app/packages/primer-app
+Legend: production dependency, optional only, dev only
+
+@hackworthltd/primer-app@0.2.0 /Users/dhess/git/primer-app
 
 dependencies:
-react 17.0.2
-react-dom 17.0.2
-└── react 17.0.2 peer
-react-query 3.39.0
-├── react 17.0.2 peer
-└─┬ react-dom 17.0.2 peer
-  └── react 17.0.2 peer
-react-router-dom 6.3.0
-├── react 17.0.2 peer
-├─┬ react-dom 17.0.2 peer
-│ └── react 17.0.2 peer
-└─┬ react-router 6.3.0
-  └── react 17.0.2 peer
+@tanstack/react-query 4.9.0
+├── react 18.2.0 peer
+├─┬ react-dom 18.2.0 peer
+│ └── react 18.2.0 peer
+└─┬ use-sync-external-store 1.2.0
+  └── react 18.2.0 peer
+react 18.2.0
+...
 ```
 
 ### Upgrading dependencies
 
-To upgrade the package set for the entire project, including all workspace packages' dependencies, run the following command from the top-level project directory:
+To upgrade the package set for the project, run the following command:
 
 ```sh
-pnpm -r upgrade
+pnpm upgrade
 ```
 
-The `pnpm upgrade` command will strictly obey any version bounds specified in packages's `package.json` file. To ignore those bounds and upgrade all packages to their latest versions, run `pnpm -r upgrade --latest`.
+The `pnpm upgrade` command will strictly obey any version bounds specified in the project's `package.json` file. To ignore those bounds and upgrade all packages to their latest versions, run `pnpm upgrade --latest`.
 
-This command will also update the various `package.json` files' version bounds, as needed.
+This command will also update the `package.json` file's version bounds, as needed.
 
 ### Type-checking in TypeScript
 

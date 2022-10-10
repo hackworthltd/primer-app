@@ -1,13 +1,65 @@
 {
-  "name": "@hackworthltd/primer",
+  "name": "@hackworthltd/primer-app",
+  "version": "0.2.0",
+  "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
+  "sideEffects": false,
   "engines": {
     "node": "^18.6.0",
     "pnpm": "^7.1.0"
   },
+  "scripts": {
+    "watch": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "generate": "orval --config ./orval.config.js",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "chromatic": "chromatic --exit-zero-on-changes",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@dicebear/avatars": "^4.10.5",
+    "@dicebear/avatars-bottts-sprites": "^4.10.5",
+    "@dicebear/avatars-identicon-sprites": "^4.10.5",
+    "@dicebear/avatars-jdenticon-sprites": "^4.10.5",
+    "@tanstack/react-query": "^4.9.0",
+    "@types/dagre": "^0.7.48",
+    "axios": "^0.27.2",
+    "dagre": "github:dagrejs/dagre#103136b04a13c7ac10d8ded25954da58d5ed88e1",
+    "fp-ts": "^2.12.3",
+    "history": "^5.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.5",
+    "react-flow-renderer": "^10.3.17",
+    "react-router-dom": "^6.4.1",
+    "uuid": "^9.0.0"
+  },
   "devDependencies": {
+    "@babel/core": "^7.19.3",
+    "@headlessui/react": "^1.7.3",
+    "@headlessui/tailwindcss": "^0.1.1",
+    "@heroicons/react": "^2.0.11",
+    "@storybook/addon-actions": "^6.5.12",
+    "@storybook/addon-essentials": "^6.5.12",
+    "@storybook/addon-links": "^6.5.12",
+    "@storybook/builder-vite": "^0.2.3",
+    "@storybook/react": "^6.5.12",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
+    "@vitejs/plugin-react": "^2.1.0",
+    "autoprefixer": "^10.4.12",
+    "babel-loader": "^8.2.5",
+    "chromatic": "^6.10.1",
+    "classnames": "^2.3.2",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.5.1",
@@ -17,31 +69,45 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.4",
     "eslint-plugin-tailwindcss": "^3.6.2",
+    "orval": "^6.10.2",
     "pnpm": "^7.13.0",
+    "postcss": "^8.4.17",
+    "postcss-import": "^15.0.0",
     "prettier": "^2.7.1",
+    "tailwindcss": "3.1.8",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.4",
     "typescript-eslint-language-service": "^5.0.0",
     "typescript-language-server": "^2.0.0",
     "unified-language-server": "^3.1.0",
+    "vite": "^3.1.4",
+    "vite-plugin-checker": "^0.5.1",
+    "vite-plugin-dts": "^1.6.4",
     "vite-plugin-package-config": "^0.1.1",
+    "vite-plugin-svgr": "^2.2.1",
+    "vite-tsconfig-paths": "^3.5.1",
     "vscode-css-languageserver-bin": "^1.4.0",
     "vscode-html-languageserver-bin": "^1.4.0",
     "vscode-json-languageserver": "^1.3.4",
     "yaml-language-server": "^1.10.0"
   },
-  "scripts": {
-    "format": "prettier --write .",
-    "lint": "pnpm --parallel --stream -r lint",
-    "lint:fix": "pnpm --parallel --stream -r lint:fix",
-    "build": "pnpm -r build"
-  },
   "pnpm": {
     "overrides": {
-      "@hackworthltd/primer-app": "workspace:*",
       "trim@<0.0.3": ">=0.0.3",
       "trim-newlines@<3.0.1": ">=3.0.1",
       "glob-parent@<5.1.2": ">=5.1.2",
       "d3-color@<3.1.0": ">=3.1.0"
+    }
+  },
+  "vite": {
+    "optimizeDeps": {
+      "include": [
+        "axios",
+        "react",
+        "react-dom",
+        "react-query",
+        "react-router-dom"
+      ]
     }
   }
 }

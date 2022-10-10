@@ -24,12 +24,7 @@ export default ({ mode }) => {
     // Don't write to node_modules, in case someday we can get it from Nix.
     cacheDir: ".vite",
 
-    // This is a workspace, so we need to be able to serve node_modules
-    // from the project root in dev mode.
     server: {
-      fs: {
-        allow: ["../.."],
-      },
       proxy: {
         "/openapi": {
           target: "http://127.0.0.1:8081",

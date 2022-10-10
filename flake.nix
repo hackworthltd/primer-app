@@ -174,7 +174,7 @@
           shellHook =
             let
               spec = self.packages.${system}.primer-openapi-spec;
-              local-spec = "./packages/primer-app/primer-api.json";
+              local-spec = "./primer-api.json";
             in
             ''
               export PATH="$(pwd)/node_modules/.bin:$PATH"
@@ -182,7 +182,7 @@
 
               rm -f ${local-spec}
               ln -s ${spec} ${local-spec}
-              cd packages/primer-app && pnpm generate && cd -
+              pnpm generate
             '';
         };
       })
