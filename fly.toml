@@ -5,6 +5,12 @@ processes = []
 
 [env]
 
+[metrics]
+  # Note: this is the same as the service port because the metrics are
+  # also served by WAI.
+  port = 8081
+  path = "/metrics"
+  
 [experimental]
   allowed_public_ports = []
   auto_rollback = true

@@ -941,11 +941,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1664708386,
-        "narHash": "sha256-aCD8UUGNYb5nYzRmtsq/0yP9gFOQQHr/Lsb5vW+mucw=",
+        "lastModified": 1665395272,
+        "narHash": "sha256-kkV5gfDJWMxKmYq3Y2pgvD7zH/I3WoW/0wr659Stj1Q=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "2e4a708918e14fdbd534cc94aaa9470cd19b2464",
+        "rev": "11aff801aa0ea1fb02ae43e61f7cdf610f5fe2e5",
         "type": "github"
       },
       "original": {
@@ -1024,17 +1024,17 @@
         "pre-commit-hooks-nix": "pre-commit-hooks-nix_4"
       },
       "locked": {
-        "lastModified": 1663862689,
-        "narHash": "sha256-KHsPD/IxsRwUFz5Y2e129PYI4xQcibW3EDskURmT0ew=",
+        "lastModified": 1665485285,
+        "narHash": "sha256-+oGZ1Ie5ZCli29knuAiKH0NlCLS6OSVRgL5y1okt2ds=",
         "owner": "hackworthltd",
         "repo": "primer",
-        "rev": "cab2acedc4c730383eda938a4f17e94c63daaddd",
+        "rev": "69c14e4afb1806505af6982433a764d90fa2c644",
         "type": "github"
       },
       "original": {
         "owner": "hackworthltd",
         "repo": "primer",
-        "rev": "cab2acedc4c730383eda938a4f17e94c63daaddd",
+        "rev": "69c14e4afb1806505af6982433a764d90fa2c644",
         "type": "github"
       }
     },
