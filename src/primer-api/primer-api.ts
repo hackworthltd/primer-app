@@ -205,7 +205,7 @@ export const useGetAvailableActionsHook = () => {
     params: GetAvailableActionsParams
   ) => {
     return getAvailableActions({
-      url: `/openapi/sessions/${sessionId}/action/available/available`,
+      url: `/openapi/sessions/${sessionId}/action/available`,
       method: "post",
       headers: { "Content-Type": "application/json;charset=utf-8" },
       data: selection,
@@ -219,7 +219,7 @@ export const getGetAvailableActionsQueryKey = (
   selection: Selection,
   params: GetAvailableActionsParams
 ) => [
-  `/openapi/sessions/${sessionId}/action/available/available`,
+  `/openapi/sessions/${sessionId}/action/available`,
   ...(params ? [params] : []),
   selection,
 ];
