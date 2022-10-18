@@ -1,10 +1,12 @@
 { writeShellApplication
+, cacert
 , coreutils
 , docker
 , flyctl
 , formats
 , gnugrep
 , hackworth-codes-logging-docker-image
+, iptables
 , primer-service-docker-image
 , primer-service-rev
 , primer-sqitch
@@ -219,7 +221,9 @@ let
   hackworth-codes-logging-entrypoint = writeShellApplication {
     name = "hackworth-codes-logging-entrypoint";
     runtimeInputs = [
+      cacert
       coreutils
+      iptables
       tailscale
       vector
     ];
