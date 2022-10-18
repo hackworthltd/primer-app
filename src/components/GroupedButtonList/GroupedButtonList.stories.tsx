@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { GroupedButtonList } from "./GroupedButtonList";
+import { GroupedButtonList } from "./";
 
 export default {
   title: "Application/Component Library/GroupedButtonList",

@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { SimplePaginationBarProps } from "./SimplePaginationBar";
-import { SimplePaginationBar } from "./SimplePaginationBar";
+import type { SimplePaginationBarProps } from "./";
+import { SimplePaginationBar } from "./";
 
 export default {
   title: "Application/Component Library/SimplePaginationBar",

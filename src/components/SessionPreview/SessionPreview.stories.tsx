@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import * as examples from "@/components/examples/sessions";
 
-import { SessionPreview } from "./SessionPreview";
+import { SessionPreview } from "./";
 
 export default {
   title: "Application/Component Library/Sessions/SessionPreview",

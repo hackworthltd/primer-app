@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { BinaryTreePlaceholder } from "./BinaryTreePlaceholder";
+import { BinaryTreePlaceholder } from "./";
 
 export default {
   title: "Application/Component Library/BinaryTreePlaceholder",
