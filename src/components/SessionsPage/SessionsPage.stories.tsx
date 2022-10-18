@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SessionsPage } from "./SessionsPage";
+import { SessionsPage } from "./";
 import { exampleSessionsMeta } from "@/components/examples/sessions";
 import { exampleAccount } from "@/components/examples/accounts";
 

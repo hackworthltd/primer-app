@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { Size, PrimerBrandingProps } from "./PrimerBranding";
-import { PrimerBranding } from "./PrimerBranding";
+import type { Size, PrimerBrandingProps } from "./";
+import { PrimerBranding } from "./";
 
 const allSizes: Array<Size> = ["responsive", "sm", "md", "lg", "xl", "2xl"];
 const fixedSizes: Array<Size> = ["sm", "md", "lg", "xl", "2xl"];

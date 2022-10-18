@@ -1,10 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type {
-  Appearance,
-  NotificationsButtonProps,
-} from "./NotificationsButton";
-import { NotificationsButton } from "./NotificationsButton";
+import type { Appearance, NotificationsButtonProps } from "./";
+import { NotificationsButton } from "./";
 
 const appearances: Array<Appearance> = ["plain", "notifications"];
 

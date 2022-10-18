@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { TreeReactFlow, TreeReactFlowProps } from "./TreeReactFlow";
+import { TreeReactFlow, TreeReactFlowProps } from "./";
 import {
   tree1,
   tree2,

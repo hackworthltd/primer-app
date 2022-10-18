@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { SearchBarProps } from "./SearchBar";
-import { SearchBar } from "./SearchBar";
+import type { SearchBarProps } from "./";
+import { SearchBar } from "./";
 
 export default {
   title: "Application/Component Library/SearchBar",

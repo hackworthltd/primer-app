@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { SessionsNavBarProps } from "./SessionsNavBar";
-import { SessionsNavBar } from "./SessionsNavBar";
+import type { SessionsNavBarProps } from "./";
+import { SessionsNavBar } from "./";
 import { exampleAccount } from "@/components/examples/accounts";
 
 export default {

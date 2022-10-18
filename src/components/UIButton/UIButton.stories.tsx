@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { Size, Appearance, UIButtonProps } from "./UIButton";
-import { UIButton } from "./UIButton";
+import type { Size, Appearance, UIButtonProps } from "./";
+import { UIButton } from "./";
 
 const allSizes: Array<Size> = ["responsive", "sm", "md", "lg", "xl", "2xl"];
 const fixedSizes: Array<Size> = ["sm", "md", "lg", "xl", "2xl"];
