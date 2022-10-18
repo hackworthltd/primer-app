@@ -69,3 +69,4 @@ jobs:
       - name: Deploy Docker image
         run: |
           flyctl deploy --image "$docker_image" --image-label "$docker_image_label"
+        working-directory: fly/apps/hackworth-codes-logging
