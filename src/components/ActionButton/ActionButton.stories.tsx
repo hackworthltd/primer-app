@@ -1,8 +1,8 @@
 import { ActionType } from "@/Types";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { ActionButtonProps } from "./ActionButton";
-import { ActionButton } from "./ActionButton";
+import type { ActionButtonProps } from "./";
+import { ActionButton } from "./";
 
 const appearances: Array<ActionType> = ["Primary", "Destructive"];
 

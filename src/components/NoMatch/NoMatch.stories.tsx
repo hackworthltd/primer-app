@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { NoMatch } from "./NoMatch";
+import { NoMatch } from "./";
 
 export default {
   title: "Application/Component Library/NoMatch",

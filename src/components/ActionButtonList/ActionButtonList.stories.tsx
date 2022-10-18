@@ -1,7 +1,7 @@
 import { OfferedAction } from "@/Types";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { ActionButtonList } from "./ActionButtonList";
+import { ActionButtonList } from "./";
 
 export default {
   title: "Application/Component Library/ActionButtonList",

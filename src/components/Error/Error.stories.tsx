@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Error } from "./Error";
+import { Error } from "./";
 
 export default {
   title: "Application/Component Library/Error",
