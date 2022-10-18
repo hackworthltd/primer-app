@@ -186,6 +186,7 @@ let
           type = "loki";
           inputs = [
             "loki_json"
+            "internal_logs"
           ];
           endpoint = lokiEndpoint;
           out_of_order_action = "accept";
