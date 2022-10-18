@@ -1,4 +1,5 @@
 { writeShellApplication
+, coreutils
 , docker
 , flyctl
 , gnugrep
@@ -74,9 +75,15 @@ let
   # Tailscale:
   #
   # https://tailscale.com/kb/1132/flydotio/
+  #
+  # Note also that as of 2022-10-18, that document does not explain
+  # that the "Reusable" flag should also be set for the generated auth
+  # key, at least for our purposes and needs. See
+  # https://github.com/tailscale/tailscale/issues/5982 for details.
   hackworth-codes-logging-entrypoint = writeShellApplication {
     name = "hackworth-codes-logging-entrypoint";
     runtimeInputs = [
+      coreutils
       tailscale
       vector
     ];
@@ -86,6 +93,12 @@ let
         exit 1
       fi
       tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/var/run/tailscale/tailscaled.sock &
+
+      function tailscale-logout() {
+        tailscale logout
+      }
+      trap tailscale-logout EXIT SIGINT SIGTERM
+
       tailscale up --authkey="$TAILSCALE_AUTHKEY" --hostname=hackworth-codes-logging
       while true; do sleep 10 ; done
     '';
