@@ -49,7 +49,7 @@
         let
           v = self.rev or self.lastModifiedDate;
         in
-        builtins.trace "Nix Primer version is ${v}" v;
+        builtins.trace "Nix primer-app version is ${v}" v;
 
       forAllSupportedSystems = flake-utils.lib.eachSystem [
         "x86_64-linux"
@@ -132,7 +132,65 @@
 
         scripts = pkgs.callPackage nix/pkgs/scripts {
           primer-service-rev = primer.rev;
+          primer-app-rev = version;
           inherit (primerPackages) primer-service-docker-image primer-sqitch;
+          inherit hackworth-codes-logging-docker-image;
+        };
+
+        hackworth-codes-logging-docker-image = pkgs.dockerTools.buildLayeredImage {
+          name = "hackworth-codes-logging";
+          tag = version;
+          contents = [
+            scripts.hackworth-codes-logging-entrypoint
+          ]
+          ++ (with pkgs; [
+            # These are helpful for debugging broken images.
+            bashInteractive
+            coreutils
+            lsof
+            procps
+          ]);
+
+          # Required by the entrypoint script in order for Tailscale
+          # to come up.
+          #
+          # Note that the elided `/` in front of each of the created
+          # paths is intentional, as these are written in the image's
+          # tarball, not on the running filesystem in the container.
+          extraCommands = ''
+            mkdir -p var/run/tailscale var/cache/tailscale var/lib/tailscale
+          '';
+
+          config =
+            let port = 9090;
+            in
+            {
+              Entrypoint = [ "/bin/hackworth-codes-logging-entrypoint" ];
+
+              # Note that we can't set
+              # "org.opencontainers.image.created" here because
+              # it would introduce an impurity. If we want to
+              # set it, we'll need to set it when we push to a
+              # registry.
+              Labels = {
+                "org.opencontainers.image.source" =
+                  "https://github.com/hackworthltd/primer-app";
+                "org.opencontainers.image.documentation" =
+                  "https://github.com/hackworthltd/primer-app";
+                "org.opencontainers.image.title" = "hackworth-codes-logging";
+                "org.opencontainers.image.description" =
+                  "The Hackworth Codes logging service for Fly.io.";
+                "org.opencontainers.image.version" = version;
+                "org.opencontainers.image.authors" =
+                  "src@hackworthltd.com";
+                "org.opencontainers.image.vendor" = "Hackworth Ltd";
+                "org.opencontainers.image.url" =
+                  "https://github.com/hackworthltd/primer-app";
+                "org.opencontainers.image.revision" = self.rev or "dirty";
+              };
+
+              ExposedPorts = { "${toString port}/tcp" = { }; };
+            };
         };
       in
       {
@@ -140,7 +198,8 @@
           inherit (primerPackages) run-primer primer-openapi-spec primer-sqitch;
         } // (pkgs.lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
           inherit (primerPackages) primer-service-docker-image;
-          inherit (scripts) deploy-primer-service;
+          inherit (scripts) deploy-primer-service deploy-hackworth-codes-logging;
+          inherit hackworth-codes-logging-docker-image;
         });
 
         checks = {
@@ -155,7 +214,7 @@
             };
           in
           (pkgs.lib.mapAttrs (name: pkg: mkApp pkg name) {
-            inherit (scripts) deploy-primer-service;
+            inherit (scripts) deploy-primer-service deploy-hackworth-codes-logging;
             inherit (primerPackages) run-primer primer-openapi-spec primer-sqitch;
           });
 
