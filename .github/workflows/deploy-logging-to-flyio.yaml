@@ -1,0 +1,71 @@
+name: Deploy hackworth-codes-logging
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: Deploy hackworth-codes-logging
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+      deployments: write
+
+    environment:
+      name: production
+      url: https://hackworth-codes-logging.fly.dev/
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3.0.2
+        with:
+          # Required by flakes
+          fetch-depth: 0
+
+      - name: Import secrets from Vault
+        uses: hashicorp/vault-action@v2.4.2
+        id: secrets
+        with:
+          url: https://secrets.hackworth-corp.com
+          path: "github-actions"
+          caCertificate: ${{ secrets.VAULT_CA_CERT }}
+          role: primer-app-workflow-flyio
+          method: jwt
+          secrets: |
+            secret/data/flyio/github token | FLY_API_TOKEN ;
+            secret/data/cachix/hackworthltd-private/github-workflows token | CACHIX_AUTH_TOKEN ;
+
+      - name: Install & configure Nix
+        uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: |
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hackworthltd.cachix.org-1:0JTCI0qDo2J+tonOalrSQP3yRNleN6bQucJ05yDltRI= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk=
+            substituters = https://cache.nixos.org?priority=10 https://hackworthltd.cachix.org?priority=30 https://cache.iog.io?priority=40 https://cache.zw3rk.com?priority=50
+
+      - name: Configure Cachix for private Hackworth Ltd cache
+        uses: cachix/cachix-action@v11
+        with:
+          name: hackworthltd-private
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          skipPush: true
+
+      - name: Fetch hackworth-codes-logging-docker-image
+        run: |
+          nix build -L .#packages.x86_64-linux.hackworth-codes-logging-docker-image 
+
+      - name: Load Docker image
+        run: |
+          IMAGE=$(docker load --quiet < result | grep -Po 'Loaded image: \Khackworth-codes-logging:.*')
+          LABEL=$(echo "$IMAGE" | grep -Po 'hackworth-codes-logging:\K.*')
+          echo "Loaded Docker image: $IMAGE"
+          echo "docker_image=$IMAGE" >> "$GITHUB_ENV"
+          echo "docker_image_label=$LABEL" >> "$GITHUB_ENV"
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy Docker image
+        run: |
+          flyctl deploy --image "$docker_image" --image-label "$docker_image_label"
