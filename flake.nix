@@ -67,7 +67,13 @@
         (final: prev:
           let
           in
-          { }
+          {
+            # For Fly.io Tailscale support, we need a version of
+            # Tailscale that uses `iptables-legacy`.
+            tailscale = final.callPackage ./nix/pkgs/tailscale-iptables-legacy {
+              buildGoModule = final.buildGo119Module;
+            };
+          }
         )
       ];
 

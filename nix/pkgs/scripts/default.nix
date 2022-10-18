@@ -6,7 +6,6 @@
 , formats
 , gnugrep
 , hackworth-codes-logging-docker-image
-, iptables
 , primer-service-docker-image
 , primer-service-rev
 , primer-sqitch
@@ -223,7 +222,6 @@ let
     runtimeInputs = [
       cacert
       coreutils
-      iptables
       tailscale
       vector
     ];
