@@ -132,14 +132,12 @@
 
         scripts = pkgs.callPackage nix/pkgs/scripts {
           primer-service-rev = primer.rev;
-          primer-app-rev = version;
           inherit (primerPackages) primer-service-docker-image primer-sqitch;
           inherit hackworth-codes-logging-docker-image;
         };
 
         hackworth-codes-logging-docker-image = pkgs.dockerTools.buildLayeredImage {
           name = "hackworth-codes-logging";
-          tag = version;
           contents = [
             scripts.hackworth-codes-logging-entrypoint
           ]

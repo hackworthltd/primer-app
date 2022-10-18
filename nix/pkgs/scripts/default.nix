@@ -4,7 +4,6 @@
 , flyctl
 , gnugrep
 , hackworth-codes-logging-docker-image
-, primer-app-rev
 , primer-service-docker-image
 , primer-service-rev
 , primer-sqitch
@@ -62,7 +61,7 @@ let
       echo "Loaded image: $IMAGE"
 
       trap 'pkill -P $$; exit' SIGINT SIGTERM
-      flyctl deploy --image "$IMAGE" --image-label "git-${primer-app-rev}"
+      flyctl deploy --image "$IMAGE"
     '';
   };
 
