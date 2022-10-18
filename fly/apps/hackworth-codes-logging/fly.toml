@@ -5,6 +5,12 @@ processes = []
 
 [env]
 
+[metrics]
+  # Must match the port used in our Vector config. Note that these are
+  # metrics *for Vector* and are scraped by Fly.io automatically.
+  port = 9598
+  path = "/metrics"
+
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
