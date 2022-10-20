@@ -10,6 +10,7 @@ export * from "./getAvailableActionsParams";
 export * from "./getProgramParams";
 export * from "./getSessionListParams";
 export * from "./globalName";
+export * from "./lastModified";
 export * from "./module";
 export * from "./nodeBody";
 export * from "./nodeBodyOneOf";
