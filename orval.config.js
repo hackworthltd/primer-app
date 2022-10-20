@@ -38,6 +38,7 @@ module.exports = {
         operations: {
           ...useQueryPost,
         },
+        useDates: true,
       },
     },
   },

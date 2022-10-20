@@ -17,13 +17,11 @@ const ChooseSession = (): JSX.Element => {
   const params: GetSessionListParams = { page: page, pageSize: pageSize };
   const { data } = useGetSessionList(params);
 
-  // Backend sessions do not yet have `lastModified`, so we just
-  // create one on the fly for each retrieved session.
   const sessions: Session[] = data ? data.items : [];
   const sessionsMeta: SessionMeta[] = sessions.map((session: Session) => ({
     name: session.name,
     id: session.id,
-    lastModified: new Date(),
+    lastModified: session.lastModified,
   }));
 
   const meta: PaginatedMeta = data
