@@ -41,7 +41,7 @@ module.exports = {
     }),
     extend: {
       fontFamily: {
-        code: ['"Source Serif Variable"', ...defaultTheme.fontFamily.serif],
+        code: ["Source Serif Variable", ...defaultTheme.fontFamily.serif],
       },
     },
   },

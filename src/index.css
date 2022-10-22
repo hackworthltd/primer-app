@@ -4,7 +4,7 @@
 
 @layer base {
   @font-face {
-    font-family: '"Source Serif Variable"';
+    font-family: "Source Serif Variable";
     font-style: normal;
     font-weight: 200 900;
     font-stretch: normal;
@@ -13,7 +13,7 @@
   }
 
   @font-face {
-    font-family: '"Source Serif Variable"';
+    font-family: "Source Serif Variable";
     font-style: italic;
     font-weight: 200 900;
     font-stretch: normal;
