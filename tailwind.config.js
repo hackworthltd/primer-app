@@ -1,5 +1,7 @@
 /** @type {import("tailwindcss").Config} */
 
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -38,8 +40,8 @@ module.exports = {
       "red-secondary": theme("colors.red.secondary"),
     }),
     extend: {
-      animation: {
-        "spin-slow": "spin 10s linear infinite",
+      fontFamily: {
+        code: ['"Source Serif Variable"', ...defaultTheme.fontFamily.serif],
       },
     },
   },
