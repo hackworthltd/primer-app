@@ -42,6 +42,7 @@ module.exports = {
     extend: {
       fontFamily: {
         code: ["Source Serif Variable", ...defaultTheme.fontFamily.serif],
+        sans: ["Inter Variable", ...defaultTheme.fontFamily.sans],
       },
     },
   },

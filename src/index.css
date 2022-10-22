@@ -20,4 +20,20 @@
     src: url("/fonts/SourceSerif4Variable-Italic.otf.woff2")
       format("woff2-variations");
   }
+
+  @font-face {
+    font-family: "Inter Variable";
+    font-style: normal;
+    font-weight: 200 900;
+    font-stretch: normal;
+    src: url("/fonts/Inter-roman.var.woff2") format("woff2-variations");
+  }
+
+  @font-face {
+    font-family: "Inter Variable";
+    font-style: italic;
+    font-weight: 200 900;
+    font-stretch: normal;
+    src: url("/fonts/Inter-italic.var.woff2") format("woff2-variations");
+  }
 }
