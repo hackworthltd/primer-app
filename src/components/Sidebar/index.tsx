@@ -159,7 +159,7 @@ const DefList = ({
           []
         )}
       </div>
-      <div className="flex flex-col items-start gap-3">
+      <div className="flex flex-col items-start gap-1">
         {expanded
           ? p.elems.map((def) => (
               <button
