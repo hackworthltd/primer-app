@@ -43,6 +43,7 @@ module.exports = {
       fontFamily: {
         code: ["Source Serif Variable", ...defaultTheme.fontFamily.serif],
         sans: ["Inter Variable", ...defaultTheme.fontFamily.sans],
+        branding: ["Source Serif Semibold", ...defaultTheme.fontFamily.serif],
       },
     },
   },

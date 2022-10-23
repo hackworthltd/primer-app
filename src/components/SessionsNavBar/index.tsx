@@ -32,7 +32,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
   <>
     <div className="relative flex justify-between overflow-y-visible">
       <div className="flex py-6">
-        <Branding size="responsive" />
+        <Branding />
       </div>
       <div className="min-w-0 flex-1 items-center p-6">
         <SearchBar ariaLabel="Search programs" placeholder="Program name" />
