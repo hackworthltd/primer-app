@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 export type Size = "responsive" | "sm" | "md" | "lg" | "xl" | "2xl";
 
-export interface PrimerBrandingProps {
+export interface BrandingProps {
   /**
    * Pre-defined sizes, plus "responsive", which uses Tailwind CSS
    * breakpoints to dynamically adjust the branding size.
@@ -26,8 +26,8 @@ const brandingClasses = (size: Size) =>
     "inline-flex items-center font-medium font-serif text-red-secondary": true,
   });
 
-export const PrimerBranding = (p: PrimerBrandingProps): JSX.Element => (
+export const Branding = (p: BrandingProps): JSX.Element => (
   <text className={brandingClasses(p.size)}>Primer</text>
 );
 
-export default PrimerBranding;
+export default Branding;

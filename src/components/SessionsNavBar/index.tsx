@@ -2,7 +2,7 @@ import type { MouseEventHandler } from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import type { Account } from "@/Types";
-import { Avatar, UIButton, PrimerBranding, SearchBar } from "@/components";
+import { Avatar, UIButton, Branding, SearchBar } from "@/components";
 
 import "@/index.css";
 
@@ -32,7 +32,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
   <>
     <div className="relative flex justify-between overflow-y-visible">
       <div className="flex py-6">
-        <PrimerBranding size="responsive" />
+        <Branding size="responsive" />
       </div>
       <div className="min-w-0 flex-1 items-center p-6">
         <SearchBar ariaLabel="Search programs" placeholder="Program name" />
