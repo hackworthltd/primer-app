@@ -11,3 +11,4 @@ result*
 storybook-static/
 .buildkite/
 primer-api.json
+licenses/
