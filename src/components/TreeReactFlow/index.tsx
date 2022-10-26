@@ -178,9 +178,9 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
           color: p.data.color,
         }}
       >
-        <div className="font-code">{p.data.contents}</div>
+        <div className="font-code text-sm xl:text-base">{p.data.contents}</div>
         {p.data.label ? (
-          <div className="absolute right-0 top-0 rounded border-4">
+          <div className="absolute right-0 top-0 rounded border-4 text-sm xl:text-base">
             {p.data.label}
           </div>
         ) : (
