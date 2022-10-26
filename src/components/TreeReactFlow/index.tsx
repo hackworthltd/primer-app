@@ -274,7 +274,7 @@ const primerNodeClasses = (selected: boolean, flavor: NodeFlavor) =>
   classNames(
     {
       "outline outline-4 outline-offset-4": selected,
-      "flex items-center justify-center rounded border-4 text-grey-tertiary bg-white-primary":
+      "flex items-center justify-center rounded-md border-4 text-grey-tertiary bg-white-primary":
         true,
     },
 
