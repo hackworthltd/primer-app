@@ -6,6 +6,10 @@ This repo contains the Primer frontend application and related packages.
 
 Unlike Primer's backend, this project is covered by a proprietary license; see [LICENSE.md](LICENSE.md). This project should not be distributed outside the company.
 
+### Third party licenses
+
+For all third-party assets we distribute, there's a corresponding license file in the `licenses` subdirectory of the project. If you add a new third-party asset that will be distributed in the application bundle, please first check with the company directory to ensure there are no distribution issues. Then, if approved, ensure that the license is included in the `licenses` subdirectory, together with an indication of which assets the license covers.
+
 ## This repo's relationship to the Primer repo
 
 Because the Primer backend project is open source, and this project is not, the 2 projects must live in separate repositories. In order to keep the frontend code in sync with a particular version of the Primer backend/API, we pin the Primer backend repo to a particular git commit/rev via a Nix flake input pin. This ensures that when we run a local `primer-service` instance during development ([see below](#Running-a-local-`primer-service`-instance)), we're running the correct version of the backend for the current frontend, and we don't need to worry about keeping our local copies of these 2 repos in sync. The drawback to this approach is that if we need to make backend changes to accommodate a new frontend feature, we must first commit those changes to the backend repo's `main` branch before we can update the local Nix flake pin. (However, we can always fall back to running the local `primer-service` from a local copy of the backend repo, if necessary.)
