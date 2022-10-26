@@ -145,61 +145,61 @@ const flavorContentClasses = (flavor: NodeFlavor): string => {
 const flavorLabelClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "FlavorHole":
-      return "border-red-tertiary text-blue-primary";
+      return "bg-red-tertiary border-red-tertiary text-white-primary";
     case "FlavorEmptyHole":
-      return "border-red-tertiary text-blue-primary";
+      return "bg-red-tertiary border-red-tertiary text-white-primary";
     case "FlavorAnn":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorApp":
-      return "border-blue-tertiary text-blue-primary";
+      return "bg-blue-tertiary border-blue-tertiary text-white-primary";
     case "FlavorAPP":
-      return "border-yellow-secondary text-blue-primary";
+      return "bg-yellow-secondary border-yellow-secondary text-white-primary";
     case "FlavorCon":
-      return "border-green-primary text-blue-primary";
+      return "bg-green-primary border-green-primary text-white-primary";
     case "FlavorLam":
-      return "border-blue-primary text-blue-primary";
+      return "bg-blue-primary border-blue-primary text-white-primary";
     case "FlavorLAM":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorGlobalVar":
-      return "border-blue-quaternary text-blue-primary";
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "FlavorLocalVar":
-      return "border-blue-quaternary text-blue-primary";
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "FlavorLet":
-      return "border-blue-quaternary text-blue-primary";
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "FlavorLetType":
-      return "border-blue-quaternary text-blue-primary";
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "FlavorLetrec":
-      return "border-blue-quaternary text-blue-primary";
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "FlavorCase":
-      return "border-yellow-primary text-blue-primary";
+      return "bg-yellow-primary border-yellow-primary text-white-primary";
     case "FlavorCaseWith":
-      return "border-yellow-primary text-blue-primary";
+      return "bg-yellow-primary border-yellow-primary text-white-primary";
     case "FlavorPrimCon":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorTEmptyHole":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorTHole":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorTCon":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorTFun":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorTVar":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorTApp":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorTForall":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorTLet":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorPattern":
-      return "border-yellow-primary text-blue-primary";
+      return "bg-yellow-primary border-yellow-primary text-white-primary";
     case "FlavorPatternCon":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorPatternBind":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
     case "FlavorPatternApp":
-      return "border-black-primary text-blue-primary";
+      return "bg-black-primary border-black-primary text-white-primary";
   }
 };
 
@@ -292,7 +292,8 @@ const primerNodeContentsClasses = (flavor: NodeFlavor) =>
 const primerNodeLabelClasses = (flavor: NodeFlavor) =>
   classNames(
     {
-      "absolute right-0 top-0 rounded border-4 text-sm xl:text-base": true,
+      "z-10 p-1 absolute -right-2 -top-4 rounded-full text-sm xl:text-base":
+        true,
     },
 
     // See note above for `primerNodeClasses`.
