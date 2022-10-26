@@ -146,6 +146,7 @@ function flavorLabel(flavor: NodeFlavor): string {
 }
 
 const primerNodeTypeName = "primer";
+
 type PrimerNodePropsNode = {
   label?: string;
   contents?: string;
@@ -154,12 +155,22 @@ type PrimerNodePropsNode = {
   color: string;
   selected: boolean;
 };
+
 type PrimerNodePropsTree = {
   // Invariant: these will be the same for all nodes in a single tree.
   def: GlobalName;
   nodeType: NodeType;
 };
+
 type PrimerNodeProps = PrimerNodePropsTree & PrimerNodePropsNode;
+
+const primerNodeClasses = (selected: boolean) =>
+  classNames({
+    "outline outline-4 outline-offset-4": selected,
+    "flex items-center justify-center rounded border-4 text-grey-tertiary bg-white-primary":
+      true,
+  });
+
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   // these properties are necessary due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
   const handleStyle = "absolute border-[2px] border-solid border-grey-tertiary";
@@ -168,10 +179,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     <>
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
-        className={classNames(
-          "flex items-center justify-center rounded border-4 text-grey-tertiary bg-white-primary",
-          p.data.selected && "outline outline-4 outline-offset-4"
-        )}
+        className={primerNodeClasses(p.data.selected)}
         style={{
           width: p.data.width,
           height: p.data.height,
@@ -195,6 +203,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     </>
   );
 };
+
 const nodeTypes = { [primerNodeTypeName]: PrimerNode };
 
 const convertTree = (
