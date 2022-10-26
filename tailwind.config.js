@@ -11,6 +11,9 @@ module.exports = {
       white: {
         primary: "#ffffff",
       },
+      black: {
+        primary: "#000000",
+      },
       blue: {
         primary: "#34375d",
         secondary: "#4b5097",
@@ -43,6 +46,7 @@ module.exports = {
     },
     stroke: (theme) => ({
       "white-primary": theme("colors.white.primary"),
+      "black-primary": theme("colors.black.primary"),
       "blue-primary": theme("colors.blue.primary"),
       "blue-secondary": theme("colors.blue.secondary"),
       "blue-tertiary": theme("colors.blue.tertiary"),

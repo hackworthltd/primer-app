@@ -23,66 +23,231 @@ export type TreeReactFlowProps = {
   onNodeClick: (event: React.MouseEvent, node: Node<PrimerNodeProps>) => void;
 } & NodeParams;
 
-function flavorColor(flavor: NodeFlavor): string {
+const flavorClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "FlavorHole":
-      return "#cd3764";
+      return "border-red-tertiary outline-red-tertiary";
     case "FlavorEmptyHole":
-      return "#cd3764";
+      return "border-red-tertiary outline-red-tertiary";
     case "FlavorAnn":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorApp":
-      return "#2c6a85";
+      return "border-blue-tertiary outline-blue-tertiary";
     case "FlavorAPP":
-      return "#e5a34f";
+      return "border-yellow-secondary outline-yellow-secondary";
     case "FlavorCon":
-      return "#62e2b4";
+      return "border-green-primary outline-green-primary";
     case "FlavorLam":
-      return "#34375d";
+      return "border-blue-primary outline-blue-primary";
     case "FlavorLAM":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorGlobalVar":
-      return "#64b0c8";
+      return "border-blue-quaternary outline-blue-quaternary";
     case "FlavorLocalVar":
-      return "#64b0c8";
+      return "border-blue-quaternary outline-blue-quaternary";
     case "FlavorLet":
-      return "#64b0c8";
+      return "border-blue-quaternary outline-blue-quaternary";
     case "FlavorLetType":
-      return "#64b0c8";
+      return "border-blue-quaternary outline-blue-quaternary";
     case "FlavorLetrec":
-      return "#64b0c8";
+      return "border-blue-quaternary outline-blue-quaternary";
     case "FlavorCase":
-      return "#ffb961";
+      return "border-yellow-primary outline-yellow-primary";
     case "FlavorCaseWith":
-      return "#ffb961";
+      return "border-yellow-primary outline-yellow-primary";
     case "FlavorPrimCon":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorTEmptyHole":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorTHole":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorTCon":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorTFun":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorTVar":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorTApp":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorTForall":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorTLet":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorPattern":
-      return "#ffb961";
+      return "border-yellow-primary outline-yellow-primary";
     case "FlavorPatternCon":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorPatternBind":
-      return "black";
+      return "border-black-primary outline-black-primary";
     case "FlavorPatternApp":
-      return "black";
+      return "border-black-primary outline-black-primary";
   }
-}
+};
+
+const flavorContentClasses = (flavor: NodeFlavor): string => {
+  switch (flavor) {
+    // For the moment, the text color is independent of the flavor.
+    default:
+      return "text-blue-primary";
+  }
+};
+
+const flavorLabelClasses = (flavor: NodeFlavor): string => {
+  switch (flavor) {
+    case "FlavorHole":
+      return "border-red-tertiary text-blue-primary";
+    case "FlavorEmptyHole":
+      return "border-red-tertiary text-blue-primary";
+    case "FlavorAnn":
+      return "border-black-primary text-blue-primary";
+    case "FlavorApp":
+      return "border-blue-tertiary text-blue-primary";
+    case "FlavorAPP":
+      return "border-yellow-secondary text-blue-primary";
+    case "FlavorCon":
+      return "border-green-primary text-blue-primary";
+    case "FlavorLam":
+      return "border-blue-primary text-blue-primary";
+    case "FlavorLAM":
+      return "border-black-primary text-blue-primary";
+    case "FlavorGlobalVar":
+      return "border-blue-quaternary text-blue-primary";
+    case "FlavorLocalVar":
+      return "border-blue-quaternary text-blue-primary";
+    case "FlavorLet":
+      return "border-blue-quaternary text-blue-primary";
+    case "FlavorLetType":
+      return "border-blue-quaternary text-blue-primary";
+    case "FlavorLetrec":
+      return "border-blue-quaternary text-blue-primary";
+    case "FlavorCase":
+      return "border-yellow-primary text-blue-primary";
+    case "FlavorCaseWith":
+      return "border-yellow-primary text-blue-primary";
+    case "FlavorPrimCon":
+      return "border-black-primary text-blue-primary";
+    case "FlavorTEmptyHole":
+      return "border-black-primary text-blue-primary";
+    case "FlavorTHole":
+      return "border-black-primary text-blue-primary";
+    case "FlavorTCon":
+      return "border-black-primary text-blue-primary";
+    case "FlavorTFun":
+      return "border-black-primary text-blue-primary";
+    case "FlavorTVar":
+      return "border-black-primary text-blue-primary";
+    case "FlavorTApp":
+      return "border-black-primary text-blue-primary";
+    case "FlavorTForall":
+      return "border-black-primary text-blue-primary";
+    case "FlavorTLet":
+      return "border-black-primary text-blue-primary";
+    case "FlavorPattern":
+      return "border-yellow-primary text-blue-primary";
+    case "FlavorPatternCon":
+      return "border-black-primary text-blue-primary";
+    case "FlavorPatternBind":
+      return "border-black-primary text-blue-primary";
+    case "FlavorPatternApp":
+      return "border-black-primary text-blue-primary";
+  }
+};
+
+const flavorEdgeClasses = (flavor: NodeFlavor): string => {
+  switch (flavor) {
+    case "FlavorHole":
+      return "stroke-red-tertiary stroke-[0.25rem]";
+    case "FlavorEmptyHole":
+      return "stroke-red-tertiary stroke-[0.25rem]";
+    case "FlavorAnn":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorApp":
+      return "stroke-blue-tertiary stroke-[0.25rem]";
+    case "FlavorAPP":
+      return "stroke-yellow-secondary stroke-[0.25rem]";
+    case "FlavorCon":
+      return "stroke-green-primary stroke-[0.25rem]";
+    case "FlavorLam":
+      return "stroke-blue-primary stroke-[0.25rem]";
+    case "FlavorLAM":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorGlobalVar":
+      return "stroke-blue-quaternary stroke-[0.25rem]";
+    case "FlavorLocalVar":
+      return "stroke-blue-quaternary stroke-[0.25rem]";
+    case "FlavorLet":
+      return "stroke-blue-quaternary stroke-[0.25rem]";
+    case "FlavorLetType":
+      return "stroke-blue-quaternary stroke-[0.25rem]";
+    case "FlavorLetrec":
+      return "stroke-blue-quaternary stroke-[0.25rem]";
+    case "FlavorCase":
+      return "stroke-yellow-primary stroke-[0.25rem]";
+    case "FlavorCaseWith":
+      return "stroke-yellow-primary stroke-[0.25rem]";
+    case "FlavorPrimCon":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorTEmptyHole":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorTHole":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorTCon":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorTFun":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorTVar":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorTApp":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorTForall":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorTLet":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorPattern":
+      return "stroke-yellow-primary stroke-[0.25rem]";
+    case "FlavorPatternCon":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorPatternBind":
+      return "stroke-black-primary stroke-[0.25rem]";
+    case "FlavorPatternApp":
+      return "stroke-black-primary stroke-[0.25rem]";
+  }
+};
+
+const primerNodeClasses = (selected: boolean, flavor: NodeFlavor) =>
+  classNames(
+    {
+      "outline outline-4 outline-offset-4": selected,
+      "flex items-center justify-center rounded border-4 text-grey-tertiary bg-white-primary":
+        true,
+    },
+
+    // Note: we use separate functions here to set per-flavor classes,
+    // rather than the more conventional object-style assignment,
+    // because by using functions, we can use switch statements and get
+    // errors from TypeScript if we miss a case.
+    flavorClasses(flavor)
+  );
+
+const primerNodeContentsClasses = (flavor: NodeFlavor) =>
+  classNames(
+    {
+      "font-code text-sm xl:text-base": true,
+    },
+
+    // See note above for `primerNodeClasses`.
+    flavorContentClasses(flavor)
+  );
+
+const primerNodeLabelClasses = (flavor: NodeFlavor) =>
+  classNames(
+    {
+      "absolute right-0 top-0 rounded border-4 text-sm xl:text-base": true,
+    },
+
+    // See note above for `primerNodeClasses`.
+    flavorLabelClasses(flavor)
+  );
 
 function flavorLabel(flavor: NodeFlavor): string {
   switch (flavor) {
@@ -152,7 +317,7 @@ type PrimerNodePropsNode = {
   contents?: string;
   width: number;
   height: number;
-  color: string;
+  flavor: NodeFlavor;
   selected: boolean;
 };
 
@@ -164,13 +329,6 @@ type PrimerNodePropsTree = {
 
 type PrimerNodeProps = PrimerNodePropsTree & PrimerNodePropsNode;
 
-const primerNodeClasses = (selected: boolean) =>
-  classNames({
-    "outline outline-4 outline-offset-4": selected,
-    "flex items-center justify-center rounded border-4 text-grey-tertiary bg-white-primary":
-      true,
-  });
-
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   // these properties are necessary due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
   const handleStyle = "absolute border-[2px] border-solid border-grey-tertiary";
@@ -179,16 +337,17 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     <>
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
-        className={primerNodeClasses(p.data.selected)}
+        className={primerNodeClasses(p.data.selected, p.data.flavor)}
         style={{
           width: p.data.width,
           height: p.data.height,
-          color: p.data.color,
         }}
       >
-        <div className="font-code text-sm xl:text-base">{p.data.contents}</div>
+        <div className={primerNodeContentsClasses(p.data.flavor)}>
+          {p.data.contents}
+        </div>
         {p.data.label ? (
-          <div className="absolute right-0 top-0 rounded border-4 text-sm xl:text-base">
+          <div className={primerNodeLabelClasses(p.data.flavor)}>
             {p.data.label}
           </div>
         ) : (
@@ -243,8 +402,7 @@ const convertTree = (
       id: JSON.stringify([id, target]),
       source: id,
       target,
-      style: { stroke: flavorColor(tree.flavor) },
-      className: "stroke-[0.25rem]",
+      className: flavorEdgeClasses(tree.flavor),
       // We draw edges above nodes, so that they aren't hidden by nodes' solid backgrounds.
       zIndex: 1,
     };
@@ -263,7 +421,7 @@ const convertTree = (
             contents: tree.body.contents,
             width: p.nodeWidth,
             height: p.nodeHeight,
-            color: flavorColor(tree.flavor),
+            flavor: tree.flavor,
           }),
           ...childNodes,
         ],
@@ -277,7 +435,7 @@ const convertTree = (
             contents: flavorLabel(tree.flavor),
             width: p.nodeWidth / 2,
             height: p.nodeHeight / 2,
-            color: flavorColor(tree.flavor),
+            flavor: tree.flavor,
           }),
           ...childNodes,
         ],
@@ -313,7 +471,7 @@ const convertTree = (
             label: flavorLabel(tree.flavor),
             width: bodyLayout.width + p.boxPadding,
             height: bodyLayout.height + p.boxPadding,
-            color: flavorColor(tree.flavor),
+            flavor: tree.flavor,
           }),
           ...childNodes,
         ],
