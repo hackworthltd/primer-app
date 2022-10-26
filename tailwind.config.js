@@ -16,11 +16,14 @@ module.exports = {
         secondary: "#4b5097",
         "primary-hover": "#46486f",
         "secondary-hover": "#2b3679",
+        tertiary: "#2c6a85",
+        quaternary: "#64b0c8",
       },
       grey: {
         primary: "#f7f7f7",
         secondary: "#6b7280",
         tertiary: "#4b5563",
+        quaternary: "#d4d4d4",
         "primary-hover": "#e2e2e2",
       },
       red: {
@@ -28,6 +31,14 @@ module.exports = {
         secondary: "#f1685e",
         "primary-hover": "#c7433f",
         "secondary-hover": "#bf3c38",
+        tertiary: "#cd3764",
+      },
+      green: {
+        primary: "#62e2b4",
+      },
+      yellow: {
+        primary: "#ffb961",
+        secondary: "#e5a34f",
       },
     },
     stroke: (theme) => ({
