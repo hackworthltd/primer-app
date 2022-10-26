@@ -14,9 +14,10 @@ export type Prog = {
   importedTypes: string[];
 };
 
-const headerStyle = "pb-3 text-xl font-bold text-blue-primary";
-const subHeaderStyle = "mb-1 text-lg font-bold text-blue-primary";
-const itemStyle = "font-code leading-5 text-left text-grey-secondary";
+const headerStyle = "pb-3 text-base lg:text-lg font-bold text-blue-primary";
+const subHeaderStyle = "mb-1 text-sm lg:text-base font-bold text-blue-primary";
+const itemStyle =
+  "font-code text-sm lg:text-base leading-5 text-left text-grey-secondary";
 
 export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
   InfoProps;
@@ -58,7 +59,10 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
   return (
     <div className="flex h-full flex-col">
       <div className="grid h-20 grid-cols-2 text-grey-secondary">
-        {tab("T&D", <div className="text-center text-xl font-bold">T&D</div>)}
+        {tab(
+          "T&D",
+          <div className="text-center text-base lg:text-lg font-bold">T&D</div>
+        )}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
       </div>
       <div className="h-full overflow-scroll bg-grey-primary p-6 pr-4">
@@ -155,7 +159,7 @@ const DefList = ({
           []
         )}
       </div>
-      <div className="flex flex-col items-start gap-3">
+      <div className="flex flex-col items-start gap-1">
         {expanded
           ? p.elems.map((def) => (
               <button
