@@ -42,13 +42,21 @@ module.exports = {
       },
     },
     stroke: (theme) => ({
+      "white-primary": theme("colors.white.primary"),
       "blue-primary": theme("colors.blue.primary"),
       "blue-secondary": theme("colors.blue.secondary"),
+      "blue-tertiary": theme("colors.blue.tertiary"),
+      "blue-quaternary": theme("colors.blue.quaternary"),
       "grey-primary": theme("colors.grey.primary"),
       "grey-secondary": theme("colors.grey.secondary"),
       "grey-tertiary": theme("colors.grey.tertiary"),
+      "grey-quaternary": theme("colors.grey.quaternary"),
       "red-primary": theme("colors.red.primary"),
       "red-secondary": theme("colors.red.secondary"),
+      "red-tertiary": theme("colors.red.tertiary"),
+      "green-primary": theme("colors.green.primary"),
+      "yellow-primary": theme("colors.yellow.primary"),
+      "yellow-secondary": theme("colors.yellow.secondary"),
     }),
     extend: {
       fontFamily: {
