@@ -24,61 +24,117 @@ export type TreeReactFlowProps = {
 } & NodeParams;
 
 const flavorClasses = (flavor: NodeFlavor): string => {
+  const commonHoverClasses =
+    " hover:outline hover:outline-4 hover:outline-offset-4 hover:outline-green-primary";
+
   switch (flavor) {
     case "FlavorHole":
-      return "border-red-tertiary outline-red-tertiary";
+      return "border-red-tertiary outline-red-tertiary".concat(
+        commonHoverClasses
+      );
     case "FlavorEmptyHole":
-      return "border-red-tertiary outline-red-tertiary";
+      return "border-red-tertiary outline-red-tertiary".concat(
+        commonHoverClasses
+      );
     case "FlavorAnn":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorApp":
-      return "border-blue-tertiary outline-blue-tertiary";
+      return "border-blue-tertiary outline-blue-tertiary".concat(
+        commonHoverClasses
+      );
     case "FlavorAPP":
-      return "border-yellow-secondary outline-yellow-secondary";
+      return "border-yellow-secondary outline-yellow-secondary".concat(
+        commonHoverClasses
+      );
     case "FlavorCon":
-      return "border-green-primary outline-green-primary";
+      return "border-green-primary outline-green-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorLam":
-      return "border-blue-primary outline-blue-primary";
+      return "border-blue-primary outline-blue-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorLAM":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorGlobalVar":
-      return "border-blue-quaternary outline-blue-quaternary";
+      return "border-blue-quaternary outline-blue-quaternary".concat(
+        commonHoverClasses
+      );
     case "FlavorLocalVar":
-      return "border-blue-quaternary outline-blue-quaternary";
+      return "border-blue-quaternary outline-blue-quaternary".concat(
+        commonHoverClasses
+      );
     case "FlavorLet":
-      return "border-blue-quaternary outline-blue-quaternary";
+      return "border-blue-quaternary outline-blue-quaternary".concat(
+        commonHoverClasses
+      );
     case "FlavorLetType":
-      return "border-blue-quaternary outline-blue-quaternary";
+      return "border-blue-quaternary outline-blue-quaternary".concat(
+        commonHoverClasses
+      );
     case "FlavorLetrec":
-      return "border-blue-quaternary outline-blue-quaternary";
+      return "border-blue-quaternary outline-blue-quaternary".concat(
+        commonHoverClasses
+      );
     case "FlavorCase":
-      return "border-yellow-primary outline-yellow-primary";
+      return "border-yellow-primary outline-yellow-primary".concat(
+        commonHoverClasses
+      );
+
+    // Note: not selectable.
     case "FlavorCaseWith":
       return "border-yellow-primary outline-yellow-primary";
+
     case "FlavorPrimCon":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorTEmptyHole":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorTHole":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorTCon":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorTFun":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorTVar":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorTApp":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorTForall":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorTLet":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
+
+    // Note: most parts of patterns aren't selectable.
     case "FlavorPattern":
       return "border-yellow-primary outline-yellow-primary";
     case "FlavorPatternCon":
       return "border-black-primary outline-black-primary";
     case "FlavorPatternBind":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary outline-black-primary".concat(
+        commonHoverClasses
+      );
     case "FlavorPatternApp":
       return "border-black-primary outline-black-primary";
   }
