@@ -22,6 +22,14 @@
   }
 
   @font-face {
+    font-family: "Source Serif Semibold";
+    font-style: normal;
+    font-weight: 600;
+    font-stretch: normal;
+    src: url("/fonts/SourceSerif4-Semibold.otf.woff2") format("woff2");
+  }
+
+  @font-face {
     font-family: "Inter Variable";
     font-style: normal;
     font-weight: 200 900;
