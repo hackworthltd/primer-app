@@ -25,118 +25,112 @@ export type TreeReactFlowProps = {
 
 const flavorClasses = (flavor: NodeFlavor): string => {
   const commonHoverClasses =
-    " hover:outline hover:outline-4 hover:outline-offset-4 hover:outline-green-primary";
+    " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";
 
   switch (flavor) {
     case "FlavorHole":
-      return "border-red-tertiary outline-red-tertiary".concat(
-        commonHoverClasses
-      );
+      return "border-red-tertiary ring-red-tertiary".concat(commonHoverClasses);
     case "FlavorEmptyHole":
-      return "border-red-tertiary outline-red-tertiary".concat(
-        commonHoverClasses
-      );
+      return "border-red-tertiary ring-red-tertiary".concat(commonHoverClasses);
     case "FlavorAnn":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorApp":
-      return "border-blue-tertiary outline-blue-tertiary".concat(
+      return "border-blue-tertiary ring-blue-tertiary".concat(
         commonHoverClasses
       );
     case "FlavorAPP":
-      return "border-yellow-secondary outline-yellow-secondary".concat(
+      return "border-yellow-secondary ring-yellow-secondary".concat(
         commonHoverClasses
       );
     case "FlavorCon":
-      return "border-green-primary outline-green-primary".concat(
+      return "border-green-primary ring-green-primary".concat(
         commonHoverClasses
       );
     case "FlavorLam":
-      return "border-blue-primary outline-blue-primary".concat(
-        commonHoverClasses
-      );
+      return "border-blue-primary ring-blue-primary".concat(commonHoverClasses);
     case "FlavorLAM":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorGlobalVar":
-      return "border-blue-quaternary outline-blue-quaternary".concat(
+      return "border-blue-quaternary ring-blue-quaternary".concat(
         commonHoverClasses
       );
     case "FlavorLocalVar":
-      return "border-blue-quaternary outline-blue-quaternary".concat(
+      return "border-blue-quaternary ring-blue-quaternary".concat(
         commonHoverClasses
       );
     case "FlavorLet":
-      return "border-blue-quaternary outline-blue-quaternary".concat(
+      return "border-blue-quaternary ring-blue-quaternary".concat(
         commonHoverClasses
       );
     case "FlavorLetType":
-      return "border-blue-quaternary outline-blue-quaternary".concat(
+      return "border-blue-quaternary ring-blue-quaternary".concat(
         commonHoverClasses
       );
     case "FlavorLetrec":
-      return "border-blue-quaternary outline-blue-quaternary".concat(
+      return "border-blue-quaternary ring-blue-quaternary".concat(
         commonHoverClasses
       );
     case "FlavorCase":
-      return "border-yellow-primary outline-yellow-primary".concat(
+      return "border-yellow-primary ring-yellow-primary".concat(
         commonHoverClasses
       );
 
     // Note: not selectable.
     case "FlavorCaseWith":
-      return "border-yellow-primary outline-yellow-primary";
+      return "border-yellow-primary ring-yellow-primary";
 
     case "FlavorPrimCon":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorTEmptyHole":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorTHole":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorTCon":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorTFun":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorTVar":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorTApp":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorTForall":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorTLet":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
 
     // Note: most parts of patterns aren't selectable.
     case "FlavorPattern":
-      return "border-yellow-primary outline-yellow-primary";
+      return "border-yellow-primary ring-yellow-primary";
     case "FlavorPatternCon":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary ring-black-primary";
     case "FlavorPatternBind":
-      return "border-black-primary outline-black-primary".concat(
+      return "border-black-primary ring-black-primary".concat(
         commonHoverClasses
       );
     case "FlavorPatternApp":
-      return "border-black-primary outline-black-primary";
+      return "border-black-primary ring-black-primary";
   }
 };
 
@@ -273,7 +267,7 @@ const flavorEdgeClasses = (flavor: NodeFlavor): string => {
 const primerNodeClasses = (selected: boolean, flavor: NodeFlavor) =>
   classNames(
     {
-      "outline outline-4 outline-offset-4": selected,
+      "ring ring-4 ring-offset-4": selected,
       "flex items-center justify-center rounded-md border-4 text-grey-tertiary bg-white-primary":
         true,
     },
