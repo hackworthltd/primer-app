@@ -135,13 +135,13 @@ const flavorClasses = (flavor: NodeFlavor): string => {
       return "border-yellow-primary ring-yellow-primary";
 
     case "FlavorPatternCon":
-      return "border-black-primary ring-black-primary bg-white-primary";
+      return "border-green-primary ring-green-primary bg-white-primary";
     case "FlavorPatternBind":
-      return "border-black-primary ring-black-primary bg-white-primary".concat(
+      return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
         commonHoverClasses
       );
     case "FlavorPatternApp":
-      return "border-black-primary ring-black-primary bg-black-primary";
+      return "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary";
   }
 };
 
@@ -318,15 +318,15 @@ const flavorLabelClasses = (flavor: NodeFlavor): string => {
         syntaxClasses
       );
     case "FlavorPatternCon":
-      return "bg-black-primary border-black-primary text-white-primary".concat(
+      return "bg-green-primary border-green-primary text-white-primary".concat(
         exprClasses
       );
     case "FlavorPatternBind":
-      return "bg-black-primary border-black-primary text-white-primary".concat(
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
         exprClasses
       );
     case "FlavorPatternApp":
-      return "font-code bg-black-primary border-black-primary text-white-primary".concat(
+      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary".concat(
         syntaxClasses
       );
   }
@@ -385,11 +385,11 @@ const flavorEdgeClasses = (flavor: NodeFlavor): string => {
     case "FlavorPattern":
       return "stroke-yellow-primary stroke-[0.25rem] z-10";
     case "FlavorPatternCon":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-green-primary stroke-[0.25rem] z-10";
     case "FlavorPatternBind":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-blue-quaternary stroke-[0.25rem] z-10";
     case "FlavorPatternApp":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-blue-tertiary stroke-[0.25rem] z-10";
   }
 };
 
