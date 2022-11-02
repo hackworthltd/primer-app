@@ -2,20 +2,32 @@ import type { MouseEventHandler } from "react";
 import { useState } from "react";
 import type { SessionMeta } from "@/Types";
 import { exampleAccount, SessionsPage } from "@/components";
-import type {
+import {
+  getGetSessionListQueryKey,
   GetSessionListParams,
   PaginatedMeta,
   Session,
+  useGetSessionList,
+  useCreateSession,
 } from "@/primer-api";
-import { useGetSessionList } from "@/primer-api";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ChooseSession = (): JSX.Element => {
   // NOTE: pagination in our API is 1-indexed.
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
 
+  const queryClient = useQueryClient();
+
   const params: GetSessionListParams = { page: page, pageSize: pageSize };
   const { data } = useGetSessionList(params);
+
+  const newSession = useCreateSession({
+    mutation: {
+      onSuccess: () =>
+        queryClient.invalidateQueries(getGetSessionListQueryKey()),
+    },
+  });
 
   const sessions: Session[] = data ? data.items : [];
   const sessionsMeta: SessionMeta[] = sessions.map((session: Session) => ({
@@ -41,7 +53,7 @@ const ChooseSession = (): JSX.Element => {
       startIndex={startIndex}
       numItems={meta.pageSize}
       totalItems={meta.totalItems}
-      onClickNewProgram={undefined}
+      onClickNewProgram={() => newSession.mutate()}
       onClickNextPage={onClickNextPage}
       onClickPreviousPage={onClickPreviousPage}
     />
