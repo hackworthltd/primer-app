@@ -35,6 +35,7 @@ const App = (): JSX.Element => {
   const prog = queryRes.data;
 
   const editableModules = prog.modules.filter((m) => m.editable);
+  const importedModules = prog.modules.filter((m) => !m.editable);
   if (editableModules.length > 1) {
     return (
       <Error
@@ -49,10 +50,20 @@ const App = (): JSX.Element => {
 
   // At this point, we have successfully loaded a program.
   // `AppNoError` needs to be its own component because of the rules around conditional hooks in React.
-  return <AppNoError sessionId={sessionId} module={module} />;
+  return (
+    <AppNoError
+      sessionId={sessionId}
+      module={module}
+      imports={importedModules}
+    />
+  );
 };
 
-const AppNoError = (p: { sessionId: string; module: Module }): JSX.Element => {
+const AppNoError = (p: {
+  sessionId: string;
+  module: Module;
+  imports: Module[];
+}): JSX.Element => {
   const [selection, setSelection] = useState<Selection | undefined>(undefined);
   const selectedNodeId = selection?.node?.id;
   return (
@@ -63,8 +74,12 @@ const AppNoError = (p: { sessionId: string; module: Module }): JSX.Element => {
           prog={{
             defs: p.module.defs.map((d) => d.name.baseName),
             types: p.module.types.map((t) => t.baseName),
-            importedDefs: [],
-            importedTypes: [],
+            importedDefs: p.imports.flatMap((m) =>
+              m.defs.map((d) => d.name.baseName)
+            ),
+            importedTypes: p.imports.flatMap((m) =>
+              m.types.map((t) => t.baseName)
+            ),
           }}
           onClickDef={(_label, _event) => ({})}
           onClickAdd={(_label, _event) => ({})}
