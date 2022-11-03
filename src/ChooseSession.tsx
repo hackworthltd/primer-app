@@ -7,27 +7,21 @@ import type {
   PaginatedMeta,
   Session,
 } from "@/primer-api";
-import {
-  getGetSessionListQueryKey,
-  useGetSessionList,
-  useCreateSession,
-} from "@/primer-api";
-import { useQueryClient } from "@tanstack/react-query";
+import { useGetSessionList, useCreateSession } from "@/primer-api";
+import { useNavigate } from "react-router-dom";
 
 const ChooseSession = (): JSX.Element => {
   // NOTE: pagination in our API is 1-indexed.
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
 
-  const queryClient = useQueryClient();
-
   const params: GetSessionListParams = { page: page, pageSize: pageSize };
   const { data } = useGetSessionList(params);
 
+  const navigate = useNavigate();
   const newSession = useCreateSession({
     mutation: {
-      onSuccess: () =>
-        queryClient.invalidateQueries(getGetSessionListQueryKey()),
+      onSuccess: (newSessionID) => navigate(`/sessions/${newSessionID}`),
     },
   });
 
