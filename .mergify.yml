@@ -6,8 +6,8 @@ pull_request_rules:
       - "#changes-requested-reviews-by=0"
       - check-success="build-frontend"
       - check-success="buildkite/primer-app/pr/required-nix-ci"
-      - check-success="UI Review"
-      - check-success="UI Tests"
+      # - check-success="UI Review"
+      # - check-success="UI Tests"
 
     actions:
       queue:
