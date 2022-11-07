@@ -7,7 +7,8 @@ import type {
   PaginatedMeta,
   Session,
 } from "@/primer-api";
-import { useGetSessionList } from "@/primer-api";
+import { useGetSessionList, useCreateSession } from "@/primer-api";
+import { useNavigate } from "react-router-dom";
 
 const ChooseSession = (): JSX.Element => {
   // NOTE: pagination in our API is 1-indexed.
@@ -16,6 +17,13 @@ const ChooseSession = (): JSX.Element => {
 
   const params: GetSessionListParams = { page: page, pageSize: pageSize };
   const { data } = useGetSessionList(params);
+
+  const navigate = useNavigate();
+  const newSession = useCreateSession({
+    mutation: {
+      onSuccess: (newSessionID) => navigate(`/sessions/${newSessionID}`),
+    },
+  });
 
   const sessions: Session[] = data ? data.items : [];
   const sessionsMeta: SessionMeta[] = sessions.map((session: Session) => ({
@@ -41,7 +49,7 @@ const ChooseSession = (): JSX.Element => {
       startIndex={startIndex}
       numItems={meta.pageSize}
       totalItems={meta.totalItems}
-      onClickNewProgram={undefined}
+      onClickNewProgram={() => newSession.mutate()}
       onClickNextPage={onClickNextPage}
       onClickPreviousPage={onClickPreviousPage}
     />
