@@ -14,6 +14,9 @@ export default ({ mode }) => {
       checker({
         typescript: true,
         overlay: false,
+        eslint: {
+          lintCommand: "eslint .",
+        },
       }),
       react(),
       svgr(),
