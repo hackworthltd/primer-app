@@ -1,4 +1,4 @@
-import { TreeReactFlow, Error, ActionButtonList, Sidebar } from "@/components";
+import { TreeReactFlow, Error, ActionPanel, Sidebar } from "@/components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -205,7 +205,7 @@ const ActionsListSelection = (p: {
 }) => {
   const queryRes = useGetAvailableActions(p.sessionId, p.selection, { level });
   const actions = queryRes.isSuccess ? queryRes.data : [];
-  return <ActionButtonList {...{ level, actions, ...p }} />;
+  return <ActionPanel {...{ level, actions, ...p }} />;
 };
 
 export default App;

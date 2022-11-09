@@ -1,11 +1,11 @@
 import { Action, InputAction, Options } from "@/primer-api";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { ActionButtonList } from "./";
+import { ActionPanel } from "./";
 
 export default {
-  title: "Application/Component Library/ActionButtonList",
-  component: ActionButtonList,
+  title: "Application/Component Library/ActionPanel",
+  component: ActionPanel,
   argTypes: {
     actions: { control: "object", name: "List of actions" },
     onAction: { name: "onAction" },
@@ -25,7 +25,7 @@ export default {
         ),
     },
   },
-} as ComponentMeta<typeof ActionButtonList>;
+} as ComponentMeta<typeof ActionPanel>;
 
 const exampleTypeActions: Action[] = [
   { tag: "NoInput", contents: "MakeFun" },
@@ -46,9 +46,9 @@ const exampleTermActions: Action[] = [
   { tag: "NoInput", contents: "DeleteExpr" },
 ];
 
-const Template: ComponentStory<typeof ActionButtonList> = (args) => (
+const Template: ComponentStory<typeof ActionPanel> = (args) => (
   <div className="h-[32rem] w-[22rem]">
-    <ActionButtonList {...args} />
+    <ActionPanel {...args} />
   </div>
 );
 

@@ -16,7 +16,7 @@ import { ActionInput } from "../ActionInput";
 import { buttonClassesPrimary, buttonClassesSecondary } from "../ActionButton";
 import classNames from "classnames";
 
-export interface ActionButtonListProps {
+export interface ActionPanelProps {
   actions: Action[];
   level: GetAvailableActionsLevel;
   onAction: (action: NoInputAction) => void;
@@ -28,13 +28,13 @@ type State =
   | { state: "ActionList" }
   | { state: "Input"; action: InputAction; opts: Options };
 
-export const ActionButtonList = ({
+export const ActionPanel = ({
   actions,
   level,
   onAction,
   onInputAction,
   onRequestOpts,
-}: ActionButtonListProps): JSX.Element => {
+}: ActionPanelProps): JSX.Element => {
   const [state, setState] = useState<State>({ state: "ActionList" });
   return (
     <div className="h-full overflow-scroll bg-grey-primary p-4 pt-2">
@@ -127,4 +127,4 @@ const sortActions = (actions: Action[]): Action[] => {
   return left.concat(right);
 };
 
-export default ActionButtonList;
+export default ActionPanel;
