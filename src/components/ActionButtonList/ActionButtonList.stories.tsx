@@ -1,4 +1,4 @@
-import { OfferedAction } from "@/Types";
+import { Action } from "@/primer-api";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { ActionButtonList } from "./";
@@ -11,91 +11,26 @@ export default {
   },
 } as ComponentMeta<typeof ActionButtonList>;
 
-const exampleTypeActions = (): OfferedAction[] => {
+const exampleTypeActions = (): Action[] => {
   return [
-    {
-      actionType: "Primary",
-      name: { tag: "Code", contents: "→" },
-      description: "Construct a function type",
-      priority: 0,
-    },
-    {
-      actionType: "Primary",
-      name: { tag: "Code", contents: "$" },
-      description: "Construct a type application",
-      priority: 1,
-    },
-    {
-      actionType: "Primary",
-      name: { tag: "Code", contents: "∀" },
-      description: "Construct a polymorphic type",
-      priority: 2,
-    },
-    {
-      actionType: "Destructive",
-      name: { tag: "Prose", contents: "↑" },
-      description: "Replace parent with this subtree",
-      priority: 3,
-    },
-    {
-      actionType: "Destructive",
-      name: { tag: "Prose", contents: "⌦" },
-      description: "Delete this type constructor",
-      priority: 4,
-    },
+    { tag: "NoInput", contents: "MakeFun" },
+    { tag: "NoInput", contents: "MakeApp" },
+    { tag: "Input", contents: "MakeForall" },
+    { tag: "NoInput", contents: "RaiseType" },
+    { tag: "NoInput", contents: "DeleteType" },
   ];
 };
 
-const exampleTermActions = (): OfferedAction[] => {
+const exampleTermActions = (): Action[] => {
   return [
-    {
-      actionType: "Primary",
-      name: { tag: "Code", contents: "λx" },
-      description: "Make a function with an input",
-      priority: 0,
-    },
-    {
-      actionType: "Primary",
-      name: { tag: "Code", contents: "m" },
-      description: "Pattern match",
-      priority: 1,
-    },
-    {
-      actionType: "Primary",
-      name: { tag: "Code", contents: "$" },
-      description: "Apply function",
-      priority: 2,
-    },
-    {
-      actionType: "Primary",
-      name: { tag: "Code", contents: "@" },
-      description: "Apply type",
-      priority: 3,
-    },
-    {
-      actionType: "Primary",
-      name: { tag: "Code", contents: "Λx" },
-      description: "Make a type abstraction",
-      priority: 4,
-    },
-    {
-      actionType: "Primary",
-      name: { tag: "Code", contents: ":" },
-      description: "Annotate this expression with a type",
-      priority: 5,
-    },
-    {
-      actionType: "Destructive",
-      name: { tag: "Prose", contents: "↑" },
-      description: "Replace parent with this subtree",
-      priority: 6,
-    },
-    {
-      actionType: "Destructive",
-      name: { tag: "Prose", contents: "⌦" },
-      description: "Delete this expression",
-      priority: 7,
-    },
+    { tag: "Input", contents: "MakeLam" },
+    { tag: "NoInput", contents: "MakeCase" },
+    { tag: "NoInput", contents: "MakeApp" },
+    { tag: "NoInput", contents: "MakeAPP" },
+    { tag: "Input", contents: "MakeLAM" },
+    { tag: "NoInput", contents: "MakeAnn" },
+    { tag: "NoInput", contents: "Raise" },
+    { tag: "NoInput", contents: "DeleteExpr" },
   ];
 };
 

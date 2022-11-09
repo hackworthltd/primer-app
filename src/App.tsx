@@ -8,6 +8,11 @@ import {
   Module,
 } from "./primer-api";
 
+// hardcoded values (for now)
+const level = "Expert";
+const patternsUnder = true;
+const treeParams = { patternsUnder };
+
 const App = (): JSX.Element => {
   const params = useParams();
   const sessionId = params["sessionId"];
@@ -20,7 +25,7 @@ const App = (): JSX.Element => {
   // This hook is *technically* conditional.
   // But if the condition above fails, then the app is broken anyway.
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const queryRes = useGetProgram(sessionId, { patternsUnder: true });
+  const queryRes = useGetProgram(sessionId, treeParams);
 
   if (!queryRes.isSuccess) {
     return (
@@ -108,7 +113,7 @@ const AppNoError = (p: {
       {selection ? (
         <ActionsListSelection selection={selection} sessionId={p.sessionId} />
       ) : (
-        <ActionButtonList actions={[]} />
+        <ActionButtonList level={level} actions={[]} />
       )}
     </div>
   );
@@ -118,11 +123,9 @@ const ActionsListSelection = (p: {
   selection: Selection;
   sessionId: string;
 }) => {
-  const queryRes = useGetAvailableActions(p.sessionId, p.selection, {
-    level: "Expert",
-  });
+  const queryRes = useGetAvailableActions(p.sessionId, p.selection, { level });
   const actions = queryRes.isSuccess ? queryRes.data : [];
-  return <ActionButtonList actions={actions} />;
+  return <ActionButtonList {...{ actions, level }} />;
 };
 
 export default App;

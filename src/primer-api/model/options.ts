@@ -5,9 +5,9 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { ActionNameOneOfThreeTag } from "./actionNameOneOfThreeTag";
+import type { Option } from "./option";
 
-export type ActionNameOneOfThree = {
-  contents: string;
-  tag: ActionNameOneOfThreeTag;
-};
+export interface Options {
+  free: boolean;
+  opts: Option[];
+}

@@ -18,10 +18,15 @@ import type {
   Uuid,
   PaginatedSession,
   GetSessionListParams,
-  OfferedAction,
-  Selection,
-  GetAvailableActionsParams,
   Prog,
+  ApplyActionBody,
+  ApplyActionWithInputParams,
+  Selection,
+  ApplyActionParams,
+  Action,
+  GetAvailableActionsParams,
+  Options,
+  GetActionOptionsParams,
   GetProgramParams,
 } from "./model";
 import { useCustomInstance } from "./mutator/use-custom-instance";
@@ -194,10 +199,140 @@ export const useCreateSession = <
 };
 
 /**
- * @summary Get available actions for the definition, or a node within it
+ * @summary Apply an action with some additional input
+ */
+export const useApplyActionWithInputHook = () => {
+  const applyActionWithInput = useCustomInstance<Prog>();
+
+  return (
+    sessionId: string,
+    applyActionBody: ApplyActionBody,
+    params: ApplyActionWithInputParams
+  ) => {
+    return applyActionWithInput({
+      url: `/openapi/sessions/${sessionId}/action/apply/input`,
+      method: "post",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: applyActionBody,
+      params,
+    });
+  };
+};
+
+export type ApplyActionWithInputMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useApplyActionWithInputHook>>>
+>;
+export type ApplyActionWithInputMutationBody = ApplyActionBody;
+export type ApplyActionWithInputMutationError = ErrorType<void>;
+
+export const useApplyActionWithInput = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useApplyActionWithInputHook>>>,
+    TError,
+    {
+      sessionId: string;
+      data: ApplyActionBody;
+      params: ApplyActionWithInputParams;
+    },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const applyActionWithInput = useApplyActionWithInputHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useApplyActionWithInputHook>>>,
+    {
+      sessionId: string;
+      data: ApplyActionBody;
+      params: ApplyActionWithInputParams;
+    }
+  > = (props) => {
+    const { sessionId, data, params } = props ?? {};
+
+    return applyActionWithInput(sessionId, data, params);
+  };
+
+  return useMutation<
+    Awaited<ReturnType<typeof applyActionWithInput>>,
+    TError,
+    {
+      sessionId: string;
+      data: ApplyActionBody;
+      params: ApplyActionWithInputParams;
+    },
+    TContext
+  >(mutationFn, mutationOptions);
+};
+
+/**
+ * @summary Apply a simple action i.e. one which requires no further input
+ */
+export const useApplyActionHook = () => {
+  const applyAction = useCustomInstance<Prog>();
+
+  return (
+    sessionId: string,
+    selection: Selection,
+    params: ApplyActionParams
+  ) => {
+    return applyAction({
+      url: `/openapi/sessions/${sessionId}/action/apply/simple`,
+      method: "post",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: selection,
+      params,
+    });
+  };
+};
+
+export type ApplyActionMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useApplyActionHook>>>
+>;
+export type ApplyActionMutationBody = Selection;
+export type ApplyActionMutationError = ErrorType<void>;
+
+export const useApplyAction = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useApplyActionHook>>>,
+    TError,
+    { sessionId: string; data: Selection; params: ApplyActionParams },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const applyAction = useApplyActionHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useApplyActionHook>>>,
+    { sessionId: string; data: Selection; params: ApplyActionParams }
+  > = (props) => {
+    const { sessionId, data, params } = props ?? {};
+
+    return applyAction(sessionId, data, params);
+  };
+
+  return useMutation<
+    Awaited<ReturnType<typeof applyAction>>,
+    TError,
+    { sessionId: string; data: Selection; params: ApplyActionParams },
+    TContext
+  >(mutationFn, mutationOptions);
+};
+
+/**
+ * @summary Get available actions for the definition, or a node within it, sorted by priority
  */
 export const useGetAvailableActionsHook = () => {
-  const getAvailableActions = useCustomInstance<OfferedAction[]>();
+  const getAvailableActions = useCustomInstance<Action[]>();
 
   return (
     sessionId: string,
@@ -268,6 +403,65 @@ export const useGetAvailableActions = <
   query.queryKey = queryKey;
 
   return query;
+};
+
+/**
+ * @summary Get the input options for an action
+ */
+export const useGetActionOptionsHook = () => {
+  const getActionOptions = useCustomInstance<Options>();
+
+  return (
+    sessionId: string,
+    selection: Selection,
+    params: GetActionOptionsParams
+  ) => {
+    return getActionOptions({
+      url: `/openapi/sessions/${sessionId}/action/options`,
+      method: "post",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: selection,
+      params,
+    });
+  };
+};
+
+export type GetActionOptionsMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useGetActionOptionsHook>>>
+>;
+export type GetActionOptionsMutationBody = Selection;
+export type GetActionOptionsMutationError = ErrorType<void>;
+
+export const useGetActionOptions = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useGetActionOptionsHook>>>,
+    TError,
+    { sessionId: string; data: Selection; params: GetActionOptionsParams },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const getActionOptions = useGetActionOptionsHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useGetActionOptionsHook>>>,
+    { sessionId: string; data: Selection; params: GetActionOptionsParams }
+  > = (props) => {
+    const { sessionId, data, params } = props ?? {};
+
+    return getActionOptions(sessionId, data, params);
+  };
+
+  return useMutation<
+    Awaited<ReturnType<typeof getActionOptions>>,
+    TError,
+    { sessionId: string; data: Selection; params: GetActionOptionsParams },
+    TContext
+  >(mutationFn, mutationOptions);
 };
 
 /**
