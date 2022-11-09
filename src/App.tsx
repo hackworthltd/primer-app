@@ -141,7 +141,9 @@ const AppNoError = (p: {
       {selection ? (
         <ActionsListSelection selection={selection} sessionId={p.sessionId} />
       ) : (
-        <ActionButtonList level={level} actions={[]} />
+        <div className="p-10">
+          Click something on the canvas to see available actions!
+        </div>
       )}
     </div>
   );
