@@ -11,28 +11,24 @@ export default {
   },
 } as ComponentMeta<typeof ActionButtonList>;
 
-const exampleTypeActions = (): Action[] => {
-  return [
-    { tag: "NoInput", contents: "MakeFun" },
-    { tag: "NoInput", contents: "MakeApp" },
-    { tag: "Input", contents: "MakeForall" },
-    { tag: "NoInput", contents: "RaiseType" },
-    { tag: "NoInput", contents: "DeleteType" },
-  ];
-};
+const exampleTypeActions: Action[] = [
+  { tag: "NoInput", contents: "MakeFun" },
+  { tag: "NoInput", contents: "MakeApp" },
+  { tag: "Input", contents: "MakeForall" },
+  { tag: "NoInput", contents: "RaiseType" },
+  { tag: "NoInput", contents: "DeleteType" },
+];
 
-const exampleTermActions = (): Action[] => {
-  return [
-    { tag: "Input", contents: "MakeLam" },
-    { tag: "NoInput", contents: "MakeCase" },
-    { tag: "NoInput", contents: "MakeApp" },
-    { tag: "NoInput", contents: "MakeAPP" },
-    { tag: "Input", contents: "MakeLAM" },
-    { tag: "NoInput", contents: "MakeAnn" },
-    { tag: "NoInput", contents: "Raise" },
-    { tag: "NoInput", contents: "DeleteExpr" },
-  ];
-};
+const exampleTermActions: Action[] = [
+  { tag: "Input", contents: "MakeLam" },
+  { tag: "NoInput", contents: "MakeCase" },
+  { tag: "NoInput", contents: "MakeApp" },
+  { tag: "NoInput", contents: "MakeAPP" },
+  { tag: "Input", contents: "MakeLAM" },
+  { tag: "NoInput", contents: "MakeAnn" },
+  { tag: "NoInput", contents: "Raise" },
+  { tag: "NoInput", contents: "DeleteExpr" },
+];
 
 const Template: ComponentStory<typeof ActionButtonList> = (args) => (
   <div className="h-[32rem] w-[22rem]">
@@ -42,10 +38,10 @@ const Template: ComponentStory<typeof ActionButtonList> = (args) => (
 
 export const TypeExamples = Template.bind({});
 TypeExamples.args = {
-  actions: exampleTypeActions(),
+  actions: exampleTypeActions,
 };
 
 export const TermExamples = Template.bind({});
 TermExamples.args = {
-  actions: exampleTermActions(),
+  actions: exampleTermActions,
 };
