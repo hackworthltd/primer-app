@@ -43,12 +43,6 @@ const buttonClasses = (appearance: ActionType) =>
     [buttonClassesPad]: true,
   });
 
-const textClasses = (tag: "Code" | "Prose") =>
-  classNames({
-    "font-code": tag == "Code",
-    "mr-4 w-8 flex-none": true,
-  });
-
 export const ActionButton = (p: ActionButtonProps): JSX.Element => {
   const name = actionName(p.action.contents);
   return (
@@ -56,8 +50,11 @@ export const ActionButton = (p: ActionButtonProps): JSX.Element => {
       type="button"
       className={buttonClasses(actionType(p.action.contents))}
     >
-      <div className={textClasses(name.tag)} aria-hidden="true">
-        {name.contents}
+      <div
+        className={classNames("mr-4 w-8 flex-none", name.font)}
+        aria-hidden="true"
+      >
+        {name.text}
       </div>
       <p className="text-left">
         {actionDescription(p.action.contents, p.level)}

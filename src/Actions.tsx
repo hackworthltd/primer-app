@@ -4,18 +4,16 @@ import {
   GetAvailableActionsLevel,
 } from "./primer-api";
 
-export type ActionName =
-  | { tag: "Code"; contents: string }
-  | { tag: "Prose"; contents: string };
-
 export type ActionType = "Primary" | "Destructive";
 
-export const actionName = (action: NoInputAction | InputAction): ActionName => {
-  const code = (s: string): ActionName => {
-    return { tag: "Code", contents: s };
+export const actionName = (
+  action: NoInputAction | InputAction
+): { font?: string; text: string } => {
+  const code = (text: string) => {
+    return { font: "font-code", text };
   };
-  const prose = (s: string): ActionName => {
-    return { tag: "Prose", contents: s };
+  const prose = (text: string) => {
+    return { text };
   };
   switch (action) {
     case "MakeCase":
