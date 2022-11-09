@@ -1,4 +1,4 @@
-import { Action } from "@/primer-api";
+import { Action, InputAction, Options } from "@/primer-api";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { ActionButtonList } from "./";
@@ -8,6 +8,22 @@ export default {
   component: ActionButtonList,
   argTypes: {
     actions: { control: "object", name: "List of actions" },
+    onAction: { name: "onAction" },
+    onInputAction: { name: "onInputAction" },
+    onRequestOpts: {
+      defaultValue: (_action: InputAction): Promise<Options> =>
+        new Promise((resolve) =>
+          resolve({
+            opts: [
+              { option: "option 0", context: ["a", "b", "c"] },
+              { option: "option 1", context: ["a", "b", "c"] },
+              { option: "option 2", context: ["a", "b", "c"] },
+              { option: "option 3", context: ["a", "b", "c"] },
+            ],
+            free: true,
+          })
+        ),
+    },
   },
 } as ComponentMeta<typeof ActionButtonList>;
 

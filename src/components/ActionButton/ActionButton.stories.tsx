@@ -30,7 +30,7 @@ Single.args = {
   action: { tag: "Input", contents: "MakeLam" },
 };
 
-const AllButtonsTemplate: ComponentStory<typeof ActionButton> = () => (
+const AllButtonsTemplate: ComponentStory<typeof ActionButton> = (args) => (
   <>
     {/*
      Let's replace this background color hack with a proper
@@ -41,6 +41,7 @@ const AllButtonsTemplate: ComponentStory<typeof ActionButton> = () => (
     <h1 className="text-xl">Primary</h1>
     <div className="mt-4 mb-8 flex w-1/2 flex-row items-center justify-around bg-grey-primary p-8">
       <ActionButton
+        {...args}
         level="Expert"
         action={{ tag: "Input", contents: "MakeLam" }}
       />
@@ -49,6 +50,7 @@ const AllButtonsTemplate: ComponentStory<typeof ActionButton> = () => (
     <h1 className="text-xl">Warning</h1>
     <div className="mt-4 mb-8 flex w-1/2 flex-row items-center justify-around bg-grey-primary p-8">
       <ActionButton
+        {...args}
         level="Expert"
         action={{ tag: "NoInput", contents: "DeleteExpr" }}
       />

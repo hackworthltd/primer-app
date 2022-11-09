@@ -12,6 +12,7 @@ import {
 export type ActionButtonProps = {
   level: GetAvailableActionsLevel;
   action: Action;
+  onClick: (event: React.MouseEvent, action: Action) => void;
 };
 
 // We will want other types of buttons styled roughly the same way
@@ -48,6 +49,7 @@ export const ActionButton = (p: ActionButtonProps): JSX.Element => {
     <button
       type="button"
       className={buttonClasses(actionType(p.action.contents))}
+      onClick={(e) => p.onClick(e, p.action)}
     >
       <div
         className={classNames("mr-4 w-8 flex-none", name.font)}
