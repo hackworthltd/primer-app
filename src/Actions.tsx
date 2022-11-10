@@ -177,11 +177,11 @@ export const actionDescription = (
 export const actionType = (action: NoInputAction | InputAction): ActionType => {
   switch (action) {
     case "MakeCase":
-      return "Destructive";
+      return "Primary";
     case "MakeApp":
       return "Primary";
     case "MakeAPP":
-      return "Destructive";
+      return "Primary";
     case "MakeAnn":
       return "Primary";
     case "RemoveAnn":
