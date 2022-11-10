@@ -1,33 +1,34 @@
 import "@/index.css";
 
 import { ActionButton } from "@/components";
+import { Action, GetAvailableActionsLevel } from "@/primer-api";
+import { actionType } from "@/Actions";
 import { partition } from "fp-ts/lib/Array";
-import { OfferedAction } from "@/Types";
 
 export interface ActionButtonListProps {
-  actions: OfferedAction[];
+  actions: Action[];
+  level: GetAvailableActionsLevel;
 }
 
 export const ActionButtonList = ({
   actions,
+  level,
 }: ActionButtonListProps): JSX.Element => (
   <ul role="list" className="h-full overflow-scroll bg-grey-primary p-4 pt-2">
     {sortActions(actions).map((action) => (
-      <li key={action.description} className="pt-2">
-        <ActionButton {...action} />
+      <li key={action.contents} className="pt-2">
+        <ActionButton {...{ action, level }} />
       </li>
     ))}
   </ul>
 );
 
-// Put all destructive actions last, and otherwise sort by priority.
-const sortActions = (actions: OfferedAction[]): OfferedAction[] => {
+// Put all destructive actions last.
+const sortActions = (actions: Action[]): Action[] => {
   const { left, right } = partition(
-    (a: OfferedAction) => a.actionType == "Destructive"
+    (a: Action) => actionType(a.contents) == "Destructive"
   )(actions);
-  const primary = left.sort((a, b) => a.priority - b.priority);
-  const destructive = right.sort((a, b) => a.priority - b.priority);
-  return primary.concat(destructive);
+  return left.concat(right);
 };
 
 export default ActionButtonList;
