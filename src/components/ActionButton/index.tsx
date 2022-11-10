@@ -1,9 +1,18 @@
 import "@/index.css";
 
 import classNames from "classnames";
-import { ActionType, OfferedAction } from "@/Types";
+import { Action, GetAvailableActionsLevel } from "@/primer-api";
+import {
+  actionDescription,
+  actionName,
+  actionType,
+  ActionType,
+} from "@/Actions";
 
-export type ActionButtonProps = Omit<OfferedAction, "priority">;
+export type ActionButtonProps = {
+  level: GetAvailableActionsLevel;
+  action: Action;
+};
 
 const buttonClassesBase =
   "inline-flex items-center text-base rounded border font-medium shadow-sm bg-white-primary focus:outline-none focus:ring-2 focus:ring-offset-2";
@@ -40,13 +49,21 @@ const textClasses = (tag: "Code" | "Prose") =>
     "mr-4 w-8 flex-none": true,
   });
 
-export const ActionButton = (p: ActionButtonProps): JSX.Element => (
-  <button type="button" className={buttonClasses(p.actionType)}>
-    <div className={textClasses(p.name.tag)} aria-hidden="true">
-      {p.name.contents}
-    </div>
-    <p className="text-left">{p.description}</p>
-  </button>
-);
+export const ActionButton = (p: ActionButtonProps): JSX.Element => {
+  const name = actionName(p.action.contents);
+  return (
+    <button
+      type="button"
+      className={buttonClasses(actionType(p.action.contents))}
+    >
+      <div className={textClasses(name.tag)} aria-hidden="true">
+        {name.contents}
+      </div>
+      <p className="text-left">
+        {actionDescription(p.action.contents, p.level)}
+      </p>
+    </button>
+  );
+};
 
 export default ActionButton;
