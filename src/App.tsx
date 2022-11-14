@@ -6,8 +6,8 @@ import {
   useGetProgram,
   Selection,
   Module,
+  GlobalName,
 } from "./primer-api";
-import type { GlobalName } from "./Types";
 
 // hardcoded values (for now)
 const level = "Expert";

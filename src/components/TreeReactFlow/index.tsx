@@ -1,4 +1,4 @@
-import { Def, GlobalName, NodeFlavor, NodeType, Tree } from "@/Types";
+import { Def, GlobalName, NodeFlavor, NodeType, Tree } from "@/primer-api";
 import ReactFlow, {
   Edge,
   Node,
