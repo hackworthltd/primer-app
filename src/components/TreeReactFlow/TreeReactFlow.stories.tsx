@@ -9,7 +9,7 @@ import {
   oddEvenTrees,
   oddEvenTreesMiscStyles,
 } from "@/components/examples/trees";
-import { Tree } from "@/Types";
+import { Tree } from "@/primer-api";
 
 export default {
   title: "Application/Component Library/TreeReactFlow",
