@@ -1,4 +1,4 @@
-import type { Tree } from "@/Types";
+import type { Tree } from "@/primer-api";
 
 /*
 Some example trees.
