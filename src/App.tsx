@@ -1,4 +1,4 @@
-import { TreeReactFlow, Error, ActionButtonList, Sidebar } from "@/components";
+import { TreeReactFlow, Error, ActionPanel, Sidebar } from "@/components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -7,6 +7,14 @@ import {
   Selection,
   Module,
   GlobalName,
+  Prog,
+  useApplyAction,
+  useApplyActionWithInput,
+  NoInputAction,
+  InputAction,
+  Option,
+  Options,
+  useGetActionOptions,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -38,8 +46,13 @@ const App = (): JSX.Element => {
       />
     );
   }
-  const prog = queryRes.data;
 
+  // At this point, we have successfully received an initial program.
+  return <AppProg initialProg={queryRes.data} {...{ sessionId }}></AppProg>;
+};
+
+const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
+  const [prog, setProg] = useState<Prog>(p.initialProg);
   const editableModules = prog.modules.filter((m) => m.editable);
   const importedModules = prog.modules.filter((m) => !m.editable);
   if (editableModules.length > 1) {
@@ -54,13 +67,14 @@ const App = (): JSX.Element => {
     return <Error string="No editable modules" />;
   }
 
-  // At this point, we have successfully loaded a program.
+  // At this point, we have successfully loaded a program, and performed some sanity checks upon it.
   // `AppNoError` needs to be its own component because of the rules around conditional hooks in React.
   return (
     <AppNoError
-      sessionId={sessionId}
+      sessionId={p.sessionId}
       module={module}
       imports={importedModules}
+      setProg={setProg}
     />
   );
 };
@@ -90,8 +104,13 @@ const AppNoError = (p: {
   sessionId: string;
   module: Module;
   imports: Module[];
+  setProg: (p: Prog) => void;
 }): JSX.Element => {
   const [selection, setSelection] = useState<Selection | undefined>(undefined);
+  const applyAction = useApplyAction();
+  const applyActionWithInput = useApplyActionWithInput();
+  const getOptions = useGetActionOptions();
+
   const selectedNodeId = selection?.node?.id;
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
@@ -139,9 +158,39 @@ const AppNoError = (p: {
         boxPadding={50}
       />
       {selection ? (
-        <ActionsListSelection selection={selection} sessionId={p.sessionId} />
+        <ActionsListSelection
+          selection={selection}
+          sessionId={p.sessionId}
+          onAction={(action) => {
+            applyAction
+              .mutateAsync({
+                sessionId: p.sessionId,
+                params: { patternsUnder, action },
+                data: selection,
+              })
+              .then(p.setProg);
+          }}
+          onInputAction={(action, option) => {
+            applyActionWithInput
+              .mutateAsync({
+                sessionId: p.sessionId,
+                params: { patternsUnder, action },
+                data: { option, selection },
+              })
+              .then(p.setProg);
+          }}
+          onRequestOpts={(action) => {
+            return getOptions.mutateAsync({
+              data: selection,
+              sessionId: p.sessionId,
+              params: { action: action, level },
+            });
+          }}
+        />
       ) : (
-        <ActionButtonList level={level} actions={[]} />
+        <div className="p-10">
+          Click something on the canvas to see available actions!
+        </div>
       )}
     </div>
   );
@@ -150,10 +199,13 @@ const AppNoError = (p: {
 const ActionsListSelection = (p: {
   selection: Selection;
   sessionId: string;
+  onAction: (action: NoInputAction) => void;
+  onInputAction: (action: InputAction, option: Option) => void;
+  onRequestOpts: (acrion: InputAction) => Promise<Options>;
 }) => {
   const queryRes = useGetAvailableActions(p.sessionId, p.selection, { level });
   const actions = queryRes.isSuccess ? queryRes.data : [];
-  return <ActionButtonList {...{ actions, level }} />;
+  return <ActionPanel {...{ level, actions, ...p }} />;
 };
 
 export default App;

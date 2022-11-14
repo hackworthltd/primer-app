@@ -12,13 +12,7 @@ const Template: ComponentStory<typeof ActionButton> = (
   args: ActionButtonProps
 ) => (
   <>
-    {/*
-     Let's replace this background color hack with a proper
-     ActionPanel component. See:
-     https://github.com/hackworthltd/primer-app/issues/140
-     */}
-
-    <div className="mt-4 mb-8 flex w-1/2 flex-row items-center justify-around bg-grey-primary p-8">
+    <div className="w-96">
       <ActionButton {...args} />
     </div>
   </>
@@ -30,25 +24,21 @@ Single.args = {
   action: { tag: "Input", contents: "MakeLam" },
 };
 
-const AllButtonsTemplate: ComponentStory<typeof ActionButton> = () => (
+const AllButtonsTemplate: ComponentStory<typeof ActionButton> = (args) => (
   <>
-    {/*
-     Let's replace this background color hack with a proper
-     ActionPanel component. See:
-     https://github.com/hackworthltd/primer-app/issues/140
-     */}
-
     <h1 className="text-xl">Primary</h1>
-    <div className="mt-4 mb-8 flex w-1/2 flex-row items-center justify-around bg-grey-primary p-8">
+    <div className="mt-4 mb-8 w-96">
       <ActionButton
+        {...args}
         level="Expert"
         action={{ tag: "Input", contents: "MakeLam" }}
       />
     </div>
 
     <h1 className="text-xl">Warning</h1>
-    <div className="mt-4 mb-8 flex w-1/2 flex-row items-center justify-around bg-grey-primary p-8">
+    <div className="mt-4 mb-8 w-96">
       <ActionButton
+        {...args}
         level="Expert"
         action={{ tag: "NoInput", contents: "DeleteExpr" }}
       />
