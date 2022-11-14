@@ -7,6 +7,7 @@ import {
   Selection,
   Module,
 } from "./primer-api";
+import type { GlobalName } from "./Types";
 
 // hardcoded values (for now)
 const level = "Expert";
@@ -64,6 +65,27 @@ const App = (): JSX.Element => {
   );
 };
 
+function cmpName(a: GlobalName, b: GlobalName) {
+  const aq = a.qualifiedModule;
+  const bq = b.qualifiedModule;
+  const la = aq.length;
+  const lb = bq.length;
+  const l = Math.min(la, lb);
+  for (let i = 0; i < l; i++) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (aq[i]! < bq[i]!) return -1;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (aq[i]! > bq[i]!) return 1;
+  }
+  if (la < lb) return -1;
+  if (la > lb) return 1;
+  const an = a.baseName;
+  const bn = b.baseName;
+  if (an < bn) return -1;
+  if (an > bn) return 1;
+  return 0;
+}
+
 const AppNoError = (p: {
   sessionId: string;
   module: Module;
@@ -77,14 +99,20 @@ const AppNoError = (p: {
         <Sidebar
           initialMode="T&D"
           prog={{
-            defs: p.module.defs.map((d) => d.name.baseName),
-            types: p.module.types.map((t) => t.baseName),
-            importedDefs: p.imports.flatMap((m) =>
-              m.defs.map((d) => d.name.baseName)
-            ),
-            importedTypes: p.imports.flatMap((m) =>
-              m.types.map((t) => t.baseName)
-            ),
+            defs: p.module.defs
+              .sort((a, b) => cmpName(a.name, b.name))
+              .map((d) => d.name.baseName),
+            types: p.module.types
+              .sort((a, b) => cmpName(a, b))
+              .map((t) => t.baseName),
+            importedDefs: p.imports
+              .flatMap((m) => m.defs)
+              .sort((a, b) => cmpName(a.name, b.name))
+              .map((d) => d.name.baseName),
+            importedTypes: p.imports
+              .flatMap((m) => m.types)
+              .sort((a, b) => cmpName(a, b))
+              .map((t) => t.baseName),
           }}
           onClickDef={(_label, _event) => ({})}
           onClickAdd={(_label, _event) => ({})}
