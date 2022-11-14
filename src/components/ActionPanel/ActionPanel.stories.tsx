@@ -29,7 +29,7 @@ export default {
 
 const exampleTypeActions: Action[] = [
   { tag: "NoInput", contents: "MakeFun" },
-  { tag: "NoInput", contents: "MakeApp" },
+  { tag: "NoInput", contents: "MakeTApp" },
   { tag: "Input", contents: "MakeForall" },
   { tag: "NoInput", contents: "RaiseType" },
   { tag: "NoInput", contents: "DeleteType" },
