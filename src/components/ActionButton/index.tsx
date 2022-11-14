@@ -12,18 +12,18 @@ import {
 export type ActionButtonProps = {
   level: GetAvailableActionsLevel;
   action: Action;
+  onClick: (event: React.MouseEvent, action: Action) => void;
 };
 
-const buttonClassesBase =
+// We will want other types of buttons styled roughly the same way
+// We export all the styling combined except the width and padding
+export const buttonClassesBase =
   "inline-flex items-center text-base rounded border font-medium shadow-sm bg-white-primary focus:outline-none focus:ring-2 focus:ring-offset-2";
 const buttonClassesWidth = "w-full";
 const buttonClassesPrimaryExtra =
   "border-grey-primary text-blue-primary bg-white-primary hover:bg-blue-primary hover:text-white-primary focus:ring-blue-primary";
 const buttonClassesSecondaryExtra =
   "border-red-secondary text-white-primary bg-red-secondary hover:bg-red-secondary-hover hover:border-red-secondary-hover focus:ring-red-primary";
-
-// We will want other types of buttons styled roughly the same way
-// We export all the styling combined except the width and padding
 export const buttonClassesPrimary = classNames(
   buttonClassesBase,
   buttonClassesPrimaryExtra
@@ -43,21 +43,19 @@ const buttonClasses = (appearance: ActionType) =>
     [buttonClassesPad]: true,
   });
 
-const textClasses = (tag: "Code" | "Prose") =>
-  classNames({
-    "font-code": tag == "Code",
-    "mr-4 w-8 flex-none": true,
-  });
-
 export const ActionButton = (p: ActionButtonProps): JSX.Element => {
   const name = actionName(p.action.contents);
   return (
     <button
       type="button"
       className={buttonClasses(actionType(p.action.contents))}
+      onClick={(e) => p.onClick(e, p.action)}
     >
-      <div className={textClasses(name.tag)} aria-hidden="true">
-        {name.contents}
+      <div
+        className={classNames("mr-4 w-8 flex-none", name.font)}
+        aria-hidden="true"
+      >
+        {name.text}
       </div>
       <p className="text-left">
         {actionDescription(p.action.contents, p.level)}
