@@ -83,30 +83,60 @@ const treeSized = (args: TreeReactFlowProps) => (
 );
 export const Tree1: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
-) => treeSized({ ...args, defs: [def1], selection: "100" });
+) =>
+  treeSized({
+    ...args,
+    defs: [def1],
+    selection: { def: def1.name, node: { nodeType: "BodyNode", id: 100 } },
+  });
 export const Tree2: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
 ) => treeSized({ ...args, defs: [def2] });
 export const Tree3: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
-) => treeSized({ ...args, defs: [def3], selection: "301" });
+) =>
+  treeSized({
+    ...args,
+    defs: [def3],
+    selection: { def: def3.name, node: { nodeType: "BodyNode", id: 301 } },
+  });
 export const Tree4: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
-) => treeSized({ ...args, defs: [def4], selection: "409" });
+) =>
+  treeSized({
+    ...args,
+    defs: [def4],
+    selection: { def: def4.name, node: { nodeType: "BodyNode", id: 409 } },
+  });
 export const Tree5: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
-) => treeSized({ ...args, defs: [def5], selection: "503" });
+) =>
+  treeSized({
+    ...args,
+    defs: [def5],
+    selection: { def: def5.name, node: { nodeType: "BodyNode", id: 503 } },
+  });
 export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
 ) =>
   treeSized({
     ...args,
     defs: [def1, def2, def3, def4, def5],
-    selection: "301",
+    selection: { def: def3.name, node: { nodeType: "BodyNode", id: 301 } },
   });
 export const OddAndEven: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
-) => treeSized({ ...args, defs: oddEvenDefs, selection: "5" });
+) =>
+  treeSized({
+    ...args,
+    defs: oddEvenDefs,
+    selection: { def: def5.name, node: { nodeType: "BodyNode", id: 5 } },
+  });
 export const OddAndEvenMiscStyles: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
-) => treeSized({ ...args, defs: oddEvenDefsMiscStyles, selection: "5" });
+) =>
+  treeSized({
+    ...args,
+    defs: oddEvenDefsMiscStyles,
+    selection: { def: def5.name, node: { nodeType: "BodyNode", id: 5 } },
+  });

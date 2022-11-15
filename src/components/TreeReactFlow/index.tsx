@@ -1,4 +1,11 @@
-import { Def, GlobalName, NodeFlavor, NodeType, Tree } from "@/primer-api";
+import {
+  Def,
+  GlobalName,
+  NodeFlavor,
+  NodeType,
+  Tree,
+  Selection,
+} from "@/primer-api";
 import ReactFlow, {
   Edge,
   Node,
@@ -16,7 +23,7 @@ type NodeParams = {
   nodeWidth: number;
   nodeHeight: number;
   boxPadding: number;
-  selection?: string;
+  selection?: Selection;
 };
 export type TreeReactFlowProps = {
   defs: Def[];
@@ -542,7 +549,7 @@ type PrimerNodePropsNode = {
 type PrimerNodePropsTree = {
   // Invariant: these will be the same for all nodes in a single tree.
   def: GlobalName;
-  nodeType: NodeType;
+  nodeType?: NodeType;
 };
 
 type PrimerNodeProps = PrimerNodePropsTree & PrimerNodePropsNode;
@@ -603,13 +610,14 @@ const convertTree = (
   const thisNode = (
     data: Omit<PrimerNodePropsNode, "selected">
   ): NodeNoPos<PrimerNodeProps> => {
+    const selection = p.selection?.node?.id?.toString();
     return {
       id,
       type: primerNodeTypeName,
       data: {
         def,
         nodeType,
-        selected: p.selection == tree.nodeId,
+        selected: selection == tree.nodeId,
         ...data,
       },
     };
