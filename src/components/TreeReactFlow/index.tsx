@@ -542,7 +542,7 @@ type PrimerNodePropsNode = {
   contents: string | undefined;
   width: number;
   height: number;
-  flavor: NodeFlavor;
+  flavor: NodeFlavor | "FlavorDef";
   selected: boolean;
 };
 
@@ -562,17 +562,42 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
     <>
       <Handle type="target" position={Position.Top} className={handleStyle} />
       <div
-        className={primerNodeClasses(p.data.selected, p.data.flavor)}
+        className={
+          p.data.flavor == "FlavorDef"
+            ? classNames(
+                "flex items-center justify-center",
+                p.data.selected && "ring-4 ring-offset-4",
+                "bg-white-primary",
+                "border-4 border-grey-tertiary ring-grey-tertiary",
+                "hover:ring-4 hover:ring-offset-4 hover:ring-green-primary"
+              )
+            : primerNodeClasses(p.data.selected, p.data.flavor)
+        }
         style={{
           width: p.data.width,
           height: p.data.height,
         }}
       >
-        <div className={primerNodeContentsClasses(p.data.flavor)}>
+        <div
+          className={
+            p.data.flavor == "FlavorDef"
+              ? classNames(
+                  "font-code text-3xl xl:text-base",
+                  "text-blue-primary"
+                )
+              : primerNodeContentsClasses(p.data.flavor)
+          }
+        >
           {p.data.contents}
         </div>
         {p.data.label ? (
-          <div className={primerNodeLabelClasses(p.data.flavor)}>
+          <div
+            className={
+              p.data.flavor != "FlavorDef"
+                ? primerNodeLabelClasses(p.data.flavor)
+                : ""
+            }
+          >
             {p.data.label}
           </div>
         ) : (
@@ -708,11 +733,66 @@ const convertTree = (
   }
 };
 
+type TreeGraph = {
+  nodes: NodeNoPos<PrimerNodeProps>[];
+  edges: Edge<never>[];
+  nested: Node<PrimerNodeProps>[];
+};
+
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const { nodes, edges } = useMemo(() => {
-    const trees = p.defs.flatMap((t) =>
-      t.term ? convertTree(t.term, t.name, "BodyNode", p) : []
-    );
+    const trees: TreeGraph[] = p.defs.flatMap((def) => {
+      const defNodeId = "Def" + def.name.baseName;
+      const defEdgeIdSig = "Def1" + def.name.baseName;
+      const defEdgeIdBody = "Def2" + def.name.baseName;
+      const defNode: NodeNoPos<PrimerNodeProps> = {
+        id: defNodeId,
+        data: {
+          def: def.name,
+          contents: def.name.baseName,
+          flavor: "FlavorDef",
+          height: 120,
+          width: 200,
+          selected: p.selection?.def == def.name && !p.selection?.node,
+        },
+        type: primerNodeTypeName,
+      };
+      const sigTree: TreeGraph = convertTree(def.type_, def.name, "SigNode", p);
+      const bodyTree: TreeGraph | undefined = def.term
+        ? convertTree(def.term, def.name, "BodyNode", p)
+        : undefined;
+      const merged: TreeGraph = {
+        nodes: sigTree.nodes
+          .concat(bodyTree ? bodyTree.nodes : [])
+          .concat([defNode]),
+        edges: sigTree.edges
+          .concat(bodyTree ? bodyTree.edges : [])
+          .concat([
+            {
+              id: defEdgeIdSig,
+              source: defNodeId,
+              target: def.type_.nodeId,
+              type: "step",
+              className: "stroke-green-primary stroke-[0.25rem] z-10",
+            },
+          ])
+          .concat(
+            def.term
+              ? [
+                  {
+                    id: defEdgeIdBody,
+                    source: defNodeId,
+                    target: def.term.nodeId,
+                    type: "step",
+                    className: "stroke-blue-tertiary stroke-[0.25rem] z-10",
+                  },
+                ]
+              : []
+          ),
+        nested: sigTree.nested.concat(bodyTree ? bodyTree.nested : []),
+      };
+      return merged;
+    });
     const edges = trees.flatMap(({ edges }) => edges);
     const nodes = trees.flatMap(({ nodes }) => nodes);
     const nested = trees.flatMap(({ nested }) => nested);
