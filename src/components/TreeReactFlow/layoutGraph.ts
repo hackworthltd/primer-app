@@ -1,7 +1,6 @@
 import { Node, Edge, Position } from "react-flow-renderer/nocss";
 import { graphlib, layout } from "dagre";
-
-export type NodeNoPos<T> = Omit<Node<T>, "position">;
+import { NodeNoPos } from "./Types";
 
 export function layoutGraph<
   N extends {

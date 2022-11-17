@@ -1,4 +1,4 @@
-import { Def, GlobalName, NodeFlavor, NodeType, Tree } from "@/primer-api";
+import { Def, NodeFlavor, Tree } from "@/primer-api";
 import ReactFlow, {
   Edge,
   Node,
@@ -8,9 +8,19 @@ import ReactFlow, {
   Background,
 } from "react-flow-renderer/nocss";
 import "react-flow-renderer/dist/style.css";
-import { layoutGraph, NodeNoPos } from "./layoutGraph";
+import { layoutGraph } from "./layoutGraph";
 import { useMemo } from "react";
 import classNames from "classnames";
+import { unzip } from "fp-ts/lib/Array";
+import {
+  combineGraphs,
+  PrimerGraph,
+  PrimerNodeProps,
+  PrimerTreeProps,
+  PrimerTreeNoPos,
+  Empty,
+  treeToGraph,
+} from "./Types";
 
 type NodeParams = {
   nodeWidth: number;
@@ -528,25 +538,6 @@ const noBodyFlavorContents = (flavor: NodeFlavor): string | undefined => {
   }
 };
 
-const primerNodeTypeName = "primer";
-
-type PrimerNodePropsNode = {
-  label?: string;
-  contents: string | undefined;
-  width: number;
-  height: number;
-  flavor: NodeFlavor;
-  selected: boolean;
-};
-
-type PrimerNodePropsTree = {
-  // Invariant: these will be the same for all nodes in a single tree.
-  def: GlobalName;
-  nodeType: NodeType;
-};
-
-type PrimerNodeProps = PrimerNodePropsTree & PrimerNodePropsNode;
-
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   // these properties are necessary due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
   const handleStyle = "absolute border-[2px] border-solid border-grey-tertiary";
@@ -581,137 +572,142 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   );
 };
 
+const primerNodeTypeName = "primer";
+
 const nodeTypes = { [primerNodeTypeName]: PrimerNode };
 
-const convertTree = (
+const augmentTree = (
   tree: Tree,
-  def: GlobalName,
-  nodeType: NodeType,
-  p: NodeParams
-): {
-  nodes: NodeNoPos<PrimerNodeProps>[];
-  edges: Edge<never>[];
+  p: NodeParams & PrimerTreeProps
+): [
+  PrimerTreeNoPos,
   /* Nodes of nested trees, already positioned.
   We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
-  nested: Node<PrimerNodeProps>[];
-} => {
-  const childTrees = tree.childTrees.concat(
-    tree.rightChild ? [tree.rightChild] : []
+  PrimerGraph[]
+] => {
+  const [childTrees, childNested] = unzip(
+    tree.childTrees.map((t) => augmentTree(t, p))
   );
-  const children = childTrees.map((t) => convertTree(t, def, nodeType, p));
-  const id = tree.nodeId;
-  const thisNode = (
-    data: Omit<PrimerNodePropsNode, "selected">
-  ): NodeNoPos<PrimerNodeProps> => {
-    return {
-      id,
-      type: primerNodeTypeName,
-      data: {
-        def,
-        nodeType,
-        selected: p.selection == tree.nodeId,
-        ...data,
-      },
-    };
-  };
-  const thisToChildren: Edge<never>[] = childTrees.map((t) => {
-    const target = t.nodeId;
-    return {
-      id: JSON.stringify([id, target]),
-      source: id,
-      target,
+  const makeEdge = (child: PrimerTreeNoPos): [PrimerTreeNoPos, Edge<Empty>] => [
+    child,
+    {
+      id: JSON.stringify([tree.nodeId, child.node.id]),
+      source: tree.nodeId,
+      target: child.node.id,
       className: flavorEdgeClasses(tree.flavor),
-    };
-  });
-  const childNodes = children.flatMap(({ nodes }) => nodes);
-  const childEdges = children.flatMap(({ edges }) => edges);
-  const childNested = children.flatMap(({ nested }) => nested);
-  const edges = childEdges.concat(thisToChildren);
+    },
+  ];
+  const rightChild = tree.rightChild
+    ? augmentTree(tree.rightChild, p)
+    : undefined;
+  const [data, nested] = nodeProps(tree, p);
+  return [
+    {
+      ...(rightChild ? { rightChild: makeEdge(rightChild[0]) } : {}),
+      childTrees: childTrees.map((e) => makeEdge(e)),
+      node: {
+        id: tree.nodeId,
+        type: primerNodeTypeName,
+        data: { ...p, ...data },
+      },
+    },
+    [...nested, ...childNested.flat(), ...(rightChild?.[1] ?? [])],
+  ];
+};
 
+const nodeProps = (
+  tree: Tree,
+  p: NodeParams & PrimerTreeProps
+): [PrimerNodeProps, PrimerGraph[]] => {
+  const selected = p.selection == tree.nodeId;
+  const flavor = tree.flavor;
   switch (tree.body.tag) {
     case "TextBody":
-      return {
-        nodes: [
-          thisNode({
-            label: flavorLabel(tree.flavor),
-            contents: tree.body.contents,
-            width: p.nodeWidth,
-            height: p.nodeHeight,
-            flavor: tree.flavor,
-          }),
-          ...childNodes,
-        ],
-        edges,
-        nested: childNested,
-      };
+      return [
+        {
+          label: flavorLabel(tree.flavor),
+          contents: tree.body.contents,
+          width: p.nodeWidth,
+          height: p.nodeHeight,
+          flavor,
+          selected,
+          ...p,
+        },
+        [],
+      ];
     case "NoBody":
-      return {
-        nodes: [
-          thisNode({
-            label: flavorLabel(tree.flavor),
-            contents: noBodyFlavorContents(tree.flavor),
-            width: p.nodeWidth,
-            height: p.nodeHeight,
-            flavor: tree.flavor,
-          }),
-          ...childNodes,
-        ],
-        edges,
-        nested: childNested,
-      };
+      return [
+        {
+          label: flavorLabel(tree.flavor),
+          contents: noBodyFlavorContents(tree.flavor),
+          width: p.nodeWidth,
+          height: p.nodeHeight,
+          flavor,
+          selected,
+          ...p,
+        },
+        [],
+      ];
     case "BoxBody": {
-      const bodyTree = convertTree(tree.body.contents, def, nodeType, p);
-      const bodyLayout0 = layoutGraph(
-        bodyTree.nodes.map((node) => {
+      const [bodyTree, bodyNested] = augmentTree(tree.body.contents, p);
+      const bodyGraph = treeToGraph(bodyTree);
+      const bodyLayout = layoutGraph(
+        bodyGraph.nodes.map((node) => {
           return {
             ...node,
-            parentNode: id,
+            parentNode: tree.nodeId,
           };
         }),
-        bodyTree.edges
+        bodyGraph.edges
       );
-      const bodyLayout = {
-        ...bodyLayout0,
-        nodes: bodyLayout0.nodes.map((node) => {
-          return {
+      return [
+        {
+          label: flavorLabel(tree.flavor),
+          width: bodyLayout.width + p.boxPadding,
+          height: bodyLayout.height + p.boxPadding,
+          flavor,
+          selected,
+          contents: undefined,
+          ...p,
+        },
+        bodyNested.concat({
+          nodes: bodyLayout.nodes.map((node) => ({
             ...node,
             position: {
               x: node.position.x + p.boxPadding / 2,
               y: node.position.y + p.boxPadding / 2,
             },
-          };
+          })),
+          edges: bodyGraph.edges,
         }),
-      };
-      return {
-        nodes: [
-          thisNode({
-            label: flavorLabel(tree.flavor),
-            width: bodyLayout.width + p.boxPadding,
-            height: bodyLayout.height + p.boxPadding,
-            flavor: tree.flavor,
-            contents: undefined,
-          }),
-          ...childNodes,
-        ],
-        edges: edges.concat(bodyTree.edges),
-        nested: childNested.concat(bodyLayout.nodes),
-      };
+      ];
     }
   }
 };
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const { nodes, edges } = useMemo(() => {
-    const trees = p.defs.flatMap((t) =>
-      t.term ? convertTree(t.term, t.name, "BodyNode", p) : []
+    const [trees, nested] = unzip(
+      p.defs.flatMap((def) => {
+        if (!def.term) {
+          return [];
+        } else {
+          return [
+            augmentTree(def.term, {
+              def: def.name,
+              nodeType: "BodyNode",
+              ...p,
+            }),
+          ];
+        }
+      })
     );
-    const edges = trees.flatMap(({ edges }) => edges);
-    const nodes = trees.flatMap(({ nodes }) => nodes);
-    const nested = trees.flatMap(({ nested }) => nested);
-    return {
-      nodes: layoutGraph(nodes, edges).nodes.concat(nested),
-      edges,
-    };
+    const graphs = trees.map(treeToGraph);
+    const { nodes, edges } = combineGraphs(graphs);
+    return combineGraphs([
+      { nodes: layoutGraph(nodes, edges).nodes, edges },
+      ...nested.flat(),
+    ]);
   }, [p]);
 
   return (
