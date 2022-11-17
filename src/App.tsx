@@ -158,6 +158,8 @@ const AppNoError = (p: {
           }
         }}
         defs={p.module.defs}
+        forestLayout="Horizontal"
+        treePadding={100}
         nodeWidth={150}
         nodeHeight={50}
         boxPadding={50}

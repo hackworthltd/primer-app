@@ -23,6 +23,8 @@ export default {
 } as ComponentMeta<typeof TreeReactFlow>;
 
 const props = {
+  forestLayout: "Vertical",
+  treePadding: 100,
   nodeWidth: 150,
   nodeHeight: 50,
   boxPadding: 50,
