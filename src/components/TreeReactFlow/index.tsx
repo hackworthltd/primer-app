@@ -21,6 +21,7 @@ import {
   Empty,
   treeToGraph,
 } from "./Types";
+import { layoutTree } from "./layoutTree";
 
 type NodeParams = {
   nodeWidth: number;
@@ -31,6 +32,8 @@ type NodeParams = {
 export type TreeReactFlowProps = {
   defs: Def[];
   onNodeClick: (event: React.MouseEvent, node: Node<PrimerNodeProps>) => void;
+  treePadding: number;
+  forestLayout: "Horizontal" | "Vertical";
 } & NodeParams;
 
 const flavorClasses = (flavor: NodeFlavor): string => {
@@ -707,14 +710,51 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
         }
       })
     );
-    const graphs = trees.map(treeToGraph);
-    const { nodes, edges } = combineGraphs(graphs);
-    setLayout(
-      combineGraphs([
-        { nodes: layoutGraph(nodes, edges).nodes, edges },
-        ...nested.flat(),
-      ])
-    );
+    (async () => {
+      const ts = await Promise.all(trees.map(layoutTree));
+      const graphs = ts.reduce<[PrimerGraph[], number]>(
+        ([gs, offset], t) => {
+          const g = treeToGraph(t);
+          const minX = Math.min(...g.nodes.map((n) => n.position.x));
+          const minY = Math.min(...g.nodes.map((n) => n.position.y));
+          const { increment, offsetVector } = (() => {
+            switch (p.forestLayout) {
+              case "Horizontal": {
+                const increment = g.nodes
+                  ? Math.max(
+                      ...g.nodes.map((n) => n.position.x + n.data.width)
+                    ) - minX
+                  : 0;
+                return { increment, offsetVector: { x: offset, y: 0 } };
+              }
+              case "Vertical": {
+                const increment = g.nodes
+                  ? Math.max(
+                      ...g.nodes.map((n) => n.position.y + n.data.height)
+                    ) - minY
+                  : 0;
+                return { increment, offsetVector: { x: 0, y: offset } };
+              }
+            }
+          })();
+          return [
+            gs.concat({
+              edges: g.edges,
+              nodes: g.nodes.map((n) => ({
+                ...n,
+                position: {
+                  x: n.position.x - minX + offsetVector.x,
+                  y: n.position.y - minY + offsetVector.y,
+                },
+              })),
+            }),
+            offset + increment + p.treePadding,
+          ];
+        },
+        [[], 0]
+      )[0];
+      setLayout(combineGraphs([...graphs, ...nested.flat()]));
+    })();
   }, [p]);
 
   return (
