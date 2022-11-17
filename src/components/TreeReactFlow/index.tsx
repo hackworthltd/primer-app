@@ -9,7 +9,7 @@ import ReactFlow, {
 } from "react-flow-renderer/nocss";
 import "react-flow-renderer/dist/style.css";
 import { layoutGraph } from "./layoutGraph";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { unzip } from "fp-ts/lib/Array";
 import {
@@ -686,9 +686,14 @@ const nodeProps = (
 };
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
-  const { nodes, edges } = useMemo(() => {
+  const [{ nodes, edges }, setLayout] = useState<PrimerGraph>({
+    nodes: [],
+    edges: [],
+  });
+
+  useEffect(() => {
     const [trees, nested] = unzip(
-      p.defs.flatMap((def) => {
+      p.defs.flatMap<[PrimerTreeNoPos, PrimerGraph[]]>((def) => {
         if (!def.term) {
           return [];
         } else {
@@ -704,10 +709,12 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
     );
     const graphs = trees.map(treeToGraph);
     const { nodes, edges } = combineGraphs(graphs);
-    return combineGraphs([
-      { nodes: layoutGraph(nodes, edges).nodes, edges },
-      ...nested.flat(),
-    ]);
+    setLayout(
+      combineGraphs([
+        { nodes: layoutGraph(nodes, edges).nodes, edges },
+        ...nested.flat(),
+      ])
+    );
   }, [p]);
 
   return (
