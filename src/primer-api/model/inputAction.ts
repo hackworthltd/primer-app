@@ -12,6 +12,8 @@ export type InputAction = typeof InputAction[keyof typeof InputAction];
 export const InputAction = {
   MakeCon: "MakeCon",
   MakeConSat: "MakeConSat",
+  MakeInt: "MakeInt",
+  MakeChar: "MakeChar",
   MakeVar: "MakeVar",
   MakeVarSat: "MakeVarSat",
   MakeLet: "MakeLet",

@@ -78,7 +78,7 @@ export const ActionPanel = ({
             return (
               <div>
                 <div>
-                  {state.opts.free && (
+                  {state.opts.free != "FreeNone" && (
                     <div className="mb-3 pt-2">
                       <ActionInput
                         onSubmit={(option) => onOption({ option })}

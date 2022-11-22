@@ -54,6 +54,10 @@ export const actionName = (
       return code("V");
     case "MakeConSat":
       return code("V $ ?");
+    case "MakeInt":
+      return code("1");
+    case "MakeChar":
+      return code('"c"');
     case "MakeVar":
       return code("x");
     case "MakeVarSat":
@@ -141,6 +145,10 @@ export const actionDescription = (
       return "Use a value constructor";
     case "MakeConSat":
       return "Apply a value constructor to arguments";
+    case "MakeInt":
+      return "Insert a whole number";
+    case "MakeChar":
+      return "Insert a character";
     case "MakeVar":
       return "Use a variable";
     case "MakeVarSat":
@@ -213,6 +221,10 @@ export const actionType = (action: NoInputAction | InputAction): ActionType => {
     case "MakeCon":
       return "Primary";
     case "MakeConSat":
+      return "Primary";
+    case "MakeInt":
+      return "Primary";
+    case "MakeChar":
       return "Primary";
     case "MakeVar":
       return "Primary";

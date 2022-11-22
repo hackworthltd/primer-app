@@ -9,6 +9,7 @@ export * from "./applyActionParams";
 export * from "./applyActionWithInputAction";
 export * from "./applyActionWithInputParams";
 export * from "./def";
+export * from "./freeInput";
 export * from "./getActionOptionsAction";
 export * from "./getActionOptionsLevel";
 export * from "./getActionOptionsParams";
