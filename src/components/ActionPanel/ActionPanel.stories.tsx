@@ -1,4 +1,4 @@
-import { Action, InputAction, Options } from "@/primer-api";
+import { Action, InputAction, NoInputAction, Options } from "@/primer-api";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { ActionPanel } from "./";
@@ -26,6 +26,18 @@ export default {
     },
   },
 } as ComponentMeta<typeof ActionPanel>;
+
+const allNoInputActions: Action[] = Object.keys(NoInputAction).map(
+  (action) => ({
+    contents: action as NoInputAction,
+    tag: "NoInput",
+  })
+);
+const allInputActions: Action[] = Object.keys(InputAction).map((action) => ({
+  contents: action as InputAction,
+  tag: "Input",
+}));
+const allActions: Action[] = allInputActions.concat(allNoInputActions);
 
 const exampleTypeActions: Action[] = [
   { tag: "NoInput", contents: "MakeFun" },
@@ -60,4 +72,9 @@ TypeExamples.args = {
 export const TermExamples = Template.bind({});
 TermExamples.args = {
   actions: exampleTermActions,
+};
+
+export const AllActions = Template.bind({});
+AllActions.args = {
+  actions: allActions,
 };
