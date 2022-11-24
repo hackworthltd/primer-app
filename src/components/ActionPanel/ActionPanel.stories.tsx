@@ -74,6 +74,7 @@ TermExamples.args = {
   actions: exampleTermActions,
 };
 
+// This isn't a realistic instantiation of the component, but it's useful to have all actions appear in some story.
 export const AllActions = Template.bind({});
 AllActions.args = {
   actions: allActions,
