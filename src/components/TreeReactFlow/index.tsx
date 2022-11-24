@@ -30,10 +30,13 @@ export type TreeReactFlowProps = {
   onNodeClick: (event: React.MouseEvent, node: Node<PrimerNodeProps>) => void;
 } & NodeParams;
 
-const flavorClasses = (flavor: NodeFlavor): string => {
-  const commonHoverClasses =
-    " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";
+// these properties are necessary on ReactFlow handles due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
+const handleClasses = "absolute border-[2px] border-solid border-grey-tertiary";
 
+const commonHoverClasses =
+  " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";
+
+const flavorClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "FlavorHole":
       return "border-red-tertiary ring-red-tertiary bg-white-primary".concat(
@@ -536,6 +539,7 @@ const noBodyFlavorContents = (flavor: NodeFlavor): string | undefined => {
 };
 
 const primerNodeTypeName = "primer";
+const primerDefNameNodeTypeName = "primer-def-name";
 
 type PrimerNodePropsNode = {
   label?: string;
@@ -555,12 +559,9 @@ type PrimerNodePropsTree = {
 type PrimerNodeProps = PrimerNodePropsTree & PrimerNodePropsNode;
 
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
-  // these properties are necessary due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
-  const handleStyle = "absolute border-[2px] border-solid border-grey-tertiary";
-
   return (
     <>
-      <Handle type="target" position={Position.Top} className={handleStyle} />
+      <Handle type="target" position={Position.Top} className={handleClasses} />
       <div
         className={primerNodeClasses(p.data.selected, p.data.flavor)}
         style={{
@@ -582,26 +583,65 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
       <Handle
         type="source"
         position={Position.Bottom}
-        className={handleStyle}
+        className={handleClasses}
       />
     </>
   );
 };
 
-const nodeTypes = { [primerNodeTypeName]: PrimerNode };
+type PrimerDefNameNodeProps = {
+  def: GlobalName;
+  selected: boolean;
+  width: number;
+  height: number;
+};
+
+const PrimerDefNameNode = (p: NodeProps<PrimerDefNameNodeProps>) => (
+  <>
+    <div
+      className={classNames(
+        "flex items-center justify-center",
+        "bg-grey-primary",
+        "border-8 border-grey-tertiary ring-grey-tertiary",
+        p.data.selected && "ring-4 ring-offset-4",
+        commonHoverClasses
+      )}
+      style={{
+        width: p.data.width,
+        height: p.data.height,
+      }}
+    >
+      <div className="font-code text-4xl text-grey-tertiary">
+        {p.data.def.baseName}
+      </div>
+    </div>
+    <Handle
+      type="source"
+      position={Position.Bottom}
+      className={handleClasses}
+    />
+  </>
+);
+
+const nodeTypes = {
+  [primerNodeTypeName]: PrimerNode,
+  [primerDefNameNodeTypeName]: PrimerDefNameNode,
+};
+
+type Graph = {
+  nodes: NodeNoPos<PrimerNodeProps | PrimerDefNameNodeProps>[];
+  edges: Edge<never>[];
+  /* Nodes of nested trees, already positioned.
+  We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
+  nested: Node<PrimerNodeProps | PrimerDefNameNodeProps>[];
+};
 
 const convertTree = (
   tree: Tree,
   def: GlobalName,
   nodeType: NodeType,
   p: NodeParams
-): {
-  nodes: NodeNoPos<PrimerNodeProps>[];
-  edges: Edge<never>[];
-  /* Nodes of nested trees, already positioned.
-  We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
-  nested: Node<PrimerNodeProps>[];
-} => {
+): Graph => {
   const childTrees = tree.childTrees.concat(
     tree.rightChild ? [tree.rightChild] : []
   );
@@ -710,9 +750,49 @@ const convertTree = (
 
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const { nodes, edges } = useMemo(() => {
-    const trees = p.defs.flatMap((t) =>
-      t.term ? convertTree(t.term, t.name, "BodyNode", p) : []
-    );
+    const trees: Graph[] = p.defs.flatMap((def) => {
+      const defNodeId = "def-" + def.name.baseName;
+      const sigEdgeId = "def-sig-" + def.name.baseName;
+      const bodyEdgeId = "def-body-" + def.name.baseName;
+      const defNameNode: NodeNoPos<PrimerDefNameNodeProps> = {
+        id: defNodeId,
+        data: {
+          def: def.name,
+          height: p.nodeHeight * 2,
+          width: p.nodeWidth * 2,
+          selected: p.selection?.def == def.name && !p.selection?.node,
+        },
+        type: primerDefNameNodeTypeName,
+      };
+      const defEdge = (id: string, source: string, target: string) => ({
+        id,
+        source,
+        target,
+        type: "step",
+        className: "stroke-grey-tertiary stroke-[0.25rem]",
+        style: { strokeDasharray: 4 },
+      });
+      const sigEdge = defEdge(sigEdgeId, defNodeId, def.type_.nodeId);
+      const bodyEdge = def.term
+        ? defEdge(bodyEdgeId, defNodeId, def.term.nodeId)
+        : undefined;
+      const sigGraph: Graph = convertTree(def.type_, def.name, "SigNode", p);
+      const bodyGraph: Graph | undefined = def.term
+        ? convertTree(def.term, def.name, "BodyNode", p)
+        : undefined;
+      return {
+        nodes: [defNameNode]
+          .concat(sigGraph.nodes)
+          .concat(bodyGraph ? bodyGraph.nodes : []),
+        edges: [
+          [sigEdge],
+          sigGraph.edges,
+          bodyEdge ? [bodyEdge] : [],
+          bodyGraph ? bodyGraph.edges : [],
+        ].flat(),
+        nested: sigGraph.nested.concat(bodyGraph ? bodyGraph.nested : []),
+      };
+    });
     const edges = trees.flatMap(({ edges }) => edges);
     const nodes = trees.flatMap(({ nodes }) => nodes);
     const nested = trees.flatMap(({ nested }) => nested);
