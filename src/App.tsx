@@ -111,7 +111,6 @@ const AppNoError = (p: {
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
 
-  const selectedNodeId = selection?.node?.id;
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="overflow-scroll">
@@ -141,15 +140,21 @@ const AppNoError = (p: {
         />
       </div>
       <TreeReactFlow
-        {...(selectedNodeId && { selection: selectedNodeId.toString() })}
+        {...(selection && { selection })}
         onNodeClick={(_e, node) => {
-          const id = Number(node.id);
-          // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
-          if (!isNaN(id)) {
+          if (!node.data.nodeType) {
             setSelection({
               def: node.data.def,
-              node: { id, nodeType: node.data.nodeType },
             });
+          } else {
+            const id = Number(node.id);
+            // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
+            if (!isNaN(id)) {
+              setSelection({
+                def: node.data.def,
+                node: { id, nodeType: node.data.nodeType },
+              });
+            }
           }
         }}
         defs={p.module.defs}
