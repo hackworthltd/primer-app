@@ -6,7 +6,12 @@ import {
   ActionPanel,
   Sidebar,
 } from "@/components";
-import { useEffect, useState } from "react";
+import {
+  QueryKey,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
+import { DependencyList, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   useGetAvailableActions,
@@ -119,6 +124,26 @@ function cmpName(a: GlobalName, b: GlobalName) {
   return 0;
 }
 
+const useInvalidateOnChange = <TData, TError>(
+  res: UseQueryResult<TData, TError> & { queryKey: QueryKey },
+  deps: DependencyList
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryClient = useQueryClient();
+  useEffect(
+    () => {
+      (async () =>
+        await queryClient.invalidateQueries(res.queryKey, { exact: true }))();
+    },
+    // We stringify the queryKey as a poor-man's deep equality check,
+    // since the orval generated bindings to react-query construct a
+    // new key (a list) each time it is used. Whilst the contents of
+    // this key do not change, the object does.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [queryClient, JSON.stringify(res.queryKey), ...deps]
+  );
+  return res;
+};
+
 const AppNoError = ({
   selection,
   setSelection,
@@ -145,20 +170,15 @@ const AppNoError = ({
   const getOptions = useGetActionOptions();
 
   const [evalTarget, setEvalTarget] = useState<string | undefined>();
-  const evalFull = useEvalFull();
-  useEffect(() => {
-    evalTarget &&
-      evalFull.mutateAsync({
-        sessionId: p.sessionId,
-        data: { qualifiedModule: p.module.modname, baseName: evalTarget },
-        params: treeParams,
-      });
-    // We wish to re-evaluate when the target changes, or any code in the module changes
-    // (as result can depend on other definitions).
-    // However, eslint will complain that 'evalFull' and 'p.sessionId'
-    // are missing dependencies, even though these will never (relevantly) change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [p.module, evalTarget]);
+  const evalResult = useInvalidateOnChange(
+    useEvalFull(
+      p.sessionId,
+      { qualifiedModule: p.module.modname, baseName: evalTarget || "" },
+      treeParams,
+      { query: { enabled: !!evalTarget } }
+    ),
+    [p.module]
+  );
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="overflow-scroll">
@@ -189,7 +209,7 @@ const AppNoError = ({
           folder="unknown"
           evalFull={{
             request: setEvalTarget,
-            ...(evalFull.isSuccess ? { result: evalFull.data } : {}),
+            ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
           }}
         />
       </div>
