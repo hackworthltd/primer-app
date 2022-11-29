@@ -7,7 +7,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
-import { EvalFullResp } from "@/primer-api";
+import { EvalFullResp, GlobalName, NodeBody, NodeFlavor } from "@/primer-api";
+import { TreeReactFlow } from "@/components";
 
 export type Prog = {
   defs: string[];
@@ -37,6 +38,7 @@ type InfoProps = {
   folder: string;
 };
 type EvalProps = {
+  moduleName: string[];
   evalFull: {
     request: (baseName: string | undefined) => void;
     result?: EvalFullResp;
@@ -224,14 +226,35 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
   );
 };
 
-const Evaluated = (p: { evaluated?: EvalFullResp }) => {
-  return p?.evaluated ? <div>{JSON.stringify(p.evaluated)}</div> : <></>;
+const Evaluated = (p: { defName: GlobalName; evaluated?: EvalFullResp }) => {
+  // TODO: For now, give a dummy type. We should refactor so we can just give a term.
+  const dummyType = {
+    body: { contents: { baseName: "dummy node" }, tag: "TextBody" } as NodeBody,
+    childTrees: [],
+    flavor: "FlavorHole" as NodeFlavor,
+    nodeId: "eval-dummy-node-id",
+  };
+  return (
+    <TreeReactFlow
+      defs={
+        p?.evaluated
+          ? [{ name: p.defName, term: p.evaluated.contents, type_: dummyType }]
+          : []
+      }
+      nodeWidth={150}
+      nodeHeight={50}
+      boxPadding={50}
+      treePadding={/*treePadding and forestLayout are irrelevent*/ 0}
+      forestLayout="Horizontal"
+    />
+  );
 };
 
 // We only offer to evaluate the definitions in the "main" module
 const Eval = ({
   defs,
   evalFull,
+  moduleName,
 }: EvalProps & { defs: string[] }): JSX.Element => {
   const [evalDef, setEvalDef0] = useState("");
   const setEvalDef = (e: string) => {
@@ -239,9 +262,9 @@ const Eval = ({
     evalFull.request(e === "" ? undefined : e);
   };
   return (
-    <div className="h-full overflow-auto">
+    <div className="flex h-full flex-col overflow-auto">
       <div className={headerStyle}>Evaluation</div>
-      <div className="flex flex-col gap-5 p-2 leading-8">
+      <div className="flex grow flex-col gap-5 overflow-hidden p-2 leading-8">
         <div>
           <div className={subHeaderStyle}>Evaluating</div>
           <select value={evalDef} onChange={(e) => setEvalDef(e.target.value)}>
@@ -260,9 +283,10 @@ const Eval = ({
         </div>
         {evalDef !== "" && (
           <>
-            <div>
+            <div className="grow">
               <div className={subHeaderStyle}>gives</div>
               <Evaluated
+                defName={{ qualifiedModule: moduleName, baseName: evalDef }}
                 {...(evalFull.result ? { evaluated: evalFull.result } : {})}
               />
             </div>

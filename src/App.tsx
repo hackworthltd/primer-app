@@ -207,6 +207,7 @@ const AppNoError = ({
           shadowed={false}
           type="?"
           folder="unknown"
+          moduleName={p.module.modname}
           evalFull={{
             request: setEvalTarget,
             ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
