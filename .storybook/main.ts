@@ -13,6 +13,7 @@ const config: StorybookViteConfig = {
   addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
   core: {
     builder: "@storybook/builder-vite",
+    disableTelemetry: true,
   },
 
   // storybook-builder-vite doesn't read the project's vite.config.js,
