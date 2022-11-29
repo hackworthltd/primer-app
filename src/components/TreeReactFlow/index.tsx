@@ -34,7 +34,7 @@ type NodeParams = {
 };
 export type TreeReactFlowProps = {
   defs: Def[];
-  onNodeClick: (
+  onNodeClick?: (
     event: React.MouseEvent,
     node: Node<PrimerNodeProps | PrimerDefNameNodeProps>
   ) => void;
@@ -837,7 +837,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
   return (
     <ReactFlow
       id={id}
-      onNodeClick={p.onNodeClick}
+      {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
       nodes={nodes}
       edges={edges}
       nodeTypes={nodeTypes}
