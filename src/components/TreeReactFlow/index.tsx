@@ -8,7 +8,7 @@ import {
   NodeProps,
   Background,
 } from "reactflow";
-import "reactflow/dist/style.css";
+import "./reactflow.css";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { unzip } from "fp-ts/lib/Array";
