@@ -1,4 +1,4 @@
-import { Edge } from "react-flow-renderer/nocss";
+import { Edge } from "reactflow";
 import { InnerNode, Node, TidyLayout } from "@zxch3n/tidy";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
 import {

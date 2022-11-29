@@ -1,13 +1,14 @@
 import { Def, NodeFlavor, Tree, Selection } from "@/primer-api";
-import ReactFlow, {
+import {
+  ReactFlow,
   Edge,
   Node,
   Handle,
   Position,
   NodeProps,
   Background,
-} from "react-flow-renderer/nocss";
-import "react-flow-renderer/dist/style.css";
+} from "reactflow";
+import "reactflow/dist/style.css";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { unzip } from "fp-ts/lib/Array";
