@@ -840,7 +840,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       nodeTypes={nodeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
     >
-      <Background gap={25} size={0.8} />
+      <Background gap={25} size={1.6} color="#81818a" />
     </ReactFlow>
   );
 };
