@@ -690,15 +690,7 @@ const nodeProps = (
     case "BoxBody": {
       const [bodyTree, bodyNested] = augmentTree(tree.body.contents, p);
       const bodyGraph = treeToGraph(bodyTree);
-      const bodyLayout = layoutGraph(
-        bodyGraph.nodes.map((node) => {
-          return {
-            ...node,
-            parentNode: tree.nodeId,
-          };
-        }),
-        bodyGraph.edges
-      );
+      const bodyLayout = layoutGraph(bodyGraph.nodes, bodyGraph.edges);
       return [
         {
           label: flavorLabel(tree.flavor),
@@ -712,6 +704,7 @@ const nodeProps = (
         bodyNested.concat({
           nodes: bodyLayout.nodes.map((node) => ({
             ...node,
+            parentNode: tree.nodeId,
             position: {
               x: node.position.x + p.boxPadding / 2,
               y: node.position.y + p.boxPadding / 2,
