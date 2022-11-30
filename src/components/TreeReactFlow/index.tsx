@@ -551,7 +551,12 @@ const noBodyFlavorContents = (flavor: NodeFlavor): string | undefined => {
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   return (
     <>
-      <Handle type="target" position={Position.Top} className={handleClasses} />
+      <Handle
+        isConnectable={false}
+        type="target"
+        position={Position.Top}
+        className={handleClasses}
+      />
       <div
         className={primerNodeClasses(p.data.selected, p.data.flavor)}
         style={{
@@ -571,6 +576,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
         )}
       </div>
       <Handle
+        isConnectable={false}
         type="source"
         position={Position.Bottom}
         className={handleClasses}
@@ -599,6 +605,7 @@ const PrimerDefNameNode = (p: NodeProps<PrimerDefNameNodeProps>) => (
       </div>
     </div>
     <Handle
+      isConnectable={false}
       type="source"
       position={Position.Bottom}
       className={handleClasses}
