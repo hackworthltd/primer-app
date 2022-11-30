@@ -41,8 +41,7 @@ export type TreeReactFlowProps = {
   forestLayout: "Horizontal" | "Vertical";
 } & NodeParams;
 
-// these properties are necessary on ReactFlow handles due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
-const handleClasses = "absolute border-[2px] border-solid border-grey-tertiary";
+const handleClasses = "border-[2px] border-solid border-grey-tertiary";
 
 const commonHoverClasses =
   " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";
