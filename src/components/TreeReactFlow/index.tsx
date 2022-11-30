@@ -798,28 +798,14 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
     (async () => {
       const ts = await Promise.all(trees.map(layoutTree));
       const graphs = ts.reduce<[PrimerGraph[], number]>(
-        ([gs, offset], t) => {
-          const g = treeToGraph(t);
-          const minX = Math.min(...g.nodes.map((n) => n.position.x));
-          const minY = Math.min(...g.nodes.map((n) => n.position.y));
+        ([gs, offset], { tree, width, height }) => {
+          const g = treeToGraph(tree);
           const { increment, offsetVector } = (() => {
             switch (p.forestLayout) {
-              case "Horizontal": {
-                const increment = g.nodes
-                  ? Math.max(
-                      ...g.nodes.map((n) => n.position.x + n.data.width)
-                    ) - minX
-                  : 0;
-                return { increment, offsetVector: { x: offset, y: 0 } };
-              }
-              case "Vertical": {
-                const increment = g.nodes
-                  ? Math.max(
-                      ...g.nodes.map((n) => n.position.y + n.data.height)
-                    ) - minY
-                  : 0;
-                return { increment, offsetVector: { x: 0, y: offset } };
-              }
+              case "Horizontal":
+                return { increment: width, offsetVector: { x: offset, y: 0 } };
+              case "Vertical":
+                return { increment: height, offsetVector: { x: 0, y: offset } };
             }
           })();
           return [
@@ -828,8 +814,8 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
               nodes: g.nodes.map((n) => ({
                 ...n,
                 position: {
-                  x: n.position.x - minX + offsetVector.x,
-                  y: n.position.y - minY + offsetVector.y,
+                  x: n.position.x + offsetVector.x,
+                  y: n.position.y + offsetVector.y,
                 },
               })),
             }),

@@ -30,6 +30,29 @@ export type TreeSimple<N, E> = {
   rightChild?: [TreeSimple<N, E>, E];
 };
 
+export const treeMap = <N1, N2, E>(
+  { node, childTrees, rightChild }: TreeSimple<N1, E>,
+  f: (n: N1) => N2
+): TreeSimple<N2, E> => ({
+  node: f(node),
+  childTrees: childTrees.map(([t, e]) => [treeMap(t, f), e]),
+  ...(rightChild
+    ? { rightChild: (([t, e]) => [treeMap(t, f), e])(rightChild) }
+    : {}),
+});
+
+export const treeNodes = <N, E>({
+  node,
+  rightChild,
+  childTrees,
+}: TreeSimple<N, E>): N[] => {
+  return [
+    node,
+    ...childTrees.flatMap(([n, _]) => treeNodes(n)),
+    ...(rightChild ? treeNodes(rightChild[0]) : []),
+  ];
+};
+
 export const treeToGraph = <N, E>(tree: TreeSimple<N, E>): Graph<N, E> => {
   const [trees, edges] = unzip(
     tree.childTrees.concat(tree.rightChild ? [tree.rightChild] : [])

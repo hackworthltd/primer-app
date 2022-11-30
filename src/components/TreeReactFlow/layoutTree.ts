@@ -8,17 +8,25 @@ import {
   PrimerNodeProps,
   PrimerTree,
   PrimerTreeNoPos,
+  treeMap,
+  treeNodes,
 } from "./Types";
 
-export const layoutTree = (primerTree: PrimerTreeNoPos): Promise<PrimerTree> =>
+export const layoutTree = (
+  primerTree: PrimerTreeNoPos
+): Promise<{
+  tree: PrimerTree;
+  width: number;
+  height: number;
+}> =>
   TidyLayout.create().then((layout) => {
     layout.changeLayoutType(WasmLayoutType.Tidy);
-    const [tree0, nodeMap] = primerToTidy(primerTree);
-    const tree = layout.set_root(tree0);
+    const [treeTidy0, nodeMap] = primerToTidy(primerTree);
+    const treeTidy = layout.set_root(treeTidy0);
     layout.layout(true);
     layout.dispose();
-    return tidyToPrimer(
-      tree,
+    const treeUnNormalized = tidyToPrimer(
+      treeTidy,
       (id) =>
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion*/
         nodeMap.get(id)![0],
@@ -26,6 +34,21 @@ export const layoutTree = (primerTree: PrimerTreeNoPos): Promise<PrimerTree> =>
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion*/
         nodeMap.get(source)![1].get(target)!
     );
+    const nodes = treeNodes(treeUnNormalized);
+    const minX = Math.min(...nodes.map((n) => n.position.x));
+    const minY = Math.min(...nodes.map((n) => n.position.y));
+    const tree = treeMap(treeUnNormalized, (n) => ({
+      ...n,
+      // Ensure top-left is at (0,0). This makes the result easier to work with.
+      position: { x: n.position.x - minX, y: n.position.y - minY },
+    }));
+    const width = nodes
+      ? Math.max(...nodes.map((n) => n.position.x + n.data.width)) - minX
+      : 0;
+    const height = nodes
+      ? Math.max(...nodes.map((n) => n.position.y + n.data.height)) - minY
+      : 0;
+    return { tree, minX, minY, width, height };
   });
 
 type NodeInfo = {
