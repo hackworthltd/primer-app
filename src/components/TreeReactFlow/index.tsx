@@ -618,12 +618,14 @@ const nodeTypes = {
 const augmentTree = async (
   tree: Tree,
   p: NodeParams & PrimerTreeProps
-): Promise<[
-  PrimerTreeNoPos,
-  /* Nodes of nested trees, already positioned.
+): Promise<
+  [
+    PrimerTreeNoPos,
+    /* Nodes of nested trees, already positioned.
   We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
-  PrimerGraph[]
-]> => {
+    PrimerGraph[]
+  ]
+> => {
   const [childTrees, childNested] = await Promise.all(
     tree.childTrees.map((t) => augmentTree(t, p))
   ).then(unzip);
@@ -724,77 +726,77 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
   });
 
   useEffect(() => {
-  (async () => {
-    const [trees, nested] = await Promise.all(
-      p.defs.map<Promise<[PrimerTreeNoPos, PrimerGraph[]]>>(async (def) => {
-        const defNodeId = "def-" + def.name.baseName;
-        const sigEdgeId = "def-sig-" + def.name.baseName;
-        const bodyEdgeId = "def-body-" + def.name.baseName;
-        const defNameNode: NodeNoPos<PrimerDefNameNodeProps> = {
-          id: defNodeId,
-          data: {
-            def: def.name,
-            height: p.nodeHeight * 2,
-            width: p.nodeWidth * 2,
-            selected: p.selection?.def == def.name && !p.selection?.node,
-          },
-          type: primerDefNameNodeTypeName,
-        };
-        const defEdge = async (
-          tree: Tree,
-          augmentParams: NodeParams & PrimerTreeProps,
-          edgeId: string
-        ): Promise<{
-          subtree: [PrimerTreeNoPos, Edge<Empty>];
-          nested: PrimerGraph[];
-        }> => {
-          const [t, nested] = await augmentTree(tree, augmentParams);
-          return {
-            subtree: [
-              t,
-              {
-                id: edgeId,
-                source: defNodeId,
-                target: tree.nodeId,
-                type: "step",
-                className: "stroke-grey-tertiary stroke-[0.25rem]",
-                style: { strokeDasharray: 4 },
-              },
-            ],
-            nested,
+    (async () => {
+      const [trees, nested] = await Promise.all(
+        p.defs.map<Promise<[PrimerTreeNoPos, PrimerGraph[]]>>(async (def) => {
+          const defNodeId = "def-" + def.name.baseName;
+          const sigEdgeId = "def-sig-" + def.name.baseName;
+          const bodyEdgeId = "def-body-" + def.name.baseName;
+          const defNameNode: NodeNoPos<PrimerDefNameNodeProps> = {
+            id: defNodeId,
+            data: {
+              def: def.name,
+              height: p.nodeHeight * 2,
+              width: p.nodeWidth * 2,
+              selected: p.selection?.def == def.name && !p.selection?.node,
+            },
+            type: primerDefNameNodeTypeName,
           };
-        };
-        const sigTree = await defEdge(
-          def.type_,
-          {
-            def: def.name,
-            nodeType: "SigNode",
-            ...p,
-          },
-          sigEdgeId
-        );
-        const bodyTree = await (def.term
-          ? defEdge(
-              def.term,
-              {
-                def: def.name,
-                nodeType: "BodyNode",
-                ...p,
-              },
-              bodyEdgeId
-            )
-          : undefined);
-        return [
-          {
-            node: defNameNode,
-            childTrees: [
-              sigTree.subtree,
-              ...(bodyTree ? [bodyTree.subtree] : []),
-            ],
-          },
-          [...sigTree.nested, ...(bodyTree ? bodyTree.nested : [])],
-        ];
-      })
+          const defEdge = async (
+            tree: Tree,
+            augmentParams: NodeParams & PrimerTreeProps,
+            edgeId: string
+          ): Promise<{
+            subtree: [PrimerTreeNoPos, Edge<Empty>];
+            nested: PrimerGraph[];
+          }> => {
+            const [t, nested] = await augmentTree(tree, augmentParams);
+            return {
+              subtree: [
+                t,
+                {
+                  id: edgeId,
+                  source: defNodeId,
+                  target: tree.nodeId,
+                  type: "step",
+                  className: "stroke-grey-tertiary stroke-[0.25rem]",
+                  style: { strokeDasharray: 4 },
+                },
+              ],
+              nested,
+            };
+          };
+          const sigTree = await defEdge(
+            def.type_,
+            {
+              def: def.name,
+              nodeType: "SigNode",
+              ...p,
+            },
+            sigEdgeId
+          );
+          const bodyTree = await (def.term
+            ? defEdge(
+                def.term,
+                {
+                  def: def.name,
+                  nodeType: "BodyNode",
+                  ...p,
+                },
+                bodyEdgeId
+              )
+            : undefined);
+          return [
+            {
+              node: defNameNode,
+              childTrees: [
+                sigTree.subtree,
+                ...(bodyTree ? [bodyTree.subtree] : []),
+              ],
+            },
+            [...sigTree.nested, ...(bodyTree ? bodyTree.nested : [])],
+          ];
+        })
       ).then(unzip);
       const ts = await Promise.all(trees.map(layoutTree));
       const graphs = ts.reduce<[PrimerGraph[], number]>(
