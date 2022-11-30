@@ -615,18 +615,18 @@ const nodeTypes = {
   [primerDefNameNodeTypeName]: PrimerDefNameNode,
 };
 
-const augmentTree = (
+const augmentTree = async (
   tree: Tree,
   p: NodeParams & PrimerTreeProps
-): [
+): Promise<[
   PrimerTreeNoPos,
   /* Nodes of nested trees, already positioned.
   We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
   PrimerGraph[]
-] => {
-  const [childTrees, childNested] = unzip(
+]> => {
+  const [childTrees, childNested] = await Promise.all(
     tree.childTrees.map((t) => augmentTree(t, p))
-  );
+  ).then(unzip);
   const makeEdge = (child: PrimerTreeNoPos): [PrimerTreeNoPos, Edge<Empty>] => [
     child,
     {
@@ -636,10 +636,10 @@ const augmentTree = (
       className: flavorEdgeClasses(tree.flavor),
     },
   ];
-  const rightChild = tree.rightChild
+  const rightChild = await (tree.rightChild
     ? augmentTree(tree.rightChild, p)
-    : undefined;
-  const [data, nested] = nodeProps(tree, p);
+    : undefined);
+  const [data, nested] = await nodeProps(tree, p);
   return [
     {
       ...(rightChild ? { rightChild: makeEdge(rightChild[0]) } : {}),
@@ -654,10 +654,10 @@ const augmentTree = (
   ];
 };
 
-const nodeProps = (
+const nodeProps = async (
   tree: Tree,
   p: NodeParams & PrimerTreeProps
-): [PrimerNodeProps, PrimerGraph[]] => {
+): Promise<[PrimerNodeProps, PrimerGraph[]]> => {
   const selected = p.selection?.node?.id?.toString() == tree.nodeId;
   const flavor = tree.flavor;
   switch (tree.body.tag) {
@@ -688,7 +688,7 @@ const nodeProps = (
         [],
       ];
     case "BoxBody": {
-      const [bodyTree, bodyNested] = augmentTree(tree.body.contents, p);
+      const [bodyTree, bodyNested] = await augmentTree(tree.body.contents, p);
       const bodyGraph = treeToGraph(bodyTree);
       const bodyLayout = layoutGraph(bodyGraph.nodes, bodyGraph.edges);
       return [
@@ -724,8 +724,9 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
   });
 
   useEffect(() => {
-    const [trees, nested]: [PrimerTreeNoPos[], PrimerGraph[][]] = unzip(
-      p.defs.map((def) => {
+  (async () => {
+    const [trees, nested] = await Promise.all(
+      p.defs.map<Promise<[PrimerTreeNoPos, PrimerGraph[]]>>(async (def) => {
         const defNodeId = "def-" + def.name.baseName;
         const sigEdgeId = "def-sig-" + def.name.baseName;
         const bodyEdgeId = "def-body-" + def.name.baseName;
@@ -739,15 +740,15 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
           },
           type: primerDefNameNodeTypeName,
         };
-        const defEdge = (
+        const defEdge = async (
           tree: Tree,
           augmentParams: NodeParams & PrimerTreeProps,
           edgeId: string
-        ): {
+        ): Promise<{
           subtree: [PrimerTreeNoPos, Edge<Empty>];
           nested: PrimerGraph[];
-        } => {
-          const [t, nested] = augmentTree(tree, augmentParams);
+        }> => {
+          const [t, nested] = await augmentTree(tree, augmentParams);
           return {
             subtree: [
               t,
@@ -763,7 +764,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
             nested,
           };
         };
-        const sigTree = defEdge(
+        const sigTree = await defEdge(
           def.type_,
           {
             def: def.name,
@@ -772,7 +773,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
           },
           sigEdgeId
         );
-        const bodyTree = def.term
+        const bodyTree = await (def.term
           ? defEdge(
               def.term,
               {
@@ -782,7 +783,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
               },
               bodyEdgeId
             )
-          : undefined;
+          : undefined);
         return [
           {
             node: defNameNode,
@@ -794,8 +795,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
           [...sigTree.nested, ...(bodyTree ? bodyTree.nested : [])],
         ];
       })
-    );
-    (async () => {
+      ).then(unzip);
       const ts = await Promise.all(trees.map(layoutTree));
       const graphs = ts.reduce<[PrimerGraph[], number]>(
         ([gs, offset], { tree, width, height }) => {
