@@ -37,7 +37,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
       <div className="min-w-0 flex-1 items-center px-3 py-6">
         <SearchBar ariaLabel="Search programs" placeholder="Program name" />
       </div>
-      <div className="pl-3 flex items-center justify-end">
+      <div className="flex items-center justify-end pl-3">
         {/* Profile dropdown */}
         <Menu as="div" className="relative shrink-0">
           <div>
