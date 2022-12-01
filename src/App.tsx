@@ -142,7 +142,7 @@ const AppNoError = (p: {
       <TreeReactFlow
         {...(selection && { selection })}
         onNodeClick={(_e, node) => {
-          if (!node.data.nodeType) {
+          if (!("nodeType" in node.data)) {
             setSelection({
               def: node.data.def,
             });
@@ -158,6 +158,8 @@ const AppNoError = (p: {
           }
         }}
         defs={p.module.defs}
+        forestLayout="Horizontal"
+        treePadding={100}
         nodeWidth={150}
         nodeHeight={50}
         boxPadding={50}
