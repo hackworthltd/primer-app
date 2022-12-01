@@ -33,8 +33,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
-    "react-flow-renderer": "^10.3.17",
     "react-router-dom": "^6.4.3",
+    "reactflow": "^11.3.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

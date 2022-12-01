@@ -1,5 +1,5 @@
 import { GlobalName, NodeFlavor, NodeType } from "@/primer-api";
-import { Edge, Node } from "react-flow-renderer/nocss";
+import { Edge, Node } from "reactflow";
 import { unzip } from "fp-ts/lib/Array";
 
 /** A generic graph. */

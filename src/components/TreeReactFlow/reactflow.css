@@ -1,0 +1,13 @@
+@import "reactflow/dist/base.css";
+
+.react-flow__edge-path,
+.react-flow__connection-path {
+  stroke: unset;
+  stroke-width: unset;
+}
+
+.react-flow__handle {
+  min-width: 1px;
+  min-height: 1px;
+  background-color: transparent;
+}
