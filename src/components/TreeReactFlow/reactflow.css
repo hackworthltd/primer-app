@@ -11,3 +11,19 @@
   min-height: 1px;
   background-color: transparent;
 }
+
+.react-flow__handle-top {
+  top: 1px;
+}
+
+.react-flow__handle-bottom {
+  bottom: 1px;
+}
+
+.react-flow__handle-left {
+  left: 1px;
+}
+
+.react-flow__handle-right {
+  right: 1px;
+}
