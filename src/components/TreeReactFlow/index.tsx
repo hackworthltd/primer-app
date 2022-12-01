@@ -1,13 +1,14 @@
 import { Def, NodeFlavor, Tree, Selection } from "@/primer-api";
-import ReactFlow, {
+import {
+  ReactFlow,
   Edge,
   Node,
   Handle,
   Position,
   NodeProps,
   Background,
-} from "react-flow-renderer/nocss";
-import "react-flow-renderer/dist/style.css";
+} from "reactflow";
+import "./reactflow.css";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { unzip } from "fp-ts/lib/Array";
@@ -40,8 +41,7 @@ export type TreeReactFlowProps = {
   forestLayout: "Horizontal" | "Vertical";
 } & NodeParams;
 
-// these properties are necessary on ReactFlow handles due to an upstream bug: https://github.com/wbkd/react-flow/issues/2193
-const handleClasses = "absolute border-[2px] border-solid border-grey-tertiary";
+const handleClasses = "border-[2px] border-solid border-grey-tertiary";
 
 const commonHoverClasses =
   " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";
@@ -551,7 +551,12 @@ const noBodyFlavorContents = (flavor: NodeFlavor): string | undefined => {
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   return (
     <>
-      <Handle type="target" position={Position.Top} className={handleClasses} />
+      <Handle
+        isConnectable={false}
+        type="target"
+        position={Position.Top}
+        className={handleClasses}
+      />
       <div
         className={primerNodeClasses(p.data.selected, p.data.flavor)}
         style={{
@@ -571,6 +576,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
         )}
       </div>
       <Handle
+        isConnectable={false}
         type="source"
         position={Position.Bottom}
         className={handleClasses}
@@ -599,6 +605,7 @@ const PrimerDefNameNode = (p: NodeProps<PrimerDefNameNodeProps>) => (
       </div>
     </div>
     <Handle
+      isConnectable={false}
       type="source"
       position={Position.Bottom}
       className={handleClasses}
@@ -839,7 +846,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       nodeTypes={nodeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
     >
-      <Background gap={25} size={0.8} />
+      <Background gap={25} size={1.6} color="#81818a" />
     </ReactFlow>
   );
 };
