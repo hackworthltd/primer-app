@@ -23,7 +23,7 @@ export const ActionInput = (p: ActionInputProps): JSX.Element => {
           e.preventDefault();
           p.onSubmit(input);
         }}
-        className="w-full flex items-center"
+        className="flex w-full items-center"
       >
         <input
           type="text"
@@ -35,7 +35,7 @@ export const ActionInput = (p: ActionInputProps): JSX.Element => {
           type="button"
           onClick={(_) => p.onSubmit(input)}
         >
-          <ArrowUturnLeftIcon className="scale-y-[-1] w-6"></ArrowUturnLeftIcon>
+          <ArrowUturnLeftIcon className="w-6 scale-y-[-1]"></ArrowUturnLeftIcon>
         </button>
       </form>
     </div>
