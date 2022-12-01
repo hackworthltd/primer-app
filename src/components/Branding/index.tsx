@@ -1,7 +1,7 @@
 import "@/index.css";
 
 export const Branding = (): JSX.Element => (
-  <div className="text-2xl inline-flex items-center font-semibold font-branding text-red-secondary">
+  <div className="inline-flex items-center font-branding text-2xl font-semibold text-red-secondary">
     h:
   </div>
 );

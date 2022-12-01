@@ -79,7 +79,7 @@ export const ActionPanel = ({
               <div>
                 <div>
                   {state.opts.free && (
-                    <div className="pt-2 mb-3">
+                    <div className="mb-3 pt-2">
                       <ActionInput
                         onSubmit={(option) => onOption({ option })}
                       ></ActionInput>

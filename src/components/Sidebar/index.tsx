@@ -61,7 +61,7 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
       <div className="grid h-20 grid-cols-2 text-grey-secondary">
         {tab(
           "T&D",
-          <div className="text-center text-base lg:text-lg font-bold">T&D</div>
+          <div className="text-center text-base font-bold lg:text-lg">T&D</div>
         )}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
       </div>
