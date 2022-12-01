@@ -41,8 +41,6 @@ export type TreeReactFlowProps = {
   forestLayout: "Horizontal" | "Vertical";
 } & NodeParams;
 
-const handleClasses = "border-[2px] border-solid border-grey-tertiary";
-
 const commonHoverClasses =
   " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";
 
@@ -551,12 +549,7 @@ const noBodyFlavorContents = (flavor: NodeFlavor): string | undefined => {
 const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
   return (
     <>
-      <Handle
-        isConnectable={false}
-        type="target"
-        position={Position.Top}
-        className={handleClasses}
-      />
+      <Handle isConnectable={false} type="target" position={Position.Top} />
       <div
         className={primerNodeClasses(p.data.selected, p.data.flavor)}
         style={{
@@ -575,12 +568,7 @@ const PrimerNode = (p: NodeProps<PrimerNodeProps>) => {
           <></>
         )}
       </div>
-      <Handle
-        isConnectable={false}
-        type="source"
-        position={Position.Bottom}
-        className={handleClasses}
-      />
+      <Handle isConnectable={false} type="source" position={Position.Bottom} />
     </>
   );
 };
@@ -604,12 +592,7 @@ const PrimerDefNameNode = (p: NodeProps<PrimerDefNameNodeProps>) => (
         {p.data.def.baseName}
       </div>
     </div>
-    <Handle
-      isConnectable={false}
-      type="source"
-      position={Position.Bottom}
-      className={handleClasses}
-    />
+    <Handle isConnectable={false} type="source" position={Position.Bottom} />
   </>
 );
 
