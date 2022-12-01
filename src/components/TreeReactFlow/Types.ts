@@ -3,12 +3,20 @@ import { Edge, Node } from "react-flow-renderer/nocss";
 import { unzip } from "fp-ts/lib/Array";
 
 /** A generic graph. */
-export type Graph<N, E> = {
+export type Graph<
+  N extends { id: string },
+  E extends { source: string; target: string }
+> = {
   nodes: N[];
   edges: E[];
 };
 
-export const combineGraphs = <N, E>(gs: Graph<N, E>[]): Graph<N, E> => {
+export const combineGraphs = <
+  N extends { id: string },
+  E extends { source: string; target: string }
+>(
+  gs: Graph<N, E>[]
+): Graph<N, E> => {
   const [nodes, edges] = unzip(gs.map(({ nodes, edges }) => [nodes, edges]));
   return { nodes: nodes.flat(), edges: edges.flat() };
 };
@@ -53,7 +61,12 @@ export const treeNodes = <N, E>({
   ];
 };
 
-export const treeToGraph = <N, E>(tree: TreeSimple<N, E>): Graph<N, E> => {
+export const treeToGraph = <
+  N extends { id: string },
+  E extends { source: string; target: string }
+>(
+  tree: TreeSimple<N, E>
+): Graph<N, E> => {
   const [trees, edges] = unzip(
     tree.childTrees.concat(tree.rightChild ? [tree.rightChild] : [])
   );
