@@ -8,7 +8,6 @@ import ReactFlow, {
   Background,
 } from "react-flow-renderer/nocss";
 import "react-flow-renderer/dist/style.css";
-import { layoutGraph } from "./layoutGraph";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { unzip } from "fp-ts/lib/Array";
@@ -691,8 +690,10 @@ const nodeProps = async (
       ];
     case "BoxBody": {
       const [bodyTree, bodyNested] = await augmentTree(tree.body.contents, p);
-      const bodyGraph = treeToGraph(bodyTree);
-      const bodyLayout = layoutGraph(bodyGraph.nodes, bodyGraph.edges);
+      const bodyLayout = await layoutTree(bodyTree).then((layout) => ({
+        ...layout,
+        ...treeToGraph(layout.tree),
+      }));
       return [
         {
           label: flavorLabel(tree.flavor),
@@ -712,7 +713,7 @@ const nodeProps = async (
               y: node.position.y + p.boxPadding / 2,
             },
           })),
-          edges: bodyGraph.edges,
+          edges: bodyLayout.edges,
         }),
       ];
     }
