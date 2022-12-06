@@ -2,7 +2,6 @@ import "@/index.css";
 
 import { StarIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 
-import type { Key } from "react";
 import { Link } from "react-router-dom";
 
 import { SessionMeta } from "@/Types";
@@ -10,23 +9,14 @@ import { BinaryTreePlaceholder } from "@/components";
 
 export interface SessionPreviewProps {
   session: SessionMeta;
-  key: Key;
 }
-
-// Note: `SessionPreview` is implemented as a <li> for reasons explained in
-// `SessionList.ts`. This is fine for now, as we only display session previews
-// in the sessions list, but we would prefer that this type were more generic.
 
 export const SessionPreview = ({
   session,
-  key,
 }: SessionPreviewProps): JSX.Element => {
   const locale: string = navigator.language;
   return (
-    <li
-      key={key}
-      className="col-span-1 flex flex-col divide-y divide-grey-quaternary rounded-lg bg-white-primary text-center drop-shadow-md"
-    >
+    <div className="flex flex-col divide-y divide-grey-quaternary rounded-lg bg-white-primary text-center drop-shadow-md">
       <div className="flex flex-1 flex-col">
         <Link
           to={`/sessions/${session.id}`}
@@ -90,7 +80,7 @@ export const SessionPreview = ({
           </div>
         </div>
       </div>
-    </li>
+    </div>
   );
 };
 
