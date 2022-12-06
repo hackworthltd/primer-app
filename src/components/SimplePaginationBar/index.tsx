@@ -58,7 +58,7 @@ const summaryClasses = (totalItems: number) =>
 export const SimplePaginationBar = (
   p: SimplePaginationBarProps
 ): JSX.Element => (
-  <nav className="py-3" aria-label="Pagination">
+  <nav aria-label="Pagination">
     <div className="flex flex-1 items-center justify-between sm:justify-end">
       <div className="hidden p-2 sm:block">
         <p className={summaryClasses(p.totalItems)}>
