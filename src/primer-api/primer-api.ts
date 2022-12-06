@@ -88,6 +88,60 @@ export const useCopySession = <
 };
 
 /**
+ * @summary Delete the specified session
+ */
+export const useDeleteSessionHook = () => {
+  const deleteSession = useCustomInstance<unknown>();
+
+  return (uuid: Uuid) => {
+    return deleteSession({
+      url: `/openapi/delete-session`,
+      method: "delete",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: uuid,
+    });
+  };
+};
+
+export type DeleteSessionMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useDeleteSessionHook>>>
+>;
+export type DeleteSessionMutationBody = Uuid;
+export type DeleteSessionMutationError = ErrorType<void>;
+
+export const useDeleteSession = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useDeleteSessionHook>>>,
+    TError,
+    { data: Uuid },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const deleteSession = useDeleteSessionHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useDeleteSessionHook>>>,
+    { data: Uuid }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return deleteSession(data);
+  };
+
+  return useMutation<
+    Awaited<ReturnType<typeof deleteSession>>,
+    TError,
+    { data: Uuid },
+    TContext
+  >(mutationFn, mutationOptions);
+};
+
+/**
  * Get a list of all sessions and their human-readable names. By default, this method returns the list of all sessions in the persistent database, but optionally it can return just the list of all sessions in memory, which is mainly useful for testing. Note that in a production system, this endpoint should obviously be authentication-scoped and only return the list of sessions that the caller is authorized to see.
  * @summary Get the list of sessions
  */

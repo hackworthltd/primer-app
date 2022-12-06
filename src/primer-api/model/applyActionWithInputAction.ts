@@ -13,6 +13,8 @@ export type ApplyActionWithInputAction =
 export const ApplyActionWithInputAction = {
   MakeCon: "MakeCon",
   MakeConSat: "MakeConSat",
+  MakeInt: "MakeInt",
+  MakeChar: "MakeChar",
   MakeVar: "MakeVar",
   MakeVarSat: "MakeVarSat",
   MakeLet: "MakeLet",
