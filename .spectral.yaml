@@ -1,0 +1,7 @@
+extends: "@ibm-cloud/openapi-ruleset"
+rules:
+  enum-case-convention: off
+  operation-id-case-convention: off
+  parameter-case-convention: off
+  path-segment-case-convention: off
+  property-case-convention: off
