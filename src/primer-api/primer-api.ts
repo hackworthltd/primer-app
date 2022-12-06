@@ -27,6 +27,7 @@ import type {
   GetAvailableActionsParams,
   Options,
   GetActionOptionsParams,
+  CreateDefinitionParams,
   GetProgramParams,
 } from "./model";
 import { useCustomInstance } from "./mutator/use-custom-instance";
@@ -514,6 +515,65 @@ export const useGetActionOptions = <
     Awaited<ReturnType<typeof getActionOptions>>,
     TError,
     { sessionId: string; data: Selection; params: GetActionOptionsParams },
+    TContext
+  >(mutationFn, mutationOptions);
+};
+
+/**
+ * @summary Create a new definition
+ */
+export const useCreateDefinitionHook = () => {
+  const createDefinition = useCustomInstance<Prog>();
+
+  return (
+    sessionId: string,
+    createDefinitionBody: string[],
+    params?: CreateDefinitionParams
+  ) => {
+    return createDefinition({
+      url: `/openapi/sessions/${sessionId}/def`,
+      method: "post",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: createDefinitionBody,
+      params,
+    });
+  };
+};
+
+export type CreateDefinitionMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useCreateDefinitionHook>>>
+>;
+export type CreateDefinitionMutationBody = string[];
+export type CreateDefinitionMutationError = ErrorType<void>;
+
+export const useCreateDefinition = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useCreateDefinitionHook>>>,
+    TError,
+    { sessionId: string; data: string[]; params?: CreateDefinitionParams },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const createDefinition = useCreateDefinitionHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useCreateDefinitionHook>>>,
+    { sessionId: string; data: string[]; params?: CreateDefinitionParams }
+  > = (props) => {
+    const { sessionId, data, params } = props ?? {};
+
+    return createDefinition(sessionId, data, params);
+  };
+
+  return useMutation<
+    Awaited<ReturnType<typeof createDefinition>>,
+    TError,
+    { sessionId: string; data: string[]; params?: CreateDefinitionParams },
     TContext
   >(mutationFn, mutationOptions);
 };

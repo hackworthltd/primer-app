@@ -8,6 +8,7 @@ export * from "./applyActionBody";
 export * from "./applyActionParams";
 export * from "./applyActionWithInputAction";
 export * from "./applyActionWithInputParams";
+export * from "./createDefinitionParams";
 export * from "./def";
 export * from "./freeInput";
 export * from "./getActionOptionsAction";
