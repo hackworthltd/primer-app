@@ -20,7 +20,7 @@ export default {
               { option: "option 2", context: ["a", "b", "c"] },
               { option: "option 3", context: ["a", "b", "c"] },
             ],
-            free: true,
+            free: "FreeVarName",
           })
         ),
     },

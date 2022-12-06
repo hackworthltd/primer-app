@@ -10,6 +10,7 @@ export default {
       action: "submit",
     },
   },
+  args: { sort: "FreeVarName" },
 } as ComponentMeta<typeof ActionInput>;
 
 export const Default: ComponentStory<typeof ActionInput> = (args) => (
