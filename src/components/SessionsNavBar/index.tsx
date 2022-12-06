@@ -31,10 +31,10 @@ const accountNavigation = [
 export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
   <>
     <div className="relative flex justify-between overflow-y-visible">
-      <div className="flex py-6 px-3">
+      <div className="flex py-2 px-3">
         <Branding />
       </div>
-      <div className="min-w-0 flex-1 items-center px-3 py-6">
+      <div className="min-w-0 flex-1 items-center px-3 py-2">
         <SearchBar ariaLabel="Search programs" placeholder="Program name" />
       </div>
       <div className="flex items-center justify-end pl-3">
