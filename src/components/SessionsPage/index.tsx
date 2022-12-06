@@ -65,13 +65,13 @@ export interface SessionsPageProps {
 
 export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
   <div className="grid h-screen grid-cols-1 grid-rows-[auto,1fr] overflow-hidden">
-    <div className="mx-1 lg:mx-4 py-4">
+    <div className="mx-1 lg:mx-4 pt-4">
       <SessionsNavBar
         onClickNewProgram={p.onClickNewProgram}
         account={p.account}
       />
     </div>
-    <div className="mx-1 lg:mx-4 py-3">
+    <div className="mx-1 lg:mx-4 pb-2">
       <SimplePaginationBar
         itemNamePlural="sessions"
         startIndex={p.startIndex}
