@@ -71,7 +71,7 @@ export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
         account={p.account}
       />
     </div>
-    <div className="mx-1 max-h-screen overflow-auto rounded-sm bg-grey-primary p-3 shadow-inner lg:mx-4">
+    <div className="max-h-screen overflow-auto rounded-sm bg-grey-primary p-3 shadow-inner">
       <SessionList sessions={p.sessions} />
     </div>
     <div className="mx-1 lg:mx-4">
