@@ -59,7 +59,7 @@ export const SimplePaginationBar = (
   p: SimplePaginationBarProps
 ): JSX.Element => (
   <nav aria-label="Pagination">
-    <div className="flex flex-1 items-center justify-center">
+    <div className="flex flex-1 items-center justify-between sm:justify-end">
       <div className="hidden p-2 sm:block">
         <p className={summaryClasses(p.totalItems)}>
           Showing <span className="font-medium">{p.startIndex}</span> to{" "}
