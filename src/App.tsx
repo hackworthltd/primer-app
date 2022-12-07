@@ -15,6 +15,7 @@ import {
   Option,
   Options,
   useGetActionOptions,
+  useCreateDefinition,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -107,6 +108,7 @@ const AppNoError = (p: {
   setProg: (p: Prog) => void;
 }): JSX.Element => {
   const [selection, setSelection] = useState<Selection | undefined>(undefined);
+  const createDef = useCreateDefinition();
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
@@ -133,7 +135,15 @@ const AppNoError = (p: {
               .map((t) => t.baseName),
           }}
           onClickDef={(_label, _event) => ({})}
-          onClickAdd={(_label, _event) => ({})}
+          onClickAdd={(_label, _event) => {
+            createDef
+              .mutateAsync({
+                sessionId: p.sessionId,
+                params: treeParams,
+                data: p.module.modname,
+              })
+              .then(p.setProg);
+          }}
           shadowed={false}
           type="?"
           folder="unknown"
