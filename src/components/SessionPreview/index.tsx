@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 import { SessionMeta } from "@/Types";
 import { BinaryTreePlaceholder } from "@/components";
+import { getGetSessionListQueryKey, useDeleteSession } from "@/primer-api";
+import { useQueryClient } from "@tanstack/react-query";
 
 export interface SessionPreviewProps {
   session: SessionMeta;
@@ -15,6 +17,15 @@ export const SessionPreview = ({
   session,
 }: SessionPreviewProps): JSX.Element => {
   const locale: string = navigator.language;
+  const queryClient = useQueryClient();
+
+  const deleteSession = useDeleteSession({
+    mutation: {
+      onSuccess: () =>
+        queryClient.invalidateQueries(getGetSessionListQueryKey()),
+    },
+  });
+
   return (
     <div className="flex flex-col divide-y divide-grey-quaternary rounded-lg bg-white-primary text-center drop-shadow-md">
       <div className="flex flex-1 flex-col">
@@ -70,6 +81,7 @@ export const SessionPreview = ({
             <button
               type="button"
               className="group inline-flex flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-red-secondary hover:bg-red-primary hover:text-white-primary"
+              onClick={() => deleteSession.mutate({ sessionId: session.id })}
             >
               <TrashIcon
                 className="h-5 w-5 fill-white-primary hover:stroke-red-primary group-hover:stroke-red-secondary"
