@@ -24,6 +24,7 @@ import {
   PrimerDefNameNodeProps,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
+import deepEqual from "deep-equal";
 
 type NodeParams = {
   nodeWidth: number;
@@ -729,7 +730,8 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
               def: def.name,
               height: p.nodeHeight * 2,
               width: p.nodeWidth * 2,
-              selected: p.selection?.def == def.name && !p.selection?.node,
+              selected:
+                deepEqual(p.selection?.def, def.name) && !p.selection?.node,
             },
             type: primerDefNameNodeTypeName,
           };
