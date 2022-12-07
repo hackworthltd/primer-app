@@ -28,6 +28,9 @@ import type {
   Options,
   GetActionOptionsParams,
   CreateDefinitionParams,
+  EvalFullResp,
+  GlobalName,
+  EvalFullParams,
   GetProgramParams,
 } from "./model";
 import { useCustomInstance } from "./mutator/use-custom-instance";
@@ -82,60 +85,6 @@ export const useCopySession = <
 
   return useMutation<
     Awaited<ReturnType<typeof copySession>>,
-    TError,
-    { data: Uuid },
-    TContext
-  >(mutationFn, mutationOptions);
-};
-
-/**
- * @summary Delete the specified session
- */
-export const useDeleteSessionHook = () => {
-  const deleteSession = useCustomInstance<unknown>();
-
-  return (uuid: Uuid) => {
-    return deleteSession({
-      url: `/openapi/delete-session`,
-      method: "delete",
-      headers: { "Content-Type": "application/json;charset=utf-8" },
-      data: uuid,
-    });
-  };
-};
-
-export type DeleteSessionMutationResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof useDeleteSessionHook>>>
->;
-export type DeleteSessionMutationBody = Uuid;
-export type DeleteSessionMutationError = ErrorType<void>;
-
-export const useDeleteSession = <
-  TError = ErrorType<void>,
-  TContext = unknown
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useDeleteSessionHook>>>,
-    TError,
-    { data: Uuid },
-    TContext
-  >;
-}) => {
-  const { mutation: mutationOptions } = options ?? {};
-
-  const deleteSession = useDeleteSessionHook();
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<ReturnType<typeof useDeleteSessionHook>>>,
-    { data: Uuid }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return deleteSession(data);
-  };
-
-  return useMutation<
-    Awaited<ReturnType<typeof deleteSession>>,
     TError,
     { data: Uuid },
     TContext
@@ -249,6 +198,58 @@ export const useCreateSession = <
     Awaited<ReturnType<typeof createSession>>,
     TError,
     TVariables,
+    TContext
+  >(mutationFn, mutationOptions);
+};
+
+/**
+ * @summary Delete the specified session
+ */
+export const useDeleteSessionHook = () => {
+  const deleteSession = useCustomInstance<void>();
+
+  return (sessionId: string) => {
+    return deleteSession({
+      url: `/openapi/sessions/${sessionId}`,
+      method: "delete",
+    });
+  };
+};
+
+export type DeleteSessionMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useDeleteSessionHook>>>
+>;
+
+export type DeleteSessionMutationError = ErrorType<unknown>;
+
+export const useDeleteSession = <
+  TError = ErrorType<unknown>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useDeleteSessionHook>>>,
+    TError,
+    { sessionId: string },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const deleteSession = useDeleteSessionHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useDeleteSessionHook>>>,
+    { sessionId: string }
+  > = (props) => {
+    const { sessionId } = props ?? {};
+
+    return deleteSession(sessionId);
+  };
+
+  return useMutation<
+    Awaited<ReturnType<typeof deleteSession>>,
+    TError,
+    { sessionId: string },
     TContext
   >(mutationFn, mutationOptions);
 };
@@ -574,6 +575,65 @@ export const useCreateDefinition = <
     Awaited<ReturnType<typeof createDefinition>>,
     TError,
     { sessionId: string; data: string[]; params?: CreateDefinitionParams },
+    TContext
+  >(mutationFn, mutationOptions);
+};
+
+/**
+ * @summary Evaluate the named definition to normal form (or time out)
+ */
+export const useEvalFullHook = () => {
+  const evalFull = useCustomInstance<EvalFullResp>();
+
+  return (
+    sessionId: string,
+    globalName: GlobalName,
+    params?: EvalFullParams
+  ) => {
+    return evalFull({
+      url: `/openapi/sessions/${sessionId}/eval`,
+      method: "post",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: globalName,
+      params,
+    });
+  };
+};
+
+export type EvalFullMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>
+>;
+export type EvalFullMutationBody = GlobalName;
+export type EvalFullMutationError = ErrorType<void>;
+
+export const useEvalFull = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>,
+    TError,
+    { sessionId: string; data: GlobalName; params?: EvalFullParams },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const evalFull = useEvalFullHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>,
+    { sessionId: string; data: GlobalName; params?: EvalFullParams }
+  > = (props) => {
+    const { sessionId, data, params } = props ?? {};
+
+    return evalFull(sessionId, data, params);
+  };
+
+  return useMutation<
+    Awaited<ReturnType<typeof evalFull>>,
+    TError,
+    { sessionId: string; data: GlobalName; params?: EvalFullParams },
     TContext
   >(mutationFn, mutationOptions);
 };

@@ -1418,11 +1418,11 @@
         "nixpkgs-stable": "nixpkgs-stable_3"
       },
       "locked": {
-        "lastModified": 1670285270,
-        "narHash": "sha256-xNWM2Qcqc4NwoR1bubjOBUNh85hYkY26QouGBSfOAss=",
+        "lastModified": 1670413394,
+        "narHash": "sha256-M7sWqrKtOqUv9euX1t3HCxis8cPy9MNiZxQmUf0KF1o=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "32dcd71912ca8f925f8f0715a554e8490d556883",
+        "rev": "1303a1a76e9eb074075bfe566518c413f6fc104e",
         "type": "github"
       },
       "original": {
@@ -1503,17 +1503,17 @@
         "pre-commit-hooks-nix": "pre-commit-hooks-nix_4"
       },
       "locked": {
-        "lastModified": 1670343083,
-        "narHash": "sha256-w10uYEbPc9FLuXO3Sm2R/T7BM24se8fNCRj6SlyDGBg=",
+        "lastModified": 1670441119,
+        "narHash": "sha256-M+iuYd3M/CUdsVrL1AuTs9QNGix8LO5+9iIeRzKEXdU=",
         "owner": "hackworthltd",
         "repo": "primer",
-        "rev": "ebb4f8fc20768f916c01f96836bacc0c6c2eff05",
+        "rev": "860aac7cd764fc85df9c20f8a7c985f4b36bb6b9",
         "type": "github"
       },
       "original": {
         "owner": "hackworthltd",
         "repo": "primer",
-        "rev": "ebb4f8fc20768f916c01f96836bacc0c6c2eff05",
+        "rev": "860aac7cd764fc85df9c20f8a7c985f4b36bb6b9",
         "type": "github"
       }
     },
