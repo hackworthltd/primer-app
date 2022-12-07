@@ -45,7 +45,7 @@ jobs:
             secret/data/cloudflare/primer-app api-token | CLOUDFLARE_API_TOKEN ;
 
       - name: Deploy to Cloudflare
-        uses: cloudflare/pages-action@1.1.0
+        uses: cloudflare/pages-action@v1.2.0
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
