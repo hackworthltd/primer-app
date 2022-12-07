@@ -45,7 +45,7 @@ export const SessionPreview = ({
           <div className="-mr-px flex w-0 flex-1">
             <button
               type="button"
-              className="group relative inline-flex flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-blue-secondary hover:bg-blue-secondary hover:text-yellow-primary"
+              className="group inline-flex flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-blue-secondary hover:bg-blue-secondary hover:text-yellow-primary"
             >
               <StarIcon
                 className="h-5 w-5 fill-white-primary group-hover:fill-yellow-primary"
@@ -57,7 +57,7 @@ export const SessionPreview = ({
           <div className="flex w-0 flex-1">
             <button
               type="button"
-              className="group relative inline-flex flex-1 items-center justify-center border border-transparent py-4 text-sm font-medium text-blue-secondary hover:bg-blue-secondary hover:text-green-primary"
+              className="group inline-flex flex-1 items-center justify-center border border-transparent py-4 text-sm font-medium text-blue-secondary hover:bg-blue-secondary hover:text-green-primary"
             >
               <UserPlusIcon
                 className="h-5 w-5 fill-white-primary group-hover:fill-green-primary"
@@ -69,7 +69,7 @@ export const SessionPreview = ({
           <div className="-ml-px flex w-0 flex-1">
             <button
               type="button"
-              className="group relative inline-flex flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-red-secondary hover:bg-red-primary hover:text-white-primary"
+              className="group inline-flex flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-red-secondary hover:bg-red-primary hover:text-white-primary"
             >
               <TrashIcon
                 className="h-5 w-5 fill-white-primary hover:stroke-red-primary group-hover:stroke-red-secondary"

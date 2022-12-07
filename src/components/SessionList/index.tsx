@@ -16,7 +16,7 @@ export const SessionList = ({ sessions }: SessionListProps): JSX.Element => (
     className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
   >
     {sessions.map((session) => (
-      <li key={session.id} className="relative col-span-1">
+      <li key={session.id} className="col-span-1">
         <SessionPreview session={session} />
       </li>
     ))}
