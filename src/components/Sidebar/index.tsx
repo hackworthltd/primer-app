@@ -29,7 +29,7 @@ type TypesAndDefinitionsProps = {
 type InfoProps = {
   shadowed: boolean;
   type: string;
-  folder: string;
+  folder: string[];
 };
 type OnClick = (
   label: string,
@@ -201,7 +201,7 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
         </div>
         <div>
           <div className={subHeaderStyle}>Folder</div>
-          <div className={itemStyle}>{folder}</div>
+          <div className={itemStyle}>{folder.join(".")}</div>
         </div>
       </div>
     </div>

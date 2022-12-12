@@ -146,7 +146,7 @@ const AppNoError = (p: {
           }}
           shadowed={false}
           type="?"
-          folder="unknown"
+          folder={["unknown"]}
         />
       </div>
       <TreeReactFlow
