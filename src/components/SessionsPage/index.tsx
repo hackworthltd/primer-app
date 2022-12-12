@@ -2,6 +2,7 @@ import type { MouseEventHandler } from "react";
 
 import { SessionsNavBar, SimplePaginationBar, SessionList } from "@/components";
 import type { SessionMeta, Account } from "@/Types";
+import type { Uuid } from "@/primer-api";
 
 import "@/index.css";
 
@@ -61,6 +62,14 @@ export interface SessionsPageProps {
    * @type {MouseEventHandler<unknown> | undefined}
    */
   onClickPreviousPage: MouseEventHandler<unknown> | undefined;
+
+  /**
+   * The event handler for deleting the given session, identified by its ID.
+   *
+   * @type {(id: Uuid) => void}
+   */
+
+  onClickDelete: (id: Uuid) => void;
 }
 
 export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
@@ -72,7 +81,7 @@ export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
       />
     </div>
     <div className="max-h-screen overflow-auto rounded-sm bg-grey-primary p-3 shadow-inner">
-      <SessionList sessions={p.sessions} />
+      <SessionList sessions={p.sessions} onClickDelete={p.onClickDelete} />
     </div>
     <div className="mx-1 lg:mx-4">
       <SimplePaginationBar
