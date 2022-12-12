@@ -10,3 +10,4 @@ orval.config.js
 src/primer-api/
 tailwind.config.js
 storybook-static/
+public/mockServiceWorker.js

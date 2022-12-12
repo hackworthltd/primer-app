@@ -1,7 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SessionsPage } from "./";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { exampleSessionsMeta } from "@/components/examples/sessions";
 import { exampleAccount } from "@/components/examples/accounts";
+
+const defaultQueryClient = new QueryClient();
 
 export default {
   title: "Application/Component Library/Sessions/SessionsPage",
@@ -29,7 +32,9 @@ export default {
 } as ComponentMeta<typeof SessionsPage>;
 
 const Template: ComponentStory<typeof SessionsPage> = (args) => (
-  <SessionsPage {...args} />
+  <QueryClientProvider client={defaultQueryClient}>
+    <SessionsPage {...args} />
+  </QueryClientProvider>
 );
 
 export const Default = Template.bind({});

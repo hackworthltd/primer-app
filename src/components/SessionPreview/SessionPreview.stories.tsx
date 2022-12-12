@@ -1,7 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as examples from "@/components/examples/sessions";
 
 import { SessionPreview } from "./";
+
+const defaultQueryClient = new QueryClient();
 
 export default {
   title: "Application/Component Library/Sessions/SessionPreview",
@@ -12,7 +15,9 @@ export default {
 } as ComponentMeta<typeof SessionPreview>;
 
 const Template: ComponentStory<typeof SessionPreview> = (args) => (
-  <SessionPreview {...args} />
+  <QueryClientProvider client={defaultQueryClient}>
+    <SessionPreview {...args} />
+  </QueryClientProvider>
 );
 
 export const English = Template.bind({});

@@ -15,6 +15,7 @@ const config: StorybookViteConfig = {
     builder: "@storybook/builder-vite",
     disableTelemetry: true,
   },
+  staticDirs: ["../public"],
 
   // storybook-builder-vite doesn't read the project's vite.config.js,
   // so we have to recreate the important bits here, mainly the
