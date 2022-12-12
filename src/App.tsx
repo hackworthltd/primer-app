@@ -53,7 +53,14 @@ const App = (): JSX.Element => {
 };
 
 const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
-  const [prog, setProg] = useState<Prog>(p.initialProg);
+  const [prog, setProg0] = useState<Prog>(p.initialProg);
+  const [selection, setSelection] = useState<Selection | undefined>(
+    prog.selection
+  );
+  const setProg = (prog: Prog) => {
+    setProg0(prog);
+    setSelection(prog.selection);
+  };
   const editableModules = prog.modules.filter((m) => m.editable);
   const importedModules = prog.modules.filter((m) => !m.editable);
   if (editableModules.length > 1) {
@@ -75,6 +82,8 @@ const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
       sessionId={p.sessionId}
       module={module}
       imports={importedModules}
+      selection={selection}
+      setSelection={setSelection}
       setProg={setProg}
     />
   );
@@ -101,13 +110,18 @@ function cmpName(a: GlobalName, b: GlobalName) {
   return 0;
 }
 
-const AppNoError = (p: {
+const AppNoError = ({
+  selection,
+  setSelection,
+  ...p
+}: {
   sessionId: string;
   module: Module;
   imports: Module[];
+  selection: Selection | undefined;
+  setSelection: (s: Selection) => void;
   setProg: (p: Prog) => void;
 }): JSX.Element => {
-  const [selection, setSelection] = useState<Selection | undefined>(undefined);
   const createDef = useCreateDefinition();
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
