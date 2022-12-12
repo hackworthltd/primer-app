@@ -7,13 +7,27 @@ import type {
   PaginatedMeta,
   Session,
 } from "@/primer-api";
-import { useGetSessionList, useCreateSession } from "@/primer-api";
+import {
+  useGetSessionList,
+  useCreateSession,
+  getGetSessionListQueryKey,
+  useDeleteSession,
+} from "@/primer-api";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ChooseSession = (): JSX.Element => {
   // NOTE: pagination in our API is 1-indexed.
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
+  const queryClient = useQueryClient();
+  const deleteSession = useDeleteSession({
+    mutation: {
+      onSuccess: () => {
+        queryClient.invalidateQueries(getGetSessionListQueryKey());
+      },
+    },
+  });
 
   const params: GetSessionListParams = { page: page, pageSize: pageSize };
   const { data } = useGetSessionList(params);
@@ -52,6 +66,7 @@ const ChooseSession = (): JSX.Element => {
       onClickNewProgram={() => newSession.mutate()}
       onClickNextPage={onClickNextPage}
       onClickPreviousPage={onClickPreviousPage}
+      onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
     />
   );
 };

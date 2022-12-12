@@ -25,6 +25,7 @@ export default {
       description: 'The event handler for the "Previous" button.',
       action: "clicked",
     },
+    onClickDelete: { action: "delete" },
   },
 } as ComponentMeta<typeof SessionsPage>;
 

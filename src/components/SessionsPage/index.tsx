@@ -61,6 +61,8 @@ export interface SessionsPageProps {
    * @type {MouseEventHandler<unknown> | undefined}
    */
   onClickPreviousPage: MouseEventHandler<unknown> | undefined;
+
+  onClickDelete: (id: string) => void;
 }
 
 export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
@@ -72,7 +74,7 @@ export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
       />
     </div>
     <div className="max-h-screen overflow-auto rounded-sm bg-grey-primary p-3 shadow-inner">
-      <SessionList sessions={p.sessions} />
+      <SessionList sessions={p.sessions} onClickDelete={p.onClickDelete} />
     </div>
     <div className="mx-1 lg:mx-4">
       <SimplePaginationBar
