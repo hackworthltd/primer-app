@@ -74,7 +74,7 @@ export interface SessionsPageProps {
 
 export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
   <div className="relative grid h-screen grid-cols-1 grid-rows-[auto,1fr] overflow-hidden">
-    <div className="mx-1 lg:mx-4">
+    <div className="relative z-10 px-1 shadow-md lg:px-4">
       <SessionsNavBar
         onClickNewProgram={p.onClickNewProgram}
         account={p.account}
@@ -83,7 +83,7 @@ export const SessionsPage = (p: SessionsPageProps): JSX.Element => (
     <div className="max-h-screen overflow-auto rounded-sm bg-grey-primary p-3 shadow-inner">
       <SessionList sessions={p.sessions} onClickDelete={p.onClickDelete} />
     </div>
-    <div className="mx-1 lg:mx-4">
+    <div className="relative z-10 px-1 shadow-2xl lg:px-4">
       <SimplePaginationBar
         itemNamePlural="sessions"
         startIndex={p.startIndex}
