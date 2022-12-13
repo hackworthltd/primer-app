@@ -9,10 +9,12 @@ import { BinaryTreePlaceholder } from "@/components";
 
 export interface SessionPreviewProps {
   session: SessionMeta;
+  onClickDelete: () => void;
 }
 
 export const SessionPreview = ({
   session,
+  onClickDelete,
 }: SessionPreviewProps): JSX.Element => {
   const locale: string = navigator.language;
   return (
@@ -70,6 +72,7 @@ export const SessionPreview = ({
             <button
               type="button"
               className="group inline-flex flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-red-secondary hover:bg-red-primary hover:text-white-primary"
+              onClick={onClickDelete}
             >
               <TrashIcon
                 className="h-5 w-5 fill-white-primary hover:stroke-red-primary group-hover:stroke-red-secondary"
