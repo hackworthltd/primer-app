@@ -8,6 +8,7 @@ export default {
   component: SessionList,
   argTypes: {
     sessions: { control: "object", name: "List of sessions" },
+    onClickDelete: { action: "delete" },
   },
 } as ComponentMeta<typeof SessionList>;
 

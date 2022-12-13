@@ -8,6 +8,7 @@ export default {
   component: SessionPreview,
   argTypes: {
     session: { control: "object", name: "Session metadata" },
+    onClickDelete: { action: "delete" },
   },
 } as ComponentMeta<typeof SessionPreview>;
 
