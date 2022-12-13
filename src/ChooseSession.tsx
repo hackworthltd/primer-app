@@ -18,13 +18,6 @@ const ChooseSession = (): JSX.Element => {
   const params: GetSessionListParams = { page: page, pageSize: pageSize };
   const { data } = useGetSessionList(params);
 
-  const navigate = useNavigate();
-  const newSession = useCreateSession({
-    mutation: {
-      onSuccess: (newSessionID) => navigate(`/sessions/${newSessionID}`),
-    },
-  });
-
   const sessions: Session[] = data ? data.items : [];
   const sessionsMeta: SessionMeta[] = sessions.map((session: Session) => ({
     name: session.name,
@@ -36,6 +29,27 @@ const ChooseSession = (): JSX.Element => {
     ? data.meta
     : { totalItems: 0, pageSize: 1, thisPage: 1, firstPage: 1, lastPage: 1 };
   const startIndex: number = (meta.thisPage - 1) * meta.pageSize + 1;
+
+  // If we're on the last page of results, and the student deletes the last
+  // session on that page; or if we somehow request a page beyond the last page
+  // of results; then the API will return an empty list of sessions, and the
+  // last page will be less than the current page. When this happens, it means
+  // we've gone beyond the last page of results, and therefore we want to fetch
+  // the new last page.
+  //
+  // Note that when there are no sessions at all, then the current page and the
+  // last page will both be 1, and therefore we can be sure that we won't do
+  // this ad infinitum.
+  if (sessions.length == 0 && meta.thisPage > meta.lastPage) {
+    setPage(meta.lastPage);
+  }
+
+  const navigate = useNavigate();
+  const newSession = useCreateSession({
+    mutation: {
+      onSuccess: (newSessionID) => navigate(`/sessions/${newSessionID}`),
+    },
+  });
 
   const onClickNextPage: MouseEventHandler<unknown> | undefined =
     meta.thisPage < meta.lastPage ? () => setPage(page + 1) : undefined;
