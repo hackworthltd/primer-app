@@ -3,6 +3,7 @@ export { default as ActionPanel } from "./ActionPanel";
 export { default as Avatar } from "./Avatar";
 export { default as BinaryTreePlaceholder } from "./BinaryTreePlaceholder";
 export { default as CreateDefModal } from "./CreateDefModal";
+export { default as CreateTypeDefModal } from "./CreateTypeDefModal";
 export { default as Error } from "./Error";
 export { default as FloatingToolbar } from "./FloatingToolbar";
 export { default as GroupedButtonList } from "./GroupedButtonList";
