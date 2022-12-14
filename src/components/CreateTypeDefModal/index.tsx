@@ -131,6 +131,11 @@ export const CreateTypeDefModal = ({
           </div>
         ))}
       </div>
+      {!allValid && (
+        <div className="text-red-primary">
+          All names must be non-empty and unique
+        </div>
+      )}
       <button
         className={classNames(
           allValid ? buttonClassesPrimary : buttonClassesBase,
