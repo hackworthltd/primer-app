@@ -3,7 +3,11 @@ import { MinusCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 
 import { useState } from "react";
-import { buttonClassesPrimary, buttonClassesSecondary } from "../ActionButton";
+import {
+  buttonClassesBase,
+  buttonClassesPrimary,
+  buttonClassesSecondary,
+} from "../ActionButton";
 
 const headerStyle = "pb-3 text-base lg:text-lg font-bold text-blue-primary";
 const subHeaderStyle = "mb-1 text-sm lg:text-base font-bold text-blue-primary";
@@ -49,6 +53,8 @@ export const CreateTypeDefModal = ({
       })),
     }));
   };
+  const allValid = tyName.valid && ctors.every((c) => c.valid);
+
   const setTyName = (name: string) => {
     setNames((ns) => ({ ...ns, tyName: { ...ns.tyName, name } }));
     updateValidity();
@@ -127,8 +133,9 @@ export const CreateTypeDefModal = ({
       </div>
       <button
         className={classNames(
-          buttonClassesPrimary,
-          "w-full justify-center p-3 pt-2 mt-8"
+          allValid ? buttonClassesPrimary : buttonClassesBase,
+          "w-full justify-center p-3 pt-2 mt-8",
+          { ["text-black-primary bg-grey-secondary"]: !allValid }
         )}
         onClick={() =>
           onSubmit({
@@ -136,6 +143,7 @@ export const CreateTypeDefModal = ({
             ctorNames: ctors.map((c) => c.name),
           })
         }
+        disabled={!allValid}
       >
         Submit
       </button>
