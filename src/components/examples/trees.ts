@@ -142,8 +142,8 @@ export const tree5: Tree = {
   nodeId: "500",
 };
 
-export const oddEvenTrees: Tree[] = [
-  {
+export const oddEvenTrees: [string, Tree][] = [
+  ["even", {
     body: { contents: "x", tag: "TextBody" },
     childTrees: [
       {
@@ -237,8 +237,8 @@ export const oddEvenTrees: Tree[] = [
     ],
     flavor: "FlavorLam",
     nodeId: "3",
-  },
-  {
+  }],
+  ["even 3?", {
     body: { tag: "NoBody" },
     childTrees: [
       {
@@ -295,8 +295,8 @@ export const oddEvenTrees: Tree[] = [
     ],
     flavor: "FlavorApp",
     nodeId: "23",
-  },
-  {
+  }],
+  ["odd", {
     body: { contents: "x", tag: "TextBody" },
     childTrees: [
       {
@@ -392,11 +392,11 @@ export const oddEvenTrees: Tree[] = [
     ],
     flavor: "FlavorLam",
     nodeId: "14",
-  },
+  }],
 ];
 
-export const oddEvenTreesMiscStyles: Tree[] = [
-  {
+export const oddEvenTreesMiscStyles: [string, Tree][] = [
+  ["even", {
     body: { contents: "x", tag: "TextBody" },
     childTrees: [
       {
@@ -483,8 +483,8 @@ export const oddEvenTreesMiscStyles: Tree[] = [
     ],
     flavor: "FlavorLam",
     nodeId: "3",
-  },
-  {
+  }],
+  ["even 3?", {
     body: { tag: "NoBody" },
     childTrees: [
       {
@@ -541,8 +541,8 @@ export const oddEvenTreesMiscStyles: Tree[] = [
     ],
     flavor: "FlavorApp",
     nodeId: "23",
-  },
-  {
+  }],
+  ["odd", {
     body: { contents: "x", tag: "TextBody" },
     childTrees: [
       {
@@ -623,5 +623,5 @@ export const oddEvenTreesMiscStyles: Tree[] = [
     ],
     flavor: "FlavorLam",
     nodeId: "14",
-  },
+  }],
 ];
