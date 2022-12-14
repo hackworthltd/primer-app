@@ -30,11 +30,11 @@ const props = {
   boxPadding: 50,
 };
 
-const emptyTypeTree = (n: string): Tree => {
+const emptyTypeTree = (nodeId: string): Tree => {
   return {
     body: { tag: "NoBody" },
     childTrees: [],
-    nodeId: "type ".concat(n),
+    nodeId,
     flavor: "FlavorTEmptyHole",
   };
 };
@@ -63,18 +63,18 @@ const def5 = {
   term: tree5,
   type_: emptyTypeTree("5"),
 };
-const oddEvenDefs = oddEvenTrees.map((t, n) => {
+const oddEvenDefs = oddEvenTrees.map(([baseName, term]) => {
   return {
-    name: { qualifiedModule: [], baseName: "Odd or even " + n },
-    term: t,
-    type_: emptyTypeTree("oddEven".concat(n.toString())),
+    name: { qualifiedModule: [], baseName },
+    term,
+    type_: emptyTypeTree(baseName),
   };
 });
-const oddEvenDefsMiscStyles = oddEvenTreesMiscStyles.map((t, n) => {
+const oddEvenDefsMiscStyles = oddEvenTreesMiscStyles.map(([baseName, term]) => {
   return {
-    name: { qualifiedModule: [], baseName: "Odd or even misc " + n },
-    term: t,
-    type_: emptyTypeTree("oddEvenMiscStyles".concat(n.toString())),
+    name: { qualifiedModule: [], baseName },
+    term,
+    type_: emptyTypeTree(baseName),
   };
 });
 
