@@ -23,6 +23,7 @@ import {
   Options,
   useGetActionOptions,
   useCreateDefinition,
+  useCreateTypeDef,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -137,9 +138,27 @@ const AppNoError = ({
   };
 
   const createDef = useCreateDefinition();
+  const createTypeDef = useCreateTypeDef();
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
+
+  const handleNewTypeDef = ({
+    typeName,
+    ctorNames,
+  }: {
+    typeName: string;
+    ctorNames: string[];
+  }) => {
+    return createTypeDef
+      .mutateAsync({
+        sessionId: p.sessionId,
+        params: treeParams,
+        data: { moduleName: p.module.modname, typeName, ctors: ctorNames },
+      })
+      .then(p.setProg)
+      .then(() => setShowCreateTypeDefModal(false));
+  };
 
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
@@ -252,9 +271,7 @@ const AppNoError = ({
         <div className="fixed inset-0 bg-grey-primary/95">
           <CreateTypeDefModal
             onClose={() => setShowCreateTypeDefModal(false)}
-            onSubmit={() => {
-              return;
-            }}
+            onSubmit={handleNewTypeDef}
           />
         </div>
       )}
