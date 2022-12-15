@@ -145,9 +145,10 @@ export const useGetSessionList = <
     Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>,
     TError,
     TData
-  >(queryKey, queryFn, queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  >(queryKey, queryFn, { cacheTime: 0, ...queryOptions }) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryKey;
 
@@ -692,6 +693,7 @@ export const useGetSessionName = <
     TData
   >(queryKey, queryFn, {
     enabled: !!sessionId,
+    cacheTime: 0,
     ...queryOptions,
   }) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -816,6 +818,7 @@ export const useGetProgram = <
     TData
   >(queryKey, queryFn, {
     enabled: !!sessionId,
+    cacheTime: 0,
     ...queryOptions,
   }) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -870,9 +873,10 @@ export const useGetVersion = <
     Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>,
     TError,
     TData
-  >(queryKey, queryFn, queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  >(queryKey, queryFn, { cacheTime: 0, ...queryOptions }) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
 
   query.queryKey = queryKey;
 

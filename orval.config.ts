@@ -1,3 +1,4 @@
+import { UseQueryOptions } from "@tanstack/react-query";
 import { defineConfig } from "orval";
 
 // For some complex requests, we use POST in order to send a body with what would otherwise be a GET.
@@ -19,6 +20,9 @@ const useQueryPost: {
     };
   })
 );
+
+// We disable caching by default, to avoid displaying stale data.
+const queryOpts: UseQueryOptions = { cacheTime: 0 };
 
 export default defineConfig({
   "primer-api": {
@@ -44,6 +48,7 @@ export default defineConfig({
           ...useQueryPost,
         },
         useDates: true,
+        query: { options: queryOpts },
       },
     },
   },
