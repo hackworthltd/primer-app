@@ -1,9 +1,14 @@
+import { defineConfig } from "orval";
+
 // For some complex requests, we use POST in order to send a body with what would otherwise be a GET.
 // This lists the operation IDs for such requests.
 // We configure Orval to generate simple `useQuery`-based code, as it would for a GET request,
 // rather than its default `useMutation` approach for POSTs.
 const getStylePostRequests = ["getAvailableActions"];
-const useQueryPost = Object.assign(
+const useQueryPost: {
+  [key: string]: OperationOptions;
+} = Object.assign(
+  {},
   ...getStylePostRequests.map((op) => {
     return {
       [op]: {
@@ -15,7 +20,7 @@ const useQueryPost = Object.assign(
   })
 );
 
-module.exports = {
+export default defineConfig({
   "primer-api": {
     input: {
       target: "./primer-api.json",
@@ -42,4 +47,12 @@ module.exports = {
       },
     },
   },
+});
+
+// TODO This is only a subtype of Orval's `OperationOptions`, but the real thing isn't exported.
+// It will be in version 6.11, possibly only as part of the new `@orval/core` package.
+type OperationOptions = {
+  query: {
+    useQuery: boolean;
+  };
 };
