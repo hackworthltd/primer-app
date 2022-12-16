@@ -24,7 +24,9 @@ export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
 type TypesAndDefinitionsProps = {
   prog: Prog;
   onClickDef: OnClick;
-  onClickAdd: OnClick;
+  onClickTypeDef: OnClick;
+  onClickAddDef: () => void;
+  onClickAddTypeDef: () => void;
 };
 type InfoProps = {
   shadowed: boolean;
@@ -81,7 +83,9 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
 
 const TypesAndDefinitions = ({
   onClickDef,
-  onClickAdd,
+  onClickTypeDef,
+  onClickAddDef,
+  onClickAddTypeDef,
   prog,
 }: TypesAndDefinitionsProps): JSX.Element => {
   return (
@@ -93,19 +97,19 @@ const TypesAndDefinitions = ({
           heading="Types"
           elems={prog.types}
           italic={false}
-          {...{ onClickDef, onClickAdd }}
+          {...{ onClickDef: onClickTypeDef, onClickAdd: onClickAddTypeDef }}
         />
         <DefList
           heading="Definitions"
           elems={prog.defs}
           italic={false}
-          {...{ onClickDef, onClickAdd }}
+          {...{ onClickDef, onClickAdd: onClickAddDef }}
         />
         <DefList
           heading="Imported Types"
           elems={prog.importedTypes}
           italic={true}
-          {...{ onClickDef }}
+          {...{ onClickDef: onClickTypeDef }}
         />
         <DefList
           heading="Imported Definitions"

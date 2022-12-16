@@ -149,7 +149,7 @@ const AppNoError = ({
               .map((t) => t.baseName),
           }}
           onClickDef={(_label, _event) => ({})}
-          onClickAdd={(_label, _event) => {
+          onClickAddDef={() => {
             createDef
               .mutateAsync({
                 sessionId: p.sessionId,
@@ -158,6 +158,8 @@ const AppNoError = ({
               })
               .then(p.setProg);
           }}
+          onClickTypeDef={(_label, _event) => ({})}
+          onClickAddTypeDef={() => ({})}
           shadowed={false}
           type="?"
           folder="unknown"
