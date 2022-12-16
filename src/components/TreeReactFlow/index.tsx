@@ -9,7 +9,7 @@ import {
   Background,
 } from "reactflow";
 import "./reactflow.css";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import classNames from "classnames";
 import { unzip } from "fp-ts/lib/Array";
 import {
@@ -829,8 +829,14 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
     })();
   }, [p]);
 
+  // ReactFlow requires a unique id to be passed in if there are
+  // multiple flows on one page. We simply get react to generate
+  // a unique id for us.
+  const id = useId();
+
   return (
     <ReactFlow
+      id={id}
       onNodeClick={p.onNodeClick}
       nodes={nodes}
       edges={edges}
