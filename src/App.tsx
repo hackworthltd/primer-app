@@ -24,6 +24,7 @@ import {
   useGetActionOptions,
   useCreateDefinition,
   useCreateTypeDef,
+  useEvalFull,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -142,6 +143,7 @@ const AppNoError = ({
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
+  const evalFull = useEvalFull();
 
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
@@ -171,6 +173,16 @@ const AppNoError = ({
           shadowed={false}
           type="?"
           folder="unknown"
+          evalFull={{
+            request: (def) =>
+              def &&
+              evalFull.mutateAsync({
+                sessionId: p.sessionId,
+                data: { qualifiedModule: p.module.modname, baseName: def },
+                params: treeParams,
+              }),
+            ...(evalFull.isSuccess ? { result: evalFull.data } : {}),
+          }}
         />
       </div>
       <TreeReactFlow

@@ -3,9 +3,11 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   PlusIcon,
+  PlayCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
+import { EvalFullResp } from "@/primer-api";
 
 export type Prog = {
   defs: string[];
@@ -20,7 +22,8 @@ const itemStyle =
   "font-code text-sm lg:text-base leading-5 text-left text-grey-secondary";
 
 export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
-  InfoProps;
+  InfoProps &
+  EvalProps;
 type TypesAndDefinitionsProps = {
   prog: Prog;
   onClickDef: OnClick;
@@ -33,12 +36,18 @@ type InfoProps = {
   type: string;
   folder: string;
 };
+type EvalProps = {
+  evalFull: {
+    request: (baseName: string | undefined) => void;
+    result?: EvalFullResp;
+  };
+};
 type OnClick = (
   label: string,
   event: React.MouseEvent<HTMLButtonElement>
 ) => void;
 
-type Tab = "T&D" | "Info";
+type Tab = "T&D" | "Info" | "Eval";
 
 export const Sidebar = (p: SidebarProps): JSX.Element => {
   const [currentTab, switchTab] = useState(p.initialMode);
@@ -60,12 +69,13 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="grid h-20 grid-cols-2 text-grey-secondary">
+      <div className="grid h-20 grid-cols-3 text-grey-secondary">
         {tab(
           "T&D",
           <div className="text-center text-base font-bold lg:text-lg">T&D</div>
         )}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
+        {tab("Eval", <PlayCircleIcon className="h-8" />)}
       </div>
       <div className="h-full overflow-scroll bg-grey-primary p-6 pr-4">
         {(() => {
@@ -74,6 +84,8 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
               return <TypesAndDefinitions {...p}></TypesAndDefinitions>;
             case "Info":
               return <Info {...p}></Info>;
+            case "Eval":
+              return <Eval {...p} defs={p.prog.defs}></Eval>;
           }
         })()}
       </div>
@@ -207,6 +219,55 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
           <div className={subHeaderStyle}>Folder</div>
           <div className={itemStyle}>{folder}</div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const Evaluated = (p: { evaluated?: EvalFullResp }) => {
+  return p?.evaluated ? <div>{JSON.stringify(p.evaluated)}</div> : <></>;
+};
+
+// We only offer to evaluate the definitions in the "main" module
+const Eval = ({
+  defs,
+  evalFull,
+}: EvalProps & { defs: string[] }): JSX.Element => {
+  const [evalDef, setEvalDef0] = useState("");
+  const setEvalDef = (e: string) => {
+    setEvalDef0(e);
+    evalFull.request(e === "" ? undefined : e);
+  };
+  return (
+    <div className="h-full overflow-auto">
+      <div className={headerStyle}>Evaluation</div>
+      <div className="flex flex-col gap-5 p-2 leading-8">
+        <div>
+          <div className={subHeaderStyle}>Evaluating</div>
+          <select value={evalDef} onChange={(e) => setEvalDef(e.target.value)}>
+            <option key="" value="">
+              ---None---
+            </option>
+            {
+              /* NB: all def names are distinct and non-empty*/
+              defs.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))
+            }
+          </select>
+        </div>
+        {evalDef !== "" && (
+          <>
+            <div>
+              <div className={subHeaderStyle}>gives</div>
+              <Evaluated
+                {...(evalFull.result ? { evaluated: evalFull.result } : {})}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { tree3 } from "../examples/trees";
 
 import { Sidebar, SidebarProps } from "./";
 
@@ -42,6 +43,12 @@ export const Default: ComponentStory<typeof Sidebar> = (args: SidebarProps) => (
       shadowed={true}
       type="Direction → Direction"
       folder="Direction"
+      evalFull={{
+        request: () => {
+          return;
+        },
+        result: { tag: "EvalFullRespTimedOut", contents: tree3 },
+      }}
     />
   </div>
 );
