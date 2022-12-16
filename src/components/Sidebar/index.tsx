@@ -7,8 +7,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
-import { EvalFullResp, GlobalName, NodeBody, NodeFlavor } from "@/primer-api";
-import { TreeReactFlow } from "@/components";
+import { EvalFullResp, GlobalName } from "@/primer-api";
+import { TreeReactFlowOne } from "@/components";
 
 export type Prog = {
   defs: string[];
@@ -227,25 +227,12 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
 };
 
 const Evaluated = (p: { defName: GlobalName; evaluated?: EvalFullResp }) => {
-  // TODO: For now, give a dummy type. We should refactor so we can just give a term.
-  const dummyType = {
-    body: { contents: { baseName: "dummy node" }, tag: "TextBody" } as NodeBody,
-    childTrees: [],
-    flavor: "FlavorHole" as NodeFlavor,
-    nodeId: "eval-dummy-node-id",
-  };
   return (
-    <TreeReactFlow
-      defs={
-        p?.evaluated
-          ? [{ name: p.defName, term: p.evaluated.contents, type_: dummyType }]
-          : []
-      }
+    <TreeReactFlowOne
+      {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
       nodeWidth={150}
       nodeHeight={50}
       boxPadding={50}
-      treePadding={/*treePadding and forestLayout are irrelevent*/ 0}
-      forestLayout="Horizontal"
     />
   );
 };

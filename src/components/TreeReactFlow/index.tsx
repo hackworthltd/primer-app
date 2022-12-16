@@ -717,6 +717,13 @@ const nodeProps = async (
   }
 };
 
+// TreeReactFlow renders multiple definitions on one canvas.
+// For each definition, it displays three things:
+// - the definition's name
+// - the definition's type
+// - the definition's body (a term)
+// It ensures that these are clearly displayed as "one atomic thing",
+// i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc)
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const [{ nodes, edges }, setLayout] = useState<PrimerGraph>({
     nodes: [],
@@ -849,3 +856,50 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
 };
 
 export default TreeReactFlow;
+
+export type TreeReactFlowOneProps = {
+  tree?: Tree;
+  onNodeClick?: (event: React.MouseEvent, node: Node<PrimerNodeProps>) => void;
+} & NodeParams;
+
+// TreeReactFlowOne renders one Tree (i.e. one type or one term) on its own individual canvas.
+// It is essentially a much simpler version of TreeReactFlow.
+export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
+  const [{ nodes, edges }, setLayout] = useState<PrimerGraph>({
+    nodes: [],
+    edges: [],
+  });
+
+  useEffect(() => {
+    const pt = p.tree;
+    pt &&
+      (async () => {
+        const [tree, nested] = await augmentTree(pt, {
+          def: { baseName: "dummy name", qualifiedModule: [] },
+          nodeType: "BodyNode",
+          ...p,
+        });
+        const t = await layoutTree(tree);
+        const graph = treeToGraph(t.tree);
+        setLayout(combineGraphs([graph, ...nested.flat()]));
+      })();
+  }, [p]);
+
+  // ReactFlow requires a unique id to be passed in if there are
+  // multiple flows on one page. We simply get react to generate
+  // a unique id for us.
+  const id = useId();
+
+  return (
+    <ReactFlow
+      id={id}
+      {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={nodeTypes}
+      proOptions={{ hideAttribution: true, account: "paid-pro" }}
+    >
+      <Background gap={25} size={1.6} color="#81818a" />
+    </ReactFlow>
+  );
+};
