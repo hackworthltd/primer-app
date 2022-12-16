@@ -13,11 +13,13 @@ const headerStyle = "pb-3 text-base lg:text-lg font-bold text-blue-primary";
 const subHeaderStyle = "mb-1 text-sm lg:text-base font-bold text-blue-primary";
 
 export interface CreateTypeDefModalProps {
+  moduleNames: string[];
   onClose: () => void;
   onSubmit: (names: { typeName: string; ctorNames: string[] }) => void;
 }
 
 export const CreateTypeDefModal = ({
+  moduleNames,
   onClose,
   onSubmit,
 }: CreateTypeDefModalProps): JSX.Element => {
@@ -33,6 +35,10 @@ export const CreateTypeDefModal = ({
   // This method of checking validity is not optimised. However, we expect all lists to be fairly small
   // so it should not be a bottleneck
   const isValid = (names: Names, i: "tyName" | number, n: string) => {
+    // is not used elsewhere in the module
+    if (moduleNames.includes(n)) {
+      return false;
+    }
     // is non-empty
     if (n.length == 0) {
       return false;
@@ -133,7 +139,8 @@ export const CreateTypeDefModal = ({
       </div>
       {!allValid && (
         <div className="text-red-primary">
-          All names must be non-empty and unique
+          All names must be non-empty and unique (within the types and
+          constructors of this module)
         </div>
       )}
       <button

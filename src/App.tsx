@@ -270,6 +270,10 @@ const AppNoError = ({
       {showCreateTypeDefModal && (
         <div className="fixed inset-0 bg-grey-primary/95">
           <CreateTypeDefModal
+            moduleNames={
+              /* TODO: this should include ctor names also, but the backend does not yet provide us with that information */
+              p.module.types.map((t) => t.baseName)
+            }
             onClose={() => setShowCreateTypeDefModal(false)}
             onSubmit={handleNewTypeDef}
           />
