@@ -14,7 +14,7 @@
     "serve": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "generate": "orval --config ./orval.config.js",
+    "generate": "orval --config ./orval.config.ts",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "chromatic": "chromatic --exit-zero-on-changes",
