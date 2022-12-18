@@ -24,9 +24,6 @@ export default ({ mode }) => {
       PkgConfig(),
     ],
 
-    // Don't write to node_modules, in case someday we can get it from Nix.
-    cacheDir: ".vite",
-
     server: {
       proxy: {
         "/openapi": {
