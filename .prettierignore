@@ -7,7 +7,6 @@ pnpm-lock.yaml
 .log
 result*
 .github/
-.vite/
 storybook-static/
 .buildkite/
 primer-api.json

@@ -22,8 +22,6 @@ const config: StorybookViteConfig = {
   async viteFinal(config, _) {
     return mergeConfig(config, {
       plugins: [svgr(), tsconfigPaths()],
-      // Don't write to node_modules, in case someday we can get it from Nix.
-      cacheDir: "../.vite",
     });
   },
 };

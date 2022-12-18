@@ -1,4 +1,3 @@
-.vite/
 .direnv/
 node_modules/
 dist/
