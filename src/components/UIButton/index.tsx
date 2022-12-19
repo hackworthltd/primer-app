@@ -49,6 +49,13 @@ export interface UIButtonProps {
    * @type {boolean | undefined}
    */
   hidden?: boolean;
+
+  /**
+   * A reference for focus management.
+   *
+   * @type {React.RefObject<HTMLButtonElement> | undefined}
+   */
+  ref?: React.RefObject<HTMLButtonElement>;
 }
 
 const buttonClasses = (size: Size, appearance: Appearance, hidden?: boolean) =>
@@ -80,6 +87,7 @@ export const UIButton = (p: UIButtonProps): JSX.Element => (
     type="button"
     onClick={p.onClick}
     className={buttonClasses(p.size, p.appearance, p.hidden)}
+    ref={p.ref}
   >
     {p.text}
   </button>
