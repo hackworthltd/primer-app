@@ -39,6 +39,10 @@ export default {
       description: "The onClick handler.",
       action: "clicked",
     },
+    disabled: {
+      description: "If true, the button is disabled.",
+      control: { type: "boolean" },
+    },
     hidden: {
       description: "If true, the button is hidden.",
       control: { type: "boolean" },

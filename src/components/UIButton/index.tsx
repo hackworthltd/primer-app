@@ -50,6 +50,13 @@ export interface UIButtonProps {
   className?: string;
 
   /**
+   * Whether the button is disabled.
+   *
+   * @type {boolean | undefined}
+   */
+  disabled?: boolean;
+
+  /**
    * Toggle the button's visiblity. Note: if true, the button will
    * also be removed from the accessibility tree.
    *
@@ -91,7 +98,7 @@ const buttonClasses = (
       "border-transparent text-blue-primary bg-grey-primary hover:bg-grey-primary-hover focus:bg-grey-primary":
         appearance === "plain",
       hidden: hidden === true,
-      "inline-flex items-center border font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2":
+      "inline-flex items-center border font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed":
         true,
     },
     className
@@ -101,6 +108,7 @@ export const UIButton = (p: UIButtonProps): JSX.Element => (
   <button
     type="button"
     onClick={p.onClick}
+    disabled={p.disabled}
     className={buttonClasses(p.size, p.appearance, p.className, p.hidden)}
     ref={p.ref}
   >
