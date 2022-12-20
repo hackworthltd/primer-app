@@ -10,6 +10,7 @@ export { default as NotificationsButton } from "./NotificationsButton";
 export { default as Branding } from "./Branding";
 export { default as SearchBar } from "./SearchBar";
 export { default as SessionList } from "./SessionList";
+export { default as SessionNameModal } from "./SessionNameModal";
 export { default as SessionPreview } from "./SessionPreview";
 export { default as SessionsNavBar } from "./SessionsNavBar";
 export { default as SessionsPage } from "./SessionsPage";
