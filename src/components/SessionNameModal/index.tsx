@@ -1,6 +1,7 @@
-import { Fragment, useRef } from "react";
+import { Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { SparklesIcon } from "@heroicons/react/24/outline";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 import { UIButton } from "@/components";
 
@@ -15,7 +16,7 @@ export interface SessionNameModalProps {
   /**
    * The submit button's on-click handler.
    */
-  onSubmit: () => void;
+  onSubmit: (sessionName: string) => void;
 
   /**
    * The modal's on-cancel handler. This is called when the user clicks the
@@ -30,16 +31,30 @@ export interface SessionNameModalProps {
   onClose: () => void;
 }
 
+type FormData = {
+  sessionName: string;
+};
+
 export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
-  const sessionNameRef = useRef(null);
+  const {
+    register,
+    handleSubmit,
+    setFocus,
+    formState: { errors },
+  } = useForm<FormData>();
+  const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
+    p.onSubmit(data.sessionName);
+  };
+
+  useEffect(() => {
+    if (p.open) {
+      setFocus("sessionName");
+    }
+  }, [p.open, setFocus]);
 
   return (
     <Transition show={p.open} as={Fragment}>
-      <Dialog
-        className="relative z-10"
-        initialFocus={sessionNameRef}
-        onClose={p.onClose}
-      >
+      <Dialog className="relative z-10" onClose={p.onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -91,12 +106,21 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
                         </label>
                         <input
                           type="text"
-                          name="sessionName"
                           id="sessionName"
                           className="block w-full rounded-md border-grey-primary text-sm shadow-sm focus:ring-blue-secondary"
+                          aria-invalid={errors.sessionName ? "true" : "false"}
+                          {...register("sessionName", {
+                            required: true,
+                          })}
                           placeholder="Session name"
-                          ref={sessionNameRef}
                         />
+                        {errors.sessionName && (
+                          <p className="mt-2 text-sm text-red-primary">
+                            <span role="alert">
+                              Please enter a session name.
+                            </span>
+                          </p>
+                        )}
                       </div>
                     </form>
                   </div>
@@ -107,7 +131,7 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
                     size="lg"
                     appearance="primary"
                     className="w-full justify-center sm:ml-3 sm:w-auto"
-                    onClick={p.onSubmit}
+                    onClick={handleSubmit(onSubmit)}
                   />
                   <UIButton
                     text="Cancel"
