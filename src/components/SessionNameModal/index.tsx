@@ -99,7 +99,10 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
                         you change your mind.
                       </p>
                     </div>
-                    <form className="mt-5 sm:flex sm:items-center">
+                    <form
+                      onSubmit={handleSubmit(onSubmit)}
+                      className="mt-5 sm:flex sm:items-center"
+                    >
                       <div className="w-full">
                         <label htmlFor="sessionName" className="sr-only">
                           Session name
