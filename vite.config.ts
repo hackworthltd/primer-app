@@ -12,7 +12,7 @@ export default ({ mode }) => {
   return defineConfig({
     plugins: [
       checker({
-        typescript: true,
+        typescript: { tsconfigPath: "./tsconfig.app.json" },
         overlay: false,
         eslint: {
           lintCommand: "eslint .",

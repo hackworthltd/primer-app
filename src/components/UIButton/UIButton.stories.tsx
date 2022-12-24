@@ -27,6 +27,10 @@ export default {
       options: appearances,
       control: { type: "radio" },
     },
+    className: {
+      description: "Extra CSS class names.",
+      control: "text",
+    },
     text: {
       description: "The button label.",
       control: "text",
@@ -34,6 +38,10 @@ export default {
     onClick: {
       description: "The onClick handler.",
       action: "clicked",
+    },
+    disabled: {
+      description: "If true, the button is disabled.",
+      control: { type: "boolean" },
     },
     hidden: {
       description: "If true, the button is hidden.",
@@ -64,6 +72,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
           onClick={args.onClick}
           text="New program"
           appearance="primary"
+          className={args.className}
           size={sz}
           key={sz}
         />
@@ -77,6 +86,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
           onClick={args.onClick}
           text="Settings"
           appearance="secondary"
+          className={args.className}
           size={sz}
           key={sz}
         />
@@ -90,6 +100,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
           onClick={args.onClick}
           text="Undo"
           appearance="warning"
+          className={args.className}
           size={sz}
           key={sz}
         />
@@ -103,6 +114,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
           onClick={args.onClick}
           text="Delete program"
           appearance="danger"
+          className={args.className}
           size={sz}
           key={sz}
         />
@@ -116,6 +128,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
           onClick={args.onClick}
           text="Cancel"
           appearance="plain"
+          className={args.className}
           size={sz}
           key={sz}
         />

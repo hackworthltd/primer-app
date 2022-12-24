@@ -6,6 +6,7 @@ import type {
   GetSessionListParams,
   PaginatedMeta,
   Session,
+  Uuid,
 } from "@/primer-api";
 import {
   useGetSessionList,
@@ -61,7 +62,7 @@ const ChooseSession = (): JSX.Element => {
   const navigate = useNavigate();
   const newSession = useCreateSession({
     mutation: {
-      onSuccess: (newSessionID) => navigate(`/sessions/${newSessionID}`),
+      onSuccess: (newSessionID: Uuid) => navigate(`/sessions/${newSessionID}`),
     },
   });
 
@@ -77,7 +78,9 @@ const ChooseSession = (): JSX.Element => {
       startIndex={startIndex}
       numItems={meta.pageSize}
       totalItems={meta.totalItems}
-      onClickNewProgram={() => newSession.mutate()}
+      onClickNewProgram={(name: string) =>
+        newSession.mutate({ data: { name: name } })
+      }
       onClickNextPage={onClickNextPage}
       onClickPreviousPage={onClickPreviousPage}
       onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
