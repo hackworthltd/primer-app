@@ -16,7 +16,7 @@ export interface SessionNameModalProps {
   /**
    * The submit button's on-click handler.
    */
-  onSubmit: (sessionName: string) => void;
+  onSubmit: (name: string) => void;
 
   /**
    * The modal's on-cancel handler. This is called when the user clicks the
@@ -32,29 +32,40 @@ export interface SessionNameModalProps {
 }
 
 type FormData = {
-  sessionName: string;
+  name: string;
 };
 
 export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
   const {
     register,
     handleSubmit,
+    reset,
     setFocus,
     formState: { errors },
   } = useForm<FormData>();
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
-    p.onSubmit(data.sessionName);
+    p.onSubmit(data.name);
   };
 
   useEffect(() => {
     if (p.open) {
-      setFocus("sessionName");
+      setFocus("name");
     }
   }, [p.open, setFocus]);
 
+  const onClose = () => {
+    reset();
+    p.onClose();
+  };
+
+  const onCancel = () => {
+    reset();
+    p.onCancel();
+  };
+
   return (
     <Transition show={p.open} as={Fragment}>
-      <Dialog className="relative z-10" onClose={p.onClose}>
+      <Dialog className="relative z-10" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -104,20 +115,20 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
                       className="mt-5 sm:flex sm:items-center"
                     >
                       <div className="w-full">
-                        <label htmlFor="sessionName" className="sr-only">
+                        <label htmlFor="name" className="sr-only">
                           Session name
                         </label>
                         <input
                           type="text"
-                          id="sessionName"
+                          id="name"
                           className="block w-full rounded-md border-grey-primary text-sm shadow-sm focus:ring-blue-secondary"
-                          aria-invalid={errors.sessionName ? "true" : "false"}
-                          {...register("sessionName", {
+                          aria-invalid={errors.name ? "true" : "false"}
+                          {...register("name", {
                             required: true,
                           })}
                           placeholder="Session name"
                         />
-                        {errors.sessionName && (
+                        {errors.name && (
                           <p className="mt-2 text-sm text-red-primary">
                             <span role="alert">
                               Please enter a session name.
@@ -141,7 +152,7 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
                     size="lg"
                     appearance="plain"
                     className="mt-3 w-full justify-center sm:mt-0 sm:w-auto"
-                    onClick={p.onCancel}
+                    onClick={onCancel}
                   />
                 </div>
               </Dialog.Panel>
