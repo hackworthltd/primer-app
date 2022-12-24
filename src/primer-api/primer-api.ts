@@ -18,6 +18,7 @@ import type {
   Uuid,
   PaginatedSession,
   GetSessionListParams,
+  NewSessionReq,
   Prog,
   ApplyActionBody,
   ApplyActionWithInputParams,
@@ -32,6 +33,8 @@ import type {
   GlobalName,
   EvalFullParams,
   GetProgramParams,
+  CreateTypeDefBody,
+  CreateTypeDefParams,
 } from "./model";
 import { useCustomInstance } from "./mutator/use-custom-instance";
 import type { ErrorType } from "./mutator/use-custom-instance";
@@ -156,31 +159,36 @@ export const useGetSessionList = <
 };
 
 /**
+ * Create a new session with the name provided in the request body, and return the new session's ID. Note that the new session's actual name may differ from the name provided in the body, if the requested name is invalid.
  * @summary Create a new session and return its ID
  */
 export const useCreateSessionHook = () => {
   const createSession = useCustomInstance<Uuid>();
 
-  return () => {
-    return createSession({ url: `/openapi/sessions`, method: "post" });
+  return (newSessionReq: NewSessionReq) => {
+    return createSession({
+      url: `/openapi/sessions`,
+      method: "post",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: newSessionReq,
+    });
   };
 };
 
 export type CreateSessionMutationResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof useCreateSessionHook>>>
 >;
-
-export type CreateSessionMutationError = ErrorType<unknown>;
+export type CreateSessionMutationBody = NewSessionReq;
+export type CreateSessionMutationError = ErrorType<void>;
 
 export const useCreateSession = <
-  TError = ErrorType<unknown>,
-  TVariables = void,
+  TError = ErrorType<void>,
   TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useCreateSessionHook>>>,
     TError,
-    TVariables,
+    { data: NewSessionReq },
     TContext
   >;
 }) => {
@@ -190,15 +198,17 @@ export const useCreateSession = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<ReturnType<typeof useCreateSessionHook>>>,
-    TVariables
-  > = () => {
-    return createSession();
+    { data: NewSessionReq }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createSession(data);
   };
 
   return useMutation<
     Awaited<ReturnType<typeof createSession>>,
     TError,
-    TVariables,
+    { data: NewSessionReq },
     TContext
   >(mutationFn, mutationOptions);
 };
@@ -825,6 +835,73 @@ export const useGetProgram = <
   query.queryKey = queryKey;
 
   return query;
+};
+
+/**
+ * @summary Create a new type definition
+ */
+export const useCreateTypeDefHook = () => {
+  const createTypeDef = useCustomInstance<Prog>();
+
+  return (
+    sessionId: string,
+    createTypeDefBody: CreateTypeDefBody,
+    params?: CreateTypeDefParams
+  ) => {
+    return createTypeDef({
+      url: `/openapi/sessions/${sessionId}/typedef`,
+      method: "post",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      data: createTypeDefBody,
+      params,
+    });
+  };
+};
+
+export type CreateTypeDefMutationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof useCreateTypeDefHook>>>
+>;
+export type CreateTypeDefMutationBody = CreateTypeDefBody;
+export type CreateTypeDefMutationError = ErrorType<void>;
+
+export const useCreateTypeDef = <
+  TError = ErrorType<void>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useCreateTypeDefHook>>>,
+    TError,
+    {
+      sessionId: string;
+      data: CreateTypeDefBody;
+      params?: CreateTypeDefParams;
+    },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const createTypeDef = useCreateTypeDefHook();
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<ReturnType<typeof useCreateTypeDefHook>>>,
+    { sessionId: string; data: CreateTypeDefBody; params?: CreateTypeDefParams }
+  > = (props) => {
+    const { sessionId, data, params } = props ?? {};
+
+    return createTypeDef(sessionId, data, params);
+  };
+
+  return useMutation<
+    Awaited<ReturnType<typeof createTypeDef>>,
+    TError,
+    {
+      sessionId: string;
+      data: CreateTypeDefBody;
+      params?: CreateTypeDefParams;
+    },
+    TContext
+  >(mutationFn, mutationOptions);
 };
 
 /**
