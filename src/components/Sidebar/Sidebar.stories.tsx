@@ -5,12 +5,20 @@ import { Sidebar, SidebarProps } from "./";
 export default {
   title: "Application/Component Library/Sidebar",
   argTypes: {
-    onClickAdd: {
-      description: 'The event handler for the "+" button.',
-      action: "add",
+    onClickAddTypeDef: {
+      description: 'The event handler for the "+ typedef" button.',
+      action: "add typedef",
+    },
+    onClickAddDef: {
+      description: 'The event handler for the "+ def" button.',
+      action: "add def",
+    },
+    onClickTypeDef: {
+      description: "The event handler for a typedef button.",
+      action: "typedef",
     },
     onClickDef: {
-      description: "The event handler for a type or definition button.",
+      description: "The event handler for a definition button.",
       action: "def",
     },
   },
