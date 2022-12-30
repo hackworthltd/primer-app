@@ -1,4 +1,10 @@
-import { TreeReactFlow, Error, ActionPanel, Sidebar } from "@/components";
+import {
+  CreateDefModal,
+  TreeReactFlow,
+  Error,
+  ActionPanel,
+  Sidebar,
+} from "@/components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -122,6 +128,11 @@ const AppNoError = ({
   setSelection: (s: Selection) => void;
   setProg: (p: Prog) => void;
 }): JSX.Element => {
+  const [showCreateDefModal, setShowCreateDefModal] = useState<boolean>(false);
+  const onClickAddDef = (): void => {
+    setShowCreateDefModal(true);
+  };
+
   const createDef = useCreateDefinition();
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
@@ -149,15 +160,7 @@ const AppNoError = ({
               .map((t) => t.baseName),
           }}
           onClickDef={(_label, _event) => ({})}
-          onClickAddDef={() => {
-            createDef
-              .mutateAsync({
-                sessionId: p.sessionId,
-                params: treeParams,
-                data: p.module.modname,
-              })
-              .then(p.setProg);
-          }}
+          onClickAddDef={onClickAddDef}
           onClickTypeDef={(_label, _event) => ({})}
           onClickAddTypeDef={() => ({})}
           shadowed={false}
@@ -225,6 +228,23 @@ const AppNoError = ({
           Click something on the canvas to see available actions!
         </div>
       )}
+      {showCreateDefModal ? (
+        <CreateDefModal
+          open={showCreateDefModal}
+          onClose={() => setShowCreateDefModal(false)}
+          onCancel={() => setShowCreateDefModal(false)}
+          onSubmit={(name: string) => {
+            createDef
+              .mutateAsync({
+                sessionId: p.sessionId,
+                params: { patternsUnder, name },
+                data: p.module.modname,
+              })
+              .then(p.setProg);
+            setShowCreateDefModal(false);
+          }}
+        />
+      ) : null}
     </div>
   );
 };

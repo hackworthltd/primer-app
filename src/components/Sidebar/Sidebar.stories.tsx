@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Sidebar, SidebarProps } from "./";
 
 export default {
-  title: "Application/Component Library/Sidebar",
+  title: "Application/Component Library/Sidebar/Sidebar",
   argTypes: {
     onClickAddTypeDef: {
       description: 'The event handler for the "+ typedef" button.',

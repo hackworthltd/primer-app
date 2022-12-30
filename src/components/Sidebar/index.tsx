@@ -25,7 +25,7 @@ type TypesAndDefinitionsProps = {
   prog: Prog;
   onClickDef: OnClick;
   onClickTypeDef: OnClick;
-  onClickAddDef: () => void;
+  onClickAddDef: (name: string) => void;
   onClickAddTypeDef: () => void;
 };
 type InfoProps = {
