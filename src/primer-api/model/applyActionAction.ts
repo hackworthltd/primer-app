@@ -6,26 +6,26 @@
  * OpenAPI spec version: 0.7
  */
 
-export type ApplyActionAction =
-  (typeof ApplyActionAction)[keyof typeof ApplyActionAction];
+export type ApplyActionAction = typeof ApplyActionAction[keyof typeof ApplyActionAction];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyActionAction = {
-  MakeCase: "MakeCase",
-  MakeApp: "MakeApp",
-  MakeAPP: "MakeAPP",
-  MakeAnn: "MakeAnn",
-  RemoveAnn: "RemoveAnn",
-  LetToRec: "LetToRec",
-  Raise: "Raise",
-  EnterHole: "EnterHole",
-  RemoveHole: "RemoveHole",
-  DeleteExpr: "DeleteExpr",
-  MakeFun: "MakeFun",
-  AddInput: "AddInput",
-  MakeTApp: "MakeTApp",
-  RaiseType: "RaiseType",
-  DeleteType: "DeleteType",
-  DuplicateDef: "DuplicateDef",
-  DeleteDef: "DeleteDef",
+  MakeCase: 'MakeCase',
+  MakeApp: 'MakeApp',
+  MakeAPP: 'MakeAPP',
+  MakeAnn: 'MakeAnn',
+  RemoveAnn: 'RemoveAnn',
+  LetToRec: 'LetToRec',
+  Raise: 'Raise',
+  EnterHole: 'EnterHole',
+  RemoveHole: 'RemoveHole',
+  DeleteExpr: 'DeleteExpr',
+  MakeFun: 'MakeFun',
+  AddInput: 'AddInput',
+  MakeTApp: 'MakeTApp',
+  RaiseType: 'RaiseType',
+  DeleteType: 'DeleteType',
+  DuplicateDef: 'DuplicateDef',
+  DeleteDef: 'DeleteDef',
 } as const;

@@ -6,10 +6,10 @@
  * OpenAPI spec version: 0.7
  */
 
-export type EvalFullRespOneOfThreeTag =
-  (typeof EvalFullRespOneOfThreeTag)[keyof typeof EvalFullRespOneOfThreeTag];
+export type EvalFullRespOneOfThreeTag = typeof EvalFullRespOneOfThreeTag[keyof typeof EvalFullRespOneOfThreeTag];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalFullRespOneOfThreeTag = {
-  EvalFullRespNormal: "EvalFullRespNormal",
+  EvalFullRespNormal: 'EvalFullRespNormal',
 } as const;

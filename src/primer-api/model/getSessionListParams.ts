@@ -6,8 +6,4 @@
  * OpenAPI spec version: 0.7
  */
 
-export type GetSessionListParams = {
-  inMemory?: boolean;
-  page?: number;
-  pageSize?: number;
-};
+export type GetSessionListParams = { inMemory?: boolean; page?: number; pageSize?: number };
