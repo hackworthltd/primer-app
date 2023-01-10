@@ -6,12 +6,12 @@
  * OpenAPI spec version: 0.7
  */
 
-export type GetAvailableActionsLevel =
-  (typeof GetAvailableActionsLevel)[keyof typeof GetAvailableActionsLevel];
+export type GetAvailableActionsLevel = typeof GetAvailableActionsLevel[keyof typeof GetAvailableActionsLevel];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetAvailableActionsLevel = {
-  Beginner: "Beginner",
-  Intermediate: "Intermediate",
-  Expert: "Expert",
+  Beginner: 'Beginner',
+  Intermediate: 'Intermediate',
+  Expert: 'Expert',
 } as const;

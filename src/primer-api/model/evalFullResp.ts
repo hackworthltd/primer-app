@@ -5,7 +5,7 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { EvalFullRespOneOf } from "./evalFullRespOneOf";
-import type { EvalFullRespOneOfThree } from "./evalFullRespOneOfThree";
+import type { EvalFullRespOneOf } from './evalFullRespOneOf';
+import type { EvalFullRespOneOfThree } from './evalFullRespOneOfThree';
 
 export type EvalFullResp = EvalFullRespOneOf | EvalFullRespOneOfThree;

@@ -5,7 +5,7 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { NodeType } from "./nodeType";
+import type { NodeType } from './nodeType';
 
 export interface NodeSelection {
   id: number;

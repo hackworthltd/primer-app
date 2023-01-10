@@ -5,6 +5,6 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { GetAvailableActionsLevel } from "./getAvailableActionsLevel";
+import type { GetAvailableActionsLevel } from './getAvailableActionsLevel';
 
 export type GetAvailableActionsParams = { level: GetAvailableActionsLevel };
