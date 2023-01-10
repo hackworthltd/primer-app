@@ -243,10 +243,10 @@
               export PATH="$(pwd)/node_modules/.bin:$PATH"
 
               if ! type -P pnpm ; then
-                npx pnpm install
+                npx pnpm add pnpm
+              else
+                pnpm install
               fi
-
-              pnpm install
 
               rm -f ${local-spec}
               ln -s ${spec} ${local-spec}
