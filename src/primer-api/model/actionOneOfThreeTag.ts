@@ -6,10 +6,10 @@
  * OpenAPI spec version: 0.7
  */
 
-export type ActionOneOfThreeTag =
-  (typeof ActionOneOfThreeTag)[keyof typeof ActionOneOfThreeTag];
+export type ActionOneOfThreeTag = typeof ActionOneOfThreeTag[keyof typeof ActionOneOfThreeTag];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ActionOneOfThreeTag = {
-  Input: "Input",
+  Input: 'Input',
 } as const;

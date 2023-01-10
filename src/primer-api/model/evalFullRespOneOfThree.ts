@@ -5,8 +5,8 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { Tree } from "./tree";
-import type { EvalFullRespOneOfThreeTag } from "./evalFullRespOneOfThreeTag";
+import type { Tree } from './tree';
+import type { EvalFullRespOneOfThreeTag } from './evalFullRespOneOfThreeTag';
 
 export type EvalFullRespOneOfThree = {
   contents: Tree;

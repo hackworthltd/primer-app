@@ -5,8 +5,8 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { Def } from "./def";
-import type { GlobalName } from "./globalName";
+import type { Def } from './def';
+import type { GlobalName } from './globalName';
 
 export interface Module {
   defs: Def[];

@@ -5,8 +5,8 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { FreeInput } from "./freeInput";
-import type { Option } from "./option";
+import type { FreeInput } from './freeInput';
+import type { Option } from './option';
 
 export interface Options {
   free: FreeInput;

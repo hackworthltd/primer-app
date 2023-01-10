@@ -5,8 +5,8 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { Module } from "./module";
-import type { Selection } from "./selection";
+import type { Module } from './module';
+import type { Selection } from './selection';
 
 export interface Prog {
   modules: Module[];
