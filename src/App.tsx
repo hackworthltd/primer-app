@@ -1,5 +1,6 @@
 import {
   CreateDefModal,
+  CreateTypeDefModal,
   TreeReactFlow,
   Error,
   ActionPanel,
@@ -129,6 +130,8 @@ const AppNoError = ({
   setProg: (p: Prog) => void;
 }): JSX.Element => {
   const [showCreateDefModal, setShowCreateDefModal] = useState<boolean>(false);
+  const [showCreateTypeDefModal, setShowCreateTypeDefModal] =
+    useState<boolean>(false);
   const onClickAddDef = (): void => {
     setShowCreateDefModal(true);
   };
@@ -162,7 +165,7 @@ const AppNoError = ({
           onClickDef={(_label, _event) => ({})}
           onClickAddDef={onClickAddDef}
           onClickTypeDef={(_label, _event) => ({})}
-          onClickAddTypeDef={() => ({})}
+          onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
           shadowed={false}
           type="?"
           folder="unknown"
@@ -242,6 +245,16 @@ const AppNoError = ({
               })
               .then(p.setProg);
             setShowCreateDefModal(false);
+          }}
+        />
+      ) : null}
+      {showCreateTypeDefModal ? (
+        <CreateTypeDefModal
+          open={showCreateTypeDefModal}
+          onClose={() => setShowCreateTypeDefModal(false)}
+          onCancel={() => setShowCreateTypeDefModal(false)}
+          onSubmit={(_: string) => {
+            return;
           }}
         />
       ) : null}
