@@ -651,31 +651,28 @@ const nodeProps = async (
   p: NodeParams & PrimerTreeProps
 ): Promise<[PrimerNodeProps, PrimerGraph[]]> => {
   const selected = p.selection?.node?.id?.toString() == tree.nodeId;
-  const flavor = tree.flavor;
+  const common: Omit<PrimerNodeProps, "contents"> = {
+    label: flavorLabel(tree.flavor),
+    width: p.nodeWidth,
+    height: p.nodeHeight,
+    flavor: tree.flavor,
+    selected,
+    ...p,
+  };
   switch (tree.body.tag) {
     case "TextBody":
       return [
         {
-          label: flavorLabel(tree.flavor),
           contents: tree.body.contents,
-          width: p.nodeWidth,
-          height: p.nodeHeight,
-          flavor,
-          selected,
-          ...p,
+          ...common,
         },
         [],
       ];
     case "NoBody":
       return [
         {
-          label: flavorLabel(tree.flavor),
           contents: noBodyFlavorContents(tree.flavor),
-          width: p.nodeWidth,
-          height: p.nodeHeight,
-          flavor,
-          selected,
-          ...p,
+          ...common,
         },
         [],
       ];
@@ -687,13 +684,10 @@ const nodeProps = async (
       }));
       return [
         {
-          label: flavorLabel(tree.flavor),
+          ...common,
           width: bodyLayout.width + p.boxPadding,
           height: bodyLayout.height + p.boxPadding,
-          flavor,
-          selected,
           contents: undefined,
-          ...p,
         },
         bodyNested.concat({
           nodes: bodyLayout.nodes.map((node) => ({
