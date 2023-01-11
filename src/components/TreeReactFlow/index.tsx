@@ -675,9 +675,7 @@ const nodeProps = async (
     case "TextBody":
       return [
         {
-          contents: (tree.body.contents.qualifiedModule ?? [])
-            .concat(tree.body.contents.baseName)
-            .join("."),
+          contents: tree.body.contents.baseName,
           ...common,
         },
         [],
