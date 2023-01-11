@@ -126,9 +126,9 @@ export const tidyToPrimer = <T>(
   ) => NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
   lookupEdge: (source: number, target: string) => Edge<Empty>
 ): PrimerTree<T> => {
-  const trees = tree.children.reduce<PrimerTree<T>[]>((ts, t) => {
-    return ts.concat(tidyToPrimer(t, lookupNode, lookupEdge));
-  }, []);
+  const trees = tree.children.map((t) =>
+    tidyToPrimer(t, lookupNode, lookupEdge)
+  );
   const node = lookupNode(tree.id);
   return {
     childTrees: trees.map((t) => [t, lookupEdge(tree.id, t.node.id)]),
