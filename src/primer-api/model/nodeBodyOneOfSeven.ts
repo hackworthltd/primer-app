@@ -5,10 +5,8 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { PrimCon } from './primCon';
-import type { NodeBodyOneOfThreeTag } from './nodeBodyOneOfThreeTag';
+import type { NodeBodyOneOfSevenTag } from './nodeBodyOneOfSevenTag';
 
-export type NodeBodyOneOfThree = {
-  contents: PrimCon;
-  tag: NodeBodyOneOfThreeTag;
+export type NodeBodyOneOfSeven = {
+  tag: NodeBodyOneOfSevenTag;
 };

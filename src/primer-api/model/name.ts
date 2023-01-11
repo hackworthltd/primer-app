@@ -5,10 +5,8 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { Tree } from './tree';
-import type { NodeBodyOneOfFiveTag } from './nodeBodyOneOfFiveTag';
 
-export type NodeBodyOneOfFive = {
-  contents: Tree;
-  tag: NodeBodyOneOfFiveTag;
-};
+export interface Name {
+  baseName: string;
+  qualifiedModule?: string[];
+}
