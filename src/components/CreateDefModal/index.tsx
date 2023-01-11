@@ -2,6 +2,8 @@ import { Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { SparklesIcon } from "@heroicons/react/24/outline";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 import { UIButton } from "@/components";
 
@@ -31,9 +33,14 @@ export interface CreateDefModalProps {
   onClose: () => void;
 }
 
-type FormData = {
-  name: string;
-};
+const schema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: "Please provide a name for the definition" }),
+});
+
+type FormData = z.infer<typeof schema>;
 
 export const CreateDefModal = (p: CreateDefModalProps): JSX.Element => {
   const {
@@ -42,7 +49,9 @@ export const CreateDefModal = (p: CreateDefModalProps): JSX.Element => {
     reset,
     setFocus,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
     p.onSubmit(data.name);
   };
@@ -123,16 +132,12 @@ export const CreateDefModal = (p: CreateDefModalProps): JSX.Element => {
                           id="name"
                           className="block w-full rounded-md border-grey-primary text-sm shadow-sm focus:ring-blue-secondary"
                           aria-invalid={errors.name ? "true" : "false"}
-                          {...register("name", {
-                            required: true,
-                          })}
+                          {...register("name")}
                           placeholder="Definition name"
                         />
-                        {errors.name && (
+                        {errors.name?.message && (
                           <p className="mt-2 text-sm text-red-primary">
-                            <span role="alert">
-                              Please enter a definition name.
-                            </span>
+                            <span role="alert">{errors.name.message}</span>
                           </p>
                         )}
                       </div>
