@@ -6,10 +6,10 @@
  * OpenAPI spec version: 0.7
  */
 
-export type NodeBodyOneOfFiveTag = typeof NodeBodyOneOfFiveTag[keyof typeof NodeBodyOneOfFiveTag];
+export type PrimConOneOfTag = typeof PrimConOneOfTag[keyof typeof PrimConOneOfTag];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const NodeBodyOneOfFiveTag = {
-  BoxBody: 'BoxBody',
+export const PrimConOneOfTag = {
+  PrimChar: 'PrimChar',
 } as const;

@@ -11,5 +11,5 @@ export type NodeBodyOneOfThreeTag = typeof NodeBodyOneOfThreeTag[keyof typeof No
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const NodeBodyOneOfThreeTag = {
-  BoxBody: 'BoxBody',
+  PrimBody: 'PrimBody',
 } as const;

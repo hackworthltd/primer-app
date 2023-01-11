@@ -660,10 +660,24 @@ const nodeProps = async (
     ...p,
   };
   switch (tree.body.tag) {
+    case "PrimBody": {
+      const prim = tree.body.contents;
+      const contents = (() => {
+        switch (prim.tag) {
+          case "PrimInt":
+            return prim.contents.toString();
+          case "PrimChar":
+            return prim.contents;
+        }
+      })();
+      return [{ contents, ...common }, []];
+    }
     case "TextBody":
       return [
         {
-          contents: tree.body.contents,
+          contents: (tree.body.contents.qualifiedModule ?? [])
+            .concat(tree.body.contents.baseName)
+            .join("."),
           ...common,
         },
         [],

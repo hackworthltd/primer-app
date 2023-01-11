@@ -8,5 +8,6 @@
 import type { NodeBodyOneOf } from './nodeBodyOneOf';
 import type { NodeBodyOneOfThree } from './nodeBodyOneOfThree';
 import type { NodeBodyOneOfFive } from './nodeBodyOneOfFive';
+import type { NodeBodyOneOfSeven } from './nodeBodyOneOfSeven';
 
-export type NodeBody = NodeBodyOneOf | NodeBodyOneOfThree | NodeBodyOneOfFive;
+export type NodeBody = NodeBodyOneOf | NodeBodyOneOfThree | NodeBodyOneOfFive | NodeBodyOneOfSeven;
