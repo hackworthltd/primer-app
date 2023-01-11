@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { SparklesIcon } from "@heroicons/react/24/outline";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { MinusIcon, PlusIcon, SparklesIcon } from "@heroicons/react/24/outline";
+import { useFieldArray, useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
@@ -18,7 +18,7 @@ export interface CreateTypeDefModalProps {
   /**
    * The submit button's on-click handler.
    */
-  onSubmit: (typeName: string) => void;
+  onSubmit: (names: { typeName: string; ctorNames: string[] }) => void;
 
   /**
    * The modal's on-cancel handler. This is called when the user clicks the
@@ -38,6 +38,16 @@ const schema = z.object({
     .string()
     .trim()
     .min(1, { message: "Please provide a name for the type" }),
+
+  // This is a bit silly, but react-hook-form wants it to be a struct for some
+  // reason.
+  ctor: z.array(
+    z.object({
+      name: z.string().trim().min(1, {
+        message: "Please either name this constructor, or delete it",
+      }),
+    })
+  ),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -45,6 +55,7 @@ type FormData = z.infer<typeof schema>;
 export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
   const {
     register,
+    control,
     handleSubmit,
     reset,
     setFocus,
@@ -53,8 +64,16 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
     resolver: zodResolver(schema),
   });
 
+  const { fields, append, remove } = useFieldArray({
+    name: "ctor",
+    control,
+  });
+
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
-    p.onSubmit(data.typeName);
+    p.onSubmit({
+      typeName: data.typeName,
+      ctorNames: data.ctor.map((c) => c.name),
+    });
   };
 
   useEffect(() => {
@@ -72,6 +91,8 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
     reset();
     p.onCancel();
   };
+
+  const iconClasses = "w-5 stroke-blue-primary stroke-[3px]";
 
   return (
     <Transition show={p.open} as={Fragment}>
@@ -140,6 +161,47 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
                             <span role="alert">{errors.typeName.message}</span>
                           </p>
                         )}
+                        {fields.map((field, index) => {
+                          return (
+                            <div key={field.id} className="p-2">
+                              <div className="flex gap-2">
+                                <button onClick={() => remove(index)}>
+                                  <MinusIcon className={iconClasses} />
+                                </button>
+                                <input
+                                  type="text"
+                                  id={`constructorName${index}`}
+                                  className="block w-full rounded-md border-grey-primary text-sm shadow-sm focus:ring-blue-secondary"
+                                  aria-invalid={
+                                    errors.ctor?.[index]?.name
+                                      ? "true"
+                                      : "false"
+                                  }
+                                  {...register(`ctor.${index}.name` as const)}
+                                  placeholder="Value constructor name"
+                                />
+                              </div>
+                              {errors?.ctor?.[index]?.name && (
+                                <p className="mt-2 text-sm text-red-primary">
+                                  <span role="alert">
+                                    {errors?.ctor?.[index]?.name?.message}
+                                  </span>
+                                </p>
+                              )}
+                            </div>
+                          );
+                        })}
+                        <div>
+                          <button
+                            onClick={() =>
+                              append({
+                                name: "",
+                              })
+                            }
+                          >
+                            <PlusIcon className={iconClasses} />
+                          </button>
+                        </div>
                       </div>
                     </form>
                   </div>

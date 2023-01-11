@@ -253,7 +253,7 @@ const AppNoError = ({
           open={showCreateTypeDefModal}
           onClose={() => setShowCreateTypeDefModal(false)}
           onCancel={() => setShowCreateTypeDefModal(false)}
-          onSubmit={(_: string) => {
+          onSubmit={(_: { typeName: string; ctorNames: string[] }) => {
             return;
           }}
         />
