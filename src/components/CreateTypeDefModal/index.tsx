@@ -33,22 +33,33 @@ export interface CreateTypeDefModalProps {
   onClose: () => void;
 }
 
-const schema = z.object({
-  typeName: z
-    .string()
-    .trim()
-    .min(1, { message: "Please provide a name for the type" }),
+const schema = z
+  .object({
+    typeName: z
+      .string()
+      .trim()
+      .min(1, { message: "Please provide a name for the type" }),
 
-  // This is a bit silly, but react-hook-form wants it to be a struct for some
-  // reason.
-  ctor: z.array(
-    z.object({
-      name: z.string().trim().min(1, {
-        message: "Please either name this constructor, or delete it",
-      }),
-    })
-  ),
-});
+    // This is a bit silly, but react-hook-form wants it to be a struct for some
+    // reason.
+    ctor: z.array(
+      z.object({
+        name: z.string().trim().min(1, {
+          message: "Please either name this constructor, or delete it",
+        }),
+      })
+    ),
+  })
+  .superRefine((val, ctx) => {
+    const ctorNameSet = new Set(val.ctor.map((c) => c.name));
+    if (ctorNameSet.has(val.typeName)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `The type name can't be the same as any of the value constructor names`,
+        path: ["typeName"],
+      });
+    }
+  });
 
 type FormData = z.infer<typeof schema>;
 
