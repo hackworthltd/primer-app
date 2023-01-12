@@ -50,13 +50,26 @@ const typeDefFormSchema = z
     ctor: z.array(ctorInputSchema),
   })
   .superRefine((val, ctx) => {
-    const ctorNameSet = new Set(val.ctor.map((c) => c.name));
-    if (ctorNameSet.has(val.typeName)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `The type name can't be the same as any of the value constructor names`,
-        path: ["typeName"],
-      });
+    const seen = new Set();
+
+    for (const [i, ctor] of val.ctor.entries()) {
+      if (ctor.name === val.typeName) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `The type name can't be the same as any of the value constructor names`,
+          path: ["ctor", i, "name"],
+        });
+      }
+
+      if (seen.has(ctor.name)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Value constructor names must be unique, but this type has multiple value constructors named "${ctor.name}"`,
+          path: ["ctor", i, "name"],
+        });
+      }
+
+      seen.add(ctor.name);
     }
   });
 
