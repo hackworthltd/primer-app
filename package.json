@@ -25,6 +25,7 @@
     "@dicebear/avatars-bottts-sprites": "^4.10.8",
     "@dicebear/avatars-identicon-sprites": "^4.10.8",
     "@dicebear/avatars-jdenticon-sprites": "^4.10.8",
+    "@hookform/resolvers": "^2.9.10",
     "@tanstack/react-query": "^4.20.9",
     "@types/deep-equal": "^1.0.1",
     "@zxch3n/tidy": "github:hackworthltd/tidy#290c724bac1d4c887908fea832b13b4585a78bff",
@@ -38,7 +39,8 @@
     "react-hook-form": "^7.41.5",
     "react-router-dom": "^6.6.1",
     "reactflow": "^11.4.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
