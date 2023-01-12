@@ -54,7 +54,7 @@ export const layoutTree = <T>(
 type NodeInfo<T> = {
   id: number;
   node: NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>;
-  edges: { target: string; edge: Edge<Empty> }[];
+  edges: Edge<Empty>[];
 };
 type NodeMap<T> = Map<
   number,
@@ -65,9 +65,7 @@ const makeNodeInfoMap = <T>(nodes: NodeInfo<T>[]): NodeMap<T> => {
   const nodeMap: NodeMap<T> = new Map();
   nodes.forEach((n) => {
     const edgeMap: EdgeMap = new Map();
-    n.edges.forEach((e) => {
-      edgeMap.set(e.target, e.edge);
-    });
+    n.edges.forEach((e) => edgeMap.set(e.target, e));
     nodeMap.set(n.id, [n.node, edgeMap]);
   });
   return nodeMap;
@@ -106,10 +104,7 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [Node, NodeMap<T>] => {
       ids.concat({
         id,
         node: primerTree.node,
-        edges: primerChildren.map(([_, edge]) => ({
-          target: edge.target,
-          edge,
-        })),
+        edges: primerChildren.map(([_, edge]) => edge),
       }),
       nextId,
     ];
