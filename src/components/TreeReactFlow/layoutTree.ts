@@ -114,7 +114,7 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [Node, NodeMap<T>] => {
 };
 
 // Convert numeric IDs back to the original annotated nodes and edges.
-export const tidyToPrimer = <T>(
+const tidyToPrimer = <T>(
   tree: InnerNode,
   lookupNode: (
     id: number
