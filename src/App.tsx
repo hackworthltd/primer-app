@@ -23,6 +23,7 @@ import {
   Options,
   useGetActionOptions,
   useCreateDefinition,
+  useCreateTypeDef,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -137,6 +138,7 @@ const AppNoError = ({
   };
 
   const createDef = useCreateDefinition();
+  const createTypeDef = useCreateTypeDef();
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
@@ -254,8 +256,19 @@ const AppNoError = ({
           open={showCreateTypeDefModal}
           onClose={() => setShowCreateTypeDefModal(false)}
           onCancel={() => setShowCreateTypeDefModal(false)}
-          onSubmit={(_: { typeName: string; ctorNames: string[] }) => {
-            return;
+          onSubmit={(typeName: string, ctorNames: string[]) => {
+            createTypeDef
+              .mutateAsync({
+                sessionId: p.sessionId,
+                params: treeParams,
+                data: {
+                  moduleName: p.module.modname,
+                  typeName,
+                  ctors: ctorNames,
+                },
+              })
+              .then(p.setProg)
+              .then(() => setShowCreateTypeDefModal(false));
           }}
         />
       ) : null}

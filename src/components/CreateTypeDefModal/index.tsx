@@ -23,7 +23,7 @@ export interface CreateTypeDefModalProps {
   /**
    * The submit button's on-click handler.
    */
-  onSubmit: (names: { typeName: string; ctorNames: string[] }) => void;
+  onSubmit: (typeName: string, ctorNames: string[]) => void;
 
   /**
    * The modal's on-cancel handler. This is called when the user clicks the
@@ -106,10 +106,10 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
   });
 
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
-    p.onSubmit({
-      typeName: data.typeName,
-      ctorNames: data.ctor.map((c) => c.name),
-    });
+    p.onSubmit(
+      data.typeName,
+      data.ctor.map((c) => c.name)
+    );
   };
 
   useEffect(() => {
