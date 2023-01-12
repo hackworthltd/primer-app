@@ -250,6 +250,7 @@ const AppNoError = ({
       ) : null}
       {showCreateTypeDefModal ? (
         <CreateTypeDefModal
+          moduleTypeDefNames={new Set(p.module.types.map((t) => t.baseName))}
           open={showCreateTypeDefModal}
           onClose={() => setShowCreateTypeDefModal(false)}
           onCancel={() => setShowCreateTypeDefModal(false)}

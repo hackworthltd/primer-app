@@ -11,6 +11,11 @@ import "@/index.css";
 
 export interface CreateTypeDefModalProps {
   /**
+   * The names of all existing typedefs in the current module.
+   */
+  moduleTypeDefNames: Set<string>;
+
+  /**
    * The modal's visibility state.
    */
   open: boolean;
@@ -41,41 +46,49 @@ const ctorInputSchema = z.object({
   }),
 });
 
-const typeDefFormSchema = z
-  .object({
-    typeName: z
-      .string()
-      .trim()
-      .min(1, { message: "Please provide a name for the type" }),
-    ctor: z.array(ctorInputSchema),
-  })
-  .superRefine((val, ctx) => {
-    const seen = new Set();
-
-    for (const [i, ctor] of val.ctor.entries()) {
-      if (ctor.name === val.typeName) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `The type name can't be the same as any of the value constructor names`,
-          path: ["ctor", i, "name"],
-        });
-      }
-
-      if (seen.has(ctor.name)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Value constructor names must be unique, but this type has multiple value constructors named "${ctor.name}"`,
-          path: ["ctor", i, "name"],
-        });
-      }
-
-      seen.add(ctor.name);
-    }
-  });
-
-type FormData = z.infer<typeof typeDefFormSchema>;
-
 export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
+  const typeDefFormSchema = z
+    .object({
+      typeName: z
+        .string()
+        .trim()
+        .min(1, { message: "Please provide a name for the type" })
+        .refine((name) => !p.moduleTypeDefNames.has(name), {
+          message:
+            "Type names must be unique, but there's already a type with this name in this module",
+        }),
+      ctor: z.array(ctorInputSchema),
+    })
+    .superRefine((val, ctx) => {
+      const seen = new Set();
+
+      for (const [i, ctor] of val.ctor.entries()) {
+        // TODO: add a check for duplicate value constructor names within this module.
+        //
+        // https://github.com/hackworthltd/primer/issues/830
+
+        if (ctor.name === val.typeName) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `The type name can't be the same as any of the value constructor names`,
+            path: ["ctor", i, "name"],
+          });
+        }
+
+        if (seen.has(ctor.name)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `Value constructor names must be unique, but this type has multiple value constructors named "${ctor.name}"`,
+            path: ["ctor", i, "name"],
+          });
+        }
+
+        seen.add(ctor.name);
+      }
+    });
+
+  type FormData = z.infer<typeof typeDefFormSchema>;
+
   const {
     register,
     control,

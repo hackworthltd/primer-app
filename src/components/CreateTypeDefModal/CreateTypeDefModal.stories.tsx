@@ -33,5 +33,10 @@ const Template: ComponentStory<typeof CreateTypeDefModal> = (
 
 export const Default = Template.bind({});
 Default.args = {
+  // There's no good way to control this in Storybook, so we hardcode the names
+  // for now. See:
+  //
+  // https://github.com/storybookjs/storybook/issues/17518
+  moduleTypeDefNames: new Set(["Foo", "Bar"]),
   open: true,
 };
