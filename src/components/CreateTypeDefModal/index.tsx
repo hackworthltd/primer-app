@@ -33,22 +33,21 @@ export interface CreateTypeDefModalProps {
   onClose: () => void;
 }
 
-const schema = z
+// This is a bit silly, but react-hook-form wants it to be a struct for some
+// reason.
+const ctorInputSchema = z.object({
+  name: z.string().trim().min(1, {
+    message: "Please either name this constructor, or delete it",
+  }),
+});
+
+const typeDefFormSchema = z
   .object({
     typeName: z
       .string()
       .trim()
       .min(1, { message: "Please provide a name for the type" }),
-
-    // This is a bit silly, but react-hook-form wants it to be a struct for some
-    // reason.
-    ctor: z.array(
-      z.object({
-        name: z.string().trim().min(1, {
-          message: "Please either name this constructor, or delete it",
-        }),
-      })
-    ),
+    ctor: z.array(ctorInputSchema),
   })
   .superRefine((val, ctx) => {
     const ctorNameSet = new Set(val.ctor.map((c) => c.name));
@@ -61,7 +60,7 @@ const schema = z
     }
   });
 
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<typeof typeDefFormSchema>;
 
 export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
   const {
@@ -72,7 +71,7 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
     setFocus,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(typeDefFormSchema),
   });
 
   const { fields, append, remove } = useFieldArray({
