@@ -6,7 +6,7 @@ import {
   ActionPanel,
   Sidebar,
 } from "@/components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   useGetAvailableActions,
@@ -143,8 +143,22 @@ const AppNoError = ({
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
-  const evalFull = useEvalFull();
 
+  const [evalTarget, setEvalTarget] = useState<string | undefined>();
+  const evalFull = useEvalFull();
+  useEffect(() => {
+    evalTarget &&
+      evalFull.mutateAsync({
+        sessionId: p.sessionId,
+        data: { qualifiedModule: p.module.modname, baseName: evalTarget },
+        params: treeParams,
+      });
+    // We wish to re-evaluate when the target changes, or any code in the module changes
+    // (as result can depend on other definitions).
+    // However, eslint will complain that 'evalFull' and 'p.sessionId'
+    // are missing dependencies, even though these will never (relevantly) change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [p.module, evalTarget]);
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="overflow-scroll">
@@ -174,13 +188,7 @@ const AppNoError = ({
           type="?"
           folder="unknown"
           evalFull={{
-            request: (def) =>
-              def &&
-              evalFull.mutateAsync({
-                sessionId: p.sessionId,
-                data: { qualifiedModule: p.module.modname, baseName: def },
-                params: treeParams,
-              }),
+            request: setEvalTarget,
             ...(evalFull.isSuccess ? { result: evalFull.data } : {}),
           }}
         />
