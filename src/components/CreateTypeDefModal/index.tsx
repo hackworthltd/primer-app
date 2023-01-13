@@ -54,8 +54,7 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
         .trim()
         .min(1, { message: "Please provide a name for the type" })
         .refine((name) => !p.moduleTypeDefNames.has(name), {
-          message:
-            "Type names must be unique, but there's already a type with this name in this module",
+          message: "There's already another type with this name in this module",
         }),
       ctor: z.array(ctorInputSchema),
     })
@@ -70,7 +69,8 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
         if (ctor.name === val.typeName) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: `The type name can't be the same as any of the value constructor names`,
+            message:
+              "This value constructor's name conflicts with its type's name",
             path: ["ctor", i, "name"],
           });
         }
@@ -78,7 +78,8 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
         if (seen.has(ctor.name)) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: `Value constructor names must be unique, but this type has multiple value constructors named "${ctor.name}"`,
+            message:
+              "This value constructor's name conflicts with another's in this type",
             path: ["ctor", i, "name"],
           });
         }
