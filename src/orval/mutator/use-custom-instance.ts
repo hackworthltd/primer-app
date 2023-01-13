@@ -16,6 +16,7 @@ instance.interceptors.response.use((originalResponse) => {
 
 const lastModifiedRE = /^lastModified$/;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function handleDates(body: any) {
   if (body === null || body === undefined || typeof body !== "object")
     return body;
