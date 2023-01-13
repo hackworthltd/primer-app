@@ -34,6 +34,8 @@ export default defineConfig({
       mode: "split",
       workspace: "./src/primer-api",
       target: "./primer-api.ts",
+      // cleaning the output ensures idempotency
+      clean: true,
       schemas: "model",
       client: "react-query",
       // We do not yet use the generated mocks.
@@ -41,7 +43,7 @@ export default defineConfig({
       prettier: true,
       override: {
         mutator: {
-          path: "./mutator/use-custom-instance.ts",
+          path: "../orval/mutator/use-custom-instance.ts",
           name: "useCustomInstance",
         },
         operations: {

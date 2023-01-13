@@ -39,8 +39,8 @@ import type {
   CreateTypeDefBody,
   CreateTypeDefParams
 } from './model'
-import { useCustomInstance } from './mutator/use-custom-instance';
-import type { ErrorType } from './mutator/use-custom-instance';
+import { useCustomInstance } from '../orval/mutator/use-custom-instance';
+import type { ErrorType } from '../orval/mutator/use-custom-instance';
 
 
 /**

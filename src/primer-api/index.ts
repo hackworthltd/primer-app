@@ -1,4 +1,2 @@
-export * from "./primer-api";
-export * from "./model";
-
-
+export * from './primer-api';
+export * from './model';
