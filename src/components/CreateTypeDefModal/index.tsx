@@ -62,6 +62,12 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
       const seen = new Set();
 
       for (const [i, ctor] of val.ctor.entries()) {
+        // Skip constructors with no name. These are handled by the `min()`
+        // check.
+        if (ctor.name === "") {
+          continue;
+        }
+
         // TODO: add a check for duplicate value constructor names within this module.
         //
         // https://github.com/hackworthltd/primer/issues/830
