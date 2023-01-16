@@ -4,7 +4,14 @@ import "@/index.css";
 
 import classNames from "classnames";
 
+// Like the HTML `<button>` attribute `type`, except that we drop `"reset"`,
+// which (per
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type)
+// tends to annoy people.
+export type ButtonType = "submit" | "button";
+
 export type Size = "responsive" | "sm" | "md" | "lg" | "xl" | "2xl";
+
 export type Appearance =
   | "primary"
   | "secondary"
@@ -41,6 +48,14 @@ export interface UIButtonProps {
    * @type {React.MouseEventHandler<unknown>}
    */
   onClick: MouseEventHandler<unknown> | undefined;
+
+  /**
+   * The button type, which determines the button's behavior when it's
+   * clicked. Defaults to `"button"`.
+   *
+   * @type {ButtonType}
+   */
+  buttonType?: ButtonType;
 
   /**
    * Optional additional CSS styles.
@@ -106,7 +121,7 @@ const buttonClasses = (
 
 export const UIButton = (p: UIButtonProps): JSX.Element => (
   <button
-    type="button"
+    type={p.buttonType ?? "button"}
     onClick={p.onClick}
     disabled={p.disabled}
     className={buttonClasses(p.size, p.appearance, p.className, p.hidden)}

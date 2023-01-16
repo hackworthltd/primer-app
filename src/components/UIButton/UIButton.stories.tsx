@@ -1,8 +1,9 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import type { Size, Appearance, UIButtonProps } from "./";
+import type { ButtonType, Size, Appearance, UIButtonProps } from "./";
 import { UIButton } from "./";
 
+const allTypes: Array<ButtonType> = ["submit", "button"];
 const allSizes: Array<Size> = ["responsive", "sm", "md", "lg", "xl", "2xl"];
 const fixedSizes: Array<Size> = ["sm", "md", "lg", "xl", "2xl"];
 const appearances: Array<Appearance> = [
@@ -39,6 +40,11 @@ export default {
       description: "The onClick handler.",
       action: "clicked",
     },
+    buttonType: {
+      description: "The button type.",
+      options: allTypes,
+      control: { type: "radio" },
+    },
     disabled: {
       description: "If true, the button is disabled.",
       control: { type: "boolean" },
@@ -69,6 +75,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
     <div className="mb-8 flex flex-row items-center justify-around">
       {fixedSizes.map((sz) => (
         <UIButton
+          buttonType={args.buttonType}
           onClick={args.onClick}
           text="New program"
           appearance="primary"
@@ -83,6 +90,7 @@ const AllButtonsTemplate: ComponentStory<typeof UIButton> = (
     <div className="mb-8 flex flex-row items-center justify-around">
       {fixedSizes.map((sz) => (
         <UIButton
+          buttonType={args.buttonType}
           onClick={args.onClick}
           text="Settings"
           appearance="secondary"

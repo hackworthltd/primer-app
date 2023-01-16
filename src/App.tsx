@@ -1,5 +1,6 @@
 import {
   CreateDefModal,
+  CreateTypeDefModal,
   TreeReactFlow,
   Error,
   ActionPanel,
@@ -22,6 +23,7 @@ import {
   Options,
   useGetActionOptions,
   useCreateDefinition,
+  useCreateTypeDef,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -129,11 +131,14 @@ const AppNoError = ({
   setProg: (p: Prog) => void;
 }): JSX.Element => {
   const [showCreateDefModal, setShowCreateDefModal] = useState<boolean>(false);
+  const [showCreateTypeDefModal, setShowCreateTypeDefModal] =
+    useState<boolean>(false);
   const onClickAddDef = (): void => {
     setShowCreateDefModal(true);
   };
 
   const createDef = useCreateDefinition();
+  const createTypeDef = useCreateTypeDef();
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
@@ -162,7 +167,7 @@ const AppNoError = ({
           onClickDef={(_label, _event) => ({})}
           onClickAddDef={onClickAddDef}
           onClickTypeDef={(_label, _event) => ({})}
-          onClickAddTypeDef={() => ({})}
+          onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
           shadowed={false}
           type="?"
           folder="unknown"
@@ -242,6 +247,28 @@ const AppNoError = ({
               })
               .then(p.setProg);
             setShowCreateDefModal(false);
+          }}
+        />
+      ) : null}
+      {showCreateTypeDefModal ? (
+        <CreateTypeDefModal
+          moduleTypeDefNames={new Set(p.module.types.map((t) => t.baseName))}
+          open={showCreateTypeDefModal}
+          onClose={() => setShowCreateTypeDefModal(false)}
+          onCancel={() => setShowCreateTypeDefModal(false)}
+          onSubmit={(typeName: string, ctorNames: string[]) => {
+            createTypeDef
+              .mutateAsync({
+                sessionId: p.sessionId,
+                params: treeParams,
+                data: {
+                  moduleName: p.module.modname,
+                  typeName,
+                  ctors: ctorNames,
+                },
+              })
+              .then(p.setProg)
+              .then(() => setShowCreateTypeDefModal(false));
           }}
         />
       ) : null}
