@@ -42,7 +42,8 @@ export interface CreateTypeDefModalProps {
 // reason.
 const ctorInputSchema = z.object({
   name: z.string().trim().min(1, {
-    message: "Please either name this constructor, or delete it",
+    message:
+      "Please either name this constructor, or delete it if it's no longer needed",
   }),
 });
 
