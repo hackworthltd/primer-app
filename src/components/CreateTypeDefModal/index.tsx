@@ -202,7 +202,10 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
                           return (
                             <div key={field.id} className="p-2">
                               <div className="flex gap-2">
-                                <button onClick={() => remove(index)}>
+                                <button
+                                  type="button"
+                                  onClick={() => remove(index)}
+                                >
                                   <MinusIcon className={iconClasses} />
                                 </button>
                                 <input
@@ -230,6 +233,7 @@ export const CreateTypeDefModal = (p: CreateTypeDefModalProps): JSX.Element => {
                         })}
                         <div>
                           <button
+                            type="button"
                             onClick={() =>
                               append({
                                 name: "",
