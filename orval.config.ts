@@ -5,7 +5,7 @@ import { defineConfig } from "orval";
 // This lists the operation IDs for such requests.
 // We configure Orval to generate simple `useQuery`-based code, as it would for a GET request,
 // rather than its default `useMutation` approach for POSTs.
-const getStylePostRequests = ["getAvailableActions"];
+const getStylePostRequests = ["getAvailableActions", "eval-full"];
 const useQueryPost: {
   [key: string]: OperationOptions;
 } = Object.assign(

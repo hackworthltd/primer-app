@@ -493,31 +493,41 @@ export const useEvalFullHook = () => {
       }
     
 
+export const getEvalFullQueryKey = (sessionId: string,
+    globalName: GlobalName,
+    params?: EvalFullParams,) => [`/openapi/sessions/${sessionId}/eval`, ...(params ? [params]: []), globalName];
 
-    export type EvalFullMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>>
-    export type EvalFullMutationBody = GlobalName
-    export type EvalFullMutationError = ErrorType<void>
-
-    export const useEvalFull = <TError = ErrorType<void>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError,{sessionId: string;data: GlobalName;params?: EvalFullParams}, TContext>, }
-) => {
-      const {mutation: mutationOptions} = options ?? {};
+export type EvalFullQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>>
+export type EvalFullQueryError = ErrorType<void>
 
-      const evalFull =  useEvalFullHook()
+export const useEvalFull = <TData = Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError = ErrorType<void>>(
+ sessionId: string,
+    globalName: GlobalName,
+    params?: EvalFullParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError, TData>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getEvalFullQueryKey(sessionId,globalName,params);
+
+  const evalFull =  useEvalFullHook();
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, {sessionId: string;data: GlobalName;params?: EvalFullParams}> = (props) => {
-          const {sessionId,data,params} = props ?? {};
+  const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>> = () => evalFull(sessionId,globalName,params, );
 
-          return  evalFull(sessionId,data,params,)
-        }
 
-        
+  
 
-      return useMutation<Awaited<ReturnType<typeof evalFull>>, TError, {sessionId: string;data: GlobalName;params?: EvalFullParams}, TContext>(mutationFn, mutationOptions);
-    }
-    
+  const query = useQuery<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError, TData>(queryKey, queryFn, {enabled: !!(sessionId), ...queryOptions}) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryKey;
+
+  return query;
+}
+
+
 /**
  * @summary Get the specified session's name
  */

@@ -12,10 +12,10 @@ import {
   treeNodes,
 } from "./Types";
 
-export const layoutTree = (
-  primerTree: PrimerTreeNoPos
+export const layoutTree = <T>(
+  primerTree: PrimerTreeNoPos<T>
 ): Promise<{
-  tree: PrimerTree;
+  tree: PrimerTree<T>;
   width: number;
   height: number;
 }> =>
@@ -51,18 +51,18 @@ export const layoutTree = (
     return { tree, minX, minY, width, height };
   });
 
-type NodeInfo = {
+type NodeInfo<T> = {
   id: number;
-  node: NodeNoPos<PrimerNodeProps | PrimerDefNameNodeProps>;
+  node: NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>;
   edges: { target: string; edge: Edge<Empty> }[];
 };
-type NodeMap = Map<
+type NodeMap<T> = Map<
   number,
-  [NodeNoPos<PrimerNodeProps | PrimerDefNameNodeProps>, EdgeMap]
+  [NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>, EdgeMap]
 >;
 type EdgeMap = Map<string, Edge<Empty>>;
-const makeNodeInfoMap = (nodes: NodeInfo[]): NodeMap => {
-  const nodeMap: NodeMap = new Map();
+const makeNodeInfoMap = <T>(nodes: NodeInfo<T>[]): NodeMap<T> => {
+  const nodeMap: NodeMap<T> = new Map();
   nodes.forEach((n) => {
     const edgeMap: EdgeMap = new Map();
     n.edges.forEach((e) => {
@@ -74,16 +74,16 @@ const makeNodeInfoMap = (nodes: NodeInfo[]): NodeMap => {
 };
 
 // Tidy uses numeric IDs, so we label our nodes with ascending integers.
-const primerToTidy = (t: PrimerTreeNoPos): [Node, NodeMap] => {
+const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [Node, NodeMap<T>] => {
   const go = (
-    primerTree: PrimerTreeNoPos,
+    primerTree: PrimerTreeNoPos<T>,
     id: number
-  ): [Node, NodeInfo[], number] => {
+  ): [Node, NodeInfo<T>[], number] => {
     const primerChildren = primerTree.childTrees.concat(
       primerTree.rightChild ? [primerTree.rightChild] : []
     );
     const [children, ids, nextId] = primerChildren.reduce<
-      [Node[], NodeInfo[], number]
+      [Node[], NodeInfo<T>[], number]
     >(
       (ts, [t, _]) => {
         const [trees, ids, nextId] = ts;
@@ -119,14 +119,14 @@ const primerToTidy = (t: PrimerTreeNoPos): [Node, NodeMap] => {
 };
 
 // Convert numeric IDs back to the original annotated nodes and edges.
-export const tidyToPrimer = (
+export const tidyToPrimer = <T>(
   tree: InnerNode,
   lookupNode: (
     id: number
-  ) => NodeNoPos<PrimerNodeProps | PrimerDefNameNodeProps>,
+  ) => NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
   lookupEdge: (source: number, target: string) => Edge<Empty>
-): PrimerTree => {
-  const trees = tree.children.reduce<PrimerTree[]>((ts, t) => {
+): PrimerTree<T> => {
+  const trees = tree.children.reduce<PrimerTree<T>[]>((ts, t) => {
     return ts.concat(tidyToPrimer(t, lookupNode, lookupEdge));
   }, []);
   const node = lookupNode(tree.id);
