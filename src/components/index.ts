@@ -18,7 +18,7 @@ export { default as SessionsNavBar } from "./SessionsNavBar";
 export { default as SessionsPage } from "./SessionsPage";
 export { default as Sidebar } from "./Sidebar";
 export { default as SimplePaginationBar } from "./SimplePaginationBar";
-export { default as TreeReactFlow } from "./TreeReactFlow";
+export { default as TreeReactFlow, TreeReactFlowOne } from "./TreeReactFlow";
 export { default as UIButton } from "./UIButton";
 export { exampleSessionsMeta } from "./examples/sessions";
 export { exampleAccount } from "./examples/accounts";

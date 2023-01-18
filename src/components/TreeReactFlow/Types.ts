@@ -21,13 +21,13 @@ export const combineGraphs = <
   return { nodes: nodes.flat(), edges: edges.flat() };
 };
 
-export type PrimerGraph = Graph<
-  Node<PrimerNodeProps | PrimerDefNameNodeProps>,
+export type PrimerGraph<T> = Graph<
+  Node<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
   Edge<Empty>
 >;
 
-export type PrimerGraphNoPos = Graph<
-  NodeNoPos<PrimerNodeProps | PrimerDefNameNodeProps>,
+export type PrimerGraphNoPos<T> = Graph<
+  NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
   Edge<Empty>
 >;
 
@@ -75,29 +75,33 @@ export const treeToGraph = <
   );
 };
 
-export type PrimerTree = TreeSimple<
-  Node<PrimerNodeProps | PrimerDefNameNodeProps>,
+export type PrimerTree<T> = TreeSimple<
+  Node<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
   Edge<Empty>
 >;
 
-export type PrimerTreeNoPos = TreeSimple<
-  NodeNoPos<PrimerNodeProps | PrimerDefNameNodeProps>,
+export type PrimerTreeNoPos<T> = TreeSimple<
+  NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
   Edge<Empty>
 >;
 
 /** Node properties. */
-export type PrimerNodeProps = {
+export type PrimerNodeProps<T> = {
   label?: string;
   contents: string | undefined;
   width: number;
   height: number;
   flavor: NodeFlavor;
   selected: boolean;
-} & PrimerTreeProps;
+} & T;
 
 /** Node properties which are equal for all nodes in a single input tree. */
 export type PrimerTreeProps = {
   def: GlobalName;
+  nodeType: NodeType;
+};
+
+export type PrimerTreePropsOne = {
   nodeType: NodeType;
 };
 

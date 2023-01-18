@@ -6,7 +6,12 @@ import {
   ActionPanel,
   Sidebar,
 } from "@/components";
-import { useState } from "react";
+import {
+  QueryKey,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
+import { DependencyList, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   useGetAvailableActions,
@@ -24,6 +29,7 @@ import {
   useGetActionOptions,
   useCreateDefinition,
   useCreateTypeDef,
+  useEvalFull,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -118,6 +124,26 @@ function cmpName(a: GlobalName, b: GlobalName) {
   return 0;
 }
 
+const useInvalidateOnChange = <TData, TError>(
+  res: UseQueryResult<TData, TError> & { queryKey: QueryKey },
+  deps: DependencyList
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryClient = useQueryClient();
+  useEffect(
+    () => {
+      (async () =>
+        await queryClient.invalidateQueries(res.queryKey, { exact: true }))();
+    },
+    // We stringify the queryKey as a poor-man's deep equality check,
+    // since the orval generated bindings to react-query construct a
+    // new key (a list) each time it is used. Whilst the contents of
+    // this key do not change, the object does.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [queryClient, JSON.stringify(res.queryKey), ...deps]
+  );
+  return res;
+};
+
 const AppNoError = ({
   selection,
   setSelection,
@@ -143,6 +169,16 @@ const AppNoError = ({
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
 
+  const [evalTarget, setEvalTarget] = useState<string | undefined>();
+  const evalResult = useInvalidateOnChange(
+    useEvalFull(
+      p.sessionId,
+      { qualifiedModule: p.module.modname, baseName: evalTarget || "" },
+      treeParams,
+      { query: { enabled: !!evalTarget } }
+    ),
+    [p.module]
+  );
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="overflow-scroll">
@@ -171,6 +207,11 @@ const AppNoError = ({
           shadowed={false}
           type="?"
           folder="unknown"
+          moduleName={p.module.modname}
+          evalFull={{
+            request: setEvalTarget,
+            ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
+          }}
         />
       </div>
       <TreeReactFlow
