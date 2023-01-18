@@ -33,6 +33,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Note: we only audit non-dev dependencies, because there are
+      # nearly always dev dependency vulnerabilities, but they're very
+      # unlikely to affect the production app.
+      - name: Audit
+        run: pnpm audit --prod
+
       - name: Build the frontend
         run: pnpm build
 
@@ -40,9 +46,3 @@ jobs:
       # be able to resolve some paths.
       - name: Lint
         run: pnpm lint --max-warnings=0
-
-      # Note: we only audit non-dev dependencies, because there are
-      # nearly always dev dependency vulnerabilities, but they're very
-      # unlikely to affect the production app.
-      - name: Audit
-        run: pnpm audit --prod
