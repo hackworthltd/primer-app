@@ -1,7 +1,15 @@
+# Note: this workflow is a dependency of several other workflows in
+# this repo. Those workflows are triggered via the name of this
+# workflow, so don't change the name here without also changing it in
+# all of its dependent workflows!
+
 name: Build the frontend
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build-frontend:
