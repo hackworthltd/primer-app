@@ -1,12 +1,21 @@
 name: Deploy hackworth-codes-logging
+
 on:
-  push:
+  workflow_run:
+    workflows:
+      - Build the frontend
+    types:
+      - completed
     branches:
       - main
+
 jobs:
   deploy:
     name: Deploy hackworth-codes-logging
     runs-on: ubuntu-latest
+
+    # Only run if the triggering workflow was successful.
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     permissions:
       contents: read
