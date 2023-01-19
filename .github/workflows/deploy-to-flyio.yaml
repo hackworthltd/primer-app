@@ -1,4 +1,13 @@
 name: Deploy primer-service
+
+# Ensure only one production deployment happens at a time.
+#
+# We *do* allow concurrent production deployments to all production
+# apps, however.
+
+concurrency:
+  group: production-hackworth-codes
+
 on:
   workflow_run:
     workflows:

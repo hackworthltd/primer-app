@@ -1,5 +1,13 @@
 name: Deploy hackworth-codes-logging
 
+# Ensure only one production deployment happens at a time.
+#
+# We *do* allow concurrent production deployments to all production
+# apps, however.
+
+concurrency:
+  group: production-hackworth-codes-logging
+
 on:
   workflow_run:
     workflows:
