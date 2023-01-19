@@ -79,7 +79,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
           <UIButton
             size="responsive"
             appearance="primary"
-            text="New program"
+            text="New project"
             onClick={p.onClickNewProgram}
           />
         </div>
