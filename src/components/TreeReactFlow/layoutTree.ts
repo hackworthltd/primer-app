@@ -80,13 +80,13 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [Node, NodeMap<T>] => {
     const primerChildren = primerTree.childTrees.concat(
       primerTree.rightChild ? [primerTree.rightChild] : []
     );
-    const [children, ids, nextId] = primerChildren.reduce<
+    const [children, nodes, nextId] = primerChildren.reduce<
       [Node[], NodeInfo<T>[], number]
     >(
       (ts, [t, _]) => {
-        const [trees, ids, nextId] = ts;
-        const [tree1, ids1, nextId1] = go(t, nextId);
-        return [trees.concat(tree1), ids.concat(ids1), nextId1];
+        const [trees, nodes, nextId] = ts;
+        const [tree1, nodes1, nextId1] = go(t, nextId);
+        return [trees.concat(tree1), nodes.concat(nodes1), nextId1];
       },
       [[], [], id + 1]
     );
@@ -101,7 +101,7 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [Node, NodeMap<T>] => {
         x: 0,
         y: 0,
       },
-      ids.concat({
+      nodes.concat({
         id,
         node: primerTree.node,
         edges: primerChildren.map(([_, edge]) => edge),
@@ -121,12 +121,12 @@ const tidyToPrimer = <T>(
   ) => NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
   lookupEdge: (source: number, target: string) => Edge<Empty>
 ): PrimerTree<T> => {
-  const trees = tree.children.map((t) =>
+  const children = tree.children.map((t) =>
     tidyToPrimer(t, lookupNode, lookupEdge)
   );
   const node = lookupNode(tree.id);
   return {
-    childTrees: trees.map((t) => [t, lookupEdge(tree.id, t.node.id)]),
+    childTrees: children.map((t) => [t, lookupEdge(tree.id, t.node.id)]),
     node: {
       ...node,
       position: {
