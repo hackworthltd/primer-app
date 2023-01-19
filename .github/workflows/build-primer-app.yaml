@@ -55,7 +55,19 @@ jobs:
       - name: Lint
         run: pnpm lint --max-warnings=0
 
-      - name: Import secrets from Vault
+
+      # Skip the next 2 steps if this is a Mergify merge queue branch,
+      # as those don't work correctly with deployments, for some
+      # reason.
+      #
+      # Note that GitHub workflows don't support early exit, so we
+      # need to do the check for each step :\
+      #
+      # See:
+      # https://github.com/actions/runner/issues/662
+
+      - if: ${{ !startsWith(github.ref, 'tmp-mergify/merge-queue') }}
+        name: Import secrets from Vault
         uses: hashicorp/vault-action@v2.4.3
         id: secrets
         with:
@@ -67,7 +79,8 @@ jobs:
           secrets: |
             secret/data/cloudflare/primer-app api-token | CLOUDFLARE_API_TOKEN ;
 
-      - name: Deploy to Cloudflare
+      - if: ${{ !startsWith(github.ref, 'tmp-mergify/merge-queue') }}
+        name: Deploy to Cloudflare
         uses: cloudflare/pages-action@v1.3.0
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
