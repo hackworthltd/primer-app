@@ -78,7 +78,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
         <div className="inline-flex items-center py-2 pl-4">
           <UIButton
             size="responsive"
-            appearance="primary"
+            appearance="warning"
             text="New program"
             onClick={p.onClickNewProgram}
           />
