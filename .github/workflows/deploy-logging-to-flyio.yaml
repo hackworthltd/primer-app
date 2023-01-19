@@ -31,8 +31,8 @@ jobs:
       deployments: write
 
     environment:
-      name: production
-      url: https://hackworth-codes-logging.fly.dev/
+      name: "Production (logging)"
+      url: https://fly.io/apps/hackworth-codes-logging
 
     steps:
       - name: Checkout repo
