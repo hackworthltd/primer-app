@@ -71,6 +71,11 @@ jobs:
           secrets: |
             secret/data/cloudflare/primer-app api-token | CLOUDFLARE_API_TOKEN ;
 
+      # Not only does this action deploy to Cloudflare Pages, it also
+      # creates a GitHub environment (and corresponding deployment).
+      # For PRs, this environment will be named "Preview
+      # :(name-of-branch)". For merges to `main`, it'll be named
+      # "Production". These names do not appear to be configurable.
       - name: Deploy to Cloudflare
         uses: cloudflare/pages-action@v1.3.0
         with:
