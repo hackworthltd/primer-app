@@ -204,6 +204,8 @@
           inherit (primerPackages) primer-service-docker-image;
           inherit (scripts) deploy-primer-service deploy-hackworth-codes-logging;
           inherit hackworth-codes-logging-docker-image;
+
+          inherit (pkgs) tailscale;
         });
 
         checks = {
