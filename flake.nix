@@ -135,31 +135,33 @@
               overlays = allOverlays;
             };
 
-          pre-commit = {
-            check.enable = true;
-            settings = {
-              src = ./.;
-              hooks = {
-                prettier.enable = true;
-                nixpkgs-fmt.enable = true;
+          pre-commit =
+            # aarch64-linux check is currently broken.
+            (pkgs.lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-darwin") {
+              check.enable = true;
+              settings = {
+                src = ./.;
+                hooks = {
+                  prettier.enable = true;
+                  nixpkgs-fmt.enable = true;
 
-                actionlint = {
-                  enable = true;
-                  name = "actionlint";
-                  entry = "${pkgs.actionlint}/bin/actionlint";
-                  language = "system";
-                  files = "^.github/workflows/";
+                  actionlint = {
+                    enable = true;
+                    name = "actionlint";
+                    entry = "${pkgs.actionlint}/bin/actionlint";
+                    language = "system";
+                    files = "^.github/workflows/";
+                  };
                 };
-              };
 
-              excludes = [
-                "README.md"
-                "package.json"
-                "pnpm-lock.yaml"
-                ".mergify.yml"
-              ];
-            };
-          };
+                excludes = [
+                  "README.md"
+                  "package.json"
+                  "pnpm-lock.yaml"
+                  ".mergify.yml"
+                ];
+              };
+            });
 
           packages =
             let
