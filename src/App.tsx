@@ -51,7 +51,7 @@ const App = (): JSX.Element => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const queryRes = useGetProgram(sessionId, treeParams);
 
-  if (!queryRes.isSuccess) {
+  if (queryRes.error) {
     return (
       <Error
         string={
@@ -60,6 +60,12 @@ const App = (): JSX.Element => {
         }
       />
     );
+  }
+
+  // This state will appear on every load, usually only very briefly,
+  // and we choose to just show nothing.
+  if (queryRes.isLoading) {
+    return <></>;
   }
 
   // At this point, we have successfully received an initial program.
@@ -235,7 +241,7 @@ const AppNoError = ({
         defs={p.module.defs}
         forestLayout="Horizontal"
         treePadding={100}
-        nodeWidth={150}
+        nodeWidth={90}
         nodeHeight={50}
         boxPadding={50}
       />
