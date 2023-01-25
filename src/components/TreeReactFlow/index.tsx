@@ -7,6 +7,7 @@ import {
   Position,
   NodeProps,
   Background,
+  HandleType,
 } from "reactflow";
 import "./reactflow.css";
 import { useEffect, useId, useState } from "react";
@@ -549,9 +550,12 @@ const noBodyFlavorContents = (flavor: NodeFlavor): string | undefined => {
 };
 
 const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
+  const handle = (type: HandleType, position: Position) => (
+    <Handle isConnectable={false} type={type} position={position} />
+  );
   return (
     <>
-      <Handle isConnectable={false} type="target" position={Position.Top} />
+      {handle("target", Position.Top)}
       <div
         className={primerNodeClasses(p.data.selected, p.data.flavor)}
         style={{
@@ -570,7 +574,7 @@ const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
           <></>
         )}
       </div>
-      <Handle isConnectable={false} type="source" position={Position.Bottom} />
+      {handle("source", Position.Bottom)}
     </>
   );
 };
