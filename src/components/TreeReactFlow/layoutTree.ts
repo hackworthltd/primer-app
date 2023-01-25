@@ -1,5 +1,9 @@
 import { Edge } from "reactflow";
-import { InnerNode, Node, TidyLayout } from "@zxch3n/tidy";
+import {
+  InnerNode as InnerTidyNode,
+  Node as TidyNode,
+  TidyLayout,
+} from "@zxch3n/tidy";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
 import {
   Empty,
@@ -72,16 +76,16 @@ const makeNodeInfoMap = <T>(nodes: NodeInfo<T>[]): NodeMap<T> => {
 };
 
 // Tidy uses numeric IDs, so we label our nodes with ascending integers.
-const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [Node, NodeMap<T>] => {
+const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeMap<T>] => {
   const go = (
     primerTree: PrimerTreeNoPos<T>,
     id: number
-  ): [Node, NodeInfo<T>[], number] => {
+  ): [TidyNode, NodeInfo<T>[], number] => {
     const primerChildren = primerTree.childTrees.concat(
       primerTree.rightChild ? [primerTree.rightChild] : []
     );
     const [children, nodes, nextId] = primerChildren.reduce<
-      [Node[], NodeInfo<T>[], number]
+      [TidyNode[], NodeInfo<T>[], number]
     >(
       (ts, [t, _]) => {
         const [trees, nodes, nextId] = ts;
@@ -115,7 +119,7 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [Node, NodeMap<T>] => {
 
 // Convert numeric IDs back to the original annotated nodes and edges.
 const tidyToPrimer = <T>(
-  tree: InnerNode,
+  tree: InnerTidyNode,
   lookupNode: (
     id: number
   ) => NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
