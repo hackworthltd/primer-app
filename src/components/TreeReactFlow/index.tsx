@@ -551,11 +551,17 @@ const noBodyFlavorContents = (flavor: NodeFlavor): string | undefined => {
 
 const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
   const handle = (type: HandleType, position: Position) => (
-    <Handle isConnectable={false} type={type} position={position} />
+    <Handle
+      id={position}
+      isConnectable={false}
+      type={type}
+      position={position}
+    />
   );
   return (
     <>
       {handle("target", Position.Top)}
+      {handle("target", Position.Left)}
       <div
         className={primerNodeClasses(p.data.selected, p.data.flavor)}
         style={{
@@ -575,6 +581,7 @@ const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
         )}
       </div>
       {handle("source", Position.Bottom)}
+      {handle("source", Position.Right)}
     </>
   );
 };
@@ -833,7 +840,11 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
           })();
           return [
             gs.concat({
-              edges: g.edges,
+              edges: g.edges.map(({ isRight, ...e }) => ({
+                ...e,
+                sourceHandle: isRight ? Position.Right : Position.Bottom,
+                targetHandle: isRight ? Position.Left : Position.Top,
+              })),
               nodes: g.nodes.map((n) => ({
                 ...n,
                 position: {
