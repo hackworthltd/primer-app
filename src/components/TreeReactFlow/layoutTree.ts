@@ -1,4 +1,4 @@
-import { Edge } from "reactflow";
+import { Node, Edge } from "reactflow";
 import {
   InnerNode as InnerTidyNode,
   Node as TidyNode,
@@ -13,7 +13,6 @@ import {
   PrimerTree,
   PrimerTreeNoPos,
   treeMap,
-  treeNodes,
 } from "./Types";
 
 export const layoutTree = <T>(
@@ -25,20 +24,21 @@ export const layoutTree = <T>(
 }> =>
   TidyLayout.create().then((layout) => {
     layout.changeLayoutType(WasmLayoutType.Tidy);
-    const [treeTidy0, nodeMap] = primerToTidy(primerTree);
+    const [treeTidy0, nodeInfoList] = primerToTidy(primerTree);
     const treeTidy = layout.set_root(treeTidy0);
     layout.layout(true);
     layout.dispose();
-    const treeUnNormalized = tidyToPrimer(
-      treeTidy,
-      (id) =>
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion*/
-        nodeMap.get(id)![0],
-      (source, target) =>
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion*/
-        nodeMap.get(source)![1].get(target)!
+    const { rootId, nodeMap } = makeNodeMap(
+      treeTidy.id,
+      nodeInfoList,
+      tidyTreeNodes(treeTidy)
     );
-    const nodes = treeNodes(treeUnNormalized);
+    const treeUnNormalized = makePrimerTree(
+      rootId,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      (id) => nodeMap.get(id)!
+    );
+    const nodes = Array.from(nodeMap.values()).map((n) => n.node);
     const minX = Math.min(...nodes.map((n) => n.position.x));
     const minY = Math.min(...nodes.map((n) => n.position.y));
     const tree = treeMap(treeUnNormalized, (n) => ({
@@ -58,41 +58,85 @@ export const layoutTree = <T>(
 type NodeInfo<T> = {
   id: number;
   node: NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>;
-  edges: Edge<Empty>[];
+  edges: { edge: Edge<Empty>; isRight: boolean }[];
 };
-type NodeMap<T> = Map<
-  number,
-  [NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>, EdgeMap]
->;
-type EdgeMap = Map<string, Edge<Empty>>;
-const makeNodeInfoMap = <T>(nodes: NodeInfo<T>[]): NodeMap<T> => {
-  const nodeMap: NodeMap<T> = new Map();
-  nodes.forEach((n) => {
-    const edgeMap: EdgeMap = new Map();
-    n.edges.forEach((e) => edgeMap.set(e.target, e));
-    nodeMap.set(n.id, [n.node, edgeMap]);
+// A single node of a `PrimerTree<T>`.
+// Note that this type is very similar in structure to `PrimerTree<T>`,
+// the only difference being that this type does not contain the actual subtrees.
+type PrimerTreeNode<T> = {
+  node: Node<PrimerNodeProps<T> | PrimerDefNameNodeProps>;
+  edges: Edge<Empty>[];
+  rightEdge?: Edge<Empty>;
+};
+const makeNodeMap = <T>(
+  rootId: number,
+  nodeInfos: NodeInfo<T>[],
+  positions: { id: number; x: number; y: number }[]
+): { rootId: string; nodeMap: Map<string, PrimerTreeNode<T>> } => {
+  const posMap = new Map<number, { x: number; y: number }>();
+  positions.forEach((n) => posMap.set(n.id, n));
+  const tidyIdToPrimer = new Map<number, string>();
+  const nodeMap = new Map<string, PrimerTreeNode<T>>();
+  nodeInfos.forEach((n) => {
+    tidyIdToPrimer.set(n.id, n.node.id);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { x, y } = posMap.get(n.id)!;
+    nodeMap.set(n.node.id, {
+      node: { ...n.node, position: { x: x - n.node.data.width / 2, y } },
+      // Edges (including right edge) will be filled in later when we iterate over `n.edges`.
+      edges: [],
+    });
+    n.edges.forEach(({ edge, isRight }) => {
+      // We know this lookup won't fail since we've already added all nodes to the map.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const node = nodeMap.get(edge.source)!;
+      if (isRight) {
+        nodeMap.set(edge.source, { ...node, rightEdge: edge });
+      } else {
+        nodeMap.set(edge.source, {
+          ...node,
+          edges: node.edges.concat(edge),
+        });
+      }
+    });
   });
-  return nodeMap;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return { rootId: tidyIdToPrimer.get(rootId)!, nodeMap };
 };
 
 // Tidy uses numeric IDs, so we label our nodes with ascending integers.
-const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeMap<T>] => {
+const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
   const go = (
     primerTree: PrimerTreeNoPos<T>,
     id: number
   ): [TidyNode, NodeInfo<T>[], number] => {
-    const primerChildren = primerTree.childTrees.concat(
-      primerTree.rightChild ? [primerTree.rightChild] : []
-    );
-    const [children, nodes, nextId] = primerChildren.reduce<
-      [TidyNode[], NodeInfo<T>[], number]
-    >(
-      (ts, [t, _]) => {
-        const [trees, nodes, nextId] = ts;
-        const [tree1, nodes1, nextId1] = go(t, nextId);
-        return [trees.concat(tree1), nodes.concat(nodes1), nextId1];
-      },
-      [[], [], id + 1]
+    const mkNodeInfos = (
+      primerTree0: PrimerTreeNoPos<T>[],
+      id0: number
+    ): [TidyNode[], NodeInfo<T>[], Edge<Empty>[], number] =>
+      primerTree0.reduce<[TidyNode[], NodeInfo<T>[], Edge<Empty>[], number]>(
+        (ts, t) => {
+          const [trees, nodes, rightEdges, nextId] = ts;
+          const [tree1, nodes1, nextId1] = go(t, nextId);
+          // We explore (transitive) right-children now,
+          // telling Tidy that they are children of the current node,
+          // so that it will lay them out at the same y-coordinates as their real parents.
+          // We still keep track of the original topology in the `source` and `target` of `Edge`s.
+          const [treesR, nodesR, rightEdgesR, nextIdR] = t.rightChild
+            ? mkNodeInfos([t.rightChild[0]], nextId1)
+            : [[], [], [], nextId1];
+          return [
+            trees.concat(tree1).concat(treesR),
+            nodes.concat(nodes1).concat(nodesR),
+            rightEdges.concat(rightEdgesR).concat(t.rightChild?.[1] ?? []),
+            nextIdR,
+          ];
+        },
+        [[], [], [], id0 + 1]
+      );
+    const [children, nodes, rightEdges, nextId] = mkNodeInfos(
+      primerTree.childTrees.map(([t, _]) => t),
+      id
     );
     return [
       {
@@ -108,35 +152,34 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeMap<T>] => {
       nodes.concat({
         id,
         node: primerTree.node,
-        edges: primerChildren.map(([_, edge]) => edge),
+        edges: primerTree.childTrees
+          .map(([_, edge]) => ({ edge, isRight: false }))
+          .concat(rightEdges.map((edge) => ({ edge, isRight: true }))),
       }),
       nextId,
     ];
   };
+  // NB. This may look inline-able, but TS isn't happy to coerce the types otherwise.
   const [n, m] = go(t, 0);
-  return [n, makeNodeInfoMap(m)];
+  return [n, m];
 };
 
-// Convert numeric IDs back to the original annotated nodes and edges.
-const tidyToPrimer = <T>(
-  tree: InnerTidyNode,
-  lookupNode: (
-    id: number
-  ) => NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
-  lookupEdge: (source: number, target: string) => Edge<Empty>
+// Unfold a tree, from an initial node and a function which computes each node's children.
+const makePrimerTree = <T>(
+  rootId: string,
+  lookupNode: (id: string) => PrimerTreeNode<T>
 ): PrimerTree<T> => {
-  const children = tree.children.map((t) =>
-    tidyToPrimer(t, lookupNode, lookupEdge)
-  );
-  const node = lookupNode(tree.id);
+  const { node, edges, rightEdge } = lookupNode(rootId);
   return {
-    childTrees: children.map((t) => [t, lookupEdge(tree.id, t.node.id)]),
-    node: {
-      ...node,
-      position: {
-        x: tree.x - node.data.width / 2,
-        y: tree.y,
-      },
-    },
+    childTrees: edges.map((e) => [makePrimerTree(e.target, lookupNode), e]),
+    ...(rightEdge
+      ? {
+          rightChild: [makePrimerTree(rightEdge.target, lookupNode), rightEdge],
+        }
+      : {}),
+    node,
   };
 };
+
+const tidyTreeNodes = (t: InnerTidyNode): InnerTidyNode[] =>
+  [t].concat(t.children.flatMap(tidyTreeNodes));
