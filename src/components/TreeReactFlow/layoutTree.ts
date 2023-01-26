@@ -106,38 +106,34 @@ const makeNodeMap = <T>(
 
 // Tidy uses numeric IDs, so we label our nodes with ascending integers.
 const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
-  const go = (
-    primerTree: PrimerTreeNoPos<T>,
-    id: number
-  ): [TidyNode, NodeInfo<T>[], number] => {
+  let id = 0;
+  const go = (primerTree: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
     const mkNodeInfos = (
-      primerTree0: PrimerTreeNoPos<T>[],
-      id0: number
-    ): [TidyNode[], NodeInfo<T>[], Edge<Empty>[], number] =>
-      primerTree0.reduce<[TidyNode[], NodeInfo<T>[], Edge<Empty>[], number]>(
+      primerTree0: PrimerTreeNoPos<T>[]
+    ): [TidyNode[], NodeInfo<T>[], Edge<Empty>[]] =>
+      primerTree0.reduce<[TidyNode[], NodeInfo<T>[], Edge<Empty>[]]>(
         (ts, t) => {
-          const [trees, nodes, rightEdges, nextId] = ts;
-          const [tree1, nodes1, nextId1] = go(t, nextId);
+          const [trees, nodes, rightEdges] = ts;
+          const [tree1, nodes1] = go(t);
           // We explore (transitive) right-children now,
           // telling Tidy that they are children of the current node,
           // so that it will lay them out at the same y-coordinates as their real parents.
           // We still keep track of the original topology in the `source` and `target` of `Edge`s.
-          const [treesR, nodesR, rightEdgesR, nextIdR] = t.rightChild
-            ? mkNodeInfos([t.rightChild[0]], nextId1)
-            : [[], [], [], nextId1];
+          const [treesR, nodesR, rightEdgesR] = t.rightChild
+            ? mkNodeInfos([t.rightChild[0]])
+            : [[], [], []];
           return [
             trees.concat(tree1).concat(treesR),
             nodes.concat(nodes1).concat(nodesR),
             rightEdges.concat(rightEdgesR).concat(t.rightChild?.[1] ?? []),
-            nextIdR,
           ];
         },
-        [[], [], [], id0 + 1]
+        [[], [], []]
       );
-    const [children, nodes, rightEdges, nextId] = mkNodeInfos(
-      primerTree.childTrees.map(([t, _]) => t),
-      id
+    const [children, nodes, rightEdges] = mkNodeInfos(
+      primerTree.childTrees.map(([t, _]) => t)
     );
+    id = id + 1;
     return [
       {
         width: primerTree.node.data.width,
@@ -156,12 +152,9 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
           .map(([_, edge]) => ({ edge, isRight: false }))
           .concat(rightEdges.map((edge) => ({ edge, isRight: true }))),
       }),
-      nextId,
     ];
   };
-  // NB. This may look inline-able, but TS isn't happy to coerce the types otherwise.
-  const [n, m] = go(t, 0);
-  return [n, m];
+  return go(t);
 };
 
 // Unfold a tree, from an initial node and a function which computes each node's children.
