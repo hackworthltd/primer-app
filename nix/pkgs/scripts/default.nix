@@ -101,7 +101,7 @@ let
         flyDotIoOrg = "hackworth-ltd";
 
         # Yes, it's HTTP, not HTTPS -- we're logging via Tailscale.
-        lokiEndpoint = "http://log-a.hackworthltd.com.beta.tailscale.net:3100";
+        lokiEndpoint = "http://log-b.hackworthltd.com.beta.tailscale.net:3100";
       in
       {
         sources.internal_metrics = {
