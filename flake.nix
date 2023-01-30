@@ -52,7 +52,7 @@
         inputs.pre-commit-hooks-nix.flakeModule
       ];
 
-      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
+      systems = [ "x86_64-linux" "aarch64-darwin" ];
 
       perSystem = { config, pkgs, system, ... }:
         let
@@ -166,7 +166,7 @@
             in
             {
               inherit (primerPackages) run-primer primer-openapi-spec primer-sqitch;
-            } // (pkgs.lib.optionalAttrs (system == "x86_64-linux" || system == "aarch64-linux") {
+            } // (pkgs.lib.optionalAttrs (system == "x86_64-linux") {
               inherit (primerPackages) primer-service-docker-image;
               inherit (scripts) deploy-primer-service deploy-hackworth-codes-logging;
               inherit hackworth-codes-logging-docker-image;
@@ -250,10 +250,8 @@
               name = "required-nix-ci";
               constituents = builtins.map builtins.attrValues (with inputs.self.hydraJobs; [
                 packages.x86_64-linux
-                packages.aarch64-linux
                 packages.aarch64-darwin
                 checks.x86_64-linux
-                checks.aarch64-linux
                 checks.aarch64-darwin
               ]);
               meta.description = "Required CI builds";
