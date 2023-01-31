@@ -112,10 +112,9 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
   const go = (primerTree: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
     const mkNodeInfos = (
       primerTree0: PrimerTreeNoPos<T>[]
-    ): [TidyNode[], NodeInfo<T>[], Edge<Empty>[]] =>
-      primerTree0.reduce<[TidyNode[], NodeInfo<T>[], Edge<Empty>[]]>(
-        (ts, t) => {
-          const [trees, nodes, rightEdges] = ts;
+    ): [TidyNode[], NodeInfo<T>[], Edge<Empty>[]] => {
+      const r = primerTree0.map<[TidyNode[], NodeInfo<T>[], Edge<Empty>[]]>(
+        (t) => {
           const [tree1, nodes1] = go(t);
           // We explore (transitive) right-children now,
           // telling Tidy that they are children of the current node,
@@ -125,13 +124,19 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
             ? mkNodeInfos([t.rightChild[0]])
             : [[], [], []];
           return [
-            trees.concat(tree1).concat(treesR),
-            nodes.concat(nodes1).concat(nodesR),
-            rightEdges.concat(rightEdgesR).concat(t.rightChild?.[1] ?? []),
+            [tree1].concat(treesR),
+            nodes1.concat(nodesR),
+            rightEdgesR.concat(t.rightChild?.[1] ?? []),
           ];
-        },
-        [[], [], []]
+        }
       );
+      // Flatten each list in the tuple.
+      return [
+        r.flatMap((x) => x[0]),
+        r.flatMap((x) => x[1]),
+        r.flatMap((x) => x[2]),
+      ];
+    };
     const [children, nodes, rightEdges] = mkNodeInfos(
       primerTree.childTrees.map(([t, _]) => t)
     );
