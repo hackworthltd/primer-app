@@ -86,6 +86,8 @@ const makeNodeMap = <T>(
       // Edges (including right edge) will be filled in later when we iterate over `n.edges`.
       edges: [],
     });
+  });
+  nodeInfos.forEach((n) => {
     n.edges.forEach(({ edge, isRight }) => {
       // We know this lookup won't fail since we've already added all nodes to the map.
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
