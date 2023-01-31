@@ -3,7 +3,7 @@ import "@/index.css";
 import { ActionButton } from "@/components";
 import {
   Action,
-  GetAvailableActionsLevel,
+  Level,
   InputAction,
   NoInputAction,
   Option,
@@ -18,7 +18,7 @@ import classNames from "classnames";
 
 export interface ActionPanelProps {
   actions: Action[];
-  level: GetAvailableActionsLevel;
+  level: Level;
   onAction: (action: NoInputAction) => void;
   onInputAction: (action: InputAction, option: Option) => void;
   onRequestOpts: (action: InputAction) => Promise<Options>;
