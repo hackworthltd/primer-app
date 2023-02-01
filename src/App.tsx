@@ -34,7 +34,7 @@ import {
 
 // hardcoded values (for now)
 const level = "Expert";
-const patternsUnder = true;
+const patternsUnder = false;
 const treeParams = { patternsUnder };
 
 const App = (): JSX.Element => {
