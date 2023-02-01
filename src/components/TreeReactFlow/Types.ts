@@ -66,9 +66,23 @@ export const treeToGraph = <
   E extends { source: string; target: string }
 >(
   tree: TreeSimple<N, E>
-): Graph<N, E> => {
+): Graph<N, E & { isRight: boolean }> => {
   const [trees, edges] = unzip(
-    tree.childTrees.concat(tree.rightChild ? [tree.rightChild] : [])
+    tree.childTrees
+      .map<[TreeSimple<N, E>, E & { isRight: boolean }]>(([t, e]) => [
+        t,
+        { ...e, ...{ isRight: false } },
+      ])
+      .concat(
+        tree.rightChild
+          ? [
+              [
+                tree.rightChild[0],
+                { ...tree.rightChild[1], ...{ isRight: true } },
+              ],
+            ]
+          : []
+      )
   );
   return combineGraphs(
     trees.map(treeToGraph).concat({ nodes: [tree.node], edges })
