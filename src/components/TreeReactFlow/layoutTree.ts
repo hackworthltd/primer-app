@@ -90,6 +90,9 @@ const makeNodeMap = <T>(
   nodeInfos.forEach((n) => {
     n.edges.forEach(({ edge, isRight }) => {
       // We know this lookup won't fail since we've already added all nodes to the map.
+      // Note that we always have that `edge.source == node.node.id`,
+      // but not necessarily `edge.source == tidyIdToPrimer.get(n.id)!`,
+      // since `edge` could be a dummy e.g. to assist with placement of right-children.
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const node = nodeMap.get(edge.source)!;
       if (isRight) {
@@ -106,7 +109,11 @@ const makeNodeMap = <T>(
   return { rootId: tidyIdToPrimer.get(rootId)!, nodeMap };
 };
 
-// Tidy uses numeric IDs, so we label our nodes with ascending integers.
+// Convert a Primer tree to a Tidy one. The topology may differ slightly,
+// since we use dummy edges e.g. in order to obtain a more desirable placement of right-children.
+// Tidy uses numeric IDs, so we must label nodes with ascending integers.
+// Alongside the tree, we output a map allowing us to trace these new IDs back to the input nodes,
+// along with the rest of the original metadata,
 const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
   let id = 0;
   const go = (primerTree: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
