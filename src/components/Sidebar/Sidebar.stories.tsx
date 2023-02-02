@@ -42,7 +42,16 @@ export const Default: ComponentStory<typeof Sidebar> = (args: SidebarProps) => (
       initialMode="T&D"
       shadowed={true}
       type="Direction → Direction"
-      folder="Direction"
+      selectedNode={{
+        body: {
+          tag: "TextBody",
+          contents: {
+            qualifiedModule: ["Hackworth", "Prelude", "List"],
+            baseName: "foldr",
+          },
+        },
+        flavor: "FlavorGlobalVar",
+      }}
       evalFull={{
         request: () => {
           return;

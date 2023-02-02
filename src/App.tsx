@@ -30,6 +30,8 @@ import {
   useCreateDefinition,
   useCreateTypeDef,
   useEvalFull,
+  Tree,
+  Def,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -185,6 +187,36 @@ const AppNoError = ({
     ),
     [p.module]
   );
+  const findNode = (f: (t: Tree) => boolean, t: Tree): Tree | undefined => {
+    if (f(t)) {
+      return t;
+    } else {
+      // TODO not lazy
+      return t.childTrees
+        .concat(t.rightChild ? [t.rightChild] : [])
+        .map((t1) => findNode(f, t1))
+        .find((t1) => t1 != undefined);
+    }
+  };
+  const selectedDef: Def | undefined = p.module.defs.find(
+    (d) => d.name == selection?.def
+  );
+  const selectedNode: Tree | undefined = selectedDef
+    ? selection?.node
+      ? selection.node.nodeType == "BodyNode"
+        ? selectedDef.term
+          ? findNode(
+              (t) => parseInt(t.nodeId) == selection?.node?.id,
+              selectedDef.term
+            )
+          : undefined
+        : findNode(
+            (t) => parseInt(t.nodeId) == selection?.node?.id,
+            selectedDef.type_
+          )
+      : undefined
+    : undefined;
+  console.log(selectedNode?.nodeId);
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="overflow-scroll">
@@ -212,8 +244,8 @@ const AppNoError = ({
           onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
           shadowed={false}
           type="?"
-          folder="unknown"
           moduleName={p.module.modname}
+          selectedNode={selectedNode}
           evalFull={{
             request: setEvalTarget,
             ...(evalResult.isSuccess ? { result: evalResult.data } : {}),

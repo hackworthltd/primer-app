@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
-import { EvalFullResp, GlobalName } from "@/primer-api";
+import { EvalFullResp, GlobalName, Tree } from "@/primer-api";
 import { TreeReactFlowOne } from "@/components";
 
 export type Prog = {
@@ -35,7 +35,9 @@ type TypesAndDefinitionsProps = {
 type InfoProps = {
   shadowed: boolean;
   type: string;
-  folder: string;
+  selectedNode:
+    | Omit<Omit<Omit<Tree, "childTrees">, "rightChild">, "nodeId">
+    | undefined;
 };
 type EvalProps = {
   moduleName: string[];
@@ -196,7 +198,7 @@ const DefList = ({
   );
 };
 
-const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
+const Info = ({ shadowed, type, selectedNode }: InfoProps): JSX.Element => {
   return (
     <div className="h-full overflow-auto">
       <div className={headerStyle}>Selection Info</div>
@@ -217,10 +219,17 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
           <div className={subHeaderStyle}>Type</div>
           <div className={itemStyle}>{type}</div>
         </div>
-        <div>
-          <div className={subHeaderStyle}>Folder</div>
-          <div className={itemStyle}>{folder}</div>
-        </div>
+        {selectedNode?.body.tag == "TextBody" &&
+        selectedNode.body.contents.qualifiedModule ? (
+          <div>
+            <div className={subHeaderStyle}>Folder</div>
+            <div className={itemStyle}>
+              {selectedNode.body.contents.qualifiedModule.join(".")}
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
