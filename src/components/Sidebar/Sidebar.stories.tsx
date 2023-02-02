@@ -42,6 +42,7 @@ export const Default: ComponentStory<typeof Sidebar> = (args: SidebarProps) => (
       initialMode="T&D"
       shadowed={true}
       type="Direction → Direction"
+      moduleName={["Me", "Scratchpad"]}
       selectedNode={{
         body: {
           tag: "TextBody",

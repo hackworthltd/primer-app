@@ -35,6 +35,7 @@ type TypesAndDefinitionsProps = {
 type InfoProps = {
   shadowed: boolean;
   type: string;
+  moduleName: string[];
   selectedNode:
     | Omit<Omit<Omit<Tree, "childTrees">, "rightChild">, "nodeId">
     | undefined;
@@ -198,7 +199,12 @@ const DefList = ({
   );
 };
 
-const Info = ({ shadowed, type, selectedNode }: InfoProps): JSX.Element => {
+const Info = ({
+  shadowed,
+  type,
+  moduleName,
+  selectedNode,
+}: InfoProps): JSX.Element => {
   return (
     <div className="h-full overflow-auto">
       <div className={headerStyle}>Selection Info</div>
@@ -230,6 +236,10 @@ const Info = ({ shadowed, type, selectedNode }: InfoProps): JSX.Element => {
         ) : (
           <></>
         )}
+        <div>
+          <div className={subHeaderStyle}>Current Folder</div>
+          <div className={itemStyle}>{moduleName.join(".")}</div>
+        </div>
       </div>
     </div>
   );
