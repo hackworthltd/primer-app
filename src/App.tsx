@@ -30,10 +30,11 @@ import {
   useCreateDefinition,
   useCreateTypeDef,
   useEvalFull,
+  Level,
 } from "./primer-api";
 
 // hardcoded values (for now)
-const level = "Expert";
+const initialLevel: Level = "Expert";
 const patternsUnder = false;
 const treeParams = { patternsUnder };
 
@@ -162,6 +163,7 @@ const AppNoError = ({
   setSelection: (s: Selection) => void;
   setProg: (p: Prog) => void;
 }): JSX.Element => {
+  const [level, setLevel] = useState<Level>(initialLevel);
   const [showCreateDefModal, setShowCreateDefModal] = useState<boolean>(false);
   const [showCreateTypeDefModal, setShowCreateTypeDefModal] =
     useState<boolean>(false);
@@ -247,6 +249,8 @@ const AppNoError = ({
       />
       {selection ? (
         <ActionsListSelection
+          level={level}
+          onChangeLevel={setLevel}
           selection={selection}
           sessionId={p.sessionId}
           onAction={(action) => {
@@ -326,13 +330,17 @@ const AppNoError = ({
 const ActionsListSelection = (p: {
   selection: Selection;
   sessionId: string;
+  level: Level;
+  onChangeLevel: (level: Level) => void;
   onAction: (action: NoInputAction) => void;
   onInputAction: (action: InputAction, option: Option) => void;
   onRequestOpts: (acrion: InputAction) => Promise<Options>;
 }) => {
-  const queryRes = useGetAvailableActions(p.sessionId, p.selection, { level });
+  const queryRes = useGetAvailableActions(p.sessionId, p.selection, {
+    level: p.level,
+  });
   const actions = queryRes.isSuccess ? queryRes.data : [];
-  return <ActionPanel {...{ level, actions, ...p }} />;
+  return <ActionPanel {...{ actions, ...p }} />;
 };
 
 export default App;
