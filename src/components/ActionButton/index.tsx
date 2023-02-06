@@ -1,7 +1,7 @@
 import "@/index.css";
 
 import classNames from "classnames";
-import { Action, GetAvailableActionsLevel } from "@/primer-api";
+import { Action, Level } from "@/primer-api";
 import {
   actionDescription,
   actionName,
@@ -10,7 +10,7 @@ import {
 } from "@/Actions";
 
 export type ActionButtonProps = {
-  level: GetAvailableActionsLevel;
+  level: Level;
   action: Action;
   onClick: (event: React.MouseEvent, action: Action) => void;
 };

@@ -6,11 +6,11 @@
  * OpenAPI spec version: 0.7
  */
 
-export type GetAvailableActionsLevel = typeof GetAvailableActionsLevel[keyof typeof GetAvailableActionsLevel];
+export type Level = typeof Level[keyof typeof Level];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetAvailableActionsLevel = {
+export const Level = {
   Beginner: 'Beginner',
   Intermediate: 'Intermediate',
   Expert: 'Expert',

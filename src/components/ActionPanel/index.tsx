@@ -3,7 +3,7 @@ import "@/index.css";
 import { ActionButton } from "@/components";
 import {
   Action,
-  GetAvailableActionsLevel,
+  Level,
   InputAction,
   NoInputAction,
   Option,
@@ -18,7 +18,8 @@ import classNames from "classnames";
 
 export interface ActionPanelProps {
   actions: Action[];
-  level: GetAvailableActionsLevel;
+  level: Level;
+  onChangeLevel: (level: Level) => void;
   onAction: (action: NoInputAction) => void;
   onInputAction: (action: InputAction, option: Option) => void;
   onRequestOpts: (action: InputAction) => Promise<Options>;
@@ -31,6 +32,7 @@ type State =
 export const ActionPanel = ({
   actions,
   level,
+  onChangeLevel,
   onAction,
   onInputAction,
   onRequestOpts,
@@ -38,6 +40,24 @@ export const ActionPanel = ({
   const [state, setState] = useState<State>({ state: "ActionList" });
   return (
     <div className="h-full overflow-scroll bg-grey-primary p-4 pt-2">
+      <div className="flex flex-row flex-wrap items-center justify-between text-base font-bold text-blue-primary">
+        {"Actions"}
+        <select
+          value={level}
+          onChange={(e) =>
+            onChangeLevel(
+              // This type assertion is safe, since all `option`s in this `select` come from `Object.values(Level)`.
+              e.target.value as Level
+            )
+          }
+        >
+          {Object.values(Level).map((level) => (
+            <option key={level} value={level}>
+              {level}
+            </option>
+          ))}
+        </select>
+      </div>
       {(() => {
         switch (state.state) {
           case "ActionList":

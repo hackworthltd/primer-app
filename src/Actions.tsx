@@ -1,8 +1,4 @@
-import {
-  InputAction,
-  NoInputAction,
-  GetAvailableActionsLevel,
-} from "./primer-api";
+import { InputAction, NoInputAction, Level } from "./primer-api";
 
 export type ActionType = "Primary" | "Destructive";
 
@@ -93,7 +89,7 @@ export const actionName = (
 
 export const actionDescription = (
   action: NoInputAction | InputAction,
-  level: GetAvailableActionsLevel
+  level: Level
 ): string => {
   switch (action) {
     case "MakeCase":
