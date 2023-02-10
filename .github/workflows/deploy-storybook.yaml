@@ -3,10 +3,6 @@ name: Deploy Storybook.js
 on:
   push:
     branches-ignore:
-      # Ignore these temporary Mergify branches, or else it'll run
-      # checks twice and fail on deployments.
-      - tmp-mergify/**
-
       # Do not run this workflow on Dependabot updates, or else it'll
       # absolutely kill our GitHub Action & Chromatic CI minutes.
       - dependabot/**

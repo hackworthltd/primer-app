@@ -14,10 +14,6 @@ name: Build the frontend
 
 on:
   push:
-    branches-ignore:
-      # Ignore these temporary Mergify branches, or else it'll run
-      # checks twice and fail on deployments.
-      - tmp-mergify/**
 
 jobs:
   build-frontend:
