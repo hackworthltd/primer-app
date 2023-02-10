@@ -156,7 +156,6 @@
                 "README.md"
                 "package.json"
                 "pnpm-lock.yaml"
-                ".mergify.yml"
               ];
             };
           };
