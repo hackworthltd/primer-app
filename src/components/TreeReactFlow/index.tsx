@@ -255,7 +255,7 @@ const nodeProps = async <T,>(
     case "NoBody":
       return [
         {
-          contents: noBodyFlavorContents(flavor),
+          contents: noBodyFlavorContents(tree.body.contents),
           ...common,
         },
         [],

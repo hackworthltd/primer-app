@@ -1,3 +1,4 @@
+import { NodeFlavorNoBody } from "@/primer-api";
 import "./reactflow.css";
 import { NodeFlavor } from "./Types";
 
@@ -432,9 +433,7 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
   }
 };
 
-export const noBodyFlavorContents = (
-  flavor: NodeFlavor
-): string | undefined => {
+export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
   switch (flavor) {
     case "Ann":
       return "type annotation";
@@ -442,12 +441,6 @@ export const noBodyFlavorContents = (
       return "apply";
     case "APP":
       return "apply type";
-    case "Let":
-      return "let";
-    case "LetType":
-      return "let type";
-    case "Letrec":
-      return "let rec";
     case "Case":
       return "match";
     case "CaseWith":
@@ -456,8 +449,6 @@ export const noBodyFlavorContents = (
       return "function type";
     case "TApp":
       return "apply type";
-    case "TLet":
-      return "let type";
     case "PatternApp":
       return "apply";
     case "Hole":
@@ -468,7 +459,5 @@ export const noBodyFlavorContents = (
       return "?";
     case "THole":
       return "{?}";
-    default:
-      return undefined;
   }
 };
