@@ -1,4 +1,11 @@
-import { GlobalName, NodeFlavor, NodeType } from "@/primer-api";
+import {
+  GlobalName,
+  NodeFlavorBoxBody,
+  NodeFlavorNoBody,
+  NodeFlavorPrimBody,
+  NodeFlavorTextBody,
+  NodeType,
+} from "@/primer-api";
 import { Edge, Node } from "reactflow";
 import { unzip } from "fp-ts/lib/Array";
 
@@ -131,3 +138,9 @@ export type NodeNoPos<T> = Omit<Node<T>, "position">;
 
 /** The empty record (note that `{}` is something different: https://typescript-eslint.io/rules/ban-types/) */
 export type Empty = Record<string, never>;
+
+export type NodeFlavor =
+  | NodeFlavorTextBody
+  | NodeFlavorPrimBody
+  | NodeFlavorBoxBody
+  | NodeFlavorNoBody;

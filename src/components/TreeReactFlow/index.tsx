@@ -1,4 +1,4 @@
-import { Def, NodeFlavor, Tree, Selection } from "@/primer-api";
+import { Def, Tree, Selection } from "@/primer-api";
 import {
   ReactFlow,
   Edge,
@@ -24,6 +24,7 @@ import {
   treeToGraph,
   NodeNoPos,
   PrimerDefNameNodeProps,
+  NodeFlavor,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
@@ -49,100 +50,100 @@ const commonHoverClasses =
 
 const flavorClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
-    case "FlavorHole":
+    case "Hole":
       return "border-red-tertiary ring-red-tertiary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorEmptyHole":
+    case "EmptyHole":
       return "border-red-tertiary ring-red-tertiary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorAnn":
+    case "Ann":
       return "border-black-primary ring-black-primary bg-black-primary".concat(
         commonHoverClasses
       );
-    case "FlavorApp":
+    case "App":
       return "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary".concat(
         commonHoverClasses
       );
-    case "FlavorAPP":
+    case "APP":
       return "border-yellow-secondary ring-yellow-secondary bg-yellow-secondary".concat(
         commonHoverClasses
       );
-    case "FlavorCon":
+    case "Con":
       return "border-green-primary ring-green-primary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorLam":
+    case "Lam":
       return "border-blue-primary ring-blue-primary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorLAM":
+    case "LAM":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorGlobalVar":
+    case "GlobalVar":
       return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorLocalVar":
+    case "LocalVar":
       return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorLet":
+    case "Let":
       return "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary".concat(
         commonHoverClasses
       );
-    case "FlavorLetType":
+    case "LetType":
       return "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary".concat(
         commonHoverClasses
       );
-    case "FlavorLetrec":
+    case "Letrec":
       return "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary".concat(
         commonHoverClasses
       );
-    case "FlavorCase":
+    case "Case":
       return "border-yellow-primary ring-yellow-primary bg-yellow-primary".concat(
         commonHoverClasses
       );
 
     // Note: not selectable.
-    case "FlavorCaseWith":
+    case "CaseWith":
       return "border-yellow-primary ring-yellow-primary bg-yellow-primary";
 
-    case "FlavorPrimCon":
+    case "PrimCon":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorTEmptyHole":
+    case "TEmptyHole":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorTHole":
+    case "THole":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorTCon":
+    case "TCon":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorTFun":
+    case "TFun":
       return "border-black-primary ring-black-primary bg-black-primary".concat(
         commonHoverClasses
       );
-    case "FlavorTVar":
+    case "TVar":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorTApp":
+    case "TApp":
       return "border-black-primary ring-black-primary bg-black-primary".concat(
         commonHoverClasses
       );
-    case "FlavorTForall":
+    case "TForall":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorTLet":
+    case "TLet":
       return "border-black-primary ring-black-primary bg-black-primary".concat(
         commonHoverClasses
       );
@@ -152,80 +153,80 @@ const flavorClasses = (flavor: NodeFlavor): string => {
     // This node's background is transparent, so that we can draw
     // edges over it. Otherwise, we'd need to special-case the
     // z-index of edges when drawn inside a pattern.
-    case "FlavorPattern":
+    case "Pattern":
       return "border-yellow-primary ring-yellow-primary";
 
-    case "FlavorPatternCon":
+    case "PatternCon":
       return "border-green-primary ring-green-primary bg-white-primary";
-    case "FlavorPatternBind":
+    case "PatternBind":
       return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
         commonHoverClasses
       );
-    case "FlavorPatternApp":
+    case "PatternApp":
       return "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary";
   }
 };
 
 const flavorContentClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
-    case "FlavorHole":
+    case "Hole":
       return "text-blue-primary";
-    case "FlavorEmptyHole":
+    case "EmptyHole":
       return "text-blue-primary";
-    case "FlavorAnn":
+    case "Ann":
       return "text-white-primary";
-    case "FlavorApp":
+    case "App":
       return "text-white-primary";
-    case "FlavorAPP":
+    case "APP":
       return "text-white-primary";
-    case "FlavorCon":
+    case "Con":
       return "text-blue-primary";
-    case "FlavorLam":
+    case "Lam":
       return "text-blue-primary";
-    case "FlavorLAM":
+    case "LAM":
       return "text-blue-primary";
-    case "FlavorGlobalVar":
+    case "GlobalVar":
       return "text-blue-primary";
-    case "FlavorLocalVar":
+    case "LocalVar":
       return "text-blue-primary";
-    case "FlavorLet":
+    case "Let":
       return "text-white-primary";
-    case "FlavorLetType":
+    case "LetType":
       return "text-white-primary";
-    case "FlavorLetrec":
+    case "Letrec":
       return "text-white-primary";
-    case "FlavorCase":
+    case "Case":
       return "text-white-primary";
-    case "FlavorCaseWith":
+    case "CaseWith":
       return "text-white-primary";
-    case "FlavorPrimCon":
+    case "PrimCon":
       return "text-blue-primary";
-    case "FlavorTEmptyHole":
+    case "TEmptyHole":
       return "text-blue-primary";
-    case "FlavorTHole":
+    case "THole":
       return "text-blue-primary";
-    case "FlavorTCon":
+    case "TCon":
       return "text-blue-primary";
-    case "FlavorTFun":
+    case "TFun":
       return "text-white-primary";
-    case "FlavorTVar":
+    case "TVar":
       return "text-blue-primary";
-    case "FlavorTApp":
+    case "TApp":
       return "text-white-primary";
-    case "FlavorTForall":
+    case "TForall":
       return "text-blue-primary";
-    case "FlavorTLet":
+    case "TLet":
       return "text-white-primary";
 
     // Note: has no text content, so this is somewhat meaningless.
-    case "FlavorPattern":
+    case "Pattern":
       return "text-blue-primary";
 
-    case "FlavorPatternCon":
+    case "PatternCon":
       return "text-blue-primary";
-    case "FlavorPatternBind":
+    case "PatternBind":
       return "text-blue-primary";
-    case "FlavorPatternApp":
+    case "PatternApp":
       return "text-white-primary";
   }
 };
@@ -235,118 +236,118 @@ const flavorLabelClasses = (flavor: NodeFlavor): string => {
   const exprClasses = " -right-2 -top-4";
 
   switch (flavor) {
-    case "FlavorHole":
+    case "Hole":
       return "font-code bg-red-tertiary border-red-tertiary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorEmptyHole":
+    case "EmptyHole":
       return "font-code bg-red-tertiary border-red-tertiary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorAnn":
+    case "Ann":
       return "font-code bg-black-primary border-black-primary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorApp":
+    case "App":
       return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorAPP":
+    case "APP":
       return "font-code bg-yellow-secondary border-yellow-secondary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorCon":
+    case "Con":
       return "bg-green-primary border-green-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorLam":
+    case "Lam":
       return "font-code bg-blue-primary border-blue-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorLAM":
+    case "LAM":
       return "font-code bg-black-primary border-black-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorGlobalVar":
+    case "GlobalVar":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorLocalVar":
+    case "LocalVar":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorLet":
+    case "Let":
       return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorLetType":
+    case "LetType":
       return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorLetrec":
+    case "Letrec":
       return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorCase":
+    case "Case":
       return "font-code bg-yellow-primary border-yellow-primary text-white-primary".concat(
         syntaxClasses
       );
 
     // Special case: we hide this label.
-    case "FlavorCaseWith":
+    case "CaseWith":
       return "hidden font-code bg-yellow-primary border-yellow-primary text-white-primary".concat(
         syntaxClasses
       );
 
-    case "FlavorPrimCon":
+    case "PrimCon":
       return "bg-black-primary border-black-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorTEmptyHole":
+    case "TEmptyHole":
       return "font-code bg-black-primary border-black-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorTHole":
+    case "THole":
       return "font-code bg-black-primary border-black-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorTCon":
+    case "TCon":
       return "bg-black-primary border-black-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorTFun":
+    case "TFun":
       return "font-code bg-black-primary border-black-primary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorTVar":
+    case "TVar":
       return "bg-black-primary border-black-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorTApp":
+    case "TApp":
       return "font-code bg-black-primary border-black-primary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorTForall":
+    case "TForall":
       return "font-code bg-black-primary border-black-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorTLet":
+    case "TLet":
       return "font-code bg-black-primary border-black-primary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorPattern":
+    case "Pattern":
       return "bg-yellow-primary border-yellow-primary text-white-primary".concat(
         syntaxClasses
       );
-    case "FlavorPatternCon":
+    case "PatternCon":
       return "bg-green-primary border-green-primary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorPatternBind":
+    case "PatternBind":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
         exprClasses
       );
-    case "FlavorPatternApp":
+    case "PatternApp":
       return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary".concat(
         syntaxClasses
       );
@@ -355,61 +356,61 @@ const flavorLabelClasses = (flavor: NodeFlavor): string => {
 
 const flavorEdgeClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
-    case "FlavorHole":
+    case "Hole":
       return "stroke-red-tertiary stroke-[0.25rem] z-10";
-    case "FlavorEmptyHole":
+    case "EmptyHole":
       return "stroke-red-tertiary stroke-[0.25rem] z-10";
-    case "FlavorAnn":
+    case "Ann":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorApp":
+    case "App":
       return "stroke-blue-tertiary stroke-[0.25rem] z-10";
-    case "FlavorAPP":
+    case "APP":
       return "stroke-yellow-secondary stroke-[0.25rem] z-10";
-    case "FlavorCon":
+    case "Con":
       return "stroke-green-primary stroke-[0.25rem] z-10";
-    case "FlavorLam":
+    case "Lam":
       return "stroke-blue-primary stroke-[0.25rem] z-10";
-    case "FlavorLAM":
+    case "LAM":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorGlobalVar":
+    case "GlobalVar":
       return "stroke-blue-quaternary stroke-[0.25rem] z-10";
-    case "FlavorLocalVar":
+    case "LocalVar":
       return "stroke-blue-quaternary stroke-[0.25rem] z-10";
-    case "FlavorLet":
+    case "Let":
       return "stroke-blue-quaternary stroke-[0.25rem] z-10";
-    case "FlavorLetType":
+    case "LetType":
       return "stroke-blue-quaternary stroke-[0.25rem] z-10";
-    case "FlavorLetrec":
+    case "Letrec":
       return "stroke-blue-quaternary stroke-[0.25rem] z-10";
-    case "FlavorCase":
+    case "Case":
       return "stroke-yellow-primary stroke-[0.25rem] z-10";
-    case "FlavorCaseWith":
+    case "CaseWith":
       return "stroke-yellow-primary stroke-[0.25rem] z-10";
-    case "FlavorPrimCon":
+    case "PrimCon":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorTEmptyHole":
+    case "TEmptyHole":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorTHole":
+    case "THole":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorTCon":
+    case "TCon":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorTFun":
+    case "TFun":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorTVar":
+    case "TVar":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorTApp":
+    case "TApp":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorTForall":
+    case "TForall":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorTLet":
+    case "TLet":
       return "stroke-black-primary stroke-[0.25rem] z-10";
-    case "FlavorPattern":
+    case "Pattern":
       return "stroke-yellow-primary stroke-[0.25rem] z-10";
-    case "FlavorPatternCon":
+    case "PatternCon":
       return "stroke-green-primary stroke-[0.25rem] z-10";
-    case "FlavorPatternBind":
+    case "PatternBind":
       return "stroke-blue-quaternary stroke-[0.25rem] z-10";
-    case "FlavorPatternApp":
+    case "PatternApp":
       return "stroke-blue-tertiary stroke-[0.25rem] z-10";
   }
 };
@@ -451,98 +452,98 @@ const primerNodeLabelClasses = (flavor: NodeFlavor) =>
 
 function flavorLabel(flavor: NodeFlavor): string {
   switch (flavor) {
-    case "FlavorHole":
+    case "Hole":
       return "{?}";
-    case "FlavorEmptyHole":
+    case "EmptyHole":
       return "?";
-    case "FlavorAnn":
+    case "Ann":
       return ":";
-    case "FlavorApp":
+    case "App":
       return "$";
-    case "FlavorAPP":
+    case "APP":
       return "@";
-    case "FlavorCon":
+    case "Con":
       return "V";
-    case "FlavorLam":
+    case "Lam":
       return "λ";
-    case "FlavorLAM":
+    case "LAM":
       return "Λ";
-    case "FlavorGlobalVar":
+    case "GlobalVar":
       return "Var";
-    case "FlavorLocalVar":
+    case "LocalVar":
       return "Var";
-    case "FlavorLet":
+    case "Let":
       return "let";
-    case "FlavorLetType":
+    case "LetType":
       return "let type";
-    case "FlavorLetrec":
+    case "Letrec":
       return "let rec";
-    case "FlavorCase":
+    case "Case":
       return "m";
-    case "FlavorCaseWith":
+    case "CaseWith":
       return "w";
-    case "FlavorPrimCon":
+    case "PrimCon":
       return "V";
-    case "FlavorTEmptyHole":
+    case "TEmptyHole":
       return "?";
-    case "FlavorTHole":
+    case "THole":
       return "{?}";
-    case "FlavorTCon":
+    case "TCon":
       return "T";
-    case "FlavorTFun":
+    case "TFun":
       return "→";
-    case "FlavorTVar":
+    case "TVar":
       return "Var";
-    case "FlavorTApp":
+    case "TApp":
       return "@";
-    case "FlavorTForall":
+    case "TForall":
       return "∀";
-    case "FlavorTLet":
+    case "TLet":
       return "let";
-    case "FlavorPattern":
+    case "Pattern":
       return "P";
-    case "FlavorPatternCon":
+    case "PatternCon":
       return "V";
-    case "FlavorPatternBind":
+    case "PatternBind":
       return "Var";
-    case "FlavorPatternApp":
+    case "PatternApp":
       return "$";
   }
 }
 
 const noBodyFlavorContents = (flavor: NodeFlavor): string | undefined => {
   switch (flavor) {
-    case "FlavorAnn":
+    case "Ann":
       return "type annotation";
-    case "FlavorApp":
+    case "App":
       return "apply";
-    case "FlavorAPP":
+    case "APP":
       return "apply type";
-    case "FlavorLet":
+    case "Let":
       return "let";
-    case "FlavorLetType":
+    case "LetType":
       return "let type";
-    case "FlavorLetrec":
+    case "Letrec":
       return "let rec";
-    case "FlavorCase":
+    case "Case":
       return "match";
-    case "FlavorCaseWith":
+    case "CaseWith":
       return "with";
-    case "FlavorTFun":
+    case "TFun":
       return "function type";
-    case "FlavorTApp":
+    case "TApp":
       return "apply type";
-    case "FlavorTLet":
+    case "TLet":
       return "let type";
-    case "FlavorPatternApp":
+    case "PatternApp":
       return "apply";
-    case "FlavorHole":
+    case "Hole":
       return "{?}";
-    case "FlavorEmptyHole":
+    case "EmptyHole":
       return "?";
-    case "FlavorTEmptyHole":
+    case "TEmptyHole":
       return "?";
-    case "FlavorTHole":
+    case "THole":
       return "{?}";
     default:
       return undefined;
@@ -617,6 +618,19 @@ const nodeTypes = {
   [primerDefNameNodeTypeName]: PrimerDefNameNode,
 };
 
+const treeFlavor = (tree: Tree): NodeFlavor => {
+  switch (tree.body.tag) {
+    case "PrimBody":
+      return tree.body.contents.fst;
+    case "TextBody":
+      return tree.body.contents.fst;
+    case "BoxBody":
+      return tree.body.contents.fst;
+    case "NoBody":
+      return tree.body.contents;
+  }
+};
+
 const augmentTree = async <T,>(
   tree: Tree,
   p: NodeParams & T
@@ -639,7 +653,7 @@ const augmentTree = async <T,>(
       id: JSON.stringify([tree.nodeId, child.node.id]),
       source: tree.nodeId,
       target: child.node.id,
-      className: flavorEdgeClasses(tree.flavor),
+      className: flavorEdgeClasses(treeFlavor(tree)),
     },
   ];
   const rightChild = await (tree.rightChild
@@ -667,19 +681,20 @@ const nodeProps = async <T,>(
   p: NodeParams & T
 ): Promise<[PrimerNodeProps<T>, PrimerGraph<T>[]]> => {
   const selected = p.selection?.node?.id?.toString() == tree.nodeId;
+  const flavor = treeFlavor(tree);
   // Typescript does not accept the typing
   // const common: Omit<PrimerNodeProps<T>, "contents">
   const common: Omit<PrimerNodeProps<NoFields>, "contents"> & T = {
-    label: flavorLabel(tree.flavor),
+    label: flavorLabel(flavor),
     width: p.nodeWidth,
     height: p.nodeHeight,
-    flavor: tree.flavor,
+    flavor,
     selected,
     ...p,
   };
   switch (tree.body.tag) {
     case "PrimBody": {
-      const prim = tree.body.contents;
+      const prim = tree.body.contents.snd;
       const contents = (() => {
         switch (prim.tag) {
           case "PrimInt":
@@ -693,7 +708,7 @@ const nodeProps = async <T,>(
     case "TextBody":
       return [
         {
-          contents: tree.body.contents.baseName,
+          contents: tree.body.contents.snd.baseName,
           ...common,
         },
         [],
@@ -701,13 +716,16 @@ const nodeProps = async <T,>(
     case "NoBody":
       return [
         {
-          contents: noBodyFlavorContents(tree.flavor),
+          contents: noBodyFlavorContents(flavor),
           ...common,
         },
         [],
       ];
     case "BoxBody": {
-      const [bodyTree, bodyNested] = await augmentTree(tree.body.contents, p);
+      const [bodyTree, bodyNested] = await augmentTree(
+        tree.body.contents.snd,
+        p
+      );
       const bodyLayout = await layoutTree(bodyTree).then((layout) => ({
         ...layout,
         ...treeToGraph(layout.tree),
