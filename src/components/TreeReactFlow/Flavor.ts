@@ -1,4 +1,8 @@
-import { NodeFlavorNoBody } from "@/primer-api";
+import {
+  NodeFlavorNoBody,
+  NodeFlavorPrimBody,
+  NodeFlavorTextBody,
+} from "@/primer-api";
 import "./reactflow.css";
 import { NodeFlavor } from "./Types";
 
@@ -124,7 +128,9 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
   }
 };
 
-export const flavorContentClasses = (flavor: NodeFlavor): string => {
+export const flavorContentClasses = (
+  flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody
+): string => {
   switch (flavor) {
     case "Hole":
       return "text-blue-primary";
@@ -174,11 +180,6 @@ export const flavorContentClasses = (flavor: NodeFlavor): string => {
       return "text-blue-primary";
     case "TLet":
       return "text-white-primary";
-
-    // Note: has no text content, so this is somewhat meaningless.
-    case "Pattern":
-      return "text-blue-primary";
-
     case "PatternCon":
       return "text-blue-primary";
     case "PatternBind":

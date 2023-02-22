@@ -1,4 +1,11 @@
-import { Def, Tree, Selection } from "@/primer-api";
+import {
+  Def,
+  Tree,
+  Selection,
+  NodeFlavorTextBody,
+  NodeFlavorPrimBody,
+  NodeFlavorNoBody,
+} from "@/primer-api";
 import {
   ReactFlow,
   Edge,
@@ -69,7 +76,9 @@ const primerNodeClasses = (selected: boolean, flavor: NodeFlavor) =>
     flavorClasses(flavor)
   );
 
-const primerNodeContentsClasses = (flavor: NodeFlavor) =>
+const primerNodeContentsClasses = (
+  flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody
+) =>
   classNames(
     {
       "font-code text-sm xl:text-base": true,
@@ -109,9 +118,13 @@ const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
           height: p.data.height,
         }}
       >
-        <div className={primerNodeContentsClasses(p.data.flavor)}>
-          {p.data.contents}
-        </div>
+        {"contents" in p.data ? (
+          <div className={primerNodeContentsClasses(p.data.flavor)}>
+            {p.data.contents}
+          </div>
+        ) : (
+          <></>
+        )}
         {p.data.label ? (
           <div className={primerNodeLabelClasses(p.data.flavor)}>
             {p.data.label}
@@ -213,21 +226,16 @@ const augmentTree = async <T,>(
   ];
 };
 
-class NoFields {}
-
 const nodeProps = async <T,>(
   tree: Tree,
   p: NodeParams & T
 ): Promise<[PrimerNodeProps<T>, PrimerGraph<T>[]]> => {
   const selected = p.selection?.node?.id?.toString() == tree.nodeId;
   const flavor = treeFlavor(tree);
-  // Typescript does not accept the typing
-  // const common: Omit<PrimerNodeProps<T>, "contents">
-  const common: Omit<PrimerNodeProps<NoFields>, "contents"> & T = {
+  const common = {
     label: flavorLabel(flavor),
     width: p.nodeWidth,
     height: p.nodeHeight,
-    flavor,
     selected,
     ...p,
   };
@@ -242,11 +250,19 @@ const nodeProps = async <T,>(
             return prim.contents;
         }
       })();
-      return [{ contents, ...common }, []];
+      return [
+        {
+          flavor: tree.body.contents.fst,
+          contents,
+          ...common,
+        },
+        [],
+      ];
     }
     case "TextBody":
       return [
         {
+          flavor: tree.body.contents.fst,
           contents: tree.body.contents.snd.baseName,
           ...common,
         },
@@ -255,6 +271,7 @@ const nodeProps = async <T,>(
     case "NoBody":
       return [
         {
+          flavor: tree.body.contents,
           contents: noBodyFlavorContents(tree.body.contents),
           ...common,
         },
@@ -272,9 +289,9 @@ const nodeProps = async <T,>(
       return [
         {
           ...common,
+          flavor: tree.body.contents.fst,
           width: bodyLayout.width + p.boxPadding,
           height: bodyLayout.height + p.boxPadding,
-          contents: undefined,
         },
         bodyNested.concat({
           nodes: bodyLayout.nodes.map((node) => ({
