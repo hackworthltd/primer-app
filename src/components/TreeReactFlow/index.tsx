@@ -242,8 +242,8 @@ const nodeProps = async <T,>(
       }));
       return [
         {
-          ...common,
           flavor,
+          ...common,
           width: bodyLayout.width + p.boxPadding,
           height: bodyLayout.height + p.boxPadding,
         },
