@@ -193,7 +193,7 @@ const nodeProps = async <T,>(
   };
   switch (tree.body.tag) {
     case "PrimBody": {
-      const prim = tree.body.contents.snd;
+      const { fst: flavor, snd: prim } = tree.body.contents;
       const contents = (() => {
         switch (prim.tag) {
           case "PrimInt":
@@ -204,36 +204,38 @@ const nodeProps = async <T,>(
       })();
       return [
         {
-          flavor: tree.body.contents.fst,
+          flavor,
           contents,
           ...common,
         },
         [],
       ];
     }
-    case "TextBody":
+    case "TextBody": {
+      const { fst: flavor, snd: name } = tree.body.contents;
       return [
         {
-          flavor: tree.body.contents.fst,
-          contents: tree.body.contents.snd.baseName,
+          flavor,
+          contents: name.baseName,
           ...common,
         },
         [],
       ];
-    case "NoBody":
+    }
+    case "NoBody": {
+      const flavor = tree.body.contents;
       return [
         {
-          flavor: tree.body.contents,
+          flavor,
           contents: noBodyFlavorContents(tree.body.contents),
           ...common,
         },
         [],
       ];
+    }
     case "BoxBody": {
-      const [bodyTree, bodyNested] = await augmentTree(
-        tree.body.contents.snd,
-        p
-      );
+      const { fst: flavor, snd: t } = tree.body.contents;
+      const [bodyTree, bodyNested] = await augmentTree(t, p);
       const bodyLayout = await layoutTree(bodyTree).then((layout) => ({
         ...layout,
         ...treeToGraph(layout.tree),
@@ -241,7 +243,7 @@ const nodeProps = async <T,>(
       return [
         {
           ...common,
-          flavor: tree.body.contents.fst,
+          flavor,
           width: bodyLayout.width + p.boxPadding,
           height: bodyLayout.height + p.boxPadding,
         },
