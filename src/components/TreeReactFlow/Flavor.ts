@@ -1,10 +1,16 @@
 import {
+  NodeFlavorBoxBody,
   NodeFlavorNoBody,
   NodeFlavorPrimBody,
   NodeFlavorTextBody,
 } from "@/primer-api";
 import "./reactflow.css";
-import { NodeFlavor } from "./Types";
+
+export type NodeFlavor =
+  | NodeFlavorTextBody
+  | NodeFlavorPrimBody
+  | NodeFlavorBoxBody
+  | NodeFlavorNoBody;
 
 export const commonHoverClasses =
   " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";

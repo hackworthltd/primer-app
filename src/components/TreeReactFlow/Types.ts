@@ -108,7 +108,6 @@ export type PrimerTreeNoPos<T> = TreeSimple<
 
 /** Node properties. */
 export type PrimerNodeProps<T> = {
-  label: string;
   width: number;
   height: number;
   selected: boolean;
@@ -145,9 +144,3 @@ export type NodeNoPos<T> = Omit<Node<T>, "position">;
 
 /** The empty record (note that `{}` is something different: https://typescript-eslint.io/rules/ban-types/) */
 export type Empty = Record<string, never>;
-
-export type NodeFlavor =
-  | NodeFlavorTextBody
-  | NodeFlavorPrimBody
-  | NodeFlavorBoxBody
-  | NodeFlavorNoBody;

@@ -24,7 +24,6 @@ import {
   treeToGraph,
   NodeNoPos,
   PrimerDefNameNodeProps,
-  NodeFlavor,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
@@ -98,7 +97,7 @@ const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
             flavorLabelClasses(p.data.flavor)
           )}
         >
-          {p.data.label}
+          {flavorLabel(p.data.flavor)}
         </div>
       </div>
       {handle("source", Position.Bottom)}
@@ -138,19 +137,6 @@ const nodeTypes = {
   [primerDefNameNodeTypeName]: PrimerDefNameNode,
 };
 
-const treeFlavor = (tree: Tree): NodeFlavor => {
-  switch (tree.body.tag) {
-    case "PrimBody":
-      return tree.body.contents.fst;
-    case "TextBody":
-      return tree.body.contents.fst;
-    case "BoxBody":
-      return tree.body.contents.fst;
-    case "NoBody":
-      return tree.body.contents;
-  }
-};
-
 const augmentTree = async <T,>(
   tree: Tree,
   p: NodeParams & T
@@ -165,6 +151,7 @@ const augmentTree = async <T,>(
   const [childTrees, childNested] = await Promise.all(
     tree.childTrees.map((t) => augmentTree(t, p))
   ).then(unzip);
+  const [data, nested] = await nodeProps(tree, p);
   const makeEdge = (
     child: PrimerTreeNoPos<T>
   ): [PrimerTreeNoPos<T>, Edge<Empty>] => [
@@ -173,13 +160,12 @@ const augmentTree = async <T,>(
       id: JSON.stringify([tree.nodeId, child.node.id]),
       source: tree.nodeId,
       target: child.node.id,
-      className: flavorEdgeClasses(treeFlavor(tree)),
+      className: flavorEdgeClasses(data.flavor),
     },
   ];
   const rightChild = await (tree.rightChild
     ? augmentTree(tree.rightChild, p)
     : undefined);
-  const [data, nested] = await nodeProps(tree, p);
   return [
     {
       ...(rightChild ? { rightChild: makeEdge(rightChild[0]) } : {}),
@@ -199,9 +185,7 @@ const nodeProps = async <T,>(
   p: NodeParams & T
 ): Promise<[PrimerNodeProps<T>, PrimerGraph<T>[]]> => {
   const selected = p.selection?.node?.id?.toString() == tree.nodeId;
-  const flavor = treeFlavor(tree);
   const common = {
-    label: flavorLabel(flavor),
     width: p.nodeWidth,
     height: p.nodeHeight,
     selected,
