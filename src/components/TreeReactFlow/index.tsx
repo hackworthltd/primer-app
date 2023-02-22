@@ -92,18 +92,14 @@ const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
         ) : (
           <></>
         )}
-        {p.data.label ? (
-          <div
-            className={classNames(
-              "z-20 p-1 absolute rounded-full text-sm xl:text-base",
-              flavorLabelClasses(p.data.flavor)
-            )}
-          >
-            {p.data.label}
-          </div>
-        ) : (
-          <></>
-        )}
+        <div
+          className={classNames(
+            "z-20 p-1 absolute rounded-full text-sm xl:text-base",
+            flavorLabelClasses(p.data.flavor)
+          )}
+        >
+          {p.data.label}
+        </div>
       </div>
       {handle("source", Position.Bottom)}
       {handle("source", Position.Right)}

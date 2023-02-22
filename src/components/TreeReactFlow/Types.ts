@@ -108,7 +108,7 @@ export type PrimerTreeNoPos<T> = TreeSimple<
 
 /** Node properties. */
 export type PrimerNodeProps<T> = {
-  label?: string;
+  label: string;
   width: number;
   height: number;
   selected: boolean;
