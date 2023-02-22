@@ -1,11 +1,4 @@
-import {
-  Def,
-  Tree,
-  Selection,
-  NodeFlavorTextBody,
-  NodeFlavorPrimBody,
-  NodeFlavorNoBody,
-} from "@/primer-api";
+import { Def, Tree, Selection } from "@/primer-api";
 import {
   ReactFlow,
   Edge,
@@ -61,43 +54,6 @@ export type TreeReactFlowProps = {
   forestLayout: "Horizontal" | "Vertical";
 } & NodeParams;
 
-const primerNodeClasses = (selected: boolean, flavor: NodeFlavor) =>
-  classNames(
-    {
-      "ring ring-4 ring-offset-4": selected,
-      "flex items-center justify-center rounded-md border-4 text-grey-tertiary":
-        true,
-    },
-
-    // Note: we use separate functions here to set per-flavor classes,
-    // rather than the more conventional object-style assignment,
-    // because by using functions, we can use switch statements and get
-    // errors from TypeScript if we miss a case.
-    flavorClasses(flavor)
-  );
-
-const primerNodeContentsClasses = (
-  flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody
-) =>
-  classNames(
-    {
-      "font-code text-sm xl:text-base": true,
-    },
-
-    // See note above for `primerNodeClasses`.
-    flavorContentClasses(flavor)
-  );
-
-const primerNodeLabelClasses = (flavor: NodeFlavor) =>
-  classNames(
-    {
-      "z-20 p-1 absolute rounded-full text-sm xl:text-base": true,
-    },
-
-    // See note above for `primerNodeClasses`.
-    flavorLabelClasses(flavor)
-  );
-
 const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
   const handle = (type: HandleType, position: Position) => (
     <Handle
@@ -112,21 +68,37 @@ const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
       <div
-        className={primerNodeClasses(p.data.selected, p.data.flavor)}
+        className={classNames(
+          {
+            "ring-4 ring-offset-4": p.data.selected,
+          },
+          "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
+          flavorClasses(p.data.flavor)
+        )}
         style={{
           width: p.data.width,
           height: p.data.height,
         }}
       >
         {"contents" in p.data ? (
-          <div className={primerNodeContentsClasses(p.data.flavor)}>
+          <div
+            className={classNames(
+              "font-code text-sm xl:text-base",
+              flavorContentClasses(p.data.flavor)
+            )}
+          >
             {p.data.contents}
           </div>
         ) : (
           <></>
         )}
         {p.data.label ? (
-          <div className={primerNodeLabelClasses(p.data.flavor)}>
+          <div
+            className={classNames(
+              "z-20 p-1 absolute rounded-full text-sm xl:text-base",
+              flavorLabelClasses(p.data.flavor)
+            )}
+          >
             {p.data.label}
           </div>
         ) : (
