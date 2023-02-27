@@ -32,10 +32,9 @@ const props = {
 
 const emptyTypeTree = (nodeId: string): Tree => {
   return {
-    body: { tag: "NoBody" },
+    body: { tag: "NoBody", contents: "TEmptyHole" },
     childTrees: [],
     nodeId,
-    flavor: "FlavorTEmptyHole",
   };
 };
 const def1 = {

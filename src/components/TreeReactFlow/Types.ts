@@ -1,4 +1,11 @@
-import { GlobalName, NodeFlavor, NodeType } from "@/primer-api";
+import {
+  GlobalName,
+  NodeFlavorBoxBody,
+  NodeFlavorNoBody,
+  NodeFlavorPrimBody,
+  NodeFlavorTextBody,
+  NodeType,
+} from "@/primer-api";
 import { Edge, Node } from "reactflow";
 import { unzip } from "fp-ts/lib/Array";
 
@@ -101,13 +108,19 @@ export type PrimerTreeNoPos<T> = TreeSimple<
 
 /** Node properties. */
 export type PrimerNodeProps<T> = {
-  label?: string;
-  contents: string | undefined;
   width: number;
   height: number;
-  flavor: NodeFlavor;
   selected: boolean;
-} & T;
+} & (
+  | {
+      flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
+      contents: string;
+    }
+  | {
+      flavor: NodeFlavorBoxBody;
+    }
+) &
+  T;
 
 /** Node properties which are equal for all nodes in a single input tree. */
 export type PrimerTreeProps = {

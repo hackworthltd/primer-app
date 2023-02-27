@@ -5,10 +5,10 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { Tree } from './tree';
+import type { RecordPairNodeFlavorBoxBodyTree } from './recordPairNodeFlavorBoxBodyTree';
 import type { NodeBodyOneOfFiveTag } from './nodeBodyOneOfFiveTag';
 
 export type NodeBodyOneOfFive = {
-  contents: Tree;
+  contents: RecordPairNodeFlavorBoxBodyTree;
   tag: NodeBodyOneOfFiveTag;
 };
