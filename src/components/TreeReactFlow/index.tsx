@@ -53,16 +53,15 @@ export type TreeReactFlowProps = {
   forestLayout: "Horizontal" | "Vertical";
 } & NodeParams;
 
-const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
-  const handle = (type: HandleType, position: Position) => (
-    <Handle
-      id={position}
-      isConnectable={false}
-      type={type}
-      position={position}
-    />
-  );
-  return (
+const primerNodeTypeName = "primer";
+const primerDefNameNodeTypeName = "primer-def-name";
+
+const handle = (type: HandleType, position: Position) => (
+  <Handle id={position} isConnectable={false} type={type} position={position} />
+);
+
+const nodeTypes = {
+  [primerNodeTypeName]: <T,>(p: NodeProps<PrimerNodeProps<T>>) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
@@ -103,38 +102,29 @@ const PrimerNode = <T,>(p: NodeProps<PrimerNodeProps<T>>) => {
       {handle("source", Position.Bottom)}
       {handle("source", Position.Right)}
     </>
-  );
-};
-
-const PrimerDefNameNode = (p: NodeProps<PrimerDefNameNodeProps>) => (
-  <>
-    <div
-      className={classNames(
-        "flex items-center justify-center",
-        "bg-grey-primary",
-        "border-8 border-grey-tertiary ring-grey-tertiary",
-        p.data.selected && "ring-4 ring-offset-4",
-        commonHoverClasses
-      )}
-      style={{
-        width: p.data.width,
-        height: p.data.height,
-      }}
-    >
-      <div className="font-code text-4xl text-grey-tertiary">
-        {p.data.def.baseName}
+  ),
+  [primerDefNameNodeTypeName]: (p: NodeProps<PrimerDefNameNodeProps>) => (
+    <>
+      <div
+        className={classNames(
+          "flex items-center justify-center",
+          "bg-grey-primary",
+          "border-8 border-grey-tertiary ring-grey-tertiary",
+          p.data.selected && "ring-4 ring-offset-4",
+          commonHoverClasses
+        )}
+        style={{
+          width: p.data.width,
+          height: p.data.height,
+        }}
+      >
+        <div className="font-code text-4xl text-grey-tertiary">
+          {p.data.def.baseName}
+        </div>
       </div>
-    </div>
-    <Handle isConnectable={false} type="source" position={Position.Bottom} />
-  </>
-);
-
-const primerNodeTypeName = "primer";
-const primerDefNameNodeTypeName = "primer-def-name";
-
-const nodeTypes = {
-  [primerNodeTypeName]: PrimerNode,
-  [primerDefNameNodeTypeName]: PrimerDefNameNode,
+      <Handle isConnectable={false} type="source" position={Position.Bottom} />
+    </>
+  ),
 };
 
 const augmentTree = async <T,>(
