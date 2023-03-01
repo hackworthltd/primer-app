@@ -163,7 +163,7 @@ const augmentTree = async <T,>(
       node: {
         id: tree.nodeId,
         type: primerNodeTypeName,
-        data: { ...p, ...data },
+        data,
       },
     },
     [...nested, ...childNested.flat(), ...(rightChild?.[1] ?? [])],
