@@ -33,16 +33,16 @@ export type PrimerGraph<T> = Graph<Positioned<PrimerNode<T>>, PrimerEdge>;
 export type PrimerGraphNoPos<T> = Graph<PrimerNode<T>, PrimerEdge>;
 
 /** A generic edge-labelled tree. */
-export type TreeSimple<N, E> = {
+export type Tree<N, E> = {
   node: N;
-  childTrees: [TreeSimple<N, E>, E][];
-  rightChild?: [TreeSimple<N, E>, E];
+  childTrees: [Tree<N, E>, E][];
+  rightChild?: [Tree<N, E>, E];
 };
 
 export const treeMap = <N1, N2, E>(
-  { node, childTrees, rightChild }: TreeSimple<N1, E>,
+  { node, childTrees, rightChild }: Tree<N1, E>,
   f: (n: N1) => N2
-): TreeSimple<N2, E> => ({
+): Tree<N2, E> => ({
   node: f(node),
   childTrees: childTrees.map(([t, e]) => [treeMap(t, f), e]),
   ...(rightChild
@@ -54,7 +54,7 @@ export const treeNodes = <N, E>({
   node,
   rightChild,
   childTrees,
-}: TreeSimple<N, E>): N[] => {
+}: Tree<N, E>): N[] => {
   return [
     node,
     ...childTrees.flatMap(([n, _]) => treeNodes(n)),
@@ -66,11 +66,11 @@ export const treeToGraph = <
   N extends { id: string },
   E extends { source: string; target: string }
 >(
-  tree: TreeSimple<N, E>
+  tree: Tree<N, E>
 ): Graph<N, E & { isRight: boolean }> => {
   const [trees, edges] = unzip(
     tree.childTrees
-      .map<[TreeSimple<N, E>, E & { isRight: boolean }]>(([t, e]) => [
+      .map<[Tree<N, E>, E & { isRight: boolean }]>(([t, e]) => [
         t,
         { ...e, ...{ isRight: false } },
       ])
@@ -90,9 +90,9 @@ export const treeToGraph = <
   );
 };
 
-export type PrimerTree<T> = TreeSimple<Positioned<PrimerNode<T>>, PrimerEdge>;
+export type PrimerTree<T> = Tree<Positioned<PrimerNode<T>>, PrimerEdge>;
 
-export type PrimerTreeNoPos<T> = TreeSimple<PrimerNode<T>, PrimerEdge>;
+export type PrimerTreeNoPos<T> = Tree<PrimerNode<T>, PrimerEdge>;
 
 export type PrimerEdge = Edge<Empty>;
 

@@ -1,4 +1,4 @@
-import { Def, Tree, Selection } from "@/primer-api";
+import { Def, Tree as APITree, Selection } from "@/primer-api";
 import {
   ReactFlow,
   Node as RFNode,
@@ -140,7 +140,7 @@ assertType<
 >;
 
 const augmentTree = async <T,>(
-  tree: Tree,
+  tree: APITree,
   p: NodeParams & T
 ): Promise<
   [
@@ -183,7 +183,7 @@ const augmentTree = async <T,>(
 };
 
 const nodeProps = async <T,>(
-  tree: Tree,
+  tree: APITree,
   p: NodeParams & T
 ): Promise<[PrimerNodeProps<T>, PrimerGraph<T>[]]> => {
   const selected = p.selection?.node?.id?.toString() == tree.nodeId;
@@ -301,7 +301,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
             type: "primer-def-name",
           };
           const defEdge = async (
-            tree: Tree,
+            tree: APITree,
             augmentParams: NodeParams & PrimerTreeProps,
             edgeId: string
           ): Promise<{
@@ -414,7 +414,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
 export default TreeReactFlow;
 
 export type TreeReactFlowOneProps = {
-  tree?: Tree;
+  tree?: APITree;
   onNodeClick?: (
     event: React.MouseEvent,
     node: PrimerNode<PrimerTreePropsOne>
