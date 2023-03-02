@@ -1,4 +1,4 @@
-import { Def, Tree as APITree, Selection } from "@/primer-api";
+import { Def, Tree as APITree, Selection, NodeBody } from "@/primer-api";
 import {
   ReactFlow,
   Node as RFNode,
@@ -24,6 +24,7 @@ import {
   PrimerNode,
   PrimerEdge,
   Positioned,
+  Tree,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
@@ -139,63 +140,70 @@ assertType<
   >
 >;
 
-const augmentTree = async <T,>(
+/** `APITree` without the children. */
+type APITreeNode = {
+  nodeId: string;
+  body: NodeBody;
+};
+
+const augmentTree = async <T, E, Extra>(
   tree: APITree,
-  p: NodeParams & T
-): Promise<
-  [
-    PrimerTreeNoPos<T>,
-    /* Nodes of nested trees, already positioned.
-  We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
-    PrimerGraph<T>[]
-  ]
-> => {
-  const [childTrees, childNested] = await Promise.all(
-    tree.childTrees.map((t) => augmentTree(t, p))
+  f: (tree: APITreeNode) => Promise<
+    [
+      T,
+      (child: T) => E,
+      // Any extra data produced from each node.
+      Extra[]
+    ]
+  >
+): Promise<[Tree<T, E>, Extra[]]> => {
+  const [childTrees, childExtra] = await Promise.all(
+    tree.childTrees.map((t) => augmentTree(t, f))
   ).then(unzip);
-  const [data, nested] = await nodeProps(tree, p);
-  const makeEdge = (
-    child: PrimerTreeNoPos<T>
-  ): [PrimerTreeNoPos<T>, PrimerEdge] => [
-    child,
-    {
-      id: JSON.stringify([tree.nodeId, child.node.id]),
-      source: tree.nodeId,
-      target: child.node.id,
-      className: flavorEdgeClasses(data.flavor),
-    },
-  ];
+  const [node, makeEdge, extra] = await f(tree);
   const rightChild = await (tree.rightChild
-    ? augmentTree(tree.rightChild, p)
+    ? augmentTree(tree.rightChild, f)
     : undefined);
   return [
     {
-      ...(rightChild ? { rightChild: makeEdge(rightChild[0]) } : {}),
-      childTrees: childTrees.map((e) => makeEdge(e)),
-      node: {
-        id: tree.nodeId,
-        type: "primer",
-        data,
-      },
+      ...(rightChild
+        ? { rightChild: [rightChild[0], makeEdge(rightChild[0].node)] }
+        : {}),
+      childTrees: childTrees.map((e) => [e, makeEdge(e.node)]),
+      node,
     },
-    [...nested, ...childNested.flat(), ...(rightChild?.[1] ?? [])],
+    [...extra, ...childExtra.flat(), ...(rightChild?.[1] ?? [])],
   ];
 };
 
-const nodeProps = async <T,>(
-  tree: APITree,
+const makePrimerNode = async <T,>(
+  node: APITreeNode,
   p: NodeParams & T
-): Promise<[PrimerNodeProps<T>, PrimerGraph<T>[]]> => {
-  const selected = p.selection?.node?.id?.toString() == tree.nodeId;
+): Promise<
+  [
+    PrimerNode<T>,
+    (child: PrimerNode<T>) => PrimerEdge,
+    /* Nodes of nested trees, already positioned.
+    We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
+    PrimerGraph<T>[]
+  ]
+> => {
+  const selected = p.selection?.node?.id?.toString() == node.nodeId;
+  const id = node.nodeId;
   const common = {
     width: p.nodeWidth,
     height: p.nodeHeight,
     selected,
     ...p,
   };
-  switch (tree.body.tag) {
+  const edgeCommon = (child: PrimerNode<T>) => ({
+    id: JSON.stringify([id, child.id]),
+    source: id,
+    target: child.id,
+  });
+  switch (node.body.tag) {
     case "PrimBody": {
-      const { fst: flavor, snd: prim } = tree.body.contents;
+      const { fst: flavor, snd: prim } = node.body.contents;
       const contents = (() => {
         switch (prim.tag) {
           case "PrimInt":
@@ -206,53 +214,87 @@ const nodeProps = async <T,>(
       })();
       return [
         {
-          flavor,
-          contents,
-          ...common,
+          id,
+          type: "primer",
+          data: {
+            flavor,
+            contents,
+            ...common,
+          },
         },
+        (child) => ({
+          className: flavorEdgeClasses(flavor),
+          ...edgeCommon(child),
+        }),
         [],
       ];
     }
     case "TextBody": {
-      const { fst: flavor, snd: name } = tree.body.contents;
+      const { fst: flavor, snd: name } = node.body.contents;
       return [
         {
-          flavor,
-          contents: name.baseName,
-          ...common,
+          id,
+          type: "primer",
+          data: {
+            flavor,
+            contents: name.baseName,
+            ...common,
+          },
         },
+        (child) => ({
+          className: flavorEdgeClasses(flavor),
+          ...edgeCommon(child),
+        }),
         [],
       ];
     }
     case "NoBody": {
-      const flavor = tree.body.contents;
+      const flavor = node.body.contents;
       return [
         {
-          flavor,
-          contents: noBodyFlavorContents(tree.body.contents),
-          ...common,
+          id,
+          type: "primer",
+          data: {
+            flavor,
+            contents: noBodyFlavorContents(node.body.contents),
+            ...common,
+          },
         },
+        (child) => ({
+          className: flavorEdgeClasses(flavor),
+          ...edgeCommon(child),
+        }),
         [],
       ];
     }
     case "BoxBody": {
-      const { fst: flavor, snd: t } = tree.body.contents;
-      const [bodyTree, bodyNested] = await augmentTree(t, p);
+      const { fst: flavor, snd: t } = node.body.contents;
+      const [bodyTree, bodyNested] = await augmentTree(t, (n) =>
+        makePrimerNode(n, p)
+      );
       const bodyLayout = await layoutTree(bodyTree).then((layout) => ({
         ...layout,
         ...treeToGraph(layout.tree),
       }));
       return [
         {
-          flavor,
-          ...common,
-          width: bodyLayout.width + p.boxPadding,
-          height: bodyLayout.height + p.boxPadding,
+          id,
+          type: "primer",
+          data: {
+            flavor,
+            ...common,
+            width: bodyLayout.width + p.boxPadding,
+            height: bodyLayout.height + p.boxPadding,
+          },
         },
+        (child) => ({
+          className: flavorEdgeClasses(flavor),
+          ...edgeCommon(child),
+        }),
         bodyNested.concat({
           nodes: bodyLayout.nodes.map((node) => ({
             ...node,
-            parentNode: tree.nodeId,
+            parentNode: id,
             position: {
               x: node.position.x + p.boxPadding / 2,
               y: node.position.y + p.boxPadding / 2,
@@ -308,7 +350,9 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
             subtree: [PrimerTreeNoPos<PrimerTreeProps>, PrimerEdge];
             nested: PrimerGraph<PrimerTreeProps>[];
           }> => {
-            const [t, nested] = await augmentTree(tree, augmentParams);
+            const [t, nested] = await augmentTree(tree, (n) =>
+              makePrimerNode(n, augmentParams)
+            );
             return {
               subtree: [
                 t,
@@ -435,9 +479,11 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
     const pt = p.tree;
     pt &&
       (async () => {
-        const [tree, nested] = await augmentTree<PrimerTreePropsOne>(pt, {
-          nodeType: "BodyNode",
-          ...p,
+        const [tree, nested] = await augmentTree(pt, (n) => {
+          return makePrimerNode<PrimerTreePropsOne>(n, {
+            nodeType: "BodyNode",
+            ...p,
+          });
         });
         const t = await layoutTree(tree);
         const graph: PrimerGraph<PrimerTreePropsOne> = treeToGraph(t.tree);
