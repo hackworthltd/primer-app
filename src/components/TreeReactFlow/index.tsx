@@ -1,4 +1,11 @@
-import { Def, Tree as APITree, Selection, NodeBody } from "@/primer-api";
+import {
+  Def,
+  Tree as APITree,
+  Selection,
+  NodeBody,
+  GlobalName,
+  NodeType,
+} from "@/primer-api";
 import {
   ReactFlow,
   Node as RFNode,
@@ -16,15 +23,16 @@ import {
   combineGraphs,
   PrimerGraph,
   PrimerNodeProps,
-  PrimerTreeProps,
-  PrimerTreeNoPos,
-  PrimerTreePropsOne,
   treeToGraph,
   PrimerDefNameNodeProps,
   PrimerNode,
   PrimerEdge,
   Positioned,
   Tree,
+  Graph,
+  treeMap,
+  primerNodeWith,
+  graphMap,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
@@ -49,7 +57,7 @@ export type TreeReactFlowProps = {
   defs: Def[];
   onNodeClick?: (
     event: React.MouseEvent,
-    node: Positioned<PrimerNode<PrimerTreeProps>>
+    node: Positioned<PrimerNodeWithDef>
   ) => void;
   treePadding: number;
   forestLayout: "Horizontal" | "Vertical";
@@ -60,7 +68,7 @@ const handle = (type: HandleType, position: Position) => (
 );
 
 const nodeTypes = {
-  primer: <T,>(p: NodeProps<PrimerNodeProps<T>>) => (
+  primer: (p: NodeProps<PrimerNodeProps>) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
@@ -130,7 +138,7 @@ const nodeTypes = {
 // i.e. that we register our custom nodes correctly (see `PrimerNode` for further explanation).
 assertType<
   Equal<
-    PrimerNode<unknown>,
+    PrimerNode,
     { id: string } & {
       [T in keyof typeof nodeTypes]: {
         type: T;
@@ -176,16 +184,17 @@ const augmentTree = async <T, E, Extra>(
   ];
 };
 
-const makePrimerNode = async <T,>(
+const makePrimerNode = async (
   node: APITreeNode,
-  p: NodeParams & T
+  p: NodeParams,
+  nodeType: NodeType
 ): Promise<
   [
-    PrimerNode<T>,
-    (child: PrimerNode<T>) => PrimerEdge,
+    PrimerNode,
+    (child: PrimerNode) => PrimerEdge,
     /* Nodes of nested trees, already positioned.
     We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
-    PrimerGraph<T>[]
+    PrimerGraph[]
   ]
 > => {
   const selected = p.selection?.node?.id?.toString() == node.nodeId;
@@ -194,9 +203,10 @@ const makePrimerNode = async <T,>(
     width: p.nodeWidth,
     height: p.nodeHeight,
     selected,
+    nodeType,
     ...p,
   };
-  const edgeCommon = (child: PrimerNode<T>) => ({
+  const edgeCommon = (child: PrimerNode) => ({
     id: JSON.stringify([id, child.id]),
     source: id,
     target: child.id,
@@ -270,7 +280,7 @@ const makePrimerNode = async <T,>(
     case "BoxBody": {
       const { fst: flavor, snd: t } = node.body.contents;
       const [bodyTree, bodyNested] = await augmentTree(t, (n) =>
-        makePrimerNode(n, p)
+        makePrimerNode(n, p, nodeType)
       );
       const bodyLayout = await layoutTree(bodyTree).then((layout) => ({
         ...layout,
@@ -307,6 +317,9 @@ const makePrimerNode = async <T,>(
   }
 };
 
+type PrimerNodeWithDefNoPos = PrimerNode<{ def: GlobalName }>;
+type PrimerNodeWithDef = Positioned<PrimerNodeWithDefNoPos>;
+
 // TreeReactFlow renders multiple definitions on one canvas.
 // For each definition, it displays three things:
 // - the definition's name
@@ -315,7 +328,9 @@ const makePrimerNode = async <T,>(
 // It ensures that these are clearly displayed as "one atomic thing",
 // i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc)
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
-  const [{ nodes, edges }, setLayout] = useState<PrimerGraph<PrimerTreeProps>>({
+  const [{ nodes, edges }, setLayout] = useState<
+    Graph<PrimerNodeWithDef, PrimerEdge>
+  >({
     nodes: [],
     edges: [],
   });
@@ -325,13 +340,16 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       const [trees, nested] = await Promise.all(
         p.defs.map<
           Promise<
-            [PrimerTreeNoPos<PrimerTreeProps>, PrimerGraph<PrimerTreeProps>[]]
+            [
+              Tree<PrimerNodeWithDefNoPos, PrimerEdge>,
+              Graph<PrimerNodeWithDef, PrimerEdge>[]
+            ]
           >
         >(async (def) => {
           const defNodeId = "def-" + def.name.baseName;
           const sigEdgeId = "def-sig-" + def.name.baseName;
           const bodyEdgeId = "def-body-" + def.name.baseName;
-          const defNameNode: PrimerNode<unknown> = {
+          const defNameNode: PrimerNode = {
             id: defNodeId,
             data: {
               def: def.name,
@@ -344,18 +362,19 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
           };
           const defEdge = async (
             tree: APITree,
-            augmentParams: NodeParams & PrimerTreeProps,
+            augmentParams: NodeParams,
+            nodeType: NodeType,
             edgeId: string
           ): Promise<{
-            subtree: [PrimerTreeNoPos<PrimerTreeProps>, PrimerEdge];
-            nested: PrimerGraph<PrimerTreeProps>[];
+            subtree: [Tree<PrimerNodeWithDefNoPos, PrimerEdge>, PrimerEdge];
+            nested: Graph<PrimerNodeWithDef, PrimerEdge>[];
           }> => {
             const [t, nested] = await augmentTree(tree, (n) =>
-              makePrimerNode(n, augmentParams)
+              makePrimerNode(n, augmentParams, nodeType)
             );
             return {
               subtree: [
-                t,
+                treeMap(t, (n) => primerNodeWith(n, { def: def.name })),
                 {
                   id: edgeId,
                   source: defNodeId,
@@ -365,28 +384,17 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                   style: { strokeDasharray: 4 },
                 },
               ],
-              nested,
+              nested: nested.map((g) =>
+                graphMap(g, ({ position, ...n }) => ({
+                  position,
+                  ...primerNodeWith(n, { def: def.name }),
+                }))
+              ),
             };
           };
-          const sigTree = await defEdge(
-            def.type_,
-            {
-              def: def.name,
-              nodeType: "SigNode",
-              ...p,
-            },
-            sigEdgeId
-          );
+          const sigTree = await defEdge(def.type_, p, "SigNode", sigEdgeId);
           const bodyTree = await (def.term
-            ? defEdge(
-                def.term,
-                {
-                  def: def.name,
-                  nodeType: "BodyNode",
-                  ...p,
-                },
-                bodyEdgeId
-              )
+            ? defEdge(def.term, p, "BodyNode", bodyEdgeId)
             : undefined);
           return [
             {
@@ -401,7 +409,9 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
         })
       ).then(unzip);
       const ts = await Promise.all(trees.map(layoutTree));
-      const graphs = ts.reduce<[PrimerGraph<PrimerTreeProps>[], number]>(
+      const graphs = ts.reduce<
+        [Graph<PrimerNodeWithDef, PrimerEdge>[], number]
+      >(
         ([gs, offset], { tree, width, height }) => {
           const g = treeToGraph(tree);
           const { increment, offsetVector } = (() => {
@@ -459,18 +469,13 @@ export default TreeReactFlow;
 
 export type TreeReactFlowOneProps = {
   tree?: APITree;
-  onNodeClick?: (
-    event: React.MouseEvent,
-    node: PrimerNode<PrimerTreePropsOne>
-  ) => void;
+  onNodeClick?: (event: React.MouseEvent, node: PrimerNode) => void;
 } & NodeParams;
 
 // TreeReactFlowOne renders one Tree (i.e. one type or one term) on its own individual canvas.
 // It is essentially a much simpler version of TreeReactFlow.
 export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
-  const [{ nodes, edges }, setLayout] = useState<
-    PrimerGraph<PrimerTreePropsOne>
-  >({
+  const [{ nodes, edges }, setLayout] = useState<PrimerGraph>({
     nodes: [],
     edges: [],
   });
@@ -479,14 +484,13 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
     const pt = p.tree;
     pt &&
       (async () => {
-        const [tree, nested] = await augmentTree(pt, (n) => {
-          return makePrimerNode<PrimerTreePropsOne>(n, {
-            nodeType: "BodyNode",
-            ...p,
-          });
-        });
+        const [tree, nested] = await augmentTree<
+          PrimerNode,
+          PrimerEdge,
+          PrimerGraph
+        >(pt, (n) => makePrimerNode(n, p, "BodyNode"));
         const t = await layoutTree(tree);
-        const graph: PrimerGraph<PrimerTreePropsOne> = treeToGraph(t.tree);
+        const graph: PrimerGraph = treeToGraph(t.tree);
         setLayout(combineGraphs([graph, ...nested.flat()]));
       })();
   }, [p]);

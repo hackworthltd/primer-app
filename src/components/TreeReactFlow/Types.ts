@@ -18,6 +18,18 @@ export type Graph<
   edges: E[];
 };
 
+export const graphMap = <
+  N1 extends { id: string },
+  N2 extends { id: string },
+  E extends { source: string; target: string }
+>(
+  { nodes, edges }: Graph<N1, E>,
+  f: (n: N1) => N2
+): Graph<N2, E> => ({
+  nodes: nodes.map(f),
+  edges,
+});
+
 export const combineGraphs = <
   N extends { id: string },
   E extends { source: string; target: string }
@@ -28,9 +40,9 @@ export const combineGraphs = <
   return { nodes: nodes.flat(), edges: edges.flat() };
 };
 
-export type PrimerGraph<T> = Graph<Positioned<PrimerNode<T>>, PrimerEdge>;
+export type PrimerGraph = Graph<Positioned<PrimerNode>, PrimerEdge>;
 
-export type PrimerGraphNoPos<T> = Graph<PrimerNode<T>, PrimerEdge>;
+export type PrimerGraphNoPos = Graph<PrimerNode, PrimerEdge>;
 
 /** A generic edge-labelled tree. */
 export type Tree<N, E> = {
@@ -90,9 +102,9 @@ export const treeToGraph = <
   );
 };
 
-export type PrimerTree<T> = Tree<Positioned<PrimerNode<T>>, PrimerEdge>;
+export type PrimerTree = Tree<Positioned<PrimerNode>, PrimerEdge>;
 
-export type PrimerTreeNoPos<T> = Tree<PrimerNode<T>, PrimerEdge>;
+export type PrimerTreeNoPos = Tree<PrimerNode, PrimerEdge>;
 
 export type PrimerEdge = Edge<Empty>;
 
@@ -101,16 +113,42 @@ export type PrimerEdge = Edge<Empty>;
  * the `type` field always corresponds to a custom node type we've registered with ReactFlow,
  * and that `data` contains the expected type of data for that type of custom node.
  */
-export type PrimerNode<T> = { id: string } & (
-  | { type: "primer"; data: PrimerNodeProps<T> }
-  | { type: "primer-def-name"; data: PrimerDefNameNodeProps }
+export type PrimerNode<T = unknown> = { id: string } & (
+  | { type: "primer"; data: PrimerNodeProps & T }
+  | { type: "primer-def-name"; data: PrimerDefNameNodeProps & T }
 );
 
+export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> => {
+  // NB This is operationally equivalent to `return { ...n, data: { ...n.data, ...x } }`
+  // but we have to match cases in order to please the typechecker
+  switch (n.type) {
+    case "primer":
+      return {
+        ...n,
+        type: "primer",
+        data: {
+          ...n.data,
+          ...x,
+        },
+      };
+    case "primer-def-name":
+      return {
+        ...n,
+        type: "primer-def-name",
+        data: {
+          ...n.data,
+          ...x,
+        },
+      };
+  }
+};
+
 /** Node properties. */
-export type PrimerNodeProps<T> = {
+export type PrimerNodeProps = {
   width: number;
   height: number;
   selected: boolean;
+  nodeType: NodeType;
 } & (
   | {
       flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
@@ -119,18 +157,7 @@ export type PrimerNodeProps<T> = {
   | {
       flavor: NodeFlavorBoxBody;
     }
-) &
-  T;
-
-/** Node properties which are equal for all nodes in a single input tree. */
-export type PrimerTreeProps = {
-  def: GlobalName;
-  nodeType: NodeType;
-};
-
-export type PrimerTreePropsOne = {
-  nodeType: NodeType;
-};
+);
 
 /** Properties for the special definition name node. */
 export type PrimerDefNameNodeProps = {
