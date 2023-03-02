@@ -159,6 +159,7 @@ export type PrimerNodeProps = {
   height: number;
   selected: boolean;
   nodeType: NodeType;
+  syntax: boolean;
 } & (
   | {
       flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;

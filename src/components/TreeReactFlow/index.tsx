@@ -103,6 +103,7 @@ const nodeTypes = {
         <div
           className={classNames(
             "z-20 p-1 absolute rounded-full text-sm xl:text-base",
+            p.data.syntax ? "-top-4" : "-right-2 -top-4",
             flavorLabelClasses(p.data.flavor)
           )}
         >
@@ -185,6 +186,7 @@ assertType<
 type APITreeNode = {
   nodeId: string;
   body: NodeBody;
+  children: number;
 };
 
 const augmentTree = async <T, E, Extra>(
@@ -201,7 +203,10 @@ const augmentTree = async <T, E, Extra>(
   const [childTrees, childExtra] = await Promise.all(
     tree.childTrees.map((t) => augmentTree(t, f))
   ).then(unzip);
-  const [node, makeEdge, extra] = await f(tree);
+  const [node, makeEdge, extra] = await f({
+    children: tree.childTrees.length + (tree.rightChild ? 1 : 0),
+    ...tree,
+  });
   const rightChild = await (tree.rightChild
     ? augmentTree(tree.rightChild, f)
     : undefined);
@@ -262,6 +267,7 @@ const makePrimerNode = async (
           data: {
             flavor,
             contents,
+            syntax: false,
             ...common,
           },
         },
@@ -281,6 +287,7 @@ const makePrimerNode = async (
           data: {
             flavor,
             contents: name.baseName,
+            syntax: false,
             ...common,
           },
         },
@@ -305,6 +312,7 @@ const makePrimerNode = async (
             data: {
               flavor,
               contents: noBodyFlavorContents(node.body.contents),
+              syntax: node.children >= 2,
               ...common,
             },
           },
@@ -343,6 +351,7 @@ const makePrimerNode = async (
           type: "primer",
           data: {
             flavor,
+            syntax: true,
             ...common,
             width: bodyLayout.width + p.boxPadding,
             height: bodyLayout.height + p.boxPadding,
