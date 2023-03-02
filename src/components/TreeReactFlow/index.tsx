@@ -35,6 +35,7 @@ import {
   primerNodeWith,
   graphMap,
   PrimerSimpleNodeProps,
+  PrimerBoxNodeProps,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
@@ -88,18 +89,14 @@ const nodeTypes = {
           height: p.data.height,
         }}
       >
-        {"contents" in p.data ? (
-          <div
-            className={classNames(
-              "font-code text-sm xl:text-base",
-              flavorContentClasses(p.data.flavor)
-            )}
-          >
-            {p.data.contents}
-          </div>
-        ) : (
-          <></>
-        )}
+        <div
+          className={classNames(
+            "font-code text-sm xl:text-base",
+            flavorContentClasses(p.data.flavor)
+          )}
+        >
+          {p.data.contents}
+        </div>
         <div
           className={classNames(
             "z-20 p-1 absolute rounded-full text-sm xl:text-base",
@@ -131,10 +128,40 @@ const nodeTypes = {
           height: p.data.height,
         }}
       >
+        {
+          <div
+            className={classNames(
+              "font-code text-sm xl:text-base",
+              flavorContentClasses(p.data.flavor)
+            )}
+          >
+            {flavorLabel(p.data.flavor)}
+          </div>
+        }
+      </div>
+      {handle("source", Position.Bottom)}
+      {handle("source", Position.Right)}
+    </>
+  ),
+  "primer-box": (p: NodeProps<PrimerBoxNodeProps>) => (
+    <>
+      {handle("target", Position.Top)}
+      {handle("target", Position.Left)}
+      <div
+        className={classNames(
+          "flex justify-center rounded-md border-4",
+          flavorClasses(p.data.flavor)
+        )}
+        style={{
+          width: p.data.width,
+          height: p.data.height,
+        }}
+      >
         <div
           className={classNames(
-            "font-code text-sm xl:text-base",
-            flavorContentClasses(p.data.flavor)
+            "z-20 p-1 absolute rounded-full text-sm xl:text-base",
+            "-top-4",
+            flavorLabelClasses(p.data.flavor)
           )}
         >
           {flavorLabel(p.data.flavor)}
@@ -348,10 +375,9 @@ const makePrimerNode = async (
       return [
         {
           id,
-          type: "primer",
+          type: "primer-box",
           data: {
             flavor,
-            syntax: true,
             ...common,
             width: bodyLayout.width + p.boxPadding,
             height: bodyLayout.height + p.boxPadding,

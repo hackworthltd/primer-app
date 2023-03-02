@@ -116,6 +116,7 @@ export type PrimerEdge = Edge<Empty>;
 export type PrimerNode<T = unknown> = { id: string } & (
   | { type: "primer"; data: PrimerNodeProps & T }
   | { type: "primer-simple"; data: PrimerSimpleNodeProps & T }
+  | { type: "primer-box"; data: PrimerBoxNodeProps & T }
   | { type: "primer-def-name"; data: PrimerDefNameNodeProps & T }
 );
 
@@ -141,6 +142,15 @@ export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> => {
           ...x,
         },
       };
+    case "primer-box":
+      return {
+        ...n,
+        type: "primer-box",
+        data: {
+          ...n.data,
+          ...x,
+        },
+      };
     case "primer-def-name":
       return {
         ...n,
@@ -160,15 +170,9 @@ export type PrimerNodeProps = {
   selected: boolean;
   nodeType: NodeType;
   syntax: boolean;
-} & (
-  | {
-      flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
-      contents: string;
-    }
-  | {
-      flavor: NodeFlavorBoxBody;
-    }
-);
+  flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
+  contents: string;
+};
 
 /** Properties for a simple node. */
 export type PrimerSimpleNodeProps = {
@@ -177,6 +181,15 @@ export type PrimerSimpleNodeProps = {
   selected: boolean;
   nodeType: NodeType;
   flavor: NodeFlavorNoBody;
+};
+
+/** Properties for a box node. */
+export type PrimerBoxNodeProps = {
+  width: number;
+  height: number;
+  selected: boolean;
+  nodeType: NodeType;
+  flavor: NodeFlavorBoxBody;
 };
 
 /** Properties for the special definition name node. */
