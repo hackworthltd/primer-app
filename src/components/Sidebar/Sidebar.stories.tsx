@@ -49,6 +49,7 @@ export const Default: ComponentStory<typeof Sidebar> = (args: SidebarProps) => (
         },
         result: { tag: "EvalFullRespTimedOut", contents: tree3 },
       }}
+      level="Expert"
     />
   </div>
 );

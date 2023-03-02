@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
-import { EvalFullResp, GlobalName } from "@/primer-api";
+import { EvalFullResp, GlobalName, Level } from "@/primer-api";
 import { TreeReactFlowOne } from "@/components";
 
 export type Prog = {
@@ -43,6 +43,7 @@ type EvalProps = {
     request: (baseName: string | undefined) => void;
     result?: EvalFullResp;
   };
+  level: Level;
 };
 type OnClick = (
   label: string,
@@ -226,13 +227,18 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
   );
 };
 
-const Evaluated = (p: { defName: GlobalName; evaluated?: EvalFullResp }) => {
+const Evaluated = (p: {
+  defName: GlobalName;
+  evaluated?: EvalFullResp;
+  level: Level;
+}) => {
   return (
     <TreeReactFlowOne
       {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
       nodeWidth={150}
       nodeHeight={50}
       boxPadding={50}
+      level={p.level}
     />
   );
 };
@@ -242,6 +248,7 @@ const Eval = ({
   defs,
   evalFull,
   moduleName,
+  level,
 }: EvalProps & { defs: string[] }): JSX.Element => {
   const [evalDef, setEvalDef0] = useState("");
   const setEvalDef = (e: string) => {
@@ -275,6 +282,7 @@ const Eval = ({
               <Evaluated
                 defName={{ qualifiedModule: moduleName, baseName: evalDef }}
                 {...(evalFull.result ? { evaluated: evalFull.result } : {})}
+                level={level}
               />
             </div>
           </>

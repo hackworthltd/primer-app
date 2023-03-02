@@ -220,6 +220,7 @@ const AppNoError = ({
             request: setEvalTarget,
             ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
           }}
+          level={level}
         />
       </div>
       <TreeReactFlow
@@ -246,6 +247,7 @@ const AppNoError = ({
         nodeWidth={150}
         nodeHeight={50}
         boxPadding={50}
+        level={level}
       />
       {selection ? (
         <ActionsListSelection

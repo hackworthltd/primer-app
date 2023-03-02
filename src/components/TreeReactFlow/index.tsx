@@ -5,6 +5,7 @@ import {
   NodeBody,
   GlobalName,
   NodeType,
+  Level,
 } from "@/primer-api";
 import {
   ReactFlow,
@@ -33,6 +34,7 @@ import {
   treeMap,
   primerNodeWith,
   graphMap,
+  PrimerSimpleNodeProps,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
@@ -52,6 +54,7 @@ type NodeParams = {
   nodeHeight: number;
   boxPadding: number;
   selection?: Selection;
+  level: Level;
 };
 export type TreeReactFlowProps = {
   defs: Def[];
@@ -101,6 +104,36 @@ const nodeTypes = {
           className={classNames(
             "z-20 p-1 absolute rounded-full text-sm xl:text-base",
             flavorLabelClasses(p.data.flavor)
+          )}
+        >
+          {flavorLabel(p.data.flavor)}
+        </div>
+      </div>
+      {handle("source", Position.Bottom)}
+      {handle("source", Position.Right)}
+    </>
+  ),
+  "primer-simple": (p: NodeProps<PrimerSimpleNodeProps>) => (
+    <>
+      {handle("target", Position.Top)}
+      {handle("target", Position.Left)}
+      <div
+        className={classNames(
+          {
+            "ring-4 ring-offset-4": p.data.selected,
+          },
+          "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
+          flavorClasses(p.data.flavor)
+        )}
+        style={{
+          width: p.data.width,
+          height: p.data.height,
+        }}
+      >
+        <div
+          className={classNames(
+            "font-code text-sm xl:text-base",
+            flavorContentClasses(p.data.flavor)
           )}
         >
           {flavorLabel(p.data.flavor)}
@@ -260,22 +293,40 @@ const makePrimerNode = async (
     }
     case "NoBody": {
       const flavor = node.body.contents;
-      return [
-        {
-          id,
-          type: "primer",
-          data: {
-            flavor,
-            contents: noBodyFlavorContents(node.body.contents),
-            ...common,
+      const makeChild = (child: PrimerNode) => ({
+        className: flavorEdgeClasses(flavor),
+        ...edgeCommon(child),
+      });
+      if (p.level == "Beginner") {
+        return [
+          {
+            id,
+            type: "primer",
+            data: {
+              flavor,
+              contents: noBodyFlavorContents(node.body.contents),
+              ...common,
+            },
           },
-        },
-        (child) => ({
-          className: flavorEdgeClasses(flavor),
-          ...edgeCommon(child),
-        }),
-        [],
-      ];
+          makeChild,
+          [],
+        ];
+      } else {
+        return [
+          {
+            id,
+            type: "primer-simple",
+            data: {
+              flavor,
+              ...common,
+              // Square, with same height as other nodes.
+              width: common.height,
+            },
+          },
+          makeChild,
+          [],
+        ];
+      }
     }
     case "BoxBody": {
       const { fst: flavor, snd: t } = node.body.contents;
