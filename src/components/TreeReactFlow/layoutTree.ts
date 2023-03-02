@@ -1,4 +1,3 @@
-import { Node, Edge } from "reactflow";
 import {
   InnerNode as InnerTidyNode,
   Node as TidyNode,
@@ -6,10 +5,9 @@ import {
 } from "@zxch3n/tidy";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
 import {
-  Empty,
-  NodeNoPos,
-  PrimerDefNameNodeProps,
-  PrimerNodeProps,
+  Positioned,
+  PrimerEdge,
+  PrimerNode,
   PrimerTree,
   PrimerTreeNoPos,
   treeMap,
@@ -57,16 +55,16 @@ export const layoutTree = <T>(
 
 type NodeInfo<T> = {
   id: number;
-  node: NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>;
-  edges: { edge: Edge<Empty>; isRight: boolean }[];
+  node: PrimerNode<T>;
+  edges: { edge: PrimerEdge; isRight: boolean }[];
 };
 // A single node of a `PrimerTree<T>`.
 // Note that this type is very similar in structure to `PrimerTree<T>`,
 // the only difference being that this type does not contain the actual subtrees.
 type PrimerTreeNode<T> = {
-  node: Node<PrimerNodeProps<T> | PrimerDefNameNodeProps>;
-  edges: Edge<Empty>[];
-  rightEdge?: Edge<Empty>;
+  node: Positioned<PrimerNode<T>>;
+  edges: PrimerEdge[];
+  rightEdge?: PrimerEdge;
 };
 const makeNodeMap = <T>(
   rootId: number,
@@ -119,8 +117,8 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
   const go = (primerTree: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
     const mkNodeInfos = (
       primerTree0: PrimerTreeNoPos<T>[]
-    ): [TidyNode[], NodeInfo<T>[], Edge<Empty>[]] => {
-      const r = primerTree0.map<[TidyNode[], NodeInfo<T>[], Edge<Empty>[]]>(
+    ): [TidyNode[], NodeInfo<T>[], PrimerEdge[]] => {
+      const r = primerTree0.map<[TidyNode[], NodeInfo<T>[], PrimerEdge[]]>(
         (t) => {
           const [tree1, nodes1] = go(t);
           // We explore (transitive) right-children now,

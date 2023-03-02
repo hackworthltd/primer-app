@@ -1,8 +1,7 @@
 import { Def, Tree, Selection } from "@/primer-api";
 import {
   ReactFlow,
-  Edge,
-  Node,
+  Node as RFNode,
   Handle,
   Position,
   NodeProps,
@@ -20,10 +19,11 @@ import {
   PrimerTreeProps,
   PrimerTreeNoPos,
   PrimerTreePropsOne,
-  Empty,
   treeToGraph,
-  NodeNoPos,
   PrimerDefNameNodeProps,
+  PrimerNode,
+  PrimerEdge,
+  Positioned,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
@@ -36,6 +36,7 @@ import {
   flavorLabelClasses,
   noBodyFlavorContents,
 } from "./Flavor";
+import { assertType, Equal } from "@/util";
 
 type NodeParams = {
   nodeWidth: number;
@@ -47,21 +48,18 @@ export type TreeReactFlowProps = {
   defs: Def[];
   onNodeClick?: (
     event: React.MouseEvent,
-    node: Node<PrimerNodeProps<PrimerTreeProps> | PrimerDefNameNodeProps>
+    node: Positioned<PrimerNode<PrimerTreeProps>>
   ) => void;
   treePadding: number;
   forestLayout: "Horizontal" | "Vertical";
 } & NodeParams;
-
-const primerNodeTypeName = "primer";
-const primerDefNameNodeTypeName = "primer-def-name";
 
 const handle = (type: HandleType, position: Position) => (
   <Handle id={position} isConnectable={false} type={type} position={position} />
 );
 
 const nodeTypes = {
-  [primerNodeTypeName]: <T,>(p: NodeProps<PrimerNodeProps<T>>) => (
+  primer: <T,>(p: NodeProps<PrimerNodeProps<T>>) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
@@ -103,7 +101,7 @@ const nodeTypes = {
       {handle("source", Position.Right)}
     </>
   ),
-  [primerDefNameNodeTypeName]: (p: NodeProps<PrimerDefNameNodeProps>) => (
+  "primer-def-name": (p: NodeProps<PrimerDefNameNodeProps>) => (
     <>
       <div
         className={classNames(
@@ -127,6 +125,20 @@ const nodeTypes = {
   ),
 };
 
+// Check that `nodeTypes` is in sync with `PrimerNode`,
+// i.e. that we register our custom nodes correctly (see `PrimerNode` for further explanation).
+assertType<
+  Equal<
+    PrimerNode<unknown>,
+    { id: string } & {
+      [T in keyof typeof nodeTypes]: {
+        type: T;
+        data: Parameters<(typeof nodeTypes)[T]>[0]["data"];
+      };
+    }[keyof typeof nodeTypes]
+  >
+>;
+
 const augmentTree = async <T,>(
   tree: Tree,
   p: NodeParams & T
@@ -144,7 +156,7 @@ const augmentTree = async <T,>(
   const [data, nested] = await nodeProps(tree, p);
   const makeEdge = (
     child: PrimerTreeNoPos<T>
-  ): [PrimerTreeNoPos<T>, Edge<Empty>] => [
+  ): [PrimerTreeNoPos<T>, PrimerEdge] => [
     child,
     {
       id: JSON.stringify([tree.nodeId, child.node.id]),
@@ -162,7 +174,7 @@ const augmentTree = async <T,>(
       childTrees: childTrees.map((e) => makeEdge(e)),
       node: {
         id: tree.nodeId,
-        type: primerNodeTypeName,
+        type: "primer",
         data,
       },
     },
@@ -277,7 +289,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
           const defNodeId = "def-" + def.name.baseName;
           const sigEdgeId = "def-sig-" + def.name.baseName;
           const bodyEdgeId = "def-body-" + def.name.baseName;
-          const defNameNode: NodeNoPos<PrimerDefNameNodeProps> = {
+          const defNameNode: PrimerNode<unknown> = {
             id: defNodeId,
             data: {
               def: def.name,
@@ -286,14 +298,14 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
               selected:
                 deepEqual(p.selection?.def, def.name) && !p.selection?.node,
             },
-            type: primerDefNameNodeTypeName,
+            type: "primer-def-name",
           };
           const defEdge = async (
             tree: Tree,
             augmentParams: NodeParams & PrimerTreeProps,
             edgeId: string
           ): Promise<{
-            subtree: [PrimerTreeNoPos<PrimerTreeProps>, Edge<Empty>];
+            subtree: [PrimerTreeNoPos<PrimerTreeProps>, PrimerEdge];
             nested: PrimerGraph<PrimerTreeProps>[];
           }> => {
             const [t, nested] = await augmentTree(tree, augmentParams);
@@ -386,7 +398,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const id = useId();
 
   return (
-    <ReactFlow
+    <ReactFlowSafe
       id={id}
       {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
       nodes={nodes}
@@ -395,7 +407,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
     >
       <Background gap={25} size={1.6} color="#81818a" />
-    </ReactFlow>
+    </ReactFlowSafe>
   );
 };
 
@@ -405,7 +417,7 @@ export type TreeReactFlowOneProps = {
   tree?: Tree;
   onNodeClick?: (
     event: React.MouseEvent,
-    node: Node<PrimerNodeProps<PrimerTreePropsOne>>
+    node: PrimerNode<PrimerTreePropsOne>
   ) => void;
 } & NodeParams;
 
@@ -439,7 +451,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
   const id = useId();
 
   return (
-    <ReactFlow
+    <ReactFlowSafe
       id={id}
       {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
       nodes={nodes}
@@ -448,6 +460,29 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
     >
       <Background gap={25} size={1.6} color="#81818a" />
-    </ReactFlow>
+    </ReactFlowSafe>
   );
 };
+
+/** A more strongly-typed version of the `ReactFlow` component.
+ * This allows us to use a more refined node type, and safely act on that type in handlers. */
+export const ReactFlowSafe = <N extends RFNode>(
+  p: Omit<Parameters<typeof ReactFlow>[0], "onNodeClick" | "nodes"> & {
+    nodes: N[];
+    onNodeClick?: (e: React.MouseEvent<Element, MouseEvent>, n: N) => void;
+  }
+): ReturnType<typeof ReactFlow> => (
+  <ReactFlow
+    {...{
+      ...p,
+      onNodeClick: (e, n) => {
+        "onNodeClick" in p &&
+          p.onNodeClick(
+            e,
+            // This cast is safe because `N` is also the type of elements of the `nodes` field.
+            n as N
+          );
+      },
+    }}
+  ></ReactFlow>
+);
