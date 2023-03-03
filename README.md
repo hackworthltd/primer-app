@@ -40,10 +40,8 @@ To develop interactively, enter the Nix shell via `nix develop`, which will inst
 In most circumstances, while developing locally, you'll want to launch the version of `primer-service` that is pinned via this repo's `primer` Nix flake input. To do that, run the following command from this project's top-level directory:
 
 ```sh
-nix run .#run-primer
+nix run .#run-primer-sqlite
 ```
-
-Note that this only works if there's also a local PostgreSQL Docker instance running. Because we expect that developers will generally always be running this PostgreSQL instance, we haven't bothered to include the related Docker helper scripts from the Primer repo in this repo. See the [Primer repo's README file](https://github.com/hackworthltd/primer/blob/main/README.md#local-development) for details on how to manage the PostgreSQL Docker instance.
 
 ### Scripts
 
