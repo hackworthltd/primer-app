@@ -9,6 +9,5 @@ steps:
     concurrency_group: "deploy-to-flyio"
     command: |
       source ~/env
-      export DATABASE_URL
       export FLY_ACCESS_TOKEN
       nix run .#deploy-primer-service
