@@ -32,14 +32,8 @@ let
         docker rmi "$IMAGE"
       }
       trap rm-image EXIT
-
       echo "Loaded image: $IMAGE"
-
       trap 'pkill -P $$; exit' SIGINT SIGTERM
-      flyctl proxy 5432 -a hackworth-code-postgres &
-
-      sleep 10
-      primer-sqitch deploy --verify db:"$DATABASE_URL"
       flyctl deploy --image "$IMAGE" --image-label "git-${primer-service-rev}"
     '';
   };

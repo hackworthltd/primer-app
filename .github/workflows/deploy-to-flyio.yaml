@@ -52,7 +52,6 @@ jobs:
           method: jwt
           secrets: |
             secret/data/flyio/github token | FLY_API_TOKEN ;
-            secret/data/flyio/github database_url | DATABASE_URL ;
             /github/token/primer-app-repos token | NIX_GITHUB_TOKEN ;
             secret/data/cachix/hackworthltd-private/github-workflows token | CACHIX_AUTH_TOKEN ;
 
@@ -84,15 +83,6 @@ jobs:
 
       - name: Setup flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: Setup flyctl proxy
-        run: |
-          flyctl proxy 5432 -a hackworth-code-postgres &
-          sleep 10
-
-      - name: Deploy database changes
-        run: |
-          nix run .#primer-sqitch -- deploy --verify db:"$DATABASE_URL"
 
       - name: Deploy Docker image
         run: |
