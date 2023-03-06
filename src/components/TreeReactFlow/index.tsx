@@ -36,6 +36,7 @@ import {
   graphMap,
   PrimerSimpleNodeProps,
   PrimerBoxNodeProps,
+  PrimerCommonNodeProps,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
@@ -72,7 +73,7 @@ const handle = (type: HandleType, position: Position) => (
 );
 
 const nodeTypes = {
-  primer: (p: NodeProps<PrimerNodeProps>) => (
+  primer: (p: NodeProps<PrimerNodeProps & PrimerCommonNodeProps>) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
@@ -111,7 +112,9 @@ const nodeTypes = {
       {handle("source", Position.Right)}
     </>
   ),
-  "primer-simple": (p: NodeProps<PrimerSimpleNodeProps>) => (
+  "primer-simple": (
+    p: NodeProps<PrimerSimpleNodeProps & PrimerCommonNodeProps>
+  ) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
@@ -143,7 +146,7 @@ const nodeTypes = {
       {handle("source", Position.Right)}
     </>
   ),
-  "primer-box": (p: NodeProps<PrimerBoxNodeProps>) => (
+  "primer-box": (p: NodeProps<PrimerBoxNodeProps & PrimerCommonNodeProps>) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
@@ -171,7 +174,9 @@ const nodeTypes = {
       {handle("source", Position.Right)}
     </>
   ),
-  "primer-def-name": (p: NodeProps<PrimerDefNameNodeProps>) => (
+  "primer-def-name": (
+    p: NodeProps<PrimerDefNameNodeProps & PrimerCommonNodeProps>
+  ) => (
     <>
       <div
         className={classNames(

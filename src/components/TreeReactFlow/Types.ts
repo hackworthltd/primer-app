@@ -113,11 +113,14 @@ export type PrimerEdge = Edge<Empty>;
  * the `type` field always corresponds to a custom node type we've registered with ReactFlow,
  * and that `data` contains the expected type of data for that type of custom node.
  */
-export type PrimerNode<T = unknown> = { id: string } & (
-  | { type: "primer"; data: PrimerNodeProps & T }
-  | { type: "primer-simple"; data: PrimerSimpleNodeProps & T }
-  | { type: "primer-box"; data: PrimerBoxNodeProps & T }
-  | { type: "primer-def-name"; data: PrimerDefNameNodeProps & T }
+export type PrimerNode<T = unknown> = {
+  id: string;
+  data: PrimerCommonNodeProps & T;
+} & (
+  | { type: "primer"; data: PrimerNodeProps }
+  | { type: "primer-simple"; data: PrimerSimpleNodeProps }
+  | { type: "primer-box"; data: PrimerBoxNodeProps }
+  | { type: "primer-def-name"; data: PrimerDefNameNodeProps }
 );
 
 export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> => {
@@ -165,9 +168,6 @@ export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> => {
 
 /** Node properties. */
 export type PrimerNodeProps = {
-  width: number;
-  height: number;
-  selected: boolean;
   nodeType: NodeType;
   syntax: boolean;
   flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
@@ -176,18 +176,12 @@ export type PrimerNodeProps = {
 
 /** Properties for a simple node. */
 export type PrimerSimpleNodeProps = {
-  width: number;
-  height: number;
-  selected: boolean;
   nodeType: NodeType;
   flavor: NodeFlavorNoBody;
 };
 
 /** Properties for a box node. */
 export type PrimerBoxNodeProps = {
-  width: number;
-  height: number;
-  selected: boolean;
   nodeType: NodeType;
   flavor: NodeFlavorBoxBody;
 };
@@ -195,9 +189,13 @@ export type PrimerBoxNodeProps = {
 /** Properties for the special definition name node. */
 export type PrimerDefNameNodeProps = {
   def: GlobalName;
-  selected: boolean;
+};
+
+/** Properties common to every type of node. */
+export type PrimerCommonNodeProps = {
   width: number;
   height: number;
+  selected: boolean;
 };
 
 export type Positioned<T> = T & {
