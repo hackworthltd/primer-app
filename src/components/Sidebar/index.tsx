@@ -235,8 +235,8 @@ const Evaluated = (p: {
   return (
     <TreeReactFlowOne
       {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
-      nodeWidth={150}
-      nodeHeight={50}
+      nodeWidth={80}
+      nodeHeight={35}
       boxPadding={50}
       level={p.level}
     />

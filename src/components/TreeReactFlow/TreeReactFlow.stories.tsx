@@ -25,8 +25,8 @@ export default {
 const props: Omit<TreeReactFlowProps, "defs"> = {
   forestLayout: "Vertical",
   treePadding: 100,
-  nodeWidth: 150,
-  nodeHeight: 50,
+  nodeWidth: 80,
+  nodeHeight: 35,
   boxPadding: 50,
   level: "Expert",
 };
