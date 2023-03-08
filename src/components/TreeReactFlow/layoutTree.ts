@@ -4,19 +4,21 @@ import {
   TidyLayout,
 } from "@zxch3n/tidy";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
-import {
-  Positioned,
-  PrimerEdge,
-  PrimerNode,
-  PrimerTree,
-  PrimerTreeNoPos,
-  treeMap,
-} from "./Types";
+import { treeMap, Tree, Positioned } from "./Types";
 
-export const layoutTree = <T>(
-  primerTree: PrimerTreeNoPos<T>
+export const layoutTree = <
+  N extends {
+    id: string;
+    data: { width: number; height: number };
+  },
+  E extends {
+    source: string;
+    target: string;
+  }
+>(
+  primerTree: Tree<N, E>
 ): Promise<{
-  tree: PrimerTree<T>;
+  tree: Tree<Positioned<N>, E>;
   width: number;
   height: number;
 }> =>
@@ -53,28 +55,34 @@ export const layoutTree = <T>(
     return { tree, minX, minY, width, height };
   });
 
-type NodeInfo<T> = {
+type NodeInfo<N, E> = {
   id: number;
-  node: PrimerNode<T>;
-  edges: { edge: PrimerEdge; isRight: boolean }[];
+  node: N;
+  edges: { edge: E; isRight: boolean }[];
 };
-// A single node of a `PrimerTree<T>`.
-// Note that this type is very similar in structure to `PrimerTree<T>`,
+// A single node of a `Tree<N, E>`.
+// Note that this type is very similar in structure to `PrimerTree<N, E>`,
 // the only difference being that this type does not contain the actual subtrees.
-type PrimerTreeNode<T> = {
-  node: Positioned<PrimerNode<T>>;
-  edges: PrimerEdge[];
-  rightEdge?: PrimerEdge;
+type TreeNode<N, E> = {
+  node: Positioned<N>;
+  edges: E[];
+  rightEdge?: E;
 };
-const makeNodeMap = <T>(
+const makeNodeMap = <
+  N extends {
+    id: string;
+    data: { width: number; height: number };
+  },
+  E extends { source: string; target: string }
+>(
   rootId: number,
-  nodeInfos: NodeInfo<T>[],
+  nodeInfos: NodeInfo<N, E>[],
   positions: { id: number; x: number; y: number }[]
-): { rootId: string; nodeMap: Map<string, PrimerTreeNode<T>> } => {
+): { rootId: string; nodeMap: Map<string, TreeNode<N, E>> } => {
   const posMap = new Map<number, { x: number; y: number }>();
   positions.forEach((n) => posMap.set(n.id, n));
   const tidyIdToPrimer = new Map<number, string>();
-  const nodeMap = new Map<string, PrimerTreeNode<T>>();
+  const nodeMap = new Map<string, TreeNode<N, E>>();
   nodeInfos.forEach((n) => {
     tidyIdToPrimer.set(n.id, n.node.id);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -112,29 +120,29 @@ const makeNodeMap = <T>(
 // Tidy uses numeric IDs, so we must label nodes with ascending integers.
 // Alongside the tree, we output a map allowing us to trace these new IDs back to the input nodes,
 // along with the rest of the original metadata,
-const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
+const primerToTidy = <N extends { data: { width: number; height: number } }, E>(
+  t: Tree<N, E>
+): [TidyNode, NodeInfo<N, E>[]] => {
   let id = 0;
-  const go = (primerTree: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
+  const go = (primerTree: Tree<N, E>): [TidyNode, NodeInfo<N, E>[]] => {
     const mkNodeInfos = (
-      primerTree0: PrimerTreeNoPos<T>[]
-    ): [TidyNode[], NodeInfo<T>[], PrimerEdge[]] => {
-      const r = primerTree0.map<[TidyNode[], NodeInfo<T>[], PrimerEdge[]]>(
-        (t) => {
-          const [tree1, nodes1] = go(t);
-          // We explore (transitive) right-children now,
-          // telling Tidy that they are children of the current node,
-          // so that it will lay them out at the same y-coordinates as their real parents.
-          // We still keep track of the original topology in the `source` and `target` of `Edge`s.
-          const [treesR, nodesR, rightEdgesR] = t.rightChild
-            ? mkNodeInfos([t.rightChild[0]])
-            : [[], [], []];
-          return [
-            [tree1].concat(treesR),
-            nodes1.concat(nodesR),
-            rightEdgesR.concat(t.rightChild?.[1] ?? []),
-          ];
-        }
-      );
+      primerTree0: Tree<N, E>[]
+    ): [TidyNode[], NodeInfo<N, E>[], E[]] => {
+      const r = primerTree0.map<[TidyNode[], NodeInfo<N, E>[], E[]]>((t) => {
+        const [tree1, nodes1] = go(t);
+        // We explore (transitive) right-children now,
+        // telling Tidy that they are children of the current node,
+        // so that it will lay them out at the same y-coordinates as their real parents.
+        // We still keep track of the original topology in the `source` and `target` of `Edge`s.
+        const [treesR, nodesR, rightEdgesR] = t.rightChild
+          ? mkNodeInfos([t.rightChild[0]])
+          : [[], [], []];
+        return [
+          [tree1].concat(treesR),
+          nodes1.concat(nodesR),
+          rightEdgesR.concat(t.rightChild?.[1] ?? []),
+        ];
+      });
       // Flatten each list in the tuple.
       return [
         r.flatMap((x) => x[0]),
@@ -170,10 +178,10 @@ const primerToTidy = <T>(t: PrimerTreeNoPos<T>): [TidyNode, NodeInfo<T>[]] => {
 };
 
 // Unfold a tree, from an initial node and a function which computes each node's children.
-const makePrimerTree = <T>(
+const makePrimerTree = <N, E extends { source: string; target: string }>(
   rootId: string,
-  lookupNode: (id: string) => PrimerTreeNode<T>
-): PrimerTree<T> => {
+  lookupNode: (id: string) => TreeNode<N, E>
+): Tree<Positioned<N>, E> => {
   const { node, edges, rightEdge } = lookupNode(rootId);
   return {
     childTrees: edges.map((e) => [makePrimerTree(e.target, lookupNode), e]),
