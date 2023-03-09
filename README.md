@@ -69,7 +69,7 @@ This command builds the project's Storybook, and then serves a local instance of
 
 This command builds a production version of the frontend application
 
-Once you've built the production version, you can then run `pnpm serve` and open [http://localhost:5000](http://localhost:5000) in a browser to see the production build. (Note: `pnpm serve` does not appear to be compatible with Safari on macOS. You may need to use Firefox or Chrome to view the production build on this platform.) 
+Once you've built the production version, you can then run `pnpm serve` and open [http://localhost:4173](http://localhost:4173) in a browser to see the production build. (Note: `pnpm serve` does not appear to be compatible with Safari on macOS. You may need to use Firefox or Chrome to view the production build on this platform.)
 
 In theory, the local production version of the application should be no different than the `watch` HMR version, so unless you're trying to debug a production issue locally, `pnpm serve` is probably not what you want.
 
