@@ -61,62 +61,6 @@
           scripts = pkgs.callPackage nix/pkgs/scripts {
             primer-service-rev = inputs.primer.rev;
             inherit (primerPackages) primer-service-docker-image primer-sqitch;
-            inherit hackworth-codes-logging-docker-image;
-          };
-
-          hackworth-codes-logging-docker-image = pkgs.dockerTools.buildLayeredImage {
-            name = "hackworth-codes-logging";
-            contents = [
-              scripts.hackworth-codes-logging-entrypoint
-            ]
-            ++ (with pkgs; [
-              # These are helpful for debugging broken images.
-              bashInteractive
-              coreutils
-              lsof
-              procps
-            ]);
-
-            # Required by the entrypoint script in order for Tailscale
-            # to come up.
-            #
-            # Note that the elided `/` in front of each of the created
-            # paths is intentional, as these are written in the image's
-            # tarball, not on the running filesystem in the container.
-            extraCommands = ''
-              mkdir -p var/run/tailscale var/cache/tailscale var/lib/tailscale
-            '';
-
-            config =
-              let port = 9090;
-              in
-              {
-                Entrypoint = [ "/bin/hackworth-codes-logging-entrypoint" ];
-
-                # Note that we can't set
-                # "org.opencontainers.image.created" here because
-                # it would introduce an impurity. If we want to
-                # set it, we'll need to set it when we push to a
-                # registry.
-                Labels = {
-                  "org.opencontainers.image.source" =
-                    "https://github.com/hackworthltd/primer-app";
-                  "org.opencontainers.image.documentation" =
-                    "https://github.com/hackworthltd/primer-app";
-                  "org.opencontainers.image.title" = "hackworth-codes-logging";
-                  "org.opencontainers.image.description" =
-                    "The Hackworth Codes logging service for Fly.io.";
-                  "org.opencontainers.image.version" = version;
-                  "org.opencontainers.image.authors" =
-                    "src@hackworthltd.com";
-                  "org.opencontainers.image.vendor" = "Hackworth Ltd";
-                  "org.opencontainers.image.url" =
-                    "https://github.com/hackworthltd/primer-app";
-                  "org.opencontainers.image.revision" = inputs.self.rev or "dirty";
-                };
-
-                ExposedPorts = { "${toString port}/tcp" = { }; };
-              };
           };
         in
         {
@@ -167,10 +111,6 @@
               inherit (primerPackages) run-primer-postgresql run-primer-sqlite primer-openapi-spec primer-sqitch;
             } // (pkgs.lib.optionalAttrs (system == "x86_64-linux") {
               inherit (primerPackages) primer-service-docker-image;
-              inherit (scripts) deploy-primer-service deploy-hackworth-codes-logging;
-              inherit hackworth-codes-logging-docker-image;
-
-              inherit (pkgs) tailscale;
             });
 
           apps =
@@ -181,14 +121,12 @@
               };
             in
             (pkgs.lib.mapAttrs (name: pkg: mkApp pkg name) {
-              inherit (scripts) deploy-primer-service deploy-hackworth-codes-logging;
               inherit (primerPackages) run-primer-postgresql run-primer-sqlite primer-openapi-spec primer-sqitch;
             });
 
           devShells.default = pkgs.mkShell {
             buildInputs = (with pkgs; [
               actionlint
-              flyctl
               nixpkgs-fmt
               nodejs-18_x
               rnix-lsp
@@ -232,13 +170,7 @@
             };
         in
         {
-          overlays.default = (final: prev: {
-            # For Fly.io Tailscale support, we need a version of
-            # Tailscale that uses `iptables-legacy`.
-            tailscale = final.callPackage ./nix/pkgs/tailscale-iptables-legacy {
-              buildGoModule = final.buildGo119Module;
-            };
-          });
+          overlays.default = (final: prev: { });
 
           hydraJobs = {
             inherit (inputs.self) packages;
