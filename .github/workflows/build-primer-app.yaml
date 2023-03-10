@@ -1,8 +1,3 @@
-# Note: this workflow is a dependency of several other workflows in
-# this repo. Those workflows are triggered via the name of this
-# workflow, so don't change the name here without also changing it in
-# all of its dependent workflows!
-
 # Note: the cloudflare/pages-action GitHub Action used in this
 # workflow is very flaky, and has several known failure modes. Think
 # very hard before you make changes to this workflow.

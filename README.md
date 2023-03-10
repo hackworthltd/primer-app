@@ -91,24 +91,6 @@ This command performs a manual Chromatic deployment. You should never need to do
 
 You can use `pnpm` to run scripts and commands that are installed by the various packages in the repo. For example, to use `tsc`, the TypeScript compiler, you can run `pnpm tsc`.
 
-## Deployments
-
-### Backend
-
-We deploy the Primer service into production via this repo. Our current deployment platform is [Fly.io](https://fly.io). Fly.io support multiple deployment regions, but for the moment, we're only deploying to LHR (London).
-
-The initial creation of a new Fly.io app is [relatively simple](https://fly.io/docs/getting-started/launch-app/), especially in our case, as we already build a Docker image for Primer using Nix, and can simply point `flyctl deploy` to an existing Docker image.
-
-Once an instance of the Primer service is deployed into a particular region, subsequent deployments are very straightforward. There is a `deploy-primer-service` script in this repo that handles the details. Note that you should never need to run this script by hand: it is run after every merge to the `main` branch of this repo via an automated GitHub Deployment and Buildkite process.
-
-Each instance of the Primer service requires its own persistent volume, for storing the local SQLite database. We create these volumes using the `flyctl volumes create` command, as described here: https://fly.io/docs/reference/volumes/. The volume should be named `sqlite`, as that's what the Fly app configuration expects.
-
-Note that this architecture has a few implications:
-
-* We require one additional volume for each additional Primer instance that we add. Each instance of the volume has the same name, `sqlite`, but each is also assigned an ID, and that is what Fly uses to pair a Primer instance with its volume.
-
-* Each Primer instance can only see the programs in its own local database. This means that each client (student) will need to be routed to the same Primer instance each time they use the app. We do not yet handle this client-to-instance pinning (we run only a single production Primer instance, in any case).
-
 ## Other notes
 
 ### Calculating reverse dependencies
