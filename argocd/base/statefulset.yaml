@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 20
       containers:
         - name: primer-service
-          image: ghcr.io/hackworthltd/primer-service:git-805b24098f731f9bd88179404596c9da2007fdd4
+          image: ghcr.io/hackworthltd/primer-service:git-daf396c8befc7208ccda569080c44df0ac224c91
           ports:
             - containerPort: 8081
           env:
