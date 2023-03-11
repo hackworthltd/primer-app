@@ -1,0 +1,31 @@
+# Note:
+#
+# This StatefulSet does not make any persistent volume claims, as it's
+# intended to be used only for testing. Therefore, the SQLite database
+# it creates will be created in ephemeral node storage. You should not
+# use this manifest for a production service!
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: primer-service
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: primer-service
+  serviceName: "primer-service"
+  replicas: 1
+  minReadySeconds: 20
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: primer-service
+    spec:
+      terminationGracePeriodSeconds: 20
+      containers:
+        - name: primer-service
+          image: ghcr.io/hackworthltd/primer-service:git-805b24098f731f9bd88179404596c9da2007fdd4
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SQLITE_DB
+              value: primer.sqlite3
