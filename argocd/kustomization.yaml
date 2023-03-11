@@ -1,0 +1,10 @@
+# Note: namespace will be set by Argo CD when it runs Kustomize to
+# install the app, so we don't set it here. (We can't know what the
+# namespace will be, in any case, as it depends on the PR number.)
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./base/service.yaml
+  - ./base/statefulset.yaml
