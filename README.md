@@ -14,10 +14,11 @@ For all third-party assets we distribute, there's a corresponding license file i
 
 Because the Primer backend project is open source, and this project is not, the 2 projects must live in separate repositories. In order to keep the frontend code in sync with a particular version of the Primer backend/API, we pin the Primer backend repo to a particular git commit/rev via a Nix flake input pin. This ensures that when we run a local `primer-service` instance during development ([see below](#Running-a-local-`primer-service`-instance)), we're running the correct version of the backend for the current frontend, and we don't need to worry about keeping our local copies of these 2 repos in sync. The drawback to this approach is that if we need to make backend changes to accommodate a new frontend feature, we must first commit those changes to the backend repo's `main` branch before we can update the local Nix flake pin. (However, we can always fall back to running the local `primer-service` from a local copy of the backend repo, if necessary.)
 
-To bump the Primer pin, update the Primer git rev in `nix.flake`, and then run the following commands:
+To bump the Primer pin, run the following commands from the top-level
+directory of this repo, where `abcd123` is the new Primer pin:
 
 ```sh
-nix flake update
+nix run .#bump-primer abcd123
 nix develop
 ```
 
