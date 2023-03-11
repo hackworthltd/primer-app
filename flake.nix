@@ -62,6 +62,8 @@
             primer-service-rev = inputs.primer.rev;
             inherit (primerPackages) primer-service-docker-image primer-sqitch;
           };
+
+          bump-primer = pkgs.callPackage ./nix/pkgs/bump-primer { };
         in
         {
           # We need a `pkgs` that includes our own overlays within
@@ -109,6 +111,7 @@
             in
             {
               inherit (primerPackages) run-primer-postgresql run-primer-sqlite primer-openapi-spec primer-sqitch;
+              inherit bump-primer;
             } // (pkgs.lib.optionalAttrs (system == "x86_64-linux") {
               inherit (primerPackages) primer-service-docker-image;
             });
@@ -122,6 +125,7 @@
             in
             (pkgs.lib.mapAttrs (name: pkg: mkApp pkg name) {
               inherit (primerPackages) run-primer-postgresql run-primer-sqlite primer-openapi-spec primer-sqitch;
+              inherit bump-primer;
             });
 
           devShells.default = pkgs.mkShell {
