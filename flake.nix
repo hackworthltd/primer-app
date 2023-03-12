@@ -16,7 +16,7 @@
 
     # Note: don't override any of primer's Nix flake inputs, or else
     # we won't hit its binary cache.
-    primer.url = github:hackworthltd/primer/805b24098f731f9bd88179404596c9da2007fdd4;
+    primer.url = github:hackworthltd/primer/daf396c8befc7208ccda569080c44df0ac224c91;
 
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
@@ -62,6 +62,8 @@
             primer-service-rev = inputs.primer.rev;
             inherit (primerPackages) primer-service-docker-image primer-sqitch;
           };
+
+          bump-primer = pkgs.callPackage ./nix/pkgs/bump-primer { };
         in
         {
           # We need a `pkgs` that includes our own overlays within
@@ -109,6 +111,7 @@
             in
             {
               inherit (primerPackages) run-primer-postgresql run-primer-sqlite primer-openapi-spec primer-sqitch;
+              inherit bump-primer;
             } // (pkgs.lib.optionalAttrs (system == "x86_64-linux") {
               inherit (primerPackages) primer-service-docker-image;
             });
@@ -122,6 +125,7 @@
             in
             (pkgs.lib.mapAttrs (name: pkg: mkApp pkg name) {
               inherit (primerPackages) run-primer-postgresql run-primer-sqlite primer-openapi-spec primer-sqitch;
+              inherit bump-primer;
             });
 
           devShells.default = pkgs.mkShell {
