@@ -443,7 +443,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
             data: {
               def: def.name,
               height: p.nodeHeight * 2,
-              width: p.nodeWidth * 2,
+              width: p.nodeWidth * 3,
               selected:
                 deepEqual(p.selection?.def, def.name) && !p.selection?.node,
             },
