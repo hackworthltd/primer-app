@@ -43,7 +43,8 @@ jobs:
         run: pnpm audit --prod
 
       - name: Build the frontend
-        run: VITE_API_URL="https://pr-foo.hackworth.dev" pnpm build
+        # XXX dhess: hack, fix before merging to main.
+        run: VITE_API_URL="https://pr-${{ github.event.pull_request.number }}.hackworth.dev" pnpm build
 
       # Note: linting must come after building, or else eslint won't
       # be able to resolve some paths.

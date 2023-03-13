@@ -6,7 +6,9 @@ subjects:
   - kind: Service
     name: primer-service
     spec:
-      fqdn: pr-foo.hackworth.dev
+      # Note: the "x" in "pr-x" will be replaced by Kustomize with the
+      # actual PR number.
+      fqdn: pr-x.hackworth.dev
 tunnelRef:
   kind: ClusterTunnel
   name: hackworth-dev-tunnel

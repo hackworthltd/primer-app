@@ -9,3 +9,6 @@ resources:
   - base/service.yaml
   - base/statefulset.yaml
   - base/cloudflare-tunnel.yaml
+
+replacements:
+  - path: replacement-fqdn.yaml
