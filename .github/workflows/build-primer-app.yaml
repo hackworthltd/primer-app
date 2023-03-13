@@ -8,7 +8,7 @@
 name: Build the frontend
 
 on:
-  push:
+  pull_request:
 
 jobs:
   build-frontend:
