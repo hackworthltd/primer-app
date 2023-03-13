@@ -6,7 +6,7 @@ import {
   NodeFlavorTextBody,
   NodeType,
 } from "@/primer-api";
-import { Edge, Node } from "reactflow";
+import { Edge } from "reactflow";
 import { unzip } from "fp-ts/lib/Array";
 
 /** A generic graph. */
@@ -18,6 +18,18 @@ export type Graph<
   edges: E[];
 };
 
+export const graphMap = <
+  N1 extends { id: string },
+  N2 extends { id: string },
+  E extends { source: string; target: string }
+>(
+  { nodes, edges }: Graph<N1, E>,
+  f: (n: N1) => N2
+): Graph<N2, E> => ({
+  nodes: nodes.map(f),
+  edges,
+});
+
 export const combineGraphs = <
   N extends { id: string },
   E extends { source: string; target: string }
@@ -28,27 +40,21 @@ export const combineGraphs = <
   return { nodes: nodes.flat(), edges: edges.flat() };
 };
 
-export type PrimerGraph<T> = Graph<
-  Node<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
-  Edge<Empty>
->;
+export type PrimerGraph = Graph<Positioned<PrimerNode>, PrimerEdge>;
 
-export type PrimerGraphNoPos<T> = Graph<
-  NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
-  Edge<Empty>
->;
+export type PrimerGraphNoPos = Graph<PrimerNode, PrimerEdge>;
 
 /** A generic edge-labelled tree. */
-export type TreeSimple<N, E> = {
+export type Tree<N, E> = {
   node: N;
-  childTrees: [TreeSimple<N, E>, E][];
-  rightChild?: [TreeSimple<N, E>, E];
+  childTrees: [Tree<N, E>, E][];
+  rightChild?: [Tree<N, E>, E];
 };
 
 export const treeMap = <N1, N2, E>(
-  { node, childTrees, rightChild }: TreeSimple<N1, E>,
+  { node, childTrees, rightChild }: Tree<N1, E>,
   f: (n: N1) => N2
-): TreeSimple<N2, E> => ({
+): Tree<N2, E> => ({
   node: f(node),
   childTrees: childTrees.map(([t, e]) => [treeMap(t, f), e]),
   ...(rightChild
@@ -60,7 +66,7 @@ export const treeNodes = <N, E>({
   node,
   rightChild,
   childTrees,
-}: TreeSimple<N, E>): N[] => {
+}: Tree<N, E>): N[] => {
   return [
     node,
     ...childTrees.flatMap(([n, _]) => treeNodes(n)),
@@ -72,11 +78,11 @@ export const treeToGraph = <
   N extends { id: string },
   E extends { source: string; target: string }
 >(
-  tree: TreeSimple<N, E>
+  tree: Tree<N, E>
 ): Graph<N, E & { isRight: boolean }> => {
   const [trees, edges] = unzip(
     tree.childTrees
-      .map<[TreeSimple<N, E>, E & { isRight: boolean }]>(([t, e]) => [
+      .map<[Tree<N, E>, E & { isRight: boolean }]>(([t, e]) => [
         t,
         { ...e, ...{ isRight: false } },
       ])
@@ -96,51 +102,70 @@ export const treeToGraph = <
   );
 };
 
-export type PrimerTree<T> = TreeSimple<
-  Node<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
-  Edge<Empty>
->;
+export type PrimerTree = Tree<Positioned<PrimerNode>, PrimerEdge>;
 
-export type PrimerTreeNoPos<T> = TreeSimple<
-  NodeNoPos<PrimerNodeProps<T> | PrimerDefNameNodeProps>,
-  Edge<Empty>
->;
+export type PrimerTreeNoPos = Tree<PrimerNode, PrimerEdge>;
+
+export type PrimerEdge = Edge<Empty>;
+
+/** Our node type. `Positioned<PrimerNode<T>>` can be safely cast to a ReactFlow `Node`.
+ * This is more type safe than using ReactFlow's types directly: this way we can ensure that
+ * the `type` field always corresponds to a custom node type we've registered with ReactFlow,
+ * and that `data` contains the expected type of data for that type of custom node.
+ */
+export type PrimerNode<T = unknown> = {
+  id: string;
+  data: PrimerCommonNodeProps & T;
+} & (
+  | { type: "primer"; data: PrimerNodeProps }
+  | { type: "primer-simple"; data: PrimerSimpleNodeProps }
+  | { type: "primer-box"; data: PrimerBoxNodeProps }
+  | { type: "primer-def-name"; data: PrimerDefNameNodeProps }
+);
+
+export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> =>
+  // NB We can't inline this function.
+  // For some reason, we need to abstract over the the type of `PrimerNode` in order to please the typechecker.
+  (<PN>(n1: PN & { data: PrimerCommonNodeProps }) => ({
+    ...n1,
+    data: { ...n1.data, ...x },
+  }))(n);
 
 /** Node properties. */
-export type PrimerNodeProps<T> = {
-  width: number;
-  height: number;
-  selected: boolean;
-} & (
-  | {
-      flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
-      contents: string;
-    }
-  | {
-      flavor: NodeFlavorBoxBody;
-    }
-) &
-  T;
-
-/** Node properties which are equal for all nodes in a single input tree. */
-export type PrimerTreeProps = {
-  def: GlobalName;
+export type PrimerNodeProps = {
   nodeType: NodeType;
+  syntax: boolean;
+  flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
+  contents: string;
 };
 
-export type PrimerTreePropsOne = {
+/** Properties for a simple node. */
+export type PrimerSimpleNodeProps = {
   nodeType: NodeType;
+  flavor: NodeFlavorNoBody;
+};
+
+/** Properties for a box node. */
+export type PrimerBoxNodeProps = {
+  nodeType: NodeType;
+  flavor: NodeFlavorBoxBody;
 };
 
 /** Properties for the special definition name node. */
 export type PrimerDefNameNodeProps = {
   def: GlobalName;
-  selected: boolean;
-  width: number;
-  height: number;
 };
 
-export type NodeNoPos<T> = Omit<Node<T>, "position">;
+/** Properties common to every type of node. */
+export type PrimerCommonNodeProps = {
+  width: number;
+  height: number;
+  selected: boolean;
+};
+
+export type Positioned<T> = T & {
+  position: { x: number; y: number };
+};
 
 /** The empty record (note that `{}` is something different: https://typescript-eslint.io/rules/ban-types/) */
 export type Empty = Record<string, never>;

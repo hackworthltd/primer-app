@@ -196,125 +196,63 @@ export const flavorContentClasses = (
 };
 
 export const flavorLabelClasses = (flavor: NodeFlavor): string => {
-  const syntaxClasses = " -top-4";
-  const exprClasses = " -right-2 -top-4";
-
   switch (flavor) {
     case "Hole":
-      return "font-code bg-red-tertiary border-red-tertiary text-white-primary".concat(
-        exprClasses
-      );
+      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
     case "EmptyHole":
-      return "font-code bg-red-tertiary border-red-tertiary text-white-primary".concat(
-        exprClasses
-      );
+      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
     case "Ann":
-      return "font-code bg-black-primary border-black-primary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-black-primary border-black-primary text-white-primary";
     case "App":
-      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
     case "APP":
-      return "font-code bg-yellow-secondary border-yellow-secondary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-yellow-secondary border-yellow-secondary text-white-primary";
     case "Con":
-      return "bg-green-primary border-green-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "bg-green-primary border-green-primary text-white-primary";
     case "Lam":
-      return "font-code bg-blue-primary border-blue-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "font-code bg-blue-primary border-blue-primary text-white-primary";
     case "LAM":
-      return "font-code bg-black-primary border-black-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "font-code bg-black-primary border-black-primary text-white-primary";
     case "GlobalVar":
-      return "bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
-        exprClasses
-      );
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "LocalVar":
-      return "bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
-        exprClasses
-      );
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "Let":
-      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "LetType":
-      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "Letrec":
-      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "Case":
-      return "font-code bg-yellow-primary border-yellow-primary text-white-primary".concat(
-        syntaxClasses
-      );
-
-    // Special case: we hide this label.
-    case "CaseWith":
-      return "hidden font-code bg-yellow-primary border-yellow-primary text-white-primary".concat(
-        syntaxClasses
-      );
-
+      return "font-code bg-yellow-primary border-yellow-primary text-white-primary";
+    case "CaseWith": // Special case: we hide this label.
+      return "hidden font-code bg-yellow-primary border-yellow-primary text-white-primary";
     case "PrimCon":
-      return "bg-black-primary border-black-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "bg-black-primary border-black-primary text-white-primary";
     case "TEmptyHole":
-      return "font-code bg-black-primary border-black-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "font-code bg-black-primary border-black-primary text-white-primary";
     case "THole":
-      return "font-code bg-black-primary border-black-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "font-code bg-black-primary border-black-primary text-white-primary";
     case "TCon":
-      return "bg-black-primary border-black-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "bg-black-primary border-black-primary text-white-primary";
     case "TFun":
-      return "font-code bg-black-primary border-black-primary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-black-primary border-black-primary text-white-primary";
     case "TVar":
-      return "bg-black-primary border-black-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "bg-black-primary border-black-primary text-white-primary";
     case "TApp":
-      return "font-code bg-black-primary border-black-primary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-black-primary border-black-primary text-white-primary";
     case "TForall":
-      return "font-code bg-black-primary border-black-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "font-code bg-black-primary border-black-primary text-white-primary";
     case "TLet":
-      return "font-code bg-black-primary border-black-primary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-black-primary border-black-primary text-white-primary";
     case "Pattern":
-      return "bg-yellow-primary border-yellow-primary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "bg-yellow-primary border-yellow-primary text-white-primary";
     case "PatternCon":
-      return "bg-green-primary border-green-primary text-white-primary".concat(
-        exprClasses
-      );
+      return "bg-green-primary border-green-primary text-white-primary";
     case "PatternBind":
-      return "bg-blue-quaternary border-blue-quaternary text-white-primary".concat(
-        exprClasses
-      );
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "PatternApp":
-      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary".concat(
-        syntaxClasses
-      );
+      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
   }
 };
 
