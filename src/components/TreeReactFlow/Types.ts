@@ -123,48 +123,13 @@ export type PrimerNode<T = unknown> = {
   | { type: "primer-def-name"; data: PrimerDefNameNodeProps }
 );
 
-export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> => {
-  // NB This is operationally equivalent to `return { ...n, data: { ...n.data, ...x } }`
-  // but we have to match cases in order to please the typechecker
-  switch (n.type) {
-    case "primer":
-      return {
-        ...n,
-        type: "primer",
-        data: {
-          ...n.data,
-          ...x,
-        },
-      };
-    case "primer-simple":
-      return {
-        ...n,
-        type: "primer-simple",
-        data: {
-          ...n.data,
-          ...x,
-        },
-      };
-    case "primer-box":
-      return {
-        ...n,
-        type: "primer-box",
-        data: {
-          ...n.data,
-          ...x,
-        },
-      };
-    case "primer-def-name":
-      return {
-        ...n,
-        type: "primer-def-name",
-        data: {
-          ...n.data,
-          ...x,
-        },
-      };
-  }
-};
+export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> =>
+  // NB We can't inline this function.
+  // For some reason, we need to abstract over the the type of `PrimerNode` in order to please the typechecker.
+  (<PN>(n1: PN & { data: PrimerCommonNodeProps }) => ({
+    ...n1,
+    data: { ...n1.data, ...x },
+  }))(n);
 
 /** Node properties. */
 export type PrimerNodeProps = {
