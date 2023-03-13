@@ -8,4 +8,3 @@ kind: Kustomization
 resources:
   - base/service.yaml
   - base/statefulset.yaml
-  - base/cloudflare-tunnel.yaml
