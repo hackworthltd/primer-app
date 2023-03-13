@@ -69,7 +69,7 @@ jobs:
       # :(name-of-branch)". For merges to `main`, it'll be named
       # "Production". These names do not appear to be configurable.
       - name: Deploy to Cloudflare
-        uses: cloudflare/pages-action@v1.4.1
+        uses: cloudflare/pages-action@v1.4.0
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
