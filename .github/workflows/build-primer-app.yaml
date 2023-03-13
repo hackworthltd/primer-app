@@ -43,7 +43,7 @@ jobs:
         run: pnpm audit --prod
 
       - name: Build the frontend
-        run: pnpm build
+        run: VITE_API_URL="https://pr-foo.hackworth.codes" pnpm build
 
       # Note: linting must come after building, or else eslint won't
       # be able to resolve some paths.
