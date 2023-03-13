@@ -160,8 +160,7 @@ const nodeTypes = {
       <div
         className={classNames(
           "flex justify-center rounded-md border-4",
-          "bg-yellow-primary",
-          "bg-opacity-20",
+          "bg-white-primary",
           flavorClasses(p.data.flavor)
         )}
         style={{
@@ -169,6 +168,9 @@ const nodeTypes = {
           height: p.data.height,
         }}
       >
+        <div
+          className={classNames("bg-opacity-20 w-full", "bg-yellow-primary")}
+        ></div>
         <div
           style={{
             minWidth: 35,
