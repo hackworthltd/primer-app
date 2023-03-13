@@ -6,7 +6,7 @@ subjects:
   - kind: Service
     name: primer-service
     spec:
-      fqdn: test.dev.hackworth.codes
+      fqdn: pr-foo.hackworth.codes
 tunnelRef:
   kind: ClusterTunnel
   name: primer-app-pr-tunnel
