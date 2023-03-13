@@ -12,4 +12,4 @@ tunnelRef:
   name: hackworth-dev-tunnel
   # For now, we use wildcard DNS for *.hackworth.dev, because per-fqdn
   # CNAME creation doesn't quite work right.
-  disableDNSUpdates: false
+  disableDNSUpdates: true
