@@ -155,6 +155,7 @@ const nodeTypes = {
         className={classNames(
           "flex justify-center rounded-md border-4",
           "bg-yellow-primary",
+          "bg-opacity-20",
           flavorClasses(p.data.flavor)
         )}
         style={{
