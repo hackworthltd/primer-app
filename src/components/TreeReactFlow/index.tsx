@@ -337,6 +337,9 @@ const makePrimerNode = async (
               contents: noBodyFlavorContents(node.body.contents),
               syntax: node.children >= 2,
               ...common,
+              // TODO This is necessary to ensure that all syntax labels fit.
+              // It can be removed when we have dynamic node sizes.
+              width: 130,
             },
           },
           makeChild,
