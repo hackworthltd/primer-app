@@ -12,66 +12,63 @@ export type NodeFlavor =
   | NodeFlavorBoxBody
   | NodeFlavorNoBody;
 
-export const commonHoverClasses =
-  " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";
-
 export const flavorClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
       return "border-red-tertiary ring-red-tertiary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-red-tertiary"
       );
     case "EmptyHole":
       return "border-red-tertiary ring-red-tertiary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-red-tertiary"
       );
     case "Ann":
       return "border-black-primary ring-black-primary bg-black-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "App":
       return "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-blue-tertiary"
       );
     case "APP":
       return "border-yellow-secondary ring-yellow-secondary bg-yellow-secondary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-yellow-secondary"
       );
     case "Con":
       return "border-green-primary ring-green-primary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary"
       );
     case "Lam":
       return "border-blue-primary ring-blue-primary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-blue-primary"
       );
     case "LAM":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "GlobalVar":
       return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-blue-quaternary"
       );
     case "LocalVar":
       return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-blue-quaternary"
       );
     case "Let":
       return "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-blue-quaternary"
       );
     case "LetType":
       return "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-blue-quaternary"
       );
     case "Letrec":
       return "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-blue-quaternary"
       );
     case "Case":
       return "border-yellow-primary ring-yellow-primary bg-yellow-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-yellow-primary"
       );
 
     // Note: not selectable.
@@ -80,39 +77,39 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
 
     case "PrimCon":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "TEmptyHole":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "THole":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "TCon":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "TFun":
       return "border-black-primary ring-black-primary bg-black-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "TVar":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "TApp":
       return "border-black-primary ring-black-primary bg-black-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "TForall":
       return "border-black-primary ring-black-primary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
     case "TLet":
       return "border-black-primary ring-black-primary bg-black-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-black-primary"
       );
 
     // Note: most parts of patterns aren't selectable.
@@ -127,7 +124,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       return "border-green-primary ring-green-primary bg-white-primary";
     case "PatternBind":
       return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
-        commonHoverClasses
+        " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-blue-quaternary"
       );
     case "PatternApp":
       return "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary";
