@@ -1,0 +1,13 @@
+source:
+  kind: TunnelBinding
+  name: primer-app-pr-tunnelbinding
+  # Note: this path must be synced with the kustomize.commonLabels
+  # setting in the Argo CD ApplicationSet PR generator for this repo.
+  # Any changes made there must be reflected here, and vice versa.
+  fieldPath: metadata.annotations.[app.kubernetes.io/pr-fqdn]
+targets:
+  - select:
+      kind: TunnelBinding
+      name: primer-app-pr-tunnelbinding
+    fieldPaths:
+      - subjects.[name=primer-service].spec.fqdn
