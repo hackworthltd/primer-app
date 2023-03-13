@@ -154,6 +154,7 @@ const nodeTypes = {
       <div
         className={classNames(
           "flex justify-center rounded-md border-4",
+          "bg-yellow-primary",
           flavorClasses(p.data.flavor)
         )}
         style={{
