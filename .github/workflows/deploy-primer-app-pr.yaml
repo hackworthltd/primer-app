@@ -5,13 +5,13 @@
 # See https://github.com/hackworthltd/primer-app/pull/748 for some
 # notes about the various ways it can fail.
 
-name: Build the frontend
+name: Deploy a frontend PR test environment
 
 on:
-  push:
+  pull_request:
 
 jobs:
-  build-frontend:
+  deploy-frontend:
     permissions:
       contents: read
       id-token: write
@@ -65,10 +65,23 @@ jobs:
       # Not only does this action deploy to Cloudflare Pages, it also
       # creates a GitHub environment (and corresponding deployment).
       # For PRs, this environment will be named "Preview
-      # :(name-of-branch)". For merges to `main`, it'll be named
-      # "Production". These names do not appear to be configurable.
+      # :(name-of-branch)". This name does not appear to be
+      # configurable.
       - name: Deploy to Cloudflare
-        uses: cloudflare/pages-action@v1.4.1
+        # Note: we very specifically use @v1.4.0 here because it
+        # handles pull requests correctly (for us, anyway). It has
+        # been reverted upstream because it broke other users' pull
+        # request workflows (but solves ours). There's a replacement
+        # fix in the works, and when that's merged, we can try the
+        # latest release again. See:
+        #
+        # https://github.com/cloudflare/pages-action/pull/70
+        #
+        # Note that in the similar on-push-to-main
+        # primer-app-main.yaml workflow, we just use the latest
+        # version of this action, because that workflow is not trigged
+        # on pull requests.
+        uses: cloudflare/pages-action@v1.4.0
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

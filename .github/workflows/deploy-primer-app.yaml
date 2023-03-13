@@ -1,0 +1,77 @@
+# Note: the cloudflare/pages-action GitHub Action used in this
+# workflow is very flaky, and has several known failure modes. Think
+# very hard before you make changes to this workflow.
+#
+# See https://github.com/hackworthltd/primer-app/pull/748 for some
+# notes about the various ways it can fail.
+
+name: Deploy the production frontend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-frontend:
+    permissions:
+      contents: read
+      id-token: write
+      deployments: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7.26.3
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v3.6.0
+        with:
+          node-version-file: package.json
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Note: we only audit non-dev dependencies, because there are
+      # nearly always dev dependency vulnerabilities, but they're very
+      # unlikely to affect the production app.
+      - name: Audit
+        run: pnpm audit --prod
+
+      - name: Build the frontend
+        run: pnpm build
+
+      # Note: linting must come after building, or else eslint won't
+      # be able to resolve some paths.
+      - name: Lint
+        run: pnpm lint --max-warnings=0
+
+      - name: Import secrets from Vault
+        uses: hashicorp/vault-action@v2.5.0
+        id: secrets
+        with:
+          url: https://secrets.hackworth-corp.com
+          path: "github-actions"
+          caCertificate: ${{ secrets.VAULT_CA_CERT }}
+          role: primer-app-workflow-pages
+          method: jwt
+          secrets: |
+            secret/data/cloudflare/primer-app api-token | CLOUDFLARE_API_TOKEN ;
+
+      # Not only does this action deploy to Cloudflare Pages, it also
+      # creates a GitHub environment (and corresponding deployment)
+      # named "Production". This does not appear to be configurable.
+      - name: Deploy to Cloudflare
+        uses: cloudflare/pages-action@v1.4.1
+        with:
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: primer-app
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
