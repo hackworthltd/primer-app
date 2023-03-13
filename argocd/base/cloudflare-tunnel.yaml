@@ -1,12 +1,12 @@
-apiVersion: networking.cfargotunnel.com/v1alpha1
-kind: TunnelBinding
-metadata:
-  name: primer-app-pr-tunnelbinding
-subjects:
-  - kind: Service
-    name: primer-service
-    spec:
-      fqdn: pr-foo.hackworth.dev
-tunnelRef:
-  kind: ClusterTunnel
-  name: hackworth-dev-tunnel
+# apiVersion: networking.cfargotunnel.com/v1alpha1
+# kind: TunnelBinding
+# metadata:
+#   name: primer-app-pr-tunnelbinding
+# subjects:
+#   - kind: Service
+#     name: primer-service
+#     spec:
+#       fqdn: pr-foo.hackworth.dev
+# tunnelRef:
+#   kind: ClusterTunnel
+#   name: hackworth-dev-tunnel
