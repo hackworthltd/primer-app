@@ -1,0 +1,21 @@
+apiVersion: networking.cfargotunnel.com/v1alpha1
+kind: TunnelBinding
+metadata:
+  name: primer-app-pr-tunnelbinding
+subjects:
+  - kind: Service
+    name: primer-service
+    spec:
+      # This string value is purely a placeholder and will be replaced
+      # wholesale by Kustomize when it builds this application..
+      # However, it happens to match our PR FQDN scheme such that the
+      # "n" in "pr-n" will be replaced with the actual PR number.
+      fqdn: pr-n.hackworth.dev
+tunnelRef:
+  kind: ClusterTunnel
+  name: hackworth-dev-tunnel
+  # For now, we use wildcard DNS for *.hackworth.dev, because
+  # cloudflare-operator doesn't do a great job of cleaning up DNS for
+  # no-longer-used tunnel bindings. Therefore, don't update DNS for
+  # this binding.
+  disableDNSUpdates: true

@@ -43,7 +43,10 @@ jobs:
         run: pnpm audit --prod
 
       - name: Build the frontend
-        run: pnpm build
+        # This URL scheme for PR's is baked into other parts of the
+        # repo, so if you change it here, make sure you change it
+        # elsewhere, as well (and vice versa).
+        run: VITE_API_URL="https://pr-${{ github.event.pull_request.number }}.hackworth.dev" pnpm build
 
       # Note: linting must come after building, or else eslint won't
       # be able to resolve some paths.
