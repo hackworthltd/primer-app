@@ -1,5 +1,4 @@
 { gnused
-, nix
 , writeShellApplication
 }:
 let
@@ -7,7 +6,6 @@ let
     name = "bump-primer";
     runtimeInputs = [
       gnused
-      nix
     ];
     # Use `builtins.readFile` here so that we get a shellcheck.
     text = builtins.readFile ./bump-primer.sh;
