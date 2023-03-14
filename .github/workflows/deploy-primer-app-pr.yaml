@@ -9,6 +9,7 @@ name: Deploy a frontend PR test environment
 
 on:
   pull_request:
+  merge_group:
 
 jobs:
   deploy-frontend:
