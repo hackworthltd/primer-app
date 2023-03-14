@@ -106,7 +106,7 @@ export type PrimerTree = Tree<Positioned<PrimerNode>, PrimerEdge>;
 
 export type PrimerTreeNoPos = Tree<PrimerNode, PrimerEdge>;
 
-export type PrimerEdge = Edge<Empty>;
+export type PrimerEdge = Edge<Empty> & { zIndex: number };
 
 /** Our node type. `Positioned<PrimerNode<T>>` can be safely cast to a ReactFlow `Node`.
  * This is more type safe than using ReactFlow's types directly: this way we can ensure that
@@ -115,6 +115,7 @@ export type PrimerEdge = Edge<Empty>;
  */
 export type PrimerNode<T = unknown> = {
   id: string;
+  zIndex: number;
   data: PrimerCommonNodeProps & T;
 } & (
   | { type: "primer"; data: PrimerNodeProps }
