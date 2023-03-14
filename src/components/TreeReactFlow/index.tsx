@@ -82,6 +82,7 @@ const nodeTypes = {
         className={classNames(
           {
             "ring-4 ring-offset-4": p.data.selected,
+            "hover:ring-opacity-50": !p.data.selected,
           },
           "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
           flavorClasses(p.data.flavor)
@@ -123,6 +124,7 @@ const nodeTypes = {
         className={classNames(
           {
             "ring-4 ring-offset-4": p.data.selected,
+            "hover:ring-opacity-50": !p.data.selected,
           },
           "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
           flavorClasses(p.data.flavor)
@@ -185,7 +187,9 @@ const nodeTypes = {
           "bg-grey-primary",
           "border-8 border-grey-tertiary ring-grey-tertiary",
           p.data.selected && "ring-4 ring-offset-4",
-          commonHoverClasses
+          commonHoverClasses,
+          "hover:ring-grey-tertiary",
+          !p.data.selected && "hover:ring-opacity-50"
         )}
         style={{
           width: p.data.width,

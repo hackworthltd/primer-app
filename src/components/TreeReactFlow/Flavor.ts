@@ -13,79 +13,92 @@ export type NodeFlavor =
   | NodeFlavorBoxBody
   | NodeFlavorNoBody;
 
-export const commonHoverClasses =
-  "hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";
+export const commonHoverClasses = "hover:ring hover:ring-4 hover:ring-offset-4";
 
 export const flavorClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
       return classNames(
         "border-red-tertiary ring-red-tertiary bg-white-primary",
+        "hover:ring-red-tertiary",
         commonHoverClasses
       );
     case "EmptyHole":
       return classNames(
         "border-red-tertiary ring-red-tertiary bg-white-primary",
+        "hover:ring-red-tertiary",
         commonHoverClasses
       );
     case "Ann":
       return classNames(
         "border-black-primary ring-black-primary bg-black-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "App":
       return classNames(
         "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary",
+        "hover:ring-blue-tertiary",
         commonHoverClasses
       );
     case "APP":
       return classNames(
         "border-yellow-secondary ring-yellow-secondary bg-yellow-secondary",
+        "hover:ring-yellow-secondary",
         commonHoverClasses
       );
     case "Con":
       return classNames(
         "border-green-primary ring-green-primary bg-white-primary",
+        "hover:ring-green-primary",
         commonHoverClasses
       );
     case "Lam":
       return classNames(
         "border-blue-primary ring-blue-primary bg-white-primary",
+        "hover:ring-blue-primary",
         commonHoverClasses
       );
     case "LAM":
       return classNames(
         "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "GlobalVar":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "LocalVar":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "Let":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "LetType":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "Letrec":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "Case":
       return classNames(
         "border-yellow-primary ring-yellow-primary bg-yellow-primary",
+        "hover:ring-yellow-primary",
         commonHoverClasses
       );
 
@@ -96,46 +109,55 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
     case "PrimCon":
       return classNames(
         "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TEmptyHole":
       return classNames(
         "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "THole":
       return classNames(
         "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TCon":
       return classNames(
         "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TFun":
       return classNames(
         "border-black-primary ring-black-primary bg-black-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TVar":
       return classNames(
         "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TApp":
       return classNames(
         "border-black-primary ring-black-primary bg-black-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TForall":
       return classNames(
         "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TLet":
       return classNames(
         "border-black-primary ring-black-primary bg-black-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
 
@@ -152,6 +174,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
     case "PatternBind":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "PatternApp":
