@@ -607,7 +607,15 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
         );
         const nested = treeNodes(tree).flatMap((n) => n.data.nested);
         const t = await layoutTree(tree);
-        const graph: PrimerGraph = treeToGraph(t.tree);
+        const graph0 = treeToGraph(t.tree);
+        const graph = {
+          edges: graph0.edges.map(({ isRight, ...e }) => ({
+            ...e,
+            sourceHandle: isRight ? Position.Right : Position.Bottom,
+            targetHandle: isRight ? Position.Left : Position.Top,
+          })),
+          nodes: graph0.nodes,
+        };
         setLayout(combineGraphs([graph, ...nested.flat()]));
       })();
   }, [p]);
