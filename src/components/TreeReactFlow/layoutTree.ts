@@ -28,13 +28,9 @@ export const layoutTree = <
     const treeTidy = layout.set_root(treeTidy0);
     layout.layout(true);
     layout.dispose();
-    const { rootId, nodeMap } = makeNodeMap(
-      treeTidy.id,
-      nodeInfoList,
-      tidyTreeNodes(treeTidy)
-    );
+    const nodeMap = makeNodeMap(nodeInfoList, tidyTreeNodes(treeTidy));
     const treeUnNormalized = makePrimerTree(
-      rootId,
+      primerTree.node.id,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       (id) => nodeMap.get(id)!
     );
@@ -75,10 +71,9 @@ const makeNodeMap = <
   },
   E extends { source: string; target: string }
 >(
-  rootId: number,
   nodeInfos: NodeInfo<N, E>[],
   positions: { id: number; x: number; y: number }[]
-): { rootId: string; nodeMap: Map<string, TreeNode<N, E>> } => {
+): Map<string, TreeNode<N, E>> => {
   const posMap = new Map<number, { x: number; y: number }>();
   positions.forEach((n) => posMap.set(n.id, n));
   const tidyIdToPrimer = new Map<number, string>();
@@ -111,8 +106,7 @@ const makeNodeMap = <
       }
     });
   });
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return { rootId: tidyIdToPrimer.get(rootId)!, nodeMap };
+  return nodeMap;
 };
 
 // Convert a Primer tree to a Tidy one. The topology may differ slightly,
