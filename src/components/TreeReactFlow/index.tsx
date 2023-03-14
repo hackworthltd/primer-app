@@ -191,6 +191,7 @@ const nodeTypes = {
       <div
         className={classNames(
           "flex items-center justify-center",
+          "rounded-md",
           "bg-grey-primary",
           "border-8 border-grey-tertiary ring-grey-tertiary",
           p.data.selected && "ring-4 ring-offset-4",
