@@ -42,6 +42,7 @@ import {
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
 import {
+  boxFlavorBackground,
   commonHoverClasses,
   flavorClasses,
   flavorContentClasses,
@@ -154,13 +155,21 @@ const nodeTypes = {
       <div
         className={classNames(
           "flex justify-center rounded-md border-4",
-          flavorClasses(p.data.flavor)
+          flavorClasses(p.data.flavor),
+          // We use a white base so that the "transparent" background will not appear as such.
+          "bg-white-primary"
         )}
         style={{
           width: p.data.width,
           height: p.data.height,
         }}
       >
+        <div
+          className={classNames(
+            "bg-opacity-20 w-full",
+            boxFlavorBackground(p.data.flavor)
+          )}
+        ></div>
         <div
           className={classNames(
             "z-20 p-1 absolute rounded-full text-sm xl:text-base",
