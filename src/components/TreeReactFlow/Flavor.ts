@@ -4,6 +4,7 @@ import {
   NodeFlavorPrimBody,
   NodeFlavorTextBody,
 } from "@/primer-api";
+import classNames from "classnames";
 import "./reactflow.css";
 
 export type NodeFlavor =
@@ -12,65 +13,92 @@ export type NodeFlavor =
   | NodeFlavorBoxBody
   | NodeFlavorNoBody;
 
-export const commonHoverClasses =
-  " hover:ring hover:ring-4 hover:ring-offset-4 hover:ring-green-primary";
+export const commonHoverClasses = "hover:ring hover:ring-4 hover:ring-offset-4";
 
 export const flavorClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
-      return "border-red-tertiary ring-red-tertiary bg-white-primary".concat(
+      return classNames(
+        "border-red-tertiary ring-red-tertiary bg-white-primary",
+        "hover:ring-red-tertiary",
         commonHoverClasses
       );
     case "EmptyHole":
-      return "border-red-tertiary ring-red-tertiary bg-white-primary".concat(
+      return classNames(
+        "border-red-tertiary ring-red-tertiary bg-white-primary",
+        "hover:ring-red-tertiary",
         commonHoverClasses
       );
     case "Ann":
-      return "border-black-primary ring-black-primary bg-black-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-black-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "App":
-      return "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary".concat(
+      return classNames(
+        "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary",
+        "hover:ring-blue-tertiary",
         commonHoverClasses
       );
     case "APP":
-      return "border-yellow-secondary ring-yellow-secondary bg-yellow-secondary".concat(
+      return classNames(
+        "border-yellow-secondary ring-yellow-secondary bg-yellow-secondary",
+        "hover:ring-yellow-secondary",
         commonHoverClasses
       );
     case "Con":
-      return "border-green-primary ring-green-primary bg-white-primary".concat(
+      return classNames(
+        "border-green-primary ring-green-primary bg-white-primary",
+        "hover:ring-green-primary",
         commonHoverClasses
       );
     case "Lam":
-      return "border-blue-primary ring-blue-primary bg-white-primary".concat(
+      return classNames(
+        "border-blue-primary ring-blue-primary bg-white-primary",
+        "hover:ring-blue-primary",
         commonHoverClasses
       );
     case "LAM":
-      return "border-black-primary ring-black-primary bg-white-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "GlobalVar":
-      return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
+      return classNames(
+        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "LocalVar":
-      return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
+      return classNames(
+        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "Let":
-      return "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary".concat(
+      return classNames(
+        "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "LetType":
-      return "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary".concat(
+      return classNames(
+        "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "Letrec":
-      return "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary".concat(
+      return classNames(
+        "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "Case":
-      return "border-yellow-primary ring-yellow-primary bg-yellow-primary".concat(
+      return classNames(
+        "border-yellow-primary ring-yellow-primary bg-yellow-primary",
+        "hover:ring-yellow-primary",
         commonHoverClasses
       );
 
@@ -79,39 +107,57 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       return "border-yellow-primary ring-yellow-primary bg-yellow-primary";
 
     case "PrimCon":
-      return "border-black-primary ring-black-primary bg-white-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TEmptyHole":
-      return "border-black-primary ring-black-primary bg-white-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "THole":
-      return "border-black-primary ring-black-primary bg-white-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TCon":
-      return "border-black-primary ring-black-primary bg-white-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TFun":
-      return "border-black-primary ring-black-primary bg-black-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-black-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TVar":
-      return "border-black-primary ring-black-primary bg-white-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TApp":
-      return "border-black-primary ring-black-primary bg-black-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-black-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TForall":
-      return "border-black-primary ring-black-primary bg-white-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-white-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
     case "TLet":
-      return "border-black-primary ring-black-primary bg-black-primary".concat(
+      return classNames(
+        "border-black-primary ring-black-primary bg-black-primary",
+        "hover:ring-black-primary",
         commonHoverClasses
       );
 
@@ -126,7 +172,9 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
     case "PatternCon":
       return "border-green-primary ring-green-primary bg-white-primary";
     case "PatternBind":
-      return "border-blue-quaternary ring-blue-quaternary bg-white-primary".concat(
+      return classNames(
+        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "PatternApp":
