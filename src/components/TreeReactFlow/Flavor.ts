@@ -454,3 +454,10 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
       return "{?}";
   }
 };
+
+export const boxFlavorBackground = (flavor: NodeFlavorBoxBody): string => {
+  switch (flavor) {
+    case "Pattern":
+      return "bg-yellow-primary";
+  }
+};

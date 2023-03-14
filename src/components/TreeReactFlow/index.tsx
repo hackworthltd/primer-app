@@ -42,6 +42,7 @@ import {
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
 import {
+  boxFlavorBackground,
   commonHoverClasses,
   flavorClasses,
   flavorContentClasses,
@@ -156,13 +157,21 @@ const nodeTypes = {
       <div
         className={classNames(
           "flex justify-center rounded-md border-4",
-          flavorClasses(p.data.flavor)
+          flavorClasses(p.data.flavor),
+          // We use a white base so that the "transparent" background will not appear as such.
+          "bg-white-primary"
         )}
         style={{
           width: p.data.width,
           height: p.data.height,
         }}
       >
+        <div
+          className={classNames(
+            "bg-opacity-20 w-full",
+            boxFlavorBackground(p.data.flavor)
+          )}
+        ></div>
         <div
           className={classNames(
             "z-20 p-1 absolute rounded-full text-sm xl:text-base",
@@ -210,7 +219,7 @@ const nodeTypes = {
 assertType<
   Equal<
     PrimerNode,
-    { id: string } & {
+    { id: string; zIndex: number } & {
       [T in keyof typeof nodeTypes]: {
         type: T;
         data: Parameters<(typeof nodeTypes)[T]>[0]["data"];
@@ -252,6 +261,7 @@ const augmentTree = async <T, E>(
 const makePrimerNode = async (
   node: APITreeNode,
   p: NodeParams,
+  zIndex: number,
   nodeType: NodeType
 ): Promise<
   [
@@ -275,6 +285,7 @@ const makePrimerNode = async (
     id: JSON.stringify([id, child.id]),
     source: id,
     target: child.id,
+    zIndex,
   });
   switch (node.body.tag) {
     case "PrimBody": {
@@ -297,6 +308,7 @@ const makePrimerNode = async (
             syntax: false,
             ...common,
           },
+          zIndex,
         },
         (child) => ({
           className: flavorEdgeClasses(flavor),
@@ -317,6 +329,7 @@ const makePrimerNode = async (
             syntax: false,
             ...common,
           },
+          zIndex,
         },
         (child) => ({
           className: flavorEdgeClasses(flavor),
@@ -345,6 +358,7 @@ const makePrimerNode = async (
               // It can be removed when we have dynamic node sizes.
               width: 130,
             },
+            zIndex,
           },
           makeChild,
           [],
@@ -360,6 +374,7 @@ const makePrimerNode = async (
               // Square, with same height as other nodes.
               width: common.height,
             },
+            zIndex,
           },
           makeChild,
           [],
@@ -369,7 +384,7 @@ const makePrimerNode = async (
     case "BoxBody": {
       const { fst: flavor, snd: t } = node.body.contents;
       const bodyTree = await augmentTree(t, (n0) =>
-        makePrimerNode(n0, p, nodeType).then(([n, e, nested]) => [
+        makePrimerNode(n0, p, zIndex + 1, nodeType).then(([n, e, nested]) => [
           primerNodeWith(n, { nested }),
           e,
         ])
@@ -389,6 +404,7 @@ const makePrimerNode = async (
             width: bodyLayout.width + p.boxPadding,
             height: bodyLayout.height + p.boxPadding,
           },
+          zIndex,
         },
         (child) => ({
           className: flavorEdgeClasses(flavor),
@@ -452,6 +468,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                 deepEqual(p.selection?.def, def.name) && !p.selection?.node,
             },
             type: "primer-def-name",
+            zIndex: 0,
           };
           const defEdge = async (
             tree: APITree,
@@ -463,7 +480,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
             nested: Graph<PrimerNodeWithDef, PrimerEdge>[];
           }> => {
             const t = await augmentTree(tree, (n0) =>
-              makePrimerNode(n0, augmentParams, nodeType).then(
+              makePrimerNode(n0, augmentParams, 0, nodeType).then(
                 ([n, e, nested]) => [primerNodeWith(n, { nested }), e]
               )
             );
@@ -478,6 +495,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                   type: "step",
                   className: "stroke-grey-tertiary stroke-[0.25rem]",
                   style: { strokeDasharray: 4 },
+                  zIndex: 0,
                 },
               ],
               nested: nested.map((g) =>
@@ -581,7 +599,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
     pt &&
       (async () => {
         const tree = await augmentTree(pt, (n0) =>
-          makePrimerNode(n0, p, "BodyNode").then(([n, e, nested]) => [
+          makePrimerNode(n0, p, 0, "BodyNode").then(([n, e, nested]) => [
             primerNodeWith(n, { nested }),
             e,
           ])
