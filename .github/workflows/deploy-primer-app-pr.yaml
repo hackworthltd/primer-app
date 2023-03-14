@@ -84,7 +84,7 @@ jobs:
         # primer-app-main.yaml workflow, we just use the latest
         # version of this action, because that workflow is not trigged
         # on pull requests.
-        uses: cloudflare/pages-action@v1.4.0
+        uses: cloudflare/pages-action@v1.4.1
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
