@@ -1,0 +1,38 @@
+# Push the pinned `primer-service` container image to ghcr.io whenever
+# the "Deploy service" label is applied to a PR, which is also the
+# Argo CD trigger that deploys that container to our development
+# cluster.
+#
+# Note that there is a potential race here, but it's OK: if Argo CD
+# tries to deploy the container before it's available in ghcr.io, Argo
+# CD will keep trying until either it succeeds, or the PR is
+# closed/the label is removed.
+#
+# Note: the images pushed here are for development *only*.
+# Specifically, this workflow pushes the images to a different ghcr.io
+# package name than the one used by the `primer` repo. Do not use them
+# in production.
+#
+# This repo has no corresponding "push to ghcr.io" for pushes to
+# `main` on purpose, because we don't want to deploy containers to
+# production from this repo.
+
+name: Push backend container image to ghcr.io (PR)
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  push-backend-to-ghcr-pr:
+    if: ${{ github.event.label.name == 'Deploy service' }}
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    uses: ./.github/workflows/push-backend-to-ghcr.yaml
+    with:
+      package: "ghcr.io/hackworthltd/primer-service-dev"
+    secrets:
+      VAULT_CA_CERT: ${{ secrets.VAULT_CA_CERT }}

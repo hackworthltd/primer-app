@@ -23,7 +23,10 @@ spec:
       terminationGracePeriodSeconds: 20
       containers:
         - name: primer-service
-          image: ghcr.io/hackworthltd/primer-service:git-daf396c8befc7208ccda569080c44df0ac224c91
+          # Note: use the *dev* version of the package here, so that
+          # PRs can deploy `primer-service` container images that have
+          # not yet been merged to `primer` `main`.
+          image: ghcr.io/hackworthltd/primer-service-dev:git-daf396c8befc7208ccda569080c44df0ac224c91
           ports:
             - containerPort: 8081
           env:
