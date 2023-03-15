@@ -1,0 +1,24 @@
+name: Deploy the frontend (PR)
+
+on:
+  pull_request:
+  merge_group:
+
+jobs:
+  build-frontend-pr:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/build-frontend.yaml
+    with:
+      api-url: "https://pr-${{ github.event.pull_request.number }}.hackworth.dev/"
+
+  deploy-frontend-pr:
+    needs: build-frontend-pr
+    permissions:
+      contents: read
+      id-token: write
+      deployments: write
+    uses: ./.github/workflows/deploy-frontend.yaml
+    secrets:
+      VAULT_CA_CERT: ${{ secrets.VAULT_CA_CERT }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

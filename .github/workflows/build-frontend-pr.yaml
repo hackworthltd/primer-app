@@ -1,0 +1,14 @@
+name: Build the frontend (PR)
+
+on:
+  pull_request:
+  merge_group:
+
+jobs:
+  build-frontend-pr:
+    permissions:
+      contents: read
+
+    uses: ./.github/workflows/build-frontend.yaml
+    with:
+      api-url: "https://pr-${{ github.event.pull_request.number }}.hackworth.dev"
