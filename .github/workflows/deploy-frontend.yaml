@@ -1,0 +1,51 @@
+name: Deploy the frontend
+
+on:
+  workflow_call:
+    secrets:
+      VAULT_CA_CERT:
+        required: true
+      CLOUDFLARE_ACCOUNT_ID:
+        required: true
+
+jobs:
+  deploy-frontend:
+    permissions:
+      contents: read
+      id-token: write
+      deployments: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3.0.2
+
+      - name: Import secrets from Vault
+        uses: hashicorp/vault-action@v2.5.0
+        id: secrets
+        with:
+          url: https://secrets.hackworth-corp.com
+          path: "github-actions"
+          caCertificate: ${{ secrets.VAULT_CA_CERT }}
+          role: primer-app-workflow-pages
+          method: jwt
+          secrets: |
+            secret/data/cloudflare/primer-app api-token | CLOUDFLARE_API_TOKEN ;
+
+      - name: Deploy to Cloudflare
+        # Note: we very specifically use @v1.4.0 here because it
+        # handles pull requests correctly (for us, anyway). It has
+        # been reverted upstream because it broke other users' pull
+        # request workflows (but solves ours). There's a replacement
+        # fix in the works, and when that's merged, we can try the
+        # latest release again. See:
+        #
+        # https://github.com/cloudflare/pages-action/pull/70
+        uses: cloudflare/pages-action@v1.4.0
+        with:
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: primer-app
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,25 @@
+name: Deploy the frontend (production)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-frontend-production:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/build-frontend.yaml
+    with:
+      api-url: "https://api.hackworth.codes/"
+
+  deploy-frontend-production:
+    needs: build-frontend-production
+    permissions:
+      contents: read
+      id-token: write
+      deployments: write
+    uses: ./.github/workflows/deploy-frontend.yaml
+    secrets:
+      VAULT_CA_CERT: ${{ secrets.VAULT_CA_CERT }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -1,0 +1,58 @@
+name: Build the frontend
+
+on:
+  workflow_call:
+    inputs:
+      api-url:
+        required: true
+        type: string
+
+jobs:
+  build-frontend:
+    permissions:
+      contents: read
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7.26.3
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v3.6.0
+        with:
+          node-version-file: package.json
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Note: we only audit non-dev dependencies, because there are
+      # nearly always dev dependency vulnerabilities, but they're very
+      # unlikely to affect the production app.
+      - name: Audit
+        run: pnpm audit --prod
+
+      - name: Build the frontend
+        # This URL scheme for PR's is baked into other parts of the
+        # repo, so if you change it here, make sure you change it
+        # elsewhere, as well (and vice versa).
+        run: VITE_API_URL="${{ inputs.api-url }}" pnpm build
+
+      # Note: linting must come after building, or else eslint won't
+      # be able to resolve some paths.
+      - name: Lint
+        run: pnpm lint --max-warnings=0
+
+      - name: Archive frontend
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: dist
+          path: |
+            dist
+
