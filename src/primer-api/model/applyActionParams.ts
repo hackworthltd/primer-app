@@ -7,4 +7,4 @@
  */
 import type { NoInputAction } from './noInputAction';
 
-export type ApplyActionParams = { patternsUnder?: boolean; action: NoInputAction };
+export type ApplyActionParams = { action: NoInputAction };

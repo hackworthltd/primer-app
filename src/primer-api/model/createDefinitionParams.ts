@@ -6,4 +6,4 @@
  * OpenAPI spec version: 0.7
  */
 
-export type CreateDefinitionParams = { patternsUnder?: boolean; name?: string };
+export type CreateDefinitionParams = { name?: string };

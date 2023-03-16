@@ -51,7 +51,7 @@ echo "Updating flake lockfile."
 nix flake lock --update-input primer
 
 echo "Replacing Kustomize app container image tag with rev $1."
-sed -i "s/\(image: ghcr\.io\/hackworthltd\/primer\-service\):git\-\(.*\)$/\1:git\-$1/g" "$STATEFULSET_YAML"
+sed -i "s/\(image: ghcr\.io\/hackworthltd\/primer\-service\-dev\):git\-\(.*\)$/\1:git\-$1/g" "$STATEFULSET_YAML"
 
 echo "Success."
 echo "Please run 'nix develop' to ensure all remaining dependencies are updated."

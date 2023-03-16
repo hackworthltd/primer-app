@@ -35,9 +35,7 @@ import type {
   EvalFullResp,
   GlobalName,
   EvalFullParams,
-  GetProgramParams,
-  CreateTypeDefBody,
-  CreateTypeDefParams
+  CreateTypeDefBody
 } from './model'
 import { useCustomInstance } from '../orval/mutator/use-custom-instance';
 import type { ErrorType } from '../orval/mutator/use-custom-instance';
@@ -631,39 +629,35 @@ export const useGetProgramHook = () => {
 
         return (
     sessionId: string,
-    params?: GetProgramParams,
  signal?: AbortSignal
 ) => {
         return getProgram(
-          {url: `/openapi/sessions/${sessionId}/program`, method: 'get',
-        params, ...(signal ? { signal }: {})
+          {url: `/openapi/sessions/${sessionId}/program`, method: 'get', ...(signal ? { signal }: {})
     },
           );
         }
       }
     
 
-export const getGetProgramQueryKey = (sessionId: string,
-    params?: GetProgramParams,) => [`/openapi/sessions/${sessionId}/program`, ...(params ? [params]: [])];
+export const getGetProgramQueryKey = (sessionId: string,) => [`/openapi/sessions/${sessionId}/program`];
 
     
 export type GetProgramQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>>
 export type GetProgramQueryError = ErrorType<void>
 
 export const useGetProgram = <TData = Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError = ErrorType<void>>(
- sessionId: string,
-    params?: GetProgramParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError, TData>, }
+ sessionId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError, TData>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetProgramQueryKey(sessionId,params);
+  const queryKey =  queryOptions?.queryKey ?? getGetProgramQueryKey(sessionId);
 
   const getProgram =  useGetProgramHook();
 
 
-  const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>> = ({ signal }) => getProgram(sessionId,params, signal);
+  const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>> = ({ signal }) => getProgram(sessionId, signal);
 
 
   
@@ -685,13 +679,11 @@ export const useCreateTypeDefHook = () => {
         return (
     sessionId: string,
     createTypeDefBody: CreateTypeDefBody,
-    params?: CreateTypeDefParams,
  ) => {
         return createTypeDef(
           {url: `/openapi/sessions/${sessionId}/typedef`, method: 'post',
       headers: {'Content-Type': 'application/json;charset=utf-8', },
-      data: createTypeDefBody,
-        params
+      data: createTypeDefBody
     },
           );
         }
@@ -705,22 +697,22 @@ export const useCreateTypeDefHook = () => {
 
     export const useCreateTypeDef = <TError = ErrorType<void>,
     
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateTypeDefHook>>>, TError,{sessionId: string;data: CreateTypeDefBody;params?: CreateTypeDefParams}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateTypeDefHook>>>, TError,{sessionId: string;data: CreateTypeDefBody}, TContext>, }
 ) => {
       const {mutation: mutationOptions} = options ?? {};
 
       const createTypeDef =  useCreateTypeDefHook()
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCreateTypeDefHook>>>, {sessionId: string;data: CreateTypeDefBody;params?: CreateTypeDefParams}> = (props) => {
-          const {sessionId,data,params} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCreateTypeDefHook>>>, {sessionId: string;data: CreateTypeDefBody}> = (props) => {
+          const {sessionId,data} = props ?? {};
 
-          return  createTypeDef(sessionId,data,params,)
+          return  createTypeDef(sessionId,data,)
         }
 
         
 
-      return useMutation<Awaited<ReturnType<typeof createTypeDef>>, TError, {sessionId: string;data: CreateTypeDefBody;params?: CreateTypeDefParams}, TContext>(mutationFn, mutationOptions);
+      return useMutation<Awaited<ReturnType<typeof createTypeDef>>, TError, {sessionId: string;data: CreateTypeDefBody}, TContext>(mutationFn, mutationOptions);
     }
     
 /**
