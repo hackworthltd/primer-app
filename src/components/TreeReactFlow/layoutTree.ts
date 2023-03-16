@@ -4,6 +4,7 @@ import {
   TidyLayout,
 } from "@zxch3n/tidy";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
+import { unzip } from "fp-ts/lib/Array";
 import { fst, mapFst, mapSnd } from "fp-ts/lib/Tuple";
 import { treeMap, Tree, Positioned } from "./Types";
 
@@ -122,7 +123,7 @@ const primerToTidy = <N extends { data: { width: number; height: number } }, E>(
 ): [TidyNode, NodeInfo<N>[], EdgeInfo<E>[]] => {
   const nodeInfos: NodeInfo<N>[] = [];
   const edgeInfos: EdgeInfo<E>[] = [];
-  let tidyId = 0;
+  let tidyId = 1; // 0 is reserved for possible dummy root - see below
   const tagRight = (isRight: boolean) => (edge: E) => ({ edge, isRight });
   const go = (t: Tree<N, E>): TidyNode => {
     const children = t.childTrees.flatMap((child) =>
@@ -150,7 +151,35 @@ const primerToTidy = <N extends { data: { width: number; height: number } }, E>(
       y: 0,
     };
   };
-  return [go(t0), nodeInfos, edgeInfos];
+
+  // Usually we look ahead for right-children, exploring them from their grandparent (see above).
+  // Therefore, when the root node has right-children, they would be ignored without special handling.
+  // Here we check for such children, and associate them with a dummy root node for layout purposes.
+  // Note that this dummy node has no associated Primer node, so it's existence is entirely confined to
+  // this module. In particular, it will never result in the creation of any DOM element, even an invisible one.
+  if (t0.rightChild) {
+    const rights = transitiveRightChildren(t0);
+    const [trees, edges] = unzip(rights);
+    edges.forEach((edge) => edgeInfos.push(tagRight(true)(edge)));
+    return [
+      {
+        children: [go(t0)].concat(trees.map(go)),
+        // We use the ID 0 here, to avoid any clashing with our normal nodes, which all have positive IDs.
+        // Negative nodes seem to be used internally by Tidy.
+        // Or at least, using `id: -1` here causes weird layout distortions.
+        id: 0,
+        // These remaining values make no difference for this dummy node.
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
+      },
+      nodeInfos,
+      edgeInfos,
+    ];
+  } else {
+    return [go(t0), nodeInfos, edgeInfos];
+  }
 };
 
 // Unfold a tree, from an initial node and a function which computes each node's children.
