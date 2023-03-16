@@ -6,4 +6,4 @@
  * OpenAPI spec version: 0.7
  */
 
-export type EvalFullParams = { patternsUnder?: boolean; stepLimit?: number };
+export type EvalFullParams = { stepLimit?: number };

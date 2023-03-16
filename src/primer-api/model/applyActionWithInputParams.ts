@@ -7,4 +7,4 @@
  */
 import type { InputAction } from './inputAction';
 
-export type ApplyActionWithInputParams = { patternsUnder?: boolean; action: InputAction };
+export type ApplyActionWithInputParams = { action: InputAction };

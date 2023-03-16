@@ -35,8 +35,6 @@ import {
 
 // hardcoded values (for now)
 const initialLevel: Level = "Expert";
-const patternsUnder = false;
-const treeParams = { patternsUnder };
 
 const App = (): JSX.Element => {
   const params = useParams();
@@ -50,7 +48,7 @@ const App = (): JSX.Element => {
   // This hook is *technically* conditional.
   // But if the condition above fails, then the app is broken anyway.
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const queryRes = useGetProgram(sessionId, treeParams);
+  const queryRes = useGetProgram(sessionId);
 
   if (queryRes.error) {
     return (
@@ -182,7 +180,7 @@ const AppNoError = ({
     useEvalFull(
       p.sessionId,
       { qualifiedModule: p.module.modname, baseName: evalTarget || "" },
-      { stepLimit: 100, ...treeParams },
+      { stepLimit: 100 },
       { query: { enabled: !!evalTarget } }
     ),
     [p.module]
@@ -259,7 +257,7 @@ const AppNoError = ({
             applyAction
               .mutateAsync({
                 sessionId: p.sessionId,
-                params: { patternsUnder, action },
+                params: { action },
                 data: selection,
               })
               .then(p.setProg);
@@ -268,7 +266,7 @@ const AppNoError = ({
             applyActionWithInput
               .mutateAsync({
                 sessionId: p.sessionId,
-                params: { patternsUnder, action },
+                params: { action },
                 data: { option, selection },
               })
               .then(p.setProg);
@@ -295,7 +293,7 @@ const AppNoError = ({
             createDef
               .mutateAsync({
                 sessionId: p.sessionId,
-                params: { patternsUnder, name },
+                params: { name },
                 data: p.module.modname,
               })
               .then(p.setProg);
@@ -313,7 +311,6 @@ const AppNoError = ({
             createTypeDef
               .mutateAsync({
                 sessionId: p.sessionId,
-                params: treeParams,
                 data: {
                   moduleName: p.module.modname,
                   typeName,
