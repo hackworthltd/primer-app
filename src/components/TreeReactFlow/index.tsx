@@ -288,7 +288,7 @@ const makePrimerNode = async (
     nodeType,
     ...p,
   };
-  const edgeCommon = (child: PrimerNode) => ({
+  const edgeCommon = (child: PrimerNode): PrimerEdge => ({
     id: JSON.stringify([id, child.id]),
     source: id,
     target: child.id,
