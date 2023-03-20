@@ -18,5 +18,6 @@ Some notes:
 | ------- | ---------------------------------------- |
 | `z-10`  | Tree edges                               |
 | `z-20`  | Tree node flavor labels                  |
+| `z-30`  | Floating toolbar (editor)                |
 | `z-40`  | Drop-down menus<br/>Nav bars<br/>Footers |
 | `z-50`  | Modal dialogs                            |
