@@ -210,7 +210,7 @@ const nodeTypes = {
           {p.data.def.baseName}
         </div>
       </div>
-      <Handle isConnectable={false} type="source" position={Position.Bottom} />
+      {handle("source", Position.Bottom)}
     </>
   ),
 };
