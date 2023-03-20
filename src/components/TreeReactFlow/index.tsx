@@ -292,6 +292,7 @@ const makePrimerNode = async (
     id: JSON.stringify([id, child.id]),
     source: id,
     target: child.id,
+    focusable: false,
     zIndex,
   });
   switch (node.body.tag) {
@@ -502,6 +503,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                   type: "step",
                   className: "stroke-grey-tertiary stroke-[0.25rem]",
                   style: { strokeDasharray: 4 },
+                  focusable: false,
                   zIndex: 0,
                 },
               ],
