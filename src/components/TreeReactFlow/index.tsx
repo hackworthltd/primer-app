@@ -210,7 +210,7 @@ const nodeTypes = {
           {p.data.def.baseName}
         </div>
       </div>
-      <Handle isConnectable={false} type="source" position={Position.Bottom} />
+      {handle("source", Position.Bottom)}
     </>
   ),
 };
@@ -258,6 +258,12 @@ const augmentTree = async <T, E>(
     node,
   };
 };
+
+const addEdgeHandles = (e: PrimerEdge & { isRight: boolean }): PrimerEdge => ({
+  ...e,
+  sourceHandle: e.isRight ? Position.Right : Position.Bottom,
+  targetHandle: e.isRight ? Position.Left : Position.Top,
+});
 
 const makePrimerNode = async (
   node: APITreeNode,
@@ -420,7 +426,7 @@ const makePrimerNode = async (
               y: node.position.y + p.boxPadding / 2,
             },
           })),
-          edges: bodyLayout.edges,
+          edges: bodyLayout.edges.map(addEdgeHandles),
         }),
       ];
     }
@@ -539,11 +545,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
           })();
           return [
             gs.concat({
-              edges: g.edges.map(({ isRight, ...e }) => ({
-                ...e,
-                sourceHandle: isRight ? Position.Right : Position.Bottom,
-                targetHandle: isRight ? Position.Left : Position.Top,
-              })),
+              edges: g.edges.map(addEdgeHandles),
               nodes: g.nodes.map((n) => ({
                 ...n,
                 position: {
