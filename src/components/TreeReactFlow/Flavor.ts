@@ -13,7 +13,8 @@ export type NodeFlavor =
   | NodeFlavorBoxBody
   | NodeFlavorNoBody;
 
-export const commonHoverClasses = "hover:ring hover:ring-4 hover:ring-offset-4";
+export const commonHoverClasses =
+  "hover:ring hover:ring-4 hover:ring-offset-4 cursor-pointer";
 
 export const flavorClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
@@ -170,7 +171,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       return "border-yellow-primary ring-yellow-primary";
 
     case "PatternCon":
-      return "border-green-primary ring-green-primary bg-white-primary";
+      return "border-green-primary ring-green-primary bg-white-primary cursor-default";
     case "PatternBind":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-white-primary",
@@ -178,7 +179,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
         commonHoverClasses
       );
     case "PatternApp":
-      return "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary";
+      return "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary cursor-default";
   }
 };
 

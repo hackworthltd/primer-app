@@ -158,6 +158,7 @@ const nodeTypes = {
         className={classNames(
           "flex justify-center rounded-md border-4",
           flavorClasses(p.data.flavor),
+          "cursor-default",
           // We use a white base so that the "transparent" background will not appear as such.
           "bg-white-primary"
         )}
@@ -292,7 +293,9 @@ const makePrimerNode = async (
     id: JSON.stringify([id, child.id]),
     source: id,
     target: child.id,
+    style: { cursor: "default" },
     focusable: false,
+    interactionWidth: 0,
     zIndex,
   });
   switch (node.body.tag) {
@@ -502,8 +505,9 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                   target: tree.nodeId,
                   type: "step",
                   className: "stroke-grey-tertiary stroke-[0.25rem]",
-                  style: { strokeDasharray: 4 },
+                  style: { strokeDasharray: 4, cursor: "default" },
                   focusable: false,
+                  interactionWidth: 0,
                   zIndex: 0,
                 },
               ],
