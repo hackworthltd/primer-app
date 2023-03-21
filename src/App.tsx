@@ -187,7 +187,13 @@ const AppNoError = ({
     [p.module]
   );
   return (
-    <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
+    <div
+      className={
+        selection
+          ? "grid h-screen grid-cols-[18rem_auto_20rem]"
+          : "grid h-screen grid-cols-[18rem_auto]"
+      }
+    >
       <div className="overflow-scroll">
         <Sidebar
           initialMode="T&D"
@@ -282,9 +288,7 @@ const AppNoError = ({
           }}
         />
       ) : (
-        <div className="p-10">
-          Click something on the canvas to see available actions!
-        </div>
+        <></>
       )}
       {showCreateDefModal ? (
         <CreateDefModal
