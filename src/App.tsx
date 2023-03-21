@@ -32,6 +32,7 @@ import {
   useCreateTypeDef,
   useEvalFull,
   Level,
+  useUndo,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -175,6 +176,7 @@ const AppNoError = ({
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
+  const undo = useUndo();
 
   const [evalTarget, setEvalTarget] = useState<string | undefined>();
   const evalResult = useInvalidateOnChange(
@@ -232,7 +234,11 @@ const AppNoError = ({
             console.log("Redo");
           }}
           onClickUndo={() => {
-            console.log("Undo");
+            undo
+              .mutateAsync({
+                sessionId: p.sessionId,
+              })
+              .then(p.setProg);
           }}
           onClickChevron={() => {
             console.log("Toggle chevron");
