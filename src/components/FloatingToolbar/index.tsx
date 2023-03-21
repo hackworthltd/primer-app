@@ -55,6 +55,9 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
         if (e.type == "touchstart") setTouchDragging(true);
       }}
       onStop={(_) => setTouchDragging(false)}
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
+      offsetParent={document.getElementById("canvas")!}
+      bounds="div#canvas"
     >
       <div
         className={classNames(

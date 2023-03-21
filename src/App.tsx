@@ -190,7 +190,7 @@ const AppNoError = ({
   );
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
-      <div className="overflow-scroll">
+      <div className="overflow-scroll" id="sidebar">
         <Sidebar
           initialMode="T&D"
           prog={{
@@ -225,7 +225,7 @@ const AppNoError = ({
         />
       </div>
 
-      <div>
+      <div id="canvas">
         <FloatingToolbar
           onModeChange={() => {
             console.log("Toggle mode");
@@ -306,7 +306,7 @@ const AppNoError = ({
           }}
         />
       ) : (
-        <div className="p-10">
+        <div className="p-10" id="action-panel">
           Click something on the canvas to see available actions!
         </div>
       )}
