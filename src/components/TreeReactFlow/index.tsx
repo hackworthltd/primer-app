@@ -15,6 +15,8 @@ import {
   NodeProps,
   Background,
   HandleType,
+  useNodesState,
+  useEdgesState,
 } from "reactflow";
 import "./reactflow.css";
 import { useEffect, useId, useState } from "react";
@@ -62,10 +64,7 @@ type NodeParams = {
 };
 export type TreeReactFlowProps = {
   defs: Def[];
-  onNodeClick?: (
-    event: React.MouseEvent,
-    node: Positioned<PrimerNodeWithDef>
-  ) => void;
+  onNodeClick: (node: PrimerNodeWithDef | undefined) => void;
   treePadding: number;
   forestLayout: "Horizontal" | "Vertical";
 } & NodeParams;
@@ -82,8 +81,8 @@ const nodeTypes = {
       <div
         className={classNames(
           {
-            "ring-4 ring-offset-4": p.data.selected,
-            "hover:ring-opacity-50": !p.data.selected,
+            "ring-4 ring-offset-4": p.selected,
+            "hover:ring-opacity-50": !p.selected,
           },
           "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
           flavorClasses(p.data.flavor)
@@ -124,8 +123,8 @@ const nodeTypes = {
       <div
         className={classNames(
           {
-            "ring-4 ring-offset-4": p.data.selected,
-            "hover:ring-opacity-50": !p.data.selected,
+            "ring-4 ring-offset-4": p.selected,
+            "hover:ring-opacity-50": !p.selected,
           },
           "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
           flavorClasses(p.data.flavor)
@@ -196,10 +195,10 @@ const nodeTypes = {
           "rounded-md",
           "bg-grey-primary",
           "border-8 border-grey-tertiary ring-grey-tertiary",
-          p.data.selected && "ring-4 ring-offset-4",
+          p.selected && "ring-4 ring-offset-4",
           commonHoverClasses,
           "hover:ring-grey-tertiary",
-          !p.data.selected && "hover:ring-opacity-50"
+          !p.selected && "hover:ring-opacity-50"
         )}
         style={{
           width: p.data.width,
@@ -220,7 +219,7 @@ const nodeTypes = {
 assertType<
   Equal<
     PrimerNode,
-    { id: string; zIndex: number } & {
+    { id: string; zIndex: number; selectable: boolean; selected: boolean } & {
       [T in keyof typeof nodeTypes]: {
         type: T;
         data: Parameters<(typeof nodeTypes)[T]>[0]["data"];
@@ -284,7 +283,6 @@ const makePrimerNode = async (
   const common = {
     width: p.nodeWidth,
     height: p.nodeHeight,
-    selected,
     nodeType,
     ...p,
   };
@@ -316,6 +314,8 @@ const makePrimerNode = async (
             ...common,
           },
           zIndex,
+          selectable: true,
+          selected,
         },
         (child) => ({
           className: flavorEdgeClasses(flavor),
@@ -337,6 +337,8 @@ const makePrimerNode = async (
             ...common,
           },
           zIndex,
+          selectable: flavor != "PatternCon",
+          selected,
         },
         (child) => ({
           className: flavorEdgeClasses(flavor),
@@ -366,6 +368,8 @@ const makePrimerNode = async (
               width: 130,
             },
             zIndex,
+            selectable: flavor != "PatternApp",
+            selected,
           },
           makeChild,
           [],
@@ -382,6 +386,8 @@ const makePrimerNode = async (
               width: common.height,
             },
             zIndex,
+            selectable: flavor != "PatternApp",
+            selected,
           },
           makeChild,
           [],
@@ -412,6 +418,8 @@ const makePrimerNode = async (
             height: bodyLayout.height + p.boxPadding,
           },
           zIndex,
+          selectable: false,
+          selected,
         },
         (child) => ({
           className: flavorEdgeClasses(flavor),
@@ -444,12 +452,17 @@ type PrimerNodeWithDef = Positioned<PrimerNodeWithDefNoPos>;
 // It ensures that these are clearly displayed as "one atomic thing",
 // i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc)
 export const TreeReactFlow = (p: TreeReactFlowProps) => {
-  const [{ nodes, edges }, setLayout] = useState<
-    Graph<PrimerNodeWithDef, PrimerEdge>
-  >({
-    nodes: [],
-    edges: [],
-  });
+  console.log(p.selection);
+  const [nodes1, setNodes, onNodesChange] = useNodesState([]);
+  const [edges1, setEdges, onEdgesChange] = useEdgesState([]);
+  const { nodes, edges }: Graph<PrimerNodeWithDef, PrimerEdge> = {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    nodes: nodes1,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    edges: edges1,
+  };
 
   useEffect(() => {
     (async () => {
@@ -471,11 +484,12 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
               def: def.name,
               height: p.nodeHeight * 2,
               width: p.nodeWidth * 3,
-              selected:
-                deepEqual(p.selection?.def, def.name) && !p.selection?.node,
             },
             type: "primer-def-name",
             zIndex: 0,
+            selectable: true,
+            selected:
+              deepEqual(p.selection?.def, def.name) && !p.selection?.node,
           };
           const defEdge = async (
             tree: APITree,
@@ -559,9 +573,11 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
         },
         [[], 0]
       )[0];
-      setLayout(combineGraphs([...graphs, ...nested.flat()]));
+      const { nodes, edges } = combineGraphs([...graphs, ...nested.flat()]);
+      setNodes(nodes);
+      setEdges(edges);
     })();
-  }, [p]);
+  }, [p, setEdges, setNodes]);
 
   // ReactFlow requires a unique id to be passed in if there are
   // multiple flows on one page. We simply get react to generate
@@ -570,12 +586,19 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
 
   return (
     <ReactFlowSafe
+      onSelectionChange={(ps) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        p.onNodeClick(ps.nodes[0]);
+      }}
       id={id}
-      {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
       nodes={nodes}
       edges={edges}
       nodeTypes={nodeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      nodesDraggable={false}
     >
       <Background gap={25} size={1.6} color="#81818a" />
     </ReactFlowSafe>

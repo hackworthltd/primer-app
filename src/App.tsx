@@ -11,6 +11,7 @@ import {
   useQueryClient,
   UseQueryResult,
 } from "@tanstack/react-query";
+import deepEqual from "deep-equal";
 import { DependencyList, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -158,7 +159,7 @@ const AppNoError = ({
   module: Module;
   imports: Module[];
   selection: Selection | undefined;
-  setSelection: (s: Selection) => void;
+  setSelection: (s: Selection | undefined) => void;
   setProg: (p: Prog) => void;
 }): JSX.Element => {
   const [level, setLevel] = useState<Level>(initialLevel);
@@ -223,20 +224,21 @@ const AppNoError = ({
       </div>
       <TreeReactFlow
         {...(selection && { selection })}
-        onNodeClick={(_e, node) => {
-          if (!("nodeType" in node.data)) {
-            setSelection({
-              def: node.data.def,
-            });
-          } else {
-            const id = Number(node.id);
-            // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
-            if (!isNaN(id)) {
-              setSelection({
-                def: node.data.def,
-                node: { id, nodeType: node.data.nodeType },
-              });
-            }
+        onNodeClick={(node) => {
+          const s: Selection | undefined =
+            node == undefined
+              ? undefined
+              : node.type == "primer-def-name"
+              ? {
+                  def: node.data.def,
+                }
+              : {
+                  def: node.data.def,
+                  node: { id: Number(node.id), nodeType: node.data.nodeType },
+                };
+          // guard needed to avoid infinite loop
+          if (!deepEqual(selection, s)) {
+            setSelection(s);
           }
         }}
         defs={p.module.defs}

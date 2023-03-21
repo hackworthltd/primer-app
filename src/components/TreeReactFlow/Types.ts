@@ -116,6 +116,8 @@ export type PrimerEdge = Edge<Empty> & { zIndex: number };
 export type PrimerNode<T = unknown> = {
   id: string;
   zIndex: number;
+  selected: boolean;
+  selectable: boolean; // in the long run, this will be `false` precisely for box nodes
   data: PrimerCommonNodeProps & T;
 } & (
   | { type: "primer"; data: PrimerNodeProps }
@@ -161,7 +163,6 @@ export type PrimerDefNameNodeProps = {
 export type PrimerCommonNodeProps = {
   width: number;
   height: number;
-  selected: boolean;
 };
 
 export type Positioned<T> = T & {
