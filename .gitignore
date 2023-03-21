@@ -42,3 +42,6 @@ build-storybook.log
 
 # Generated files
 primer-api.json
+
+# SQLite
+*.sqlite3
