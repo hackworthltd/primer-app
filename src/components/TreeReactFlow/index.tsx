@@ -295,7 +295,10 @@ const makePrimerNode = async (
     target: child.id,
     style: { cursor: "default" },
     focusable: false,
-    interactionWidth: 0,
+    ...(child.type != "primer-def-name" &&
+      !flavorClasses(child.data.flavor).includes(commonHoverClasses) && {
+        interactionWidth: 0,
+      }),
     zIndex,
   });
   switch (node.body.tag) {
@@ -507,7 +510,6 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                   className: "stroke-grey-tertiary stroke-[0.25rem]",
                   style: { strokeDasharray: 4, cursor: "default" },
                   focusable: false,
-                  interactionWidth: 0,
                   zIndex: 0,
                 },
               ],
@@ -658,6 +660,10 @@ export const ReactFlowSafe = <N extends RFNode>(
   <ReactFlow
     {...{
       ...p,
+      onEdgeClick: (e, edge) => {
+        "onNodeClick" in p &&
+          p.onNodeClick(e, p.nodes.find((n) => n.id == edge.target) as N);
+      },
       onNodeClick: (e, n) => {
         "onNodeClick" in p &&
           p.onNodeClick(
