@@ -26,7 +26,7 @@ spec:
           # Note: use the *dev* version of the package here, so that
           # PRs can deploy `primer-service` container images that have
           # not yet been merged to `primer` `main`.
-          image: ghcr.io/hackworthltd/primer-service-dev:git-4b8142c328ee1d7d17e1acc06a9cd31df5117ebb
+          image: ghcr.io/hackworthltd/primer-service-dev:git-a820605b3b499cee4e96d0e4d1b673de47a03fb4
           ports:
             - containerPort: 8081
           env:

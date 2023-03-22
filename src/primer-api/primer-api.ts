@@ -716,6 +716,48 @@ export const useCreateTypeDefHook = () => {
     }
     
 /**
+ * @summary Undo the last action
+ */
+export const useUndoHook = () => {
+        const undo = useCustomInstance<Prog>();
+
+        return (
+    sessionId: string,
+ ) => {
+        return undo(
+          {url: `/openapi/sessions/${sessionId}/undo`, method: 'post'
+    },
+          );
+        }
+      }
+    
+
+
+    export type UndoMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUndoHook>>>>
+    
+    export type UndoMutationError = ErrorType<void>
+
+    export const useUndo = <TError = ErrorType<void>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUndoHook>>>, TError,{sessionId: string}, TContext>, }
+) => {
+      const {mutation: mutationOptions} = options ?? {};
+
+      const undo =  useUndoHook()
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useUndoHook>>>, {sessionId: string}> = (props) => {
+          const {sessionId} = props ?? {};
+
+          return  undo(sessionId,)
+        }
+
+        
+
+      return useMutation<Awaited<ReturnType<typeof undo>>, TError, {sessionId: string}, TContext>(mutationFn, mutationOptions);
+    }
+    
+/**
  * @summary Get the current server version
  */
 export const useGetVersionHook = () => {

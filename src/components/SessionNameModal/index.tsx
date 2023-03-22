@@ -83,7 +83,7 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
 
   return (
     <Transition show={p.open} as={Fragment}>
-      <Dialog className="relative z-10" onClose={onClose}>
+      <Dialog className="relative z-50" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -96,7 +96,7 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
           <div className="fixed inset-0 bg-grey-primary/75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
+        <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}

@@ -5,6 +5,7 @@ import {
   Error,
   ActionPanel,
   Sidebar,
+  FloatingToolbar,
 } from "@/components";
 import {
   QueryKey,
@@ -31,6 +32,7 @@ import {
   useCreateTypeDef,
   useEvalFull,
   Level,
+  useUndo,
 } from "./primer-api";
 
 // hardcoded values (for now)
@@ -174,6 +176,7 @@ const AppNoError = ({
   const applyAction = useApplyAction();
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
+  const undo = useUndo();
 
   const [evalTarget, setEvalTarget] = useState<string | undefined>();
   const evalResult = useInvalidateOnChange(
@@ -221,32 +224,55 @@ const AppNoError = ({
           level={level}
         />
       </div>
-      <TreeReactFlow
-        {...(selection && { selection })}
-        onNodeClick={(_e, node) => {
-          if (!("nodeType" in node.data)) {
-            setSelection({
-              def: node.data.def,
-            });
-          } else {
-            const id = Number(node.id);
-            // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
-            if (!isNaN(id)) {
+
+      <div>
+        <FloatingToolbar
+          onModeChange={() => {
+            console.log("Toggle mode");
+          }}
+          onClickRedo={() => {
+            console.log("Redo");
+          }}
+          onClickUndo={() => {
+            undo
+              .mutateAsync({
+                sessionId: p.sessionId,
+              })
+              .then(p.setProg);
+          }}
+          onClickChevron={() => {
+            console.log("Toggle chevron");
+          }}
+          initialMode="tree"
+        />
+        <TreeReactFlow
+          {...(selection && { selection })}
+          onNodeClick={(_e, node) => {
+            if (!("nodeType" in node.data)) {
               setSelection({
                 def: node.data.def,
-                node: { id, nodeType: node.data.nodeType },
               });
+            } else {
+              const id = Number(node.id);
+              // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
+              if (!isNaN(id)) {
+                setSelection({
+                  def: node.data.def,
+                  node: { id, nodeType: node.data.nodeType },
+                });
+              }
             }
-          }
-        }}
-        defs={p.module.defs}
-        forestLayout="Horizontal"
-        treePadding={100}
-        nodeWidth={80}
-        nodeHeight={35}
-        boxPadding={50}
-        level={level}
-      />
+          }}
+          defs={p.module.defs}
+          forestLayout="Horizontal"
+          treePadding={100}
+          nodeWidth={80}
+          nodeHeight={35}
+          boxPadding={50}
+          level={level}
+        />
+      </div>
+
       {selection ? (
         <ActionsListSelection
           level={level}

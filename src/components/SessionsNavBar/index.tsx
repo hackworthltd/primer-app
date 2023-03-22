@@ -61,7 +61,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white-primary py-1 text-blue-primary shadow-lg ring-1 ring-blue-primary/5 focus:outline-none">
+            <Menu.Items className="absolute right-0 z-40 mt-2 w-48 origin-top-right rounded-md bg-white-primary py-1 text-blue-primary shadow-lg ring-1 ring-blue-primary/5 focus:outline-none">
               {accountNavigation.map((item) => (
                 <Menu.Item key={item.name}>
                   <a
