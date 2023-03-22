@@ -12,8 +12,9 @@ import {
   useQueryClient,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { DependencyList, useEffect, useState } from "react";
+import { DependencyList, RefObject, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDimensions } from "./util";
 import {
   useGetAvailableActions,
   useGetProgram,
@@ -188,6 +189,10 @@ const AppNoError = ({
     ),
     [p.module]
   );
+
+  const canvasRef: RefObject<HTMLDivElement> = useRef(null);
+  const canvasDimensions = useDimensions(canvasRef);
+
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="overflow-scroll">
@@ -225,26 +230,53 @@ const AppNoError = ({
         />
       </div>
 
-      <div>
-        <FloatingToolbar
-          onModeChange={() => {
-            console.log("Toggle mode");
-          }}
-          onClickRedo={() => {
-            console.log("Redo");
-          }}
-          onClickUndo={() => {
-            undo
-              .mutateAsync({
-                sessionId: p.sessionId,
-              })
-              .then(p.setProg);
-          }}
-          onClickChevron={() => {
-            console.log("Toggle chevron");
-          }}
-          initialMode="tree"
-        />
+      <div ref={canvasRef}>
+        {
+          // Wait for the `div` above to be rendered before we create
+          // the floating toolbar element, otherwise its initial
+          // position will always be (0,0).
+          //
+          // Note that we should probably make this check something
+          // like `canvasDimensions.width < n`, where `n` is some
+          // minimum breakpoint beneath which we draw a non-floating
+          // element(s), instead of the floating toolbar. This is for
+          // 2 reasons:
+          //
+          // 1. A floating toolbar doesn't make much sense on small
+          // mobile devices. See:
+          // https://github.com/hackworthltd/primer-app/issues/836
+          //
+          // 2. `@neodrag/react` has undefined behavior when parented
+          // to an element that's smaller than the draggable.
+          //
+          // But we keep it simple for now until we've figured out
+          // what to do about mobile form factors.
+          canvasDimensions.width == 0 ? (
+            <></>
+          ) : (
+            <FloatingToolbar
+              onModeChange={() => {
+                console.log("Toggle mode");
+              }}
+              onClickRedo={() => {
+                console.log("Redo");
+              }}
+              onClickUndo={() => {
+                undo
+                  .mutateAsync({
+                    sessionId: p.sessionId,
+                  })
+                  .then(p.setProg);
+              }}
+              onClickChevron={() => {
+                console.log("Toggle chevron");
+              }}
+              initialMode="tree"
+              // Note: these offsets are rather arbitrary.
+              initialPosition={{ x: canvasDimensions.width - 100, y: 15 }}
+            />
+          )
+        }
         <TreeReactFlow
           {...(selection && { selection })}
           onNodeClick={(_e, node) => {
