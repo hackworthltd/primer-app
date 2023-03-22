@@ -6,8 +6,8 @@ import {
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 import classNames from "classnames";
-import { MouseEventHandler, useState } from "react";
-import Draggable from "react-draggable";
+import { MouseEventHandler, useRef, useState } from "react";
+import { useDraggable, DragOptions } from "@neodrag/react";
 
 export type FloatingToolbarProps = {
   initialMode: Mode;
@@ -48,60 +48,62 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
   const [mode, setMode] = useState(p.initialMode);
   const [touchDragging, setTouchDragging] = useState(false);
 
+  const draggableRef = useRef(null);
+  const options: DragOptions = {
+    cancel: "button",
+    bounds: "parent",
+    onDragStart: (_) => {
+      setTouchDragging(true);
+    },
+    onDragEnd: (_) => {
+      setTouchDragging(false);
+    },
+  };
+  useDraggable(draggableRef, options);
+
   return (
-    <Draggable
-      cancel="button"
-      onStart={(e) => {
-        if (e.type == "touchstart") setTouchDragging(true);
-      }}
-      onStop={(_) => setTouchDragging(false)}
+    <div
+      ref={draggableRef}
+      className={classNames(
+        "flex flex-col gap-2 justify-center items-center",
+        "text-blue-primary bg-grey-primary rounded shadow-lg",
+        "select-none",
+        "absolute z-30",
+        touchDragging ? "p-5 w-24 -my-1 -mx-2" : "p-4 w-20"
+      )}
     >
-      <div
-        className={classNames(
-          "flex flex-col gap-2 justify-center items-center",
-          "text-blue-primary bg-grey-primary rounded shadow-lg",
-          "select-none",
-          "absolute z-30",
-          touchDragging ? "p-5 w-24 -my-1 -mx-2" : "p-4 w-20"
-        )}
-      >
-        <div className="-mt-2 -mb-1 w-6">
-          <EllipsisHorizontalIcon className="stroke-grey-secondary" />
-          <EllipsisHorizontalIcon className="-mt-4 stroke-grey-secondary" />
-        </div>
-        <button
-          type="button"
-          onClick={(e) => {
-            const m = nextMode(mode);
-            setMode(m);
-            p.onModeChange(m, e);
-          }}
-          className="flex h-6 w-12
-            flex-col items-center rounded bg-blue-primary text-white-primary shadow-lg hover:bg-blue-secondary"
-        >
-          {modeSvg(mode)}
-        </button>
-        <button
-          type="button"
-          className={undoRedoClasses}
-          onClick={p.onClickRedo}
-        >
-          <div className="scale-x-[-1]">{arrow}</div>
-          redo
-        </button>
-        <button
-          type="button"
-          onClick={p.onClickUndo}
-          className={classNames(undoRedoClasses, "text-red-secondary")}
-        >
-          {arrow}
-          undo
-        </button>
-        <button type="button" onClick={p.onClickChevron}>
-          <ChevronDownIcon className="w-6" />
-        </button>
+      <div className="-mt-2 -mb-1 w-6">
+        <EllipsisHorizontalIcon className="stroke-grey-secondary" />
+        <EllipsisHorizontalIcon className="-mt-4 stroke-grey-secondary" />
       </div>
-    </Draggable>
+      <button
+        type="button"
+        onClick={(e) => {
+          const m = nextMode(mode);
+          setMode(m);
+          p.onModeChange(m, e);
+        }}
+        className="flex h-6 w-12
+            flex-col items-center rounded bg-blue-primary text-white-primary shadow-lg hover:bg-blue-secondary"
+      >
+        {modeSvg(mode)}
+      </button>
+      <button type="button" className={undoRedoClasses} onClick={p.onClickRedo}>
+        <div className="scale-x-[-1]">{arrow}</div>
+        redo
+      </button>
+      <button
+        type="button"
+        onClick={p.onClickUndo}
+        className={classNames(undoRedoClasses, "text-red-secondary")}
+      >
+        {arrow}
+        undo
+      </button>
+      <button type="button" onClick={p.onClickChevron}>
+        <ChevronDownIcon className="w-6" />
+      </button>
+    </div>
   );
 };
 
