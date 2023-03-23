@@ -15,6 +15,9 @@ import {
   NodeProps,
   Background,
   HandleType,
+  getSmoothStepPath,
+  EdgeProps,
+  EdgeTypes,
 } from "reactflow";
 import "./reactflow.css";
 import { useEffect, useId, useState } from "react";
@@ -213,6 +216,36 @@ const nodeTypes = {
       {handle("source", Position.Bottom)}
     </>
   ),
+};
+
+const edgeTypes: EdgeTypes = {
+  "primer-def-name": ({
+    id,
+    sourceX,
+    sourceY,
+    sourcePosition,
+    targetX,
+    targetY,
+    targetPosition,
+  }: EdgeProps<unknown>): JSX.Element => {
+    const [edgePath] = getSmoothStepPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+      offset: 0,
+    });
+    return (
+      <path
+        id={id}
+        style={{ strokeDasharray: 4, strokeWidth: 4 }}
+        className="react-flow__edge-path"
+        d={edgePath}
+      />
+    );
+  },
 };
 
 // Check that `nodeTypes` is in sync with `PrimerNode`,
@@ -499,9 +532,8 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                   id: edgeId,
                   source: defNodeId,
                   target: tree.nodeId,
-                  type: "step",
-                  className: "stroke-grey-tertiary stroke-[0.25rem]",
-                  style: { strokeDasharray: 4 },
+                  type: "primer-def-name",
+                  className: "stroke-grey-tertiary",
                   zIndex: 0,
                 },
               ],
@@ -575,6 +607,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       nodes={nodes}
       edges={edges}
       nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
     >
       <Background gap={25} size={1.6} color="#81818a" />
@@ -634,6 +667,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
       nodes={nodes}
       edges={edges}
       nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
     >
       <Background gap={25} size={1.6} color="#81818a" />
