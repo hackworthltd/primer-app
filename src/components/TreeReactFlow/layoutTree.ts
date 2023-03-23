@@ -24,7 +24,7 @@ export const layoutTree = <
   width: number;
   height: number;
 }> =>
-  TidyLayout.create(WasmLayoutType.Tidy).then((layout) => {
+  TidyLayout.create(WasmLayoutType.Tidy, 25, 18).then((layout) => {
     const [treeTidy0, nodeInfos, edgeInfos] = primerToTidy(primerTree);
     const treeTidy = layout.set_root(treeTidy0);
     layout.layout(true);
