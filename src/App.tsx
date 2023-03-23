@@ -280,7 +280,7 @@ const AppNoError = ({
         <TreeReactFlow
           {...(selection && { selection })}
           onNodeClick={(_e, node) => {
-            if (!("nodeType" in node.data)) {
+            if (node.type == "primer-def-name") {
               setSelection({
                 def: node.data.def,
               });

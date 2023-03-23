@@ -158,6 +158,7 @@ const nodeTypes = {
         className={classNames(
           "flex justify-center rounded-md border-4",
           flavorClasses(p.data.flavor),
+          "cursor-default",
           // We use a white base so that the "transparent" background will not appear as such.
           "bg-white-primary"
         )}
@@ -288,10 +289,16 @@ const makePrimerNode = async (
     nodeType,
     ...p,
   };
-  const edgeCommon = (child: PrimerNode) => ({
+  const edgeCommon = (child: PrimerNode): PrimerEdge => ({
     id: JSON.stringify([id, child.id]),
     source: id,
     target: child.id,
+    style: { cursor: "default" },
+    focusable: false,
+    ...(child.type != "primer-def-name" &&
+      !flavorClasses(child.data.flavor).includes(commonHoverClasses) && {
+        interactionWidth: 0,
+      }),
     zIndex,
   });
   switch (node.body.tag) {
@@ -501,7 +508,8 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                   target: tree.nodeId,
                   type: "step",
                   className: "stroke-grey-tertiary stroke-[0.25rem]",
-                  style: { strokeDasharray: 4 },
+                  style: { strokeDasharray: 4, cursor: "default" },
+                  focusable: false,
                   zIndex: 0,
                 },
               ],
@@ -652,6 +660,10 @@ export const ReactFlowSafe = <N extends RFNode>(
   <ReactFlow
     {...{
       ...p,
+      onEdgeClick: (e, edge) => {
+        "onNodeClick" in p &&
+          p.onNodeClick(e, p.nodes.find((n) => n.id == edge.target) as N);
+      },
       onNodeClick: (e, n) => {
         "onNodeClick" in p &&
           p.onNodeClick(
