@@ -10,6 +10,7 @@ import { MouseEventHandler, useRef, useState } from "react";
 import { useDraggable, DragOptions } from "@neodrag/react";
 
 export type FloatingToolbarProps = {
+  initialPosition: { x: number; y: number };
   initialMode: Mode;
   onModeChange: (
     mode: Mode,
@@ -50,6 +51,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
 
   const draggableRef = useRef(null);
   const options: DragOptions = {
+    defaultPosition: p.initialPosition,
     cancel: "button",
     bounds: "parent",
     onDragStart: (_) => {

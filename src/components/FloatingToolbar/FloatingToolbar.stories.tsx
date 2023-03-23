@@ -6,6 +6,10 @@ export default {
   title: "Application/Component Library/FloatingToolbar",
   component: FloatingToolbar,
   argTypes: {
+    initialPosition: {
+      description: "The toolbar's initial position.",
+      control: "object",
+    },
     onModeChange: {
       description: 'The event handler for the "Mode" button.',
       action: "mode",
@@ -25,6 +29,16 @@ export default {
   },
 } as ComponentMeta<typeof FloatingToolbar>;
 
-export const Default: ComponentStory<typeof FloatingToolbar> = (
+const Template: ComponentStory<typeof FloatingToolbar> = (
   args: FloatingToolbarProps
-) => <FloatingToolbar {...args} initialMode="tree" />;
+) => (
+  <div>
+    <FloatingToolbar {...args} />
+  </div>
+);
+
+export const Default = Template.bind({});
+Default.args = {
+  initialMode: "tree",
+  initialPosition: { x: 100, y: 50 },
+};
