@@ -678,7 +678,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
 /** A more strongly-typed version of the `ReactFlow` component.
  * This allows us to use a more refined node type, and safely act on that type in handlers. */
 export const ReactFlowSafe = <N extends RFNode>(
-  p: Omit<Parameters<typeof ReactFlow>[0], "onNodeClick" | "nodes"> & {
+  p: Omit<Parameters<typeof ReactFlow>[0], "onNodeClick"> & {
     nodes: N[];
     onNodeClick?: (e: React.MouseEvent<Element, MouseEvent>, n: N) => void;
   }
