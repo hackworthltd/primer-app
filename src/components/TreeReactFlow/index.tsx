@@ -77,47 +77,49 @@ const handle = (type: HandleType, position: Position) => (
 );
 
 const nodeTypes = {
-  primer: (p: { data: PrimerNodeProps & PrimerCommonNodeProps }) => (
+  primer: ({ data }: { data: PrimerNodeProps & PrimerCommonNodeProps }) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
       <div
         className={classNames(
           {
-            "ring-4 ring-offset-4": p.data.selected,
-            "hover:ring-opacity-50": !p.data.selected,
+            "ring-4 ring-offset-4": data.selected,
+            "hover:ring-opacity-50": !data.selected,
           },
           "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
-          flavorClasses(p.data.flavor)
+          flavorClasses(data.flavor)
         )}
         style={{
-          width: p.data.width,
-          height: p.data.height,
+          width: data.width,
+          height: data.height,
         }}
       >
         <div
           className={classNames(
             "font-code text-sm xl:text-base",
-            flavorContentClasses(p.data.flavor)
+            flavorContentClasses(data.flavor)
           )}
         >
-          {p.data.contents}
+          {data.contents}
         </div>
         <div
           className={classNames(
             "z-20 p-1 absolute rounded-full text-sm xl:text-base",
-            p.data.syntax ? "-top-4" : "-right-2 -top-4",
-            flavorLabelClasses(p.data.flavor)
+            data.syntax ? "-top-4" : "-right-2 -top-4",
+            flavorLabelClasses(data.flavor)
           )}
         >
-          {flavorLabel(p.data.flavor)}
+          {flavorLabel(data.flavor)}
         </div>
       </div>
       {handle("source", Position.Bottom)}
       {handle("source", Position.Right)}
     </>
   ),
-  "primer-simple": (p: {
+  "primer-simple": ({
+    data,
+  }: {
     data: PrimerSimpleNodeProps & PrimerCommonNodeProps;
   }) => (
     <>
@@ -126,25 +128,25 @@ const nodeTypes = {
       <div
         className={classNames(
           {
-            "ring-4 ring-offset-4": p.data.selected,
-            "hover:ring-opacity-50": !p.data.selected,
+            "ring-4 ring-offset-4": data.selected,
+            "hover:ring-opacity-50": !data.selected,
           },
           "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
-          flavorClasses(p.data.flavor)
+          flavorClasses(data.flavor)
         )}
         style={{
-          width: p.data.width,
-          height: p.data.height,
+          width: data.width,
+          height: data.height,
         }}
       >
         {
           <div
             className={classNames(
               "font-code text-sm xl:text-base",
-              flavorContentClasses(p.data.flavor)
+              flavorContentClasses(data.flavor)
             )}
           >
-            {flavorLabel(p.data.flavor)}
+            {flavorLabel(data.flavor)}
           </div>
         }
       </div>
@@ -152,43 +154,49 @@ const nodeTypes = {
       {handle("source", Position.Right)}
     </>
   ),
-  "primer-box": (p: { data: PrimerBoxNodeProps & PrimerCommonNodeProps }) => (
+  "primer-box": ({
+    data,
+  }: {
+    data: PrimerBoxNodeProps & PrimerCommonNodeProps;
+  }) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
       <div
         className={classNames(
           "flex justify-center rounded-md border-4",
-          flavorClasses(p.data.flavor),
+          flavorClasses(data.flavor),
           // We use a white base so that the "transparent" background will not appear as such.
           "bg-white-primary"
         )}
         style={{
-          width: p.data.width,
-          height: p.data.height,
+          width: data.width,
+          height: data.height,
         }}
       >
         <div
           className={classNames(
             "bg-opacity-20 w-full",
-            boxFlavorBackground(p.data.flavor)
+            boxFlavorBackground(data.flavor)
           )}
         ></div>
         <div
           className={classNames(
             "z-20 p-1 absolute rounded-full text-sm xl:text-base",
             "-top-4",
-            flavorLabelClasses(p.data.flavor)
+            flavorLabelClasses(data.flavor)
           )}
         >
-          {flavorLabel(p.data.flavor)}
+          {flavorLabel(data.flavor)}
         </div>
       </div>
       {handle("source", Position.Bottom)}
       {handle("source", Position.Right)}
     </>
   ),
-  "primer-def-name": (p: {
+  "primer-def-name": ({
+    data,
+  }: {
     data: PrimerDefNameNodeProps & PrimerCommonNodeProps;
   }) => (
     <>
@@ -198,18 +206,18 @@ const nodeTypes = {
           "rounded-md",
           "bg-grey-primary",
           "border-8 border-grey-tertiary ring-grey-tertiary",
-          p.data.selected && "ring-4 ring-offset-4",
+          data.selected && "ring-4 ring-offset-4",
           commonHoverClasses,
           "hover:ring-grey-tertiary",
-          !p.data.selected && "hover:ring-opacity-50"
+          !data.selected && "hover:ring-opacity-50"
         )}
         style={{
-          width: p.data.width,
-          height: p.data.height,
+          width: data.width,
+          height: data.height,
         }}
       >
         <div className="font-code text-4xl text-grey-tertiary">
-          {p.data.def.baseName}
+          {data.def.baseName}
         </div>
       </div>
       {handle("source", Position.Bottom)}
