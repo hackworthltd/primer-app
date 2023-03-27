@@ -54,7 +54,6 @@ import {
   flavorLabelClasses,
   noBodyFlavorContents,
 } from "./Flavor";
-import { assertType, Equal } from "@/util";
 
 type NodeParams = {
   nodeWidth: number;
@@ -78,7 +77,7 @@ const handle = (type: HandleType, position: Position) => (
 );
 
 const nodeTypes = {
-  primer: (p: NodeProps<PrimerNodeProps & PrimerCommonNodeProps>) => (
+  primer: (p: { data: PrimerNodeProps & PrimerCommonNodeProps }) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
@@ -118,9 +117,9 @@ const nodeTypes = {
       {handle("source", Position.Right)}
     </>
   ),
-  "primer-simple": (
-    p: NodeProps<PrimerSimpleNodeProps & PrimerCommonNodeProps>
-  ) => (
+  "primer-simple": (p: {
+    data: PrimerSimpleNodeProps & PrimerCommonNodeProps;
+  }) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
@@ -153,7 +152,7 @@ const nodeTypes = {
       {handle("source", Position.Right)}
     </>
   ),
-  "primer-box": (p: NodeProps<PrimerBoxNodeProps & PrimerCommonNodeProps>) => (
+  "primer-box": (p: { data: PrimerBoxNodeProps & PrimerCommonNodeProps }) => (
     <>
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
@@ -189,9 +188,9 @@ const nodeTypes = {
       {handle("source", Position.Right)}
     </>
   ),
-  "primer-def-name": (
-    p: NodeProps<PrimerDefNameNodeProps & PrimerCommonNodeProps>
-  ) => (
+  "primer-def-name": (p: {
+    data: PrimerDefNameNodeProps & PrimerCommonNodeProps;
+  }) => (
     <>
       <div
         className={classNames(
@@ -247,20 +246,6 @@ const edgeTypes: EdgeTypes = {
     );
   },
 };
-
-// Check that `nodeTypes` is in sync with `PrimerNode`,
-// i.e. that we register our custom nodes correctly (see `PrimerNode` for further explanation).
-assertType<
-  Equal<
-    PrimerNode,
-    { id: string; zIndex: number } & {
-      [T in keyof typeof nodeTypes]: {
-        type: T;
-        data: Parameters<(typeof nodeTypes)[T]>[0]["data"];
-      };
-    }[keyof typeof nodeTypes]
-  >
->;
 
 /** `APITree` without the children. */
 type APITreeNode = {
@@ -676,10 +661,17 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
 };
 
 /** A more strongly-typed version of the `ReactFlow` component.
- * This allows us to use a more refined node type, and safely act on that type in handlers. */
-export const ReactFlowSafe = <N extends RFNode>(
+ * This allows us to use a more refined node type,
+ * check that we register its subtypes correctly with ReactFlow,
+ * and safely act on that type in handlers. */
+export const ReactFlowSafe = <N extends RFNode & { type: string }>(
   p: Omit<Parameters<typeof ReactFlow>[0], "onNodeClick"> & {
     nodes: N[];
+    nodeTypes: {
+      [T in N["type"]]: (
+        args: NodeProps<unknown> & N & { type: T }
+      ) => JSX.Element;
+    };
     onNodeClick?: (e: React.MouseEvent<Element, MouseEvent>, n: N) => void;
   }
 ): ReturnType<typeof ReactFlow> => (
