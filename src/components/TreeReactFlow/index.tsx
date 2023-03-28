@@ -249,8 +249,7 @@ const edgeTypes = {
     return (
       <path
         id={id}
-        style={{ strokeWidth: 4 }}
-        className="react-flow__edge-path"
+        style={{ strokeWidth: 4, fill: "none" }}
         d={edgePath}
       />
     );
@@ -276,8 +275,7 @@ const edgeTypes = {
     return (
       <path
         id={id}
-        style={{ strokeDasharray: 4, strokeWidth: 4 }}
-        className="react-flow__edge-path"
+        style={{ strokeDasharray: 4, strokeWidth: 4, fill: "none" }}
         d={edgePath}
       />
     );
