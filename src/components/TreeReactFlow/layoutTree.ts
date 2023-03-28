@@ -49,7 +49,7 @@ export const layoutTree = <
     const height = nodes
       ? Math.max(...nodes.map((n) => n.position.y + n.data.height)) - minY
       : 0;
-    return { tree, minX, minY, width, height };
+    return { tree, width, height };
   });
 
 type NodeInfo<N> = {
