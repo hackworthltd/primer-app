@@ -10,6 +10,7 @@ import {
 import {
   ReactFlow,
   Node as RFNode,
+  Edge as RFEdge,
   Handle,
   Position,
   NodeProps,
@@ -17,6 +18,7 @@ import {
   HandleType,
   getSmoothStepPath,
   EdgeProps,
+  getBezierPath,
   EdgeTypes,
 } from "reactflow";
 import "./reactflow.css";
@@ -41,6 +43,7 @@ import {
   PrimerBoxNodeProps,
   PrimerCommonNodeProps,
   treeNodes,
+  PrimerEdgeProps,
 } from "./Types";
 import { layoutTree } from "./layoutTree";
 import deepEqual from "deep-equal";
@@ -225,7 +228,33 @@ const nodeTypes = {
   ),
 };
 
-const edgeTypes: EdgeTypes = {
+const edgeTypes = {
+  primer: ({
+    id,
+    sourceX,
+    sourceY,
+    sourcePosition,
+    targetX,
+    targetY,
+    targetPosition,
+  }: EdgeProps<unknown> & { data: PrimerEdgeProps }) => {
+    const [edgePath] = getBezierPath({
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+    });
+    return (
+      <path
+        id={id}
+        style={{ strokeWidth: 4 }}
+        className="react-flow__edge-path"
+        d={edgePath}
+      />
+    );
+  },
   "primer-def-name": ({
     id,
     sourceX,
@@ -234,7 +263,7 @@ const edgeTypes: EdgeTypes = {
     targetX,
     targetY,
     targetPosition,
-  }: EdgeProps<unknown>): JSX.Element => {
+  }: EdgeProps<unknown>) => {
     const [edgePath] = getSmoothStepPath({
       sourceX,
       sourceY,
@@ -314,7 +343,9 @@ const makePrimerNode = async (
     nodeType,
     ...p,
   };
-  const edgeCommon = (child: PrimerNode) => ({
+  const edgeCommon = (
+    child: PrimerNode
+  ): Omit<PrimerEdge, "className" | "type" | "data"> => ({
     id: JSON.stringify([id, child.id]),
     source: id,
     target: child.id,
@@ -344,6 +375,8 @@ const makePrimerNode = async (
           zIndex,
         },
         (child) => ({
+          type: "primer",
+          data: { flavor },
           className: flavorEdgeClasses(flavor),
           ...edgeCommon(child),
         }),
@@ -365,6 +398,8 @@ const makePrimerNode = async (
           zIndex,
         },
         (child) => ({
+          type: "primer",
+          data: { flavor },
           className: flavorEdgeClasses(flavor),
           ...edgeCommon(child),
         }),
@@ -373,7 +408,9 @@ const makePrimerNode = async (
     }
     case "NoBody": {
       const flavor = node.body.contents;
-      const makeChild = (child: PrimerNode) => ({
+      const makeChild = (child: PrimerNode): PrimerEdge => ({
+        type: "primer",
+        data: { flavor },
         className: flavorEdgeClasses(flavor),
         ...edgeCommon(child),
       });
@@ -440,6 +477,8 @@ const makePrimerNode = async (
           zIndex,
         },
         (child) => ({
+          type: "primer",
+          data: { flavor },
           className: flavorEdgeClasses(flavor),
           ...edgeCommon(child),
         }),
@@ -594,7 +633,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const id = useId();
 
   return (
-    <ReactFlowSafe
+    <ReactFlowSafe<PrimerNodeWithDef, PrimerEdge>
       id={id}
       {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
       nodes={nodes}
@@ -654,7 +693,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
   const id = useId();
 
   return (
-    <ReactFlowSafe
+    <ReactFlowSafe<Positioned<PrimerNode>, PrimerEdge>
       id={id}
       {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
       nodes={nodes}
@@ -672,20 +711,35 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
  * This allows us to use a more refined node type,
  * check that we register its subtypes correctly with ReactFlow,
  * and safely act on that type in handlers. */
-export const ReactFlowSafe = <N extends RFNode & { type: string }>(
-  p: Omit<Parameters<typeof ReactFlow>[0], "onNodeClick"> & {
+export const ReactFlowSafe = <
+  N extends RFNode & { type: string },
+  E extends RFEdge & { type: string }
+>(
+  p: Omit<Parameters<typeof ReactFlow>[0], "onNodeClick" | "edgeTypes"> & {
     nodes: N[];
     nodeTypes: {
       [T in N["type"]]: (
         args: NodeProps<unknown> & N & { type: T }
       ) => JSX.Element;
     };
+    edgeTypes: {
+      [T in E["type"]]: (
+        args: EdgeProps<unknown> & E & { type: T }
+      ) => JSX.Element;
+    };
     onNodeClick?: (e: React.MouseEvent<Element, MouseEvent>, n: N) => void;
   }
-): ReturnType<typeof ReactFlow> => (
+): ReturnType<typeof ReactFlow> => {
+  // @ts-expect-error: ReactFlow's `EdgeTypes` is poorly-typed: it wants entries to be able to handle
+  // `EdgeProps<any>`, and doesn't consider it an instance of types such as `EdgeProps<unknown> & { data: T }`.
+  // NB. with `NodeTypes`, this isn't an issue: TS can handle the coercion because `NodeProps`'s `data` field
+  // is non-optional, unlike `EdgeProps`'s.
+  const edgeTypes: EdgeTypes = p.edgeTypes;
+  return (
   <ReactFlow
     {...{
       ...p,
+      edgeTypes,
       onNodeClick: (e, n) => {
         "onNodeClick" in p &&
           p.onNodeClick(
@@ -697,3 +751,4 @@ export const ReactFlowSafe = <N extends RFNode & { type: string }>(
     }}
   ></ReactFlow>
 );
+};

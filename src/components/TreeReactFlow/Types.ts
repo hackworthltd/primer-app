@@ -6,8 +6,8 @@ import {
   NodeFlavorTextBody,
   NodeType,
 } from "@/primer-api";
-import { Edge } from "reactflow";
 import { unzip } from "fp-ts/lib/Array";
+import { NodeFlavor } from "./Flavor";
 
 /** A generic graph. */
 export type Graph<
@@ -106,8 +106,6 @@ export type PrimerTree = Tree<Positioned<PrimerNode>, PrimerEdge>;
 
 export type PrimerTreeNoPos = Tree<PrimerNode, PrimerEdge>;
 
-export type PrimerEdge = Edge<Empty> & { zIndex: number };
-
 /** Our node type. `Positioned<PrimerNode<T>>` can be safely cast to a ReactFlow `Node`.
  * This is more type safe than using ReactFlow's types directly: this way we can ensure that
  * the `type` field always corresponds to a custom node type we've registered with ReactFlow,
@@ -163,6 +161,20 @@ export type PrimerCommonNodeProps = {
   height: number;
   selected: boolean;
 };
+
+/** Our edge type. Much like `PrimerNode`, `PrimerEdge` extends ReactFlow's `Edge`.
+ */
+export type PrimerEdge = {
+  id: string;
+  source: string;
+  target: string;
+  sourceHandle?: string;
+  targetHandle?: string;
+  className: string;
+  zIndex: number;
+} & ({ type: "primer"; data: PrimerEdgeProps } | { type: "primer-def-name" });
+
+export type PrimerEdgeProps = { flavor: NodeFlavor };
 
 export type Positioned<T> = T & {
   position: { x: number; y: number };
