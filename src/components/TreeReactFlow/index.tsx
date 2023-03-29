@@ -58,6 +58,7 @@ import {
   noBodyFlavorContents,
 } from "./Flavor";
 
+/** These properties are needed to construct nodes, but are invariant across all nodes. */
 type NodeParams = {
   nodeWidth: number;
   nodeHeight: number;
@@ -338,7 +339,6 @@ const makePrimerNode = async (
     height: p.nodeHeight,
     selected,
     nodeType,
-    ...p,
   };
   const edgeCommon = (
     child: PrimerNode,
@@ -543,7 +543,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
           };
           const defEdge = async (
             tree: APITree,
-            augmentParams: NodeParams,
+            nodeParams: NodeParams,
             nodeType: NodeType,
             edgeId: string
           ): Promise<{
@@ -551,7 +551,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
             nested: Graph<PrimerNodeWithDef, PrimerEdge>[];
           }> => {
             const t = await augmentTree(tree, (n0) =>
-              makePrimerNode(n0, augmentParams, 0, nodeType).then(
+              makePrimerNode(n0, nodeParams, 0, nodeType).then(
                 ([n, e, nested]) => [primerNodeWith(n, { nested }), e]
               )
             );
