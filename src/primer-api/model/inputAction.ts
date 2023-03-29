@@ -12,7 +12,6 @@ export type InputAction = typeof InputAction[keyof typeof InputAction];
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputAction = {
   MakeCon: 'MakeCon',
-  MakeConSat: 'MakeConSat',
   MakeInt: 'MakeInt',
   MakeChar: 'MakeChar',
   MakeVar: 'MakeVar',
