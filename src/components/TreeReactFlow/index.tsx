@@ -477,10 +477,9 @@ const makePrimerNode = async (
     case "BoxBody": {
       const { fst: flavor, snd: t } = node.body.contents;
       const bodyTree = await augmentTree(t, (n0) =>
-        makePrimerNode(n0, p, layout, zIndex + 1, nodeType).then(([n, e, nested]) => [
-          primerNodeWith(n, { nested }),
-          e,
-        ])
+        makePrimerNode(n0, p, layout, zIndex + 1, nodeType).then(
+          ([n, e, nested]) => [primerNodeWith(n, { nested }), e]
+        )
       );
       const bodyNested = treeNodes(bodyTree).flatMap((n) => n.data.nested);
       const bodyLayout = await layoutTree(bodyTree, layout).then((layout) => ({
@@ -752,19 +751,19 @@ export const ReactFlowSafe = <
   // is non-optional, unlike `EdgeProps`'s.
   const edgeTypes: EdgeTypes = p.edgeTypes;
   return (
-  <ReactFlow
-    {...{
-      ...p,
-      edgeTypes,
-      onNodeClick: (e, n) => {
-        "onNodeClick" in p &&
-          p.onNodeClick(
-            e,
-            // This cast is safe because `N` is also the type of elements of the `nodes` field.
-            n as N
-          );
-      },
-    }}
-  ></ReactFlow>
-);
+    <ReactFlow
+      {...{
+        ...p,
+        edgeTypes,
+        onNodeClick: (e, n) => {
+          "onNodeClick" in p &&
+            p.onNodeClick(
+              e,
+              // This cast is safe because `N` is also the type of elements of the `nodes` field.
+              n as N
+            );
+        },
+      }}
+    ></ReactFlow>
+  );
 };
