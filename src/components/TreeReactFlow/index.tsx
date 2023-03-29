@@ -230,6 +230,7 @@ const nodeTypes = {
 
 const edgeTypes = {
   primer: ({
+    data,
     id,
     sourceX,
     sourceY,
@@ -249,7 +250,10 @@ const edgeTypes = {
     return (
       <path
         id={id}
-        style={{ strokeWidth: 4, fill: "none" }}
+        className={classNames(
+          "fill-none stroke-[0.25rem]",
+          flavorEdgeClasses(data.flavor)
+        )}
         d={edgePath}
       />
     );
@@ -275,7 +279,8 @@ const edgeTypes = {
     return (
       <path
         id={id}
-        style={{ strokeDasharray: 4, strokeWidth: 4, fill: "none" }}
+        className={"fill-none stroke-grey-tertiary stroke-[0.25rem]"}
+        style={{ strokeDasharray: 4 }}
         d={edgePath}
       />
     );
@@ -406,7 +411,6 @@ const makePrimerNode = async (
       const makeChild = (child: PrimerNode, isRight: boolean): PrimerEdge => ({
         type: "primer",
         data: { flavor },
-        className: flavorEdgeClasses(flavor),
         ...edgeCommon(child, isRight),
       });
       if (p.level == "Beginner") {
@@ -560,7 +564,6 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                   source: defNodeId,
                   target: tree.nodeId,
                   type: "primer-def-name",
-                  className: "stroke-grey-tertiary",
                   zIndex: 0,
                   sourceHandle: Position.Bottom,
                   targetHandle: Position.Top,
