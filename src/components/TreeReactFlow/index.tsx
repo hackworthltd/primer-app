@@ -291,7 +291,7 @@ type APITreeNode = {
 
 const augmentTree = async <T, E>(
   tree: APITree,
-  f: (tree: APITreeNode) => Promise<[T, (child: T) => E]>
+  f: (tree: APITreeNode) => Promise<[T, (child: T, isRight: boolean) => E]>
 ): Promise<Tree<T, E>> => {
   const childTrees = await Promise.all(
     tree.childTrees.map((t) => augmentTree(t, f))
@@ -305,18 +305,12 @@ const augmentTree = async <T, E>(
     : undefined);
   return {
     ...(rightChild
-      ? { rightChild: [rightChild, makeEdge(rightChild.node)] }
+      ? { rightChild: [rightChild, makeEdge(rightChild.node, true)] }
       : {}),
-    childTrees: childTrees.map((e) => [e, makeEdge(e.node)]),
+    childTrees: childTrees.map((e) => [e, makeEdge(e.node, false)]),
     node,
   };
 };
-
-const addEdgeHandles = (e: PrimerEdge & { isRight: boolean }): PrimerEdge => ({
-  ...e,
-  sourceHandle: e.isRight ? Position.Right : Position.Bottom,
-  targetHandle: e.isRight ? Position.Left : Position.Top,
-});
 
 const makePrimerNode = async (
   node: APITreeNode,
@@ -326,7 +320,7 @@ const makePrimerNode = async (
 ): Promise<
   [
     PrimerNode,
-    (child: PrimerNode) => PrimerEdge,
+    (child: PrimerNode, isRight: boolean) => PrimerEdge,
     /* Nodes of nested trees, already positioned.
     We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
     PrimerGraph[]
@@ -342,12 +336,15 @@ const makePrimerNode = async (
     ...p,
   };
   const edgeCommon = (
-    child: PrimerNode
+    child: PrimerNode,
+    isRight: boolean
   ): Omit<PrimerEdge, "className" | "type" | "data"> => ({
     id: JSON.stringify([id, child.id]),
     source: id,
     target: child.id,
     zIndex,
+    sourceHandle: isRight ? Position.Right : Position.Bottom,
+    targetHandle: isRight ? Position.Left : Position.Top,
   });
   switch (node.body.tag) {
     case "PrimBody": {
@@ -372,11 +369,11 @@ const makePrimerNode = async (
           },
           zIndex,
         },
-        (child) => ({
+        (child, isRight) => ({
           type: "primer",
           data: { flavor },
           className: flavorEdgeClasses(flavor),
-          ...edgeCommon(child),
+          ...edgeCommon(child, isRight),
         }),
         [],
       ];
@@ -395,22 +392,22 @@ const makePrimerNode = async (
           },
           zIndex,
         },
-        (child) => ({
+        (child, isRight) => ({
           type: "primer",
           data: { flavor },
           className: flavorEdgeClasses(flavor),
-          ...edgeCommon(child),
+          ...edgeCommon(child, isRight),
         }),
         [],
       ];
     }
     case "NoBody": {
       const flavor = node.body.contents;
-      const makeChild = (child: PrimerNode): PrimerEdge => ({
+      const makeChild = (child: PrimerNode, isRight: boolean): PrimerEdge => ({
         type: "primer",
         data: { flavor },
         className: flavorEdgeClasses(flavor),
-        ...edgeCommon(child),
+        ...edgeCommon(child, isRight),
       });
       if (p.level == "Beginner") {
         return [
@@ -474,11 +471,11 @@ const makePrimerNode = async (
           },
           zIndex,
         },
-        (child) => ({
+        (child, isRight) => ({
           type: "primer",
           data: { flavor },
           className: flavorEdgeClasses(flavor),
-          ...edgeCommon(child),
+          ...edgeCommon(child, isRight),
         }),
         bodyNested.concat({
           nodes: bodyLayout.nodes.map((node) => ({
@@ -489,7 +486,7 @@ const makePrimerNode = async (
               y: node.position.y + p.boxPadding / 2,
             },
           })),
-          edges: bodyLayout.edges.map(addEdgeHandles),
+          edges: bodyLayout.edges,
         }),
       ];
     }
@@ -565,6 +562,8 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
                   type: "primer-def-name",
                   className: "stroke-grey-tertiary",
                   zIndex: 0,
+                  sourceHandle: Position.Bottom,
+                  targetHandle: Position.Top,
                 },
               ],
               nested: nested.map((g) =>
@@ -596,7 +595,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
         [Graph<PrimerNodeWithDef, PrimerEdge>[], number]
       >(
         ([gs, offset], { tree, width, height }) => {
-          const g = treeToGraph(tree);
+          const { nodes, edges } = treeToGraph(tree);
           const { increment, offsetVector } = (() => {
             switch (p.forestLayout) {
               case "Horizontal":
@@ -607,8 +606,8 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
           })();
           return [
             gs.concat({
-              edges: g.edges.map(addEdgeHandles),
-              nodes: g.nodes.map((n) => ({
+              edges,
+              nodes: nodes.map((n) => ({
                 ...n,
                 position: {
                   x: n.position.x + offsetVector.x,
@@ -672,15 +671,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
         );
         const nested = treeNodes(tree).flatMap((n) => n.data.nested);
         const t = await layoutTree(tree);
-        const graph0 = treeToGraph(t.tree);
-        const graph = {
-          edges: graph0.edges.map(({ isRight, ...e }) => ({
-            ...e,
-            sourceHandle: isRight ? Position.Right : Position.Bottom,
-            targetHandle: isRight ? Position.Left : Position.Top,
-          })),
-          nodes: graph0.nodes,
-        };
+        const graph = treeToGraph(t.tree);
         setLayout(combineGraphs([graph, ...nested.flat()]));
       })();
   }, [p]);

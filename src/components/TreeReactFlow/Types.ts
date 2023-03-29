@@ -168,8 +168,8 @@ export type PrimerEdge = {
   id: string;
   source: string;
   target: string;
-  sourceHandle?: string;
-  targetHandle?: string;
+  sourceHandle: string;
+  targetHandle: string;
   className: string;
   zIndex: number;
 } & ({ type: "primer"; data: PrimerEdgeProps } | { type: "primer-def-name" });
