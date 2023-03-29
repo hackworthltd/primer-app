@@ -637,8 +637,8 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
               nodes: nodes.map((n) => ({
                 ...n,
                 position: {
-                  x: n.position.x + offsetVector.x,
-                  y: n.position.y + offsetVector.y,
+                  x: n.position.x + p.layout.margins.sibling + offsetVector.x,
+                  y: n.position.y + p.layout.margins.child + offsetVector.y,
                 },
               })),
             }),
