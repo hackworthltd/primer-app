@@ -9,6 +9,7 @@ import { useState } from "react";
 import classNames from "classnames";
 import { EvalFullResp, GlobalName, Level } from "@/primer-api";
 import { TreeReactFlowOne } from "@/components";
+import { defaultTreeReactFlowProps } from "../TreeReactFlow";
 
 export type Prog = {
   defs: string[];
@@ -234,10 +235,8 @@ const Evaluated = (p: {
 }) => {
   return (
     <TreeReactFlowOne
+      {...defaultTreeReactFlowProps}
       {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
-      nodeWidth={80}
-      nodeHeight={35}
-      boxPadding={50}
       level={p.level}
     />
   );

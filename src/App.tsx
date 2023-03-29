@@ -35,6 +35,7 @@ import {
   Level,
   useUndo,
 } from "./primer-api";
+import { defaultTreeReactFlowProps } from "./components/TreeReactFlow";
 
 // hardcoded values (for now)
 const initialLevel: Level = "Expert";
@@ -278,6 +279,7 @@ const AppNoError = ({
           )
         }
         <TreeReactFlow
+          {...defaultTreeReactFlowProps}
           {...(selection && { selection })}
           onNodeClick={(_e, node) => {
             if (!("nodeType" in node.data)) {
@@ -296,11 +298,6 @@ const AppNoError = ({
             }
           }}
           defs={p.module.defs}
-          forestLayout="Horizontal"
-          treePadding={100}
-          nodeWidth={80}
-          nodeHeight={35}
-          boxPadding={50}
           level={level}
         />
       </div>

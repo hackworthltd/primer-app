@@ -1,5 +1,9 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { TreeReactFlow, TreeReactFlowProps } from "./";
+import {
+  defaultTreeReactFlowProps,
+  TreeReactFlow,
+  TreeReactFlowProps,
+} from "./";
 import {
   tree1,
   tree2,
@@ -23,12 +27,8 @@ export default {
 } as ComponentMeta<typeof TreeReactFlow>;
 
 const props: Omit<TreeReactFlowProps, "defs"> = {
+  ...defaultTreeReactFlowProps,
   forestLayout: "Vertical",
-  treePadding: 100,
-  nodeWidth: 80,
-  nodeHeight: 35,
-  boxPadding: 50,
-  level: "Expert",
 };
 
 const emptyTypeTree = (nodeId: string): Tree => {

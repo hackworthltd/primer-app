@@ -75,6 +75,17 @@ export type TreeReactFlowProps = {
   treePadding: number;
   forestLayout: "Horizontal" | "Vertical";
 } & NodeParams;
+export const defaultTreeReactFlowProps: Pick<
+  TreeReactFlowProps,
+  "treePadding" | "forestLayout" | keyof NodeParams
+> = {
+  level: "Expert",
+  forestLayout: "Horizontal",
+  treePadding: 100,
+  nodeWidth: 80,
+  nodeHeight: 35,
+  boxPadding: 50,
+};
 
 const handle = (type: HandleType, position: Position) => (
   <Handle id={position} isConnectable={false} type={type} position={position} />
