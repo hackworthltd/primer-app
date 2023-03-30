@@ -34,6 +34,7 @@ import {
   useEvalFull,
   Level,
   useUndo,
+  useRedo,
 } from "./primer-api";
 import { defaultTreeReactFlowProps } from "./components/TreeReactFlow";
 
@@ -179,6 +180,7 @@ const AppNoError = ({
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
   const undo = useUndo();
+  const redo = useRedo();
 
   const [evalTarget, setEvalTarget] = useState<string | undefined>();
   const evalResult = useInvalidateOnChange(
@@ -259,11 +261,15 @@ const AppNoError = ({
               onModeChange={() => {
                 console.log("Toggle mode");
               }}
-              onClickRedo={() => {
-                console.log("Redo");
-              }}
               onClickUndo={() => {
                 undo
+                  .mutateAsync({
+                    sessionId: p.sessionId,
+                  })
+                  .then(p.setProg);
+              }}
+              onClickRedo={() => {
+                redo
                   .mutateAsync({
                     sessionId: p.sessionId,
                   })

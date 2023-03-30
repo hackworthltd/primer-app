@@ -10,5 +10,7 @@ import type { Selection } from './selection';
 
 export interface Prog {
   modules: Module[];
+  redoAvailable: boolean;
   selection?: Selection;
+  undoAvailable: boolean;
 }
