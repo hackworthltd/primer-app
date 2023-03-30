@@ -307,61 +307,61 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
 export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
-      return "stroke-red-tertiary stroke-[0.25rem] z-10";
+      return "stroke-red-tertiary";
     case "EmptyHole":
-      return "stroke-red-tertiary stroke-[0.25rem] z-10";
+      return "stroke-red-tertiary";
     case "Ann":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "App":
-      return "stroke-blue-tertiary stroke-[0.25rem] z-10";
+      return "stroke-blue-tertiary";
     case "APP":
-      return "stroke-yellow-secondary stroke-[0.25rem] z-10";
+      return "stroke-yellow-secondary";
     case "Con":
-      return "stroke-green-primary stroke-[0.25rem] z-10";
+      return "stroke-green-primary";
     case "Lam":
-      return "stroke-blue-primary stroke-[0.25rem] z-10";
+      return "stroke-blue-primary";
     case "LAM":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "GlobalVar":
-      return "stroke-blue-quaternary stroke-[0.25rem] z-10";
+      return "stroke-blue-quaternary";
     case "LocalVar":
-      return "stroke-blue-quaternary stroke-[0.25rem] z-10";
+      return "stroke-blue-quaternary";
     case "Let":
-      return "stroke-blue-quaternary stroke-[0.25rem] z-10";
+      return "stroke-blue-quaternary";
     case "LetType":
-      return "stroke-blue-quaternary stroke-[0.25rem] z-10";
+      return "stroke-blue-quaternary";
     case "Letrec":
-      return "stroke-blue-quaternary stroke-[0.25rem] z-10";
+      return "stroke-blue-quaternary";
     case "Case":
-      return "stroke-yellow-primary stroke-[0.25rem] z-10";
+      return "stroke-yellow-primary";
     case "CaseWith":
-      return "stroke-yellow-primary stroke-[0.25rem] z-10";
+      return "stroke-yellow-primary";
     case "PrimCon":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "TEmptyHole":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "THole":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "TCon":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "TFun":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "TVar":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "TApp":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "TForall":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "TLet":
-      return "stroke-black-primary stroke-[0.25rem] z-10";
+      return "stroke-black-primary";
     case "Pattern":
-      return "stroke-yellow-primary stroke-[0.25rem] z-10";
+      return "stroke-yellow-primary";
     case "PatternCon":
-      return "stroke-green-primary stroke-[0.25rem] z-10";
+      return "stroke-green-primary";
     case "PatternBind":
-      return "stroke-blue-quaternary stroke-[0.25rem] z-10";
+      return "stroke-blue-quaternary";
     case "PatternApp":
-      return "stroke-blue-tertiary stroke-[0.25rem] z-10";
+      return "stroke-blue-tertiary";
   }
 };
 

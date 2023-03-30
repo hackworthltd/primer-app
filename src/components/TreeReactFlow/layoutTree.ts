@@ -8,6 +8,11 @@ import { unzip } from "fp-ts/lib/Array";
 import { fst, mapFst, mapSnd } from "fp-ts/lib/Tuple";
 import { treeMap, Tree, Positioned } from "./Types";
 
+export type LayoutParams = {
+  type: WasmLayoutType;
+  margins: { child: number; sibling: number };
+};
+
 export const layoutTree = <
   N extends {
     id: string;
@@ -18,40 +23,46 @@ export const layoutTree = <
     target: string;
   }
 >(
-  primerTree: Tree<N, E>
+  primerTree: Tree<N, E>,
+  p: LayoutParams
 ): Promise<{
   tree: Tree<Positioned<N>, E>;
   width: number;
   height: number;
 }> =>
-  TidyLayout.create().then((layout) => {
-    layout.changeLayoutType(WasmLayoutType.Tidy);
-    const [treeTidy0, nodeInfos, edgeInfos] = primerToTidy(primerTree);
-    const treeTidy = layout.set_root(treeTidy0);
-    layout.layout(true);
-    layout.dispose();
-    const nodeMap = makeNodeMap(nodeInfos, edgeInfos, tidyTreeNodes(treeTidy));
-    const treeUnNormalized = makePrimerTree(
-      primerTree.node.id,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      (id) => nodeMap.get(id)!
-    );
-    const nodes = Array.from(nodeMap.values()).map((n) => n.node);
-    const minX = Math.min(...nodes.map((n) => n.position.x));
-    const minY = Math.min(...nodes.map((n) => n.position.y));
-    const tree = treeMap(treeUnNormalized, (n) => ({
-      ...n,
-      // Ensure top-left is at (0,0). This makes the result easier to work with.
-      position: { x: n.position.x - minX, y: n.position.y - minY },
-    }));
-    const width = nodes
-      ? Math.max(...nodes.map((n) => n.position.x + n.data.width)) - minX
-      : 0;
-    const height = nodes
-      ? Math.max(...nodes.map((n) => n.position.y + n.data.height)) - minY
-      : 0;
-    return { tree, minX, minY, width, height };
-  });
+  TidyLayout.create(p.type, p.margins.child, p.margins.sibling).then(
+    (layout) => {
+      const [treeTidy0, nodeInfos, edgeInfos] = primerToTidy(primerTree);
+      const treeTidy = layout.set_root(treeTidy0);
+      layout.layout(true);
+      layout.dispose();
+      const nodeMap = makeNodeMap(
+        nodeInfos,
+        edgeInfos,
+        tidyTreeNodes(treeTidy)
+      );
+      const treeUnNormalized = makePrimerTree(
+        primerTree.node.id,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        (id) => nodeMap.get(id)!
+      );
+      const nodes = Array.from(nodeMap.values()).map((n) => n.node);
+      const minX = Math.min(...nodes.map((n) => n.position.x));
+      const minY = Math.min(...nodes.map((n) => n.position.y));
+      const tree = treeMap(treeUnNormalized, (n) => ({
+        ...n,
+        // Ensure top-left is at (0,0). This makes the result easier to work with.
+        position: { x: n.position.x - minX, y: n.position.y - minY },
+      }));
+      const width = nodes
+        ? Math.max(...nodes.map((n) => n.position.x + n.data.width)) - minX
+        : 0;
+      const height = nodes
+        ? Math.max(...nodes.map((n) => n.position.y + n.data.height)) - minY
+        : 0;
+      return { tree, width, height };
+    }
+  );
 
 type NodeInfo<N> = {
   node: N;
