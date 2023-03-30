@@ -730,8 +730,8 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
  * check that we register its subtypes correctly with ReactFlow,
  * and safely act on that type in handlers. */
 export const ReactFlowSafe = <
-  N extends RFNode & { type: string },
-  E extends RFEdge & { type: string }
+  N extends RFNode<unknown> & { type: string },
+  E extends RFEdge<unknown> & { type: string }
 >(
   p: Omit<Parameters<typeof ReactFlow>[0], "onNodeClick" | "edgeTypes"> & {
     nodes: N[];
