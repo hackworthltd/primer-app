@@ -236,7 +236,7 @@ const Evaluated = (p: {
   return (
     <TreeReactFlowOne
       {...defaultTreeReactFlowProps}
-      {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
+      {...(p.evaluated ? { tree: p.evaluated.contents } : {})}
       level={p.level}
     />
   );
