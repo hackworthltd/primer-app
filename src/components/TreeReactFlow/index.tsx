@@ -23,9 +23,8 @@ import {
   useReactFlow,
 } from "reactflow";
 import "./reactflow.css";
-import { MutableRefObject, useEffect, useId, useState } from "react";
+import { MutableRefObject, useId } from "react";
 import classNames from "classnames";
-import { unzip } from "fp-ts/lib/Array";
 import {
   combineGraphs,
   PrimerGraph,
@@ -60,6 +59,7 @@ import {
 } from "./Flavor";
 import { ZoomBar } from "./ZoomBar";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
+import { usePromise } from "@/util";
 
 export type ScrollToDef = (defName: string) => void;
 
@@ -71,25 +71,24 @@ type NodeParams = {
   selection?: Selection;
   level: Level;
 };
+type DefParams = {
+  nameNodeMultipliers: { width: number; height: number };
+};
 export type TreeReactFlowProps = {
   defs: Def[];
   onNodeClick?: (
     event: React.MouseEvent,
-    node: Positioned<PrimerNodeWithDef>
+    node: Positioned<PrimerNode<{ def: GlobalName }>>
   ) => void;
   treePadding: number;
   forestLayout: "Horizontal" | "Vertical";
-  defNameNodeSizeMultipliers: { width: number; height: number };
+  defParams: DefParams;
   layout: LayoutParams;
   scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
 } & NodeParams;
 export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
-  | "treePadding"
-  | "forestLayout"
-  | "defNameNodeSizeMultipliers"
-  | "layout"
-  | keyof NodeParams
+  "treePadding" | "forestLayout" | "defParams" | "layout" | keyof NodeParams
 > = {
   level: "Expert",
   forestLayout: "Horizontal",
@@ -97,7 +96,7 @@ export const defaultTreeReactFlowProps: Pick<
   nodeWidth: 80,
   nodeHeight: 35,
   boxPadding: 50,
-  defNameNodeSizeMultipliers: { width: 3, height: 2 },
+  defParams: { nameNodeMultipliers: { width: 3, height: 2 } },
   layout: {
     type: WasmLayoutType.Tidy,
     margins: { child: 25, sibling: 18 },
@@ -529,135 +528,172 @@ const makePrimerNode = async (
   }
 };
 
-type PrimerNodeWithDefNoPos = PrimerNode<{ def: GlobalName }>;
-type PrimerNodeWithDef = Positioned<PrimerNodeWithDefNoPos>;
+type PrimerNodeWithNested<N> = PrimerNode<
+  N & { nested: Graph<Positioned<PrimerNode<N>>, PrimerEdge>[] }
+>;
+type PrimerNodeWithNestedAndDef = PrimerNodeWithNested<{ def: GlobalName }>;
 
-// TreeReactFlow renders multiple definitions on one canvas.
-// For each definition, it displays three things:
-// - the definition's name
-// - the definition's type
-// - the definition's body (a term)
-// It ensures that these are clearly displayed as "one atomic thing",
-// i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc)
-export const TreeReactFlow = (p: TreeReactFlowProps) => {
-  const [{ nodes, edges }, setLayout] = useState<
-    Graph<PrimerNodeWithDef, PrimerEdge>
-  >({
-    nodes: [],
-    edges: [],
-  });
+const defToTree = async (
+  def: Def,
+  p: DefParams & NodeParams & { layout: LayoutParams }
+): Promise<Tree<PrimerNodeWithNestedAndDef, PrimerEdge>> => {
+  const defNodeId = defNameToNodeId(def.name.baseName);
+  const sigEdgeId = "def-sig-" + def.name.baseName;
+  const bodyEdgeId = "def-body-" + def.name.baseName;
+  const defNameNode: PrimerNodeWithNestedAndDef = {
+    id: defNodeId,
+    data: {
+      def: def.name,
+      width: p.nodeWidth * p.nameNodeMultipliers.width,
+      height: p.nodeHeight * p.nameNodeMultipliers.height,
+      selected: deepEqual(p.selection?.def, def.name) && !p.selection?.node,
+      nested: [],
+    },
+    type: "primer-def-name",
+    zIndex: 0,
+  };
+  const defEdge = async (
+    tree: APITree,
+    nodeType: NodeType,
+    edgeId: string
+  ): Promise<[Tree<PrimerNodeWithNestedAndDef, PrimerEdge>, PrimerEdge]> =>
+    augmentTree(tree, (n0) =>
+      makePrimerNode(n0, p, p.layout, 0, nodeType).then(([n, e, nested]) => [
+        primerNodeWith(n, {
+          def: def.name,
+          nested: nested.map((g) =>
+            graphMap(g, ({ position, ...n }) => ({
+              ...primerNodeWith(n, { def: def.name }),
+              position,
+            }))
+          ),
+        }),
+        e,
+      ])
+    ).then((t) => [
+      t,
+      {
+        id: edgeId,
+        source: defNodeId,
+        target: t.node.id,
+        type: "primer-def-name",
+        zIndex: 0,
+        sourceHandle: Position.Bottom,
+        targetHandle: Position.Top,
+      },
+    ]);
+  const sigTree = await defEdge(def.type_, "SigNode", sigEdgeId);
+  const bodyTree = await (def.term
+    ? defEdge(def.term, "BodyNode", bodyEdgeId)
+    : undefined);
+  return {
+    node: defNameNode,
+    childTrees: [sigTree, ...(bodyTree ? [bodyTree] : [])],
+  };
+};
 
-  useEffect(() => {
-    (async () => {
-      const [trees, nested] = await Promise.all(
-        p.defs.map<
-          Promise<
-            [
-              Tree<PrimerNodeWithDefNoPos, PrimerEdge>,
-              Graph<PrimerNodeWithDef, PrimerEdge>[]
-            ]
-          >
-        >(async (def) => {
-          const defNodeId = defNameToNodeId(def.name.baseName);
-          const sigEdgeId = "def-sig-" + def.name.baseName;
-          const bodyEdgeId = "def-body-" + def.name.baseName;
-          const defNameNode: PrimerNode = {
-            id: defNodeId,
-            data: {
-              def: def.name,
-              width: p.nodeWidth * p.defNameNodeSizeMultipliers.width,
-              height: p.nodeHeight * p.defNameNodeSizeMultipliers.height,
-              selected:
-                deepEqual(p.selection?.def, def.name) && !p.selection?.node,
-            },
-            type: "primer-def-name",
-            zIndex: 0,
-          };
-          const defEdge = async (
-            tree: APITree,
-            nodeParams: NodeParams,
-            nodeType: NodeType,
-            edgeId: string
-          ): Promise<{
-            subtree: [Tree<PrimerNodeWithDefNoPos, PrimerEdge>, PrimerEdge];
-            nested: Graph<PrimerNodeWithDef, PrimerEdge>[];
-          }> => {
-            const t = await augmentTree(tree, (n0) =>
-              makePrimerNode(n0, nodeParams, p.layout, 0, nodeType).then(
-                ([n, e, nested]) => [primerNodeWith(n, { nested }), e]
-              )
-            );
-            const nested = treeNodes(t).flatMap((n) => n.data.nested);
-            return {
-              subtree: [
-                treeMap(t, (n) => primerNodeWith(n, { def: def.name })),
-                {
-                  id: edgeId,
-                  source: defNodeId,
-                  target: tree.nodeId,
-                  type: "primer-def-name",
-                  zIndex: 0,
-                  sourceHandle: Position.Bottom,
-                  targetHandle: Position.Top,
-                },
-              ],
-              nested: nested.map((g) =>
-                graphMap(g, ({ position, ...n }) => ({
-                  position,
-                  ...primerNodeWith(n, { def: def.name }),
+/** Renders multiple definitions on one canvas.
+ * For each definition, it displays three things:
+ * - the definition's name
+ * - the definition's type
+ * - the definition's body (a term)
+ * It ensures that these are clearly displayed as "one atomic thing",
+ * i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc).
+ */
+export const TreeReactFlow = (p: TreeReactFlowProps) => (
+  <Trees
+    makeTrees={Promise.all(
+      p.defs.map((def) =>
+        defToTree(def, { ...p.defParams, ...p }).then((t) =>
+          layoutTree(t, p.layout)
+        )
+      )
+    ).then(
+      // Space out the forest.
+      (sizedTrees) =>
+        sizedTrees.reduce<
+          [Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>[], number]
+        >(
+          ([trees, offset], { tree, width, height }) => {
+            const { increment, offsetVector } = (() => {
+              switch (p.forestLayout) {
+                case "Horizontal":
+                  return {
+                    increment: width,
+                    offsetVector: { x: offset, y: 0 },
+                  };
+                case "Vertical":
+                  return {
+                    increment: height,
+                    offsetVector: { x: 0, y: offset },
+                  };
+              }
+            })();
+            return [
+              trees.concat(
+                treeMap(tree, (n) => ({
+                  ...n,
+                  position: {
+                    x: n.position.x + p.layout.margins.sibling + offsetVector.x,
+                    y: n.position.y + p.layout.margins.child + offsetVector.y,
+                  },
                 }))
               ),
-            };
-          };
-          const sigTree = await defEdge(def.type_, p, "SigNode", sigEdgeId);
-          const bodyTree = await (def.term
-            ? defEdge(def.term, p, "BodyNode", bodyEdgeId)
-            : undefined);
-          return [
-            {
-              node: defNameNode,
-              childTrees: [
-                sigTree.subtree,
-                ...(bodyTree ? [bodyTree.subtree] : []),
-              ],
-            },
-            [...sigTree.nested, ...(bodyTree ? bodyTree.nested : [])],
-          ];
-        })
-      ).then(unzip);
-      const ts = await Promise.all(trees.map((t) => layoutTree(t, p.layout)));
-      const graphs = ts.reduce<
-        [Graph<PrimerNodeWithDef, PrimerEdge>[], number]
-      >(
-        ([gs, offset], { tree, width, height }) => {
-          const { nodes, edges } = treeToGraph(tree);
-          const { increment, offsetVector } = (() => {
-            switch (p.forestLayout) {
-              case "Horizontal":
-                return { increment: width, offsetVector: { x: offset, y: 0 } };
-              case "Vertical":
-                return { increment: height, offsetVector: { x: 0, y: offset } };
-            }
-          })();
-          return [
-            gs.concat({
-              edges,
-              nodes: nodes.map((n) => ({
-                ...n,
-                position: {
-                  x: n.position.x + p.layout.margins.sibling + offsetVector.x,
-                  y: n.position.y + p.layout.margins.child + offsetVector.y,
-                },
-              })),
-            }),
-            offset + increment + p.treePadding,
-          ];
-        },
-        [[], 0]
-      )[0];
-      setLayout(combineGraphs([...graphs, ...nested.flat()]));
-    })();
-  }, [p]);
+              offset + increment + p.treePadding,
+            ];
+          },
+          [[], 0]
+        )[0]
+    )}
+    {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
+    scrollToDefRef={p.scrollToDefRef}
+  ></Trees>
+);
+export default TreeReactFlow;
+
+export type TreeReactFlowOneProps = {
+  tree?: APITree;
+  onNodeClick?: (event: React.MouseEvent, node: Positioned<PrimerNode>) => void;
+  layout: LayoutParams;
+  scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
+} & NodeParams;
+
+/** Renders one `APITree` (e.g. one type or one term) on its own individual canvas.
+ * This is essentially a much simpler version of `TreeReactFlow`.
+ */
+export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => (
+  <Trees
+    makeTrees={
+      p.tree
+        ? augmentTree(p.tree, (n0) =>
+            makePrimerNode(n0, p, p.layout, 0, "BodyNode").then(
+              ([n, e, nested]) => [primerNodeWith(n, { nested }), e]
+            )
+          )
+            .then((t) => layoutTree(t, p.layout))
+            .then(({ tree }) => [tree])
+        : new Promise(() => [])
+    }
+    {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
+    scrollToDefRef={p.scrollToDefRef}
+  ></Trees>
+);
+
+// The core of our interaction with ReactFlow: take some abstract trees, and render them.
+// This is not exported, but various wrappers around it are.
+const Trees = <N,>(p: {
+  makeTrees: Promise<Tree<Positioned<PrimerNodeWithNested<N>>, PrimerEdge>[]>;
+  onNodeClick?: (
+    event: React.MouseEvent,
+    node: Positioned<PrimerNode<N>>
+  ) => void;
+  scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
+}): JSX.Element => {
+  const trees = usePromise([], p.makeTrees);
+  const { nodes, edges } = combineGraphs([
+    ...trees.map(treeToGraph),
+    ...trees.flatMap((tree) => treeNodes(tree).flatMap((n) => n.data.nested)),
+  ]);
 
   // ReactFlow requires a unique id to be passed in if there are
   // multiple flows on one page. We simply get react to generate
@@ -665,7 +701,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
   const id = useId();
 
   return (
-    <ReactFlowSafe<PrimerNodeWithDef, PrimerEdge>
+    <ReactFlowSafe<Positioned<PrimerNode<N>>, PrimerEdge>
       id={id}
       {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
       nodes={nodes}
@@ -702,59 +738,6 @@ const SetTreeReactFlowCallbacks = ({
   };
   scrollToDefRef.current = scrollToDef;
   return <></>;
-};
-
-export default TreeReactFlow;
-
-export type TreeReactFlowOneProps = {
-  tree?: APITree;
-  onNodeClick?: (event: React.MouseEvent, node: PrimerNode) => void;
-  layout: LayoutParams;
-} & NodeParams;
-
-// TreeReactFlowOne renders one Tree (i.e. one type or one term) on its own individual canvas.
-// It is essentially a much simpler version of TreeReactFlow.
-export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
-  const [{ nodes, edges }, setLayout] = useState<PrimerGraph>({
-    nodes: [],
-    edges: [],
-  });
-
-  useEffect(() => {
-    const pt = p.tree;
-    pt &&
-      (async () => {
-        const tree = await augmentTree(pt, (n0) =>
-          makePrimerNode(n0, p, p.layout, 0, "BodyNode").then(
-            ([n, e, nested]) => [primerNodeWith(n, { nested }), e]
-          )
-        );
-        const nested = treeNodes(tree).flatMap((n) => n.data.nested);
-        const t = await layoutTree(tree, p.layout);
-        const graph = treeToGraph(t.tree);
-        setLayout(combineGraphs([graph, ...nested.flat()]));
-      })();
-  }, [p]);
-
-  // ReactFlow requires a unique id to be passed in if there are
-  // multiple flows on one page. We simply get react to generate
-  // a unique id for us.
-  const id = useId();
-
-  return (
-    <ReactFlowSafe<Positioned<PrimerNode>, PrimerEdge>
-      id={id}
-      {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
-      nodes={nodes}
-      edges={edges}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      proOptions={{ hideAttribution: true, account: "paid-pro" }}
-    >
-      <Background gap={25} size={1.6} color="#81818a" />
-      <ZoomBar />
-    </ReactFlowSafe>
-  );
 };
 
 /** A more strongly-typed version of the `ReactFlow` component.
