@@ -109,6 +109,8 @@ const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
       selection={selection}
       setSelection={setSelection}
       setProg={setProg}
+      undoAvailable={prog.undoAvailable}
+      redoAvailable={prog.redoAvailable}
     />
   );
 };
@@ -165,6 +167,8 @@ const AppNoError = ({
   selection: Selection | undefined;
   setSelection: (s: Selection) => void;
   setProg: (p: Prog) => void;
+  undoAvailable: boolean;
+  redoAvailable: boolean;
 }): JSX.Element => {
   const [level, setLevel] = useState<Level>(initialLevel);
   const [showCreateDefModal, setShowCreateDefModal] = useState<boolean>(false);
@@ -261,6 +265,7 @@ const AppNoError = ({
               onModeChange={() => {
                 console.log("Toggle mode");
               }}
+              undoAvailable={p.undoAvailable}
               onClickUndo={() => {
                 undo
                   .mutateAsync({
@@ -268,6 +273,7 @@ const AppNoError = ({
                   })
                   .then(p.setProg);
               }}
+              redoAvailable={p.redoAvailable}
               onClickRedo={() => {
                 redo
                   .mutateAsync({
