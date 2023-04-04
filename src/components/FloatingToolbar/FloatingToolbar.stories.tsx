@@ -14,9 +14,17 @@ export default {
       description: 'The event handler for the "Mode" button.',
       action: "mode",
     },
+    redoAvailable: {
+      description: "Whether redo is available.",
+      control: "boolean",
+    },
     onClickRedo: {
       description: 'The event handler for the "Redo" button.',
       action: "redo",
+    },
+    undoAvailable: {
+      description: "Whether undo is available.",
+      control: "boolean",
     },
     onClickUndo: {
       description: 'The event handler for the "Undo" button.',

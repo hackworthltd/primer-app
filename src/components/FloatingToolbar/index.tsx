@@ -16,7 +16,9 @@ export type FloatingToolbarProps = {
     mode: Mode,
     event: React.MouseEvent<HTMLButtonElement>
   ) => void;
+  redoAvailable: boolean;
   onClickRedo: MouseEventHandler<HTMLButtonElement>;
+  undoAvailable: boolean;
   onClickUndo: MouseEventHandler<HTMLButtonElement>;
   onClickChevron: MouseEventHandler<HTMLButtonElement>;
 };
@@ -43,7 +45,7 @@ const nextMode = (m: Mode): Mode => {
 // eslint-disable-next-line tailwindcss/no-custom-classname
 const arrow = <ArrowUturnLeftIcon className="w-6 stroke-[3]" />;
 const undoRedoClasses =
-  "flex flex-col items-center w-12 hover:bg-grey-primary-hover rounded";
+  "flex flex-col items-center w-12 hover:bg-grey-primary-hover rounded disabled:opacity-50 disabled:cursor-not-allowed";
 
 export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
   const [mode, setMode] = useState(p.initialMode);
@@ -90,13 +92,19 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
       >
         {modeSvg(mode)}
       </button>
-      <button type="button" className={undoRedoClasses} onClick={p.onClickRedo}>
+      <button
+        type="button"
+        onClick={p.onClickRedo}
+        disabled={!p.redoAvailable}
+        className={undoRedoClasses}
+      >
         <div className="scale-x-[-1]">{arrow}</div>
         redo
       </button>
       <button
         type="button"
         onClick={p.onClickUndo}
+        disabled={!p.undoAvailable}
         className={classNames(undoRedoClasses, "text-red-secondary")}
       >
         {arrow}

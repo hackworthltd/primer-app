@@ -34,6 +34,7 @@ import {
   useEvalFull,
   Level,
   useUndo,
+  useRedo,
 } from "./primer-api";
 import { defaultTreeReactFlowProps } from "./components/TreeReactFlow";
 
@@ -108,6 +109,8 @@ const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
       selection={selection}
       setSelection={setSelection}
       setProg={setProg}
+      undoAvailable={prog.undoAvailable}
+      redoAvailable={prog.redoAvailable}
     />
   );
 };
@@ -164,6 +167,8 @@ const AppNoError = ({
   selection: Selection | undefined;
   setSelection: (s: Selection) => void;
   setProg: (p: Prog) => void;
+  undoAvailable: boolean;
+  redoAvailable: boolean;
 }): JSX.Element => {
   const [level, setLevel] = useState<Level>(initialLevel);
   const [showCreateDefModal, setShowCreateDefModal] = useState<boolean>(false);
@@ -179,6 +184,7 @@ const AppNoError = ({
   const applyActionWithInput = useApplyActionWithInput();
   const getOptions = useGetActionOptions();
   const undo = useUndo();
+  const redo = useRedo();
 
   const [evalTarget, setEvalTarget] = useState<string | undefined>();
   const evalResult = useInvalidateOnChange(
@@ -259,11 +265,17 @@ const AppNoError = ({
               onModeChange={() => {
                 console.log("Toggle mode");
               }}
-              onClickRedo={() => {
-                console.log("Redo");
-              }}
+              undoAvailable={p.undoAvailable}
               onClickUndo={() => {
                 undo
+                  .mutateAsync({
+                    sessionId: p.sessionId,
+                  })
+                  .then(p.setProg);
+              }}
+              redoAvailable={p.redoAvailable}
+              onClickRedo={() => {
+                redo
                   .mutateAsync({
                     sessionId: p.sessionId,
                   })

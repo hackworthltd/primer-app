@@ -671,6 +671,48 @@ export const useGetProgram = <TData = Awaited<ReturnType<ReturnType<typeof useGe
 
 
 /**
+ * @summary Redo the last undo
+ */
+export const useRedoHook = () => {
+        const redo = useCustomInstance<Prog>();
+
+        return (
+    sessionId: string,
+ ) => {
+        return redo(
+          {url: `/openapi/sessions/${sessionId}/redo`, method: 'post'
+    },
+          );
+        }
+      }
+    
+
+
+    export type RedoMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRedoHook>>>>
+    
+    export type RedoMutationError = ErrorType<void>
+
+    export const useRedo = <TError = ErrorType<void>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRedoHook>>>, TError,{sessionId: string}, TContext>, }
+) => {
+      const {mutation: mutationOptions} = options ?? {};
+
+      const redo =  useRedoHook()
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useRedoHook>>>, {sessionId: string}> = (props) => {
+          const {sessionId} = props ?? {};
+
+          return  redo(sessionId,)
+        }
+
+        
+
+      return useMutation<Awaited<ReturnType<typeof redo>>, TError, {sessionId: string}, TContext>(mutationFn, mutationOptions);
+    }
+    
+/**
  * @summary Create a new type definition
  */
 export const useCreateTypeDefHook = () => {
