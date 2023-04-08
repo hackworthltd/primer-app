@@ -74,7 +74,7 @@
     "eslint-plugin-storybook": "^0.6.11",
     "eslint-plugin-tailwindcss": "^3.9.0",
     "orval": "^6.11.1",
-    "pnpm": "^7.28.0",
+    "pnpm": "^8.1.1",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
     "prettier": "^2.8.4",
