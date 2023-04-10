@@ -7,23 +7,18 @@ const svgr = require("vite-plugin-svgr");
 
 import tsconfigPaths from "vite-tsconfig-paths";
 import { mergeConfig } from "vite";
-
 const config: StorybookViteConfig = {
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
+  addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-mdx-gfm"],
   core: {
-    builder: "@storybook/builder-vite",
-    disableTelemetry: true,
+    disableTelemetry: true
   },
-
-  // storybook-builder-vite doesn't read the project's vite.config.js,
-  // so we have to recreate the important bits here, mainly the
-  // resolvers and the relevant plugins.
-  async viteFinal(config, _) {
-    return mergeConfig(config, {
-      plugins: [svgr(), tsconfigPaths()],
-    });
+  framework: {
+    name: "@storybook/react-vite",
+    options: {}
   },
+  docs: {
+    autodocs: true
+  }
 };
-
 module.exports = config;
