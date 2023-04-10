@@ -1,24 +1,15 @@
-import type { StorybookViteConfig } from "@storybook/builder-vite";
+import type { StorybookConfig } from "@storybook/react-vite";
 
-// Workaround for 'TypeError: (0 , vite_plugin_svgr_1.default) is not
-// a function' error. I hate Storybook.
-const svgr = require("vite-plugin-svgr");
-//import svgr from "vite-plugin-svgr";
-
-import tsconfigPaths from "vite-tsconfig-paths";
-import { mergeConfig } from "vite";
-const config: StorybookViteConfig = {
-  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
+const config: StorybookConfig = {
+  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
+  framework: "@storybook/react-vite",
   core: {
-    disableTelemetry: true
-  },
-  framework: {
-    name: "@storybook/react-vite",
-    options: {}
+    disableTelemetry: true,
   },
   docs: {
-    autodocs: true
-  }
+    autodocs: true,
+  },
 };
-module.exports = config;
+
+export default config;
