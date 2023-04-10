@@ -9,7 +9,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { mergeConfig } from "vite";
 const config: StorybookViteConfig = {
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-mdx-gfm"],
+  addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
   core: {
     disableTelemetry: true
   },
