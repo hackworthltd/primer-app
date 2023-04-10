@@ -27,7 +27,7 @@ Single.args = {
 const AllButtonsTemplate: ComponentStory<typeof ActionButton> = (args) => (
   <>
     <h1 className="text-xl">Primary</h1>
-    <div className="mt-4 mb-8 w-96">
+    <div className="mb-8 mt-4 w-96">
       <ActionButton
         {...args}
         level="Expert"
@@ -36,7 +36,7 @@ const AllButtonsTemplate: ComponentStory<typeof ActionButton> = (args) => (
     </div>
 
     <h1 className="text-xl">Warning</h1>
-    <div className="mt-4 mb-8 w-96">
+    <div className="mb-8 mt-4 w-96">
       <ActionButton
         {...args}
         level="Expert"

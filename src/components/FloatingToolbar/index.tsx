@@ -76,7 +76,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
         touchDragging ? "p-5 w-24 -my-1 -mx-2" : "p-4 w-20"
       )}
     >
-      <div className="-mt-2 -mb-1 w-6">
+      <div className="-mb-1 -mt-2 w-6">
         <EllipsisHorizontalIcon className="stroke-grey-secondary" />
         <EllipsisHorizontalIcon className="-mt-4 stroke-grey-secondary" />
       </div>
