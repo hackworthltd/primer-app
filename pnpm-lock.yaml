@@ -5,6 +5,7 @@ overrides:
   trim-newlines@<3.0.1: '>=3.0.1'
   glob-parent@<5.1.2: '>=5.1.2'
   d3-color@<3.1.0: '>=3.1.0'
+  '@joshwooding/vite-plugin-react-docgen-typescript': 0.2.1
 
 specifiers:
   '@babel/core': ^7.21.4
@@ -2227,8 +2228,8 @@ packages:
       chalk: 4.1.2
     dev: true
 
-  /@joshwooding/vite-plugin-react-docgen-typescript/0.2.2_egung5nfepmolqa7uavvqho3gq:
-    resolution: {integrity: sha512-BlArZRyCNaQXo9jSW1crabSqdQXlgIB9bh3W7WpKTeopUFy2PqOkVFdOv3FvvcJOu0A3pC/ECyQMiXxXK547MQ==}
+  /@joshwooding/vite-plugin-react-docgen-typescript/0.2.1_egung5nfepmolqa7uavvqho3gq:
+    resolution: {integrity: sha512-ou4ZJSXMMWHqGS4g8uNRbC5TiTWxAgQZiVucoUrOCWuPrTbkpJbmVyIi9jU72SBry7gQtuMEDp4YR8EEXAg7VQ==}
     peerDependencies:
       typescript: '>= 4.3.x'
       vite: ^3.0.0 || ^4.0.0
@@ -2236,6 +2237,8 @@ packages:
       typescript:
         optional: true
     dependencies:
+      glob: 7.2.3
+      glob-promise: 4.2.2_glob@7.2.3
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2_typescript@4.9.5
       typescript: 4.9.5
@@ -3827,7 +3830,7 @@ packages:
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
       vite: ^3.0.0 || ^4.0.0
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.2.2_egung5nfepmolqa7uavvqho3gq
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.2.1_egung5nfepmolqa7uavvqho3gq
       '@rollup/pluginutils': 4.2.1
       '@storybook/builder-vite': 7.0.2_egung5nfepmolqa7uavvqho3gq
       '@storybook/react': 7.0.2_ygqkwb4gg3aean7xjfdauovyqq
@@ -4465,6 +4468,13 @@ packages:
   /@types/geojson/7946.0.10:
     resolution: {integrity: sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==}
     dev: false
+
+  /@types/glob/7.2.0:
+    resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+    dependencies:
+      '@types/minimatch': 5.1.2
+      '@types/node': 18.15.11
+    dev: true
 
   /@types/glob/8.1.0:
     resolution: {integrity: sha512-IO+MJPVhoqz+28h1qLAcBEH2+xHMK6MTyHJc7MTnnYb6wsoLR29POVGJ7LycmVXIqyy/4/2ShP5sUwTXuOwb/w==}
@@ -8101,6 +8111,16 @@ packages:
     engines: {node: '>=10.13.0'}
     dependencies:
       is-glob: 4.0.3
+    dev: true
+
+  /glob-promise/4.2.2_glob@7.2.3:
+    resolution: {integrity: sha512-xcUzJ8NWN5bktoTIX7eOclO1Npxd/dyVqUJxlLIDasT4C7KZyqlPIwkdJ0Ypiy3p2ZKahTjK4M9uC3sNSfNMzw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      glob: ^7.1.6
+    dependencies:
+      '@types/glob': 7.2.0
+      glob: 7.2.3
     dev: true
 
   /glob-promise/6.0.2_glob@8.1.0:
