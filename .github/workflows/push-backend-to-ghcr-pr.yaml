@@ -34,5 +34,3 @@ jobs:
     uses: ./.github/workflows/push-backend-to-ghcr.yaml
     with:
       package: "ghcr.io/hackworthltd/primer-service-dev"
-    secrets:
-      VAULT_CA_CERT: ${{ secrets.VAULT_CA_CERT }}

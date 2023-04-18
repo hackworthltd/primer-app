@@ -3,8 +3,6 @@ name: Deploy the frontend
 on:
   workflow_call:
     secrets:
-      VAULT_CA_CERT:
-        required: true
       CLOUDFLARE_ACCOUNT_ID:
         required: true
 
@@ -25,9 +23,8 @@ jobs:
         uses: hashicorp/vault-action@v2.5.0
         id: secrets
         with:
-          url: https://secrets.hackworth-corp.com
+          url: https://vault.hackworth-corp.com
           path: "github-actions"
-          caCertificate: ${{ secrets.VAULT_CA_CERT }}
           role: primer-app-workflow-pages
           method: jwt
           secrets: |

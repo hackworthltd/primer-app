@@ -20,5 +20,4 @@ jobs:
       deployments: write
     uses: ./.github/workflows/deploy-frontend.yaml
     secrets:
-      VAULT_CA_CERT: ${{ secrets.VAULT_CA_CERT }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

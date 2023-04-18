@@ -6,9 +6,6 @@ on:
       package:
         required: true
         type: string
-    secrets:
-      VAULT_CA_CERT:
-        required: true
 
 jobs:
   push-backend-to-ghcr:
@@ -30,9 +27,8 @@ jobs:
         uses: hashicorp/vault-action@v2.5.0
         id: secrets
         with:
-          url: https://secrets.hackworth-corp.com
+          url: https://vault.hackworth-corp.com
           path: "github-actions"
-          caCertificate: ${{ secrets.VAULT_CA_CERT }}
           role: primer-app-workflow-ghcr
           method: jwt
           secrets: |
