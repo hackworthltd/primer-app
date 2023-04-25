@@ -15,9 +15,8 @@ export const actionName = (
     case "MakeCase":
       return code("m");
     case "MakeApp":
-      return code("$");
     case "MakeAPP":
-      return code("@");
+      return code("←");
     case "MakeAnn":
       return code(":");
     case "RemoveAnn":
@@ -37,7 +36,7 @@ export const actionName = (
     case "AddInput":
       return code("→A→");
     case "MakeTApp":
-      return code("$");
+      return code("←");
     case "RaiseType":
       return prose("↑");
     case "DeleteDef":
@@ -82,6 +81,16 @@ export const actionName = (
       return prose("r");
     case "RenameDef":
       return prose("r");
+    case "RenameType":
+      return prose("r");
+    case "AddCon":
+      return prose("+");
+    case "RenameCon":
+      return prose("r");
+    case "RenameTypeParam":
+      return prose("r");
+    case "AddConField":
+      return prose("+");
   }
 };
 
@@ -136,6 +145,7 @@ export const actionDescription = (
     case "DeleteType":
       return "Delete this type";
     case "MakeCon":
+    case "AddCon":
       return "Use a value constructor";
     case "MakeInt":
       return "Insert a whole number";
@@ -171,6 +181,14 @@ export const actionDescription = (
       return "Rename this type variable";
     case "RenameDef":
       return "Rename this definition";
+    case "RenameType":
+      return "Rename this type";
+    case "RenameCon":
+      return "Rename this constructor";
+    case "RenameTypeParam":
+      return "Rename this parameter";
+    case "AddConField":
+      return "Add a parameter to this constructor";
   }
 };
 
@@ -245,6 +263,16 @@ export const actionType = (action: NoInputAction | InputAction): ActionType => {
     case "RenameForall":
       return "Primary";
     case "RenameDef":
+      return "Primary";
+    case "RenameType":
+      return "Primary";
+    case "AddCon":
+      return "Primary";
+    case "RenameCon":
+      return "Primary";
+    case "RenameTypeParam":
+      return "Primary";
+    case "AddConField":
       return "Primary";
   }
 };

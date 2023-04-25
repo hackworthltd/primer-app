@@ -89,7 +89,10 @@ export const Tree1: ComponentStory<typeof TreeReactFlow> = (
   treeSized({
     ...args,
     defs: [def1],
-    selection: { def: def1.name, node: { nodeType: "BodyNode", id: 100 } },
+    selection: {
+      tag: "SelectionDef",
+      contents: { def: def1.name, node: { nodeType: "BodyNode", meta: 100 } },
+    },
   });
 export const Tree2: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
@@ -100,7 +103,10 @@ export const Tree3: ComponentStory<typeof TreeReactFlow> = (
   treeSized({
     ...args,
     defs: [def3],
-    selection: { def: def3.name, node: { nodeType: "BodyNode", id: 301 } },
+    selection: {
+      tag: "SelectionDef",
+      contents: { def: def3.name, node: { nodeType: "BodyNode", meta: 301 } },
+    },
   });
 export const Tree4: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
@@ -108,7 +114,10 @@ export const Tree4: ComponentStory<typeof TreeReactFlow> = (
   treeSized({
     ...args,
     defs: [def4],
-    selection: { def: def4.name, node: { nodeType: "BodyNode", id: 409 } },
+    selection: {
+      tag: "SelectionDef",
+      contents: { def: def4.name, node: { nodeType: "BodyNode", meta: 409 } },
+    },
   });
 export const Tree5: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
@@ -116,7 +125,10 @@ export const Tree5: ComponentStory<typeof TreeReactFlow> = (
   treeSized({
     ...args,
     defs: [def5],
-    selection: { def: def5.name, node: { nodeType: "BodyNode", id: 503 } },
+    selection: {
+      tag: "SelectionDef",
+      contents: { def: def5.name, node: { nodeType: "BodyNode", meta: 503 } },
+    },
   });
 export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
@@ -124,7 +136,10 @@ export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
   treeSized({
     ...args,
     defs: [def1, def2, def3, def4, def5],
-    selection: { def: def3.name, node: { nodeType: "BodyNode", id: 301 } },
+    selection: {
+      tag: "SelectionDef",
+      contents: { def: def3.name, node: { nodeType: "BodyNode", meta: 301 } },
+    },
   });
 export const OddAndEven: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
@@ -132,7 +147,10 @@ export const OddAndEven: ComponentStory<typeof TreeReactFlow> = (
   treeSized({
     ...args,
     defs: oddEvenDefs,
-    selection: { def: def5.name, node: { nodeType: "BodyNode", id: 5 } },
+    selection: {
+      tag: "SelectionDef",
+      contents: { def: def5.name, node: { nodeType: "BodyNode", meta: 5 } },
+    },
   });
 export const OddAndEvenMiscStyles: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
@@ -140,5 +158,8 @@ export const OddAndEvenMiscStyles: ComponentStory<typeof TreeReactFlow> = (
   treeSized({
     ...args,
     defs: oddEvenDefsMiscStyles,
-    selection: { def: def5.name, node: { nodeType: "BodyNode", id: 5 } },
+    selection: {
+      tag: "SelectionDef",
+      contents: { def: def5.name, node: { nodeType: "BodyNode", meta: 5 } },
+    },
   });

@@ -16,14 +16,24 @@ export type NodeFlavor =
 export const commonHoverClasses = "hover:ring hover:ring-4 hover:ring-offset-4";
 
 export const flavorClasses = (flavor: NodeFlavor): string => {
+  // TODO total hack
+  if (isDefinition(flavor)) {
+    return flavorClasses0(flavor).replace("bg", "").concat(" bg-white-primary");
+  } else {
+    return flavorClasses0(flavor);
+  }
+};
+export const flavorClasses0 = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
+    case "THole":
       return classNames(
         "border-red-tertiary ring-red-tertiary bg-white-primary",
         "hover:ring-red-tertiary",
         commonHoverClasses
       );
     case "EmptyHole":
+    case "TEmptyHole":
       return classNames(
         "border-red-tertiary ring-red-tertiary bg-white-primary",
         "hover:ring-red-tertiary",
@@ -36,44 +46,44 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
         commonHoverClasses
       );
     case "App":
+    case "APP":
+    case "TApp":
       return classNames(
         "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary",
         "hover:ring-blue-tertiary",
         commonHoverClasses
       );
-    case "APP":
-      return classNames(
-        "border-yellow-secondary ring-yellow-secondary bg-yellow-secondary",
-        "hover:ring-yellow-secondary",
-        commonHoverClasses
-      );
+    // case "APP":
+    // case "TApp":
+    //   return classNames(
+    //     "border-yellow-secondary ring-yellow-secondary bg-yellow-secondary",
+    //     "hover:ring-yellow-secondary",
+    //     commonHoverClasses
+    //   );
     case "Con":
+    case "TCon":
       return classNames(
-        "border-green-primary ring-green-primary bg-white-primary",
+        "border-green-primary ring-green-primary bg-green-primary",
         "hover:ring-green-primary",
         commonHoverClasses
       );
     case "Lam":
       return classNames(
-        "border-blue-primary ring-blue-primary bg-white-primary",
+        "border-blue-primary ring-blue-primary bg-blue-primary",
         "hover:ring-blue-primary",
         commonHoverClasses
       );
     case "LAM":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
+        "border-black-primary ring-black-primary bg-black-primary",
         "hover:ring-black-primary",
         commonHoverClasses
       );
     case "GlobalVar":
-      return classNames(
-        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
-        "hover:ring-blue-quaternary",
-        commonHoverClasses
-      );
     case "LocalVar":
+    case "TVar":
       return classNames(
-        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
         "hover:ring-blue-quaternary",
         commonHoverClasses
       );
@@ -108,25 +118,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
 
     case "PrimCon":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "TEmptyHole":
-      return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "THole":
-      return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "TCon":
-      return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
+        "border-black-primary ring-black-primary bg-black-primary",
         "hover:ring-black-primary",
         commonHoverClasses
       );
@@ -136,21 +128,9 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
         "hover:ring-black-primary",
         commonHoverClasses
       );
-    case "TVar":
-      return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "TApp":
-      return classNames(
-        "border-black-primary ring-black-primary bg-black-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
     case "TForall":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
+        "border-black-primary ring-black-primary bg-black-primary",
         "hover:ring-black-primary",
         commonHoverClasses
       );
@@ -170,10 +150,10 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       return "border-yellow-primary ring-yellow-primary";
 
     case "PatternCon":
-      return "border-green-primary ring-green-primary bg-white-primary";
+      return "border-green-primary ring-green-primary bg-green-primary";
     case "PatternBind":
       return classNames(
-        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
         "hover:ring-blue-quaternary",
         commonHoverClasses
       );
@@ -185,14 +165,17 @@ export const flavorContentClasses = (
 ): string => {
   switch (flavor) {
     case "Hole":
+    case "THole":
       return "text-blue-primary";
     case "EmptyHole":
+    case "TEmptyHole":
       return "text-blue-primary";
     case "Ann":
       return "text-white-primary";
     case "App":
       return "text-white-primary";
     case "APP":
+    case "TApp":
       return "text-white-primary";
     case "Con":
       return "text-blue-primary";
@@ -216,18 +199,12 @@ export const flavorContentClasses = (
       return "text-white-primary";
     case "PrimCon":
       return "text-blue-primary";
-    case "TEmptyHole":
-      return "text-blue-primary";
-    case "THole":
-      return "text-blue-primary";
     case "TCon":
       return "text-blue-primary";
     case "TFun":
       return "text-white-primary";
     case "TVar":
       return "text-blue-primary";
-    case "TApp":
-      return "text-white-primary";
     case "TForall":
       return "text-blue-primary";
     case "TLet":
@@ -242,24 +219,27 @@ export const flavorContentClasses = (
 export const flavorLabelClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
+    case "THole":
       return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
     case "EmptyHole":
+    case "TEmptyHole":
       return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
     case "Ann":
       return "font-code bg-black-primary border-black-primary text-white-primary";
     case "App":
-      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
     case "APP":
-      return "font-code bg-yellow-secondary border-yellow-secondary text-white-primary";
+    case "TApp":
+      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
     case "Con":
+    case "TCon":
       return "bg-green-primary border-green-primary text-white-primary";
     case "Lam":
       return "font-code bg-blue-primary border-blue-primary text-white-primary";
     case "LAM":
       return "font-code bg-black-primary border-black-primary text-white-primary";
     case "GlobalVar":
-      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "LocalVar":
+    case "TVar":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "Let":
       return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
@@ -273,17 +253,7 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
       return "hidden font-code bg-yellow-primary border-yellow-primary text-white-primary";
     case "PrimCon":
       return "bg-black-primary border-black-primary text-white-primary";
-    case "TEmptyHole":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
-    case "THole":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
-    case "TCon":
-      return "bg-black-primary border-black-primary text-white-primary";
     case "TFun":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
-    case "TVar":
-      return "bg-black-primary border-black-primary text-white-primary";
-    case "TApp":
       return "font-code bg-black-primary border-black-primary text-white-primary";
     case "TForall":
       return "font-code bg-black-primary border-black-primary text-white-primary";
@@ -301,24 +271,27 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
 export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
+    case "THole":
       return "stroke-red-tertiary";
     case "EmptyHole":
+    case "TEmptyHole":
       return "stroke-red-tertiary";
     case "Ann":
       return "stroke-black-primary";
     case "App":
-      return "stroke-blue-tertiary";
     case "APP":
-      return "stroke-yellow-secondary";
+    case "TApp":
+      return "stroke-blue-tertiary";
     case "Con":
+    case "TCon":
       return "stroke-green-primary";
     case "Lam":
       return "stroke-blue-primary";
     case "LAM":
       return "stroke-black-primary";
     case "GlobalVar":
-      return "stroke-blue-quaternary";
     case "LocalVar":
+    case "TVar":
       return "stroke-blue-quaternary";
     case "Let":
       return "stroke-blue-quaternary";
@@ -332,17 +305,7 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
       return "stroke-yellow-primary";
     case "PrimCon":
       return "stroke-black-primary";
-    case "TEmptyHole":
-      return "stroke-black-primary";
-    case "THole":
-      return "stroke-black-primary";
-    case "TCon":
-      return "stroke-black-primary";
     case "TFun":
-      return "stroke-black-primary";
-    case "TVar":
-      return "stroke-black-primary";
-    case "TApp":
       return "stroke-black-primary";
     case "TForall":
       return "stroke-black-primary";
@@ -366,9 +329,9 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "Ann":
       return ":";
     case "App":
-      return "$";
     case "APP":
-      return "@";
+    case "TApp":
+      return "←";
     case "Con":
       return "V";
     case "Lam":
@@ -376,7 +339,6 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "LAM":
       return "Λ";
     case "GlobalVar":
-      return "Var";
     case "LocalVar":
       return "Var";
     case "Let":
@@ -400,9 +362,7 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "TFun":
       return "→";
     case "TVar":
-      return "Var";
-    case "TApp":
-      return "@";
+      return "TVar";
     case "TForall":
       return "∀";
     case "TLet":
@@ -423,6 +383,7 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
     case "App":
       return "apply";
     case "APP":
+    case "TApp":
       return "apply type";
     case "Case":
       return "match";
@@ -430,8 +391,6 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
       return "with";
     case "TFun":
       return "function type";
-    case "TApp":
-      return "apply type";
     case "Hole":
       return "{?}";
     case "EmptyHole":
@@ -449,3 +408,120 @@ export const boxFlavorBackground = (flavor: NodeFlavorBoxBody): string => {
       return "bg-yellow-primary";
   }
 };
+
+// TODO names
+// TODO get from backend? this comes down to whether these are from `Expr` or `Type`
+export const isTypeLevel = (flavor: NodeFlavor): "term" | "type" => {
+  switch (flavor) {
+    case "Con":
+    case "Lam":
+    case "LAM":
+    case "Let":
+    case "Letrec":
+    case "PatternBind":
+    case "PatternCon":
+    case "LetType":
+    case "GlobalVar":
+    case "LocalVar":
+    case "PrimCon":
+    case "Pattern":
+    case "Hole":
+    case "EmptyHole":
+    case "Ann":
+    case "App":
+    case "APP":
+    case "Case":
+    case "CaseWith":
+      return "term";
+    case "TCon":
+    case "TVar":
+    case "TForall":
+    case "TLet":
+    case "TEmptyHole":
+    case "THole":
+    case "TFun":
+    case "TApp":
+      return "type";
+  }
+};
+export const typeOrTermClasses = (x: "term" | "type"): string => {
+  switch (x) {
+    case "term":
+      return "rounded-3xl";
+    case "type":
+      return "";
+  }
+};
+// NB these are (presumably) exactly the nodes where we offer "rename"-related actions
+export const isDefinition = (flavor: NodeFlavor): boolean => {
+  switch (flavor) {
+    case "Let":
+    case "Letrec":
+    case "Lam":
+    case "LAM":
+    case "PatternBind":
+    case "LetType":
+    case "TForall":
+      return true;
+    case "Con":
+    case "PatternCon":
+    case "TCon":
+    case "TVar":
+    case "TLet":
+    case "GlobalVar":
+    case "LocalVar":
+    case "PrimCon":
+    case "Pattern":
+    case "Hole":
+    case "EmptyHole":
+    case "Ann":
+    case "App":
+    case "APP":
+    case "Case":
+    case "CaseWith":
+    case "TEmptyHole":
+    case "THole":
+    case "TFun":
+    case "TApp":
+      return false;
+  }
+};
+export const definitionClasses = (x: boolean): string => {
+  switch (x) {
+    case true:
+      return "bg-white-primary";
+    // return "bg-blue-tertiary";
+    case false:
+      return "";
+    // return "bg-blue-tertiary";
+  }
+};
+
+// case "Con":
+// case "Lam":
+// case "LAM":
+// case "Let":
+// case "Letrec":
+// case "PatternBind":
+// case "PatternCon":
+// case "LetType":
+// case "TCon":
+// case "TVar":
+// case "TForall":
+// case "TLet":
+// case "GlobalVar":
+// case "LocalVar":
+// case "PrimCon":
+// case "Pattern":
+// case "Hole":
+// case "EmptyHole":
+// case "Ann":
+// case "App":
+// case "APP":
+// case "Case":
+// case "CaseWith":
+// case "PatternApp":
+// case "TEmptyHole":
+// case "THole":
+// case "TFun":
+// case "TApp":

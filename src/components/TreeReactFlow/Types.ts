@@ -7,6 +7,7 @@ import {
   NodeType,
 } from "@/primer-api";
 import { unzip } from "fp-ts/lib/Array";
+import { Position } from "reactflow";
 import { NodeFlavor } from "./Flavor";
 
 /** A generic graph. */
@@ -120,6 +121,10 @@ export type PrimerNode<T = unknown> = {
   | { type: "primer-simple"; data: PrimerSimpleNodeProps }
   | { type: "primer-box"; data: PrimerBoxNodeProps }
   | { type: "primer-def-name"; data: PrimerDefNameNodeProps }
+  // TODO check all of these are used - some were created while experimenting
+  | { type: "primer-typedef-name"; data: PrimerTypeDefNameNodeProps }
+  | { type: "primer-typedef-param"; data: PrimerTypeDefParamNodeProps }
+  | { type: "primer-typedef-cons"; data: PrimerTypeDefConsNodeProps }
 );
 
 export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> =>
@@ -130,9 +135,16 @@ export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> =>
     data: { ...n1.data, ...x },
   }))(n);
 
+export type NodeType1 =
+  | NodeType
+  | {
+      // tag: "typedefFieldNode";
+      typedefFieldNode: { con: GlobalName; nChild: number };
+    };
+
 /** Node properties. */
 export type PrimerNodeProps = {
-  nodeType: NodeType;
+  nodeType: NodeType1;
   syntax: boolean;
   flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
   contents: string;
@@ -140,19 +152,31 @@ export type PrimerNodeProps = {
 
 /** Properties for a simple node. */
 export type PrimerSimpleNodeProps = {
-  nodeType: NodeType;
+  nodeType: NodeType1;
   flavor: NodeFlavorNoBody;
 };
 
 /** Properties for a box node. */
 export type PrimerBoxNodeProps = {
-  nodeType: NodeType;
+  nodeType: NodeType1;
   flavor: NodeFlavorBoxBody;
 };
 
 /** Properties for the special definition name node. */
 export type PrimerDefNameNodeProps = {
   def: GlobalName;
+};
+
+export type PrimerTypeDefNameNodeProps = {
+  name: GlobalName;
+};
+
+export type PrimerTypeDefParamNodeProps = {
+  name: string;
+};
+
+export type PrimerTypeDefConsNodeProps = {
+  name: GlobalName;
 };
 
 /** Properties common to every type of node. */
@@ -168,12 +192,22 @@ export type PrimerEdge = {
   id: string;
   source: string;
   target: string;
-  sourceHandle: string;
-  targetHandle: string;
+  sourceHandle: Position;
+  targetHandle: Position;
   zIndex: number;
-} & ({ type: "primer"; data: PrimerEdgeProps } | { type: "primer-def-name" });
+} & (
+  | { type: "primer"; data: PrimerEdgeProps }
+  | { type: "primer-def-name" }
+  | { type: "primer-type" }
+);
 
-export type PrimerEdgeProps = { flavor: NodeFlavor };
+export type PrimerEdgeProps = {
+  flavor: NodeFlavor;
+  // TODO can we find a way to make this non-optional?
+  // then again, if all we care about is whether it's type-level, we can actually deduce that from the parent
+  // e.g. we know that `APP`'s two children are term and type respectively
+  childFlavor?: NodeFlavor;
+};
 
 export type Positioned<T> = T & {
   position: { x: number; y: number };

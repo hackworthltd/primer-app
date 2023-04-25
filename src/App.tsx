@@ -210,16 +210,16 @@ const AppNoError = ({
               .sort((a, b) => cmpName(a.name, b.name))
               .map((d) => d.name.baseName),
             types: p.module.types
-              .sort((a, b) => cmpName(a, b))
-              .map((t) => t.baseName),
+              .sort((a, b) => cmpName(a.name, b.name))
+              .map((t) => t.name.baseName),
             importedDefs: p.imports
               .flatMap((m) => m.defs)
               .sort((a, b) => cmpName(a.name, b.name))
               .map((d) => d.name.baseName),
             importedTypes: p.imports
               .flatMap((m) => m.types)
-              .sort((a, b) => cmpName(a, b))
-              .map((t) => t.baseName),
+              .sort((a, b) => cmpName(a.name, b.name))
+              .map((t) => t.name.baseName),
           }}
           onClickDef={(_label, _event) => ({})}
           onClickAddDef={onClickAddDef}
@@ -294,22 +294,80 @@ const AppNoError = ({
           {...defaultTreeReactFlowProps}
           {...(selection && { selection })}
           onNodeClick={(_e, node) => {
-            if (!("nodeType" in node.data)) {
+            // TODO move selection conversion in to tree component?
+            // we could have `onClick` take it as an arg
+            if (node.type == "primer-typedef-name") {
               setSelection({
-                def: node.data.def,
+                tag: "SelectionTypeDef",
+                contents: { def: node.data.def },
+              });
+              // console.log("clicked type name");
+            } else if (node.type == "primer-def-name") {
+              setSelection({
+                tag: "SelectionDef",
+                contents: { def: node.data.def },
+              });
+            } else if (node.type == "primer-typedef-param") {
+              setSelection({
+                tag: "SelectionTypeDef",
+                contents: {
+                  def: node.data.def,
+                  node: {
+                    tag: "TypeDefParamNodeSelection",
+                    contents: node.data.name,
+                  },
+                },
+              });
+            } else if (node.type == "primer-typedef-cons") {
+              setSelection({
+                tag: "SelectionTypeDef",
+                contents: {
+                  def: node.data.def,
+                  node: {
+                    tag: "TypeDefConsNodeSelection",
+                    contents: { con: node.data.name },
+                  },
+                },
               });
             } else {
+              console.log(1, node.id);
               const id = Number(node.id);
               // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
               if (!isNaN(id)) {
-                setSelection({
-                  def: node.data.def,
-                  node: { id, nodeType: node.data.nodeType },
-                });
+                // if (node.data.nodeType != "typedefFieldNode") {
+                // if (!("typedefFieldNode" in node.data.nodeType)) {
+                if (typeof node.data.nodeType == "string") {
+                  setSelection({
+                    tag: "SelectionDef",
+                    contents: {
+                      def: node.data.def,
+                      node: { meta: id, nodeType: node.data.nodeType },
+                    },
+                  });
+                } else {
+                  console.log(2);
+                  setSelection({
+                    tag: "SelectionTypeDef",
+                    contents: {
+                      def: node.data.def,
+                      node: {
+                        tag: "TypeDefConsNodeSelection",
+                        contents: {
+                          con: node.data.nodeType.typedefFieldNode.con,
+                          field: {
+                            index: node.data.nodeType.typedefFieldNode.nChild,
+                            meta: id,
+                          },
+                        },
+                      },
+                    },
+                  });
+                }
               }
             }
           }}
           defs={p.module.defs}
+          typeDefs={p.module.types}
           level={level}
         />
       </div>
@@ -370,7 +428,9 @@ const AppNoError = ({
       ) : null}
       {showCreateTypeDefModal ? (
         <CreateTypeDefModal
-          moduleTypeDefNames={new Set(p.module.types.map((t) => t.baseName))}
+          moduleTypeDefNames={
+            new Set(p.module.types.map((t) => t.name.baseName))
+          }
           open={showCreateTypeDefModal}
           onClose={() => setShowCreateTypeDefModal(false)}
           onCancel={() => setShowCreateTypeDefModal(false)}
