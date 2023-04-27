@@ -88,7 +88,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
           p.onModeChange(m, e);
         }}
         className="flex h-6 w-12
-            flex-col items-center rounded bg-blue-primary text-white-primary shadow-lg hover:bg-blue-secondary"
+            flex-col items-center rounded bg-red-primary text-white-primary shadow-lg hover:bg-blue-secondary"
       >
         {modeSvg(mode)}
       </button>

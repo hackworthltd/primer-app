@@ -35,6 +35,9 @@ export default {
       action: "chevron",
     },
   },
+  parameters: {
+    chromatic: { delay: 15 * 1000 },
+  },
 } as ComponentMeta<typeof FloatingToolbar>;
 
 const Template: ComponentStory<typeof FloatingToolbar> = (
