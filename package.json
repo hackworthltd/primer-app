@@ -1,7 +1,7 @@
 {
   "name": "@hackworthltd/primer-app",
   "version": "0.2.0",
-  "license": "SEE LICENSE IN LICENSE.md",
+  "license": "AGPL-3.0-only",
   "private": true,
   "sideEffects": false,
   "engines": {
