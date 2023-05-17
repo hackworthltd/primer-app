@@ -12,7 +12,6 @@ export type GetActionOptionsAction = typeof GetActionOptionsAction[keyof typeof 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetActionOptionsAction = {
   MakeCon: 'MakeCon',
-  MakeConSat: 'MakeConSat',
   MakeInt: 'MakeInt',
   MakeChar: 'MakeChar',
   MakeVar: 'MakeVar',

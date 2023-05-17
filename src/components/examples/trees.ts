@@ -461,24 +461,16 @@ export const oddEvenTrees: [string, Tree][] = [
                       fst: "Pattern",
                       snd: {
                         body: {
-                          tag: "NoBody",
-                          contents: "PatternApp",
+                          contents: {
+                            fst: "PatternCon",
+                            snd: {
+                              baseName: "Succ",
+                              qualifiedModule: ["Builtins"],
+                            },
+                          },
+                          tag: "TextBody",
                         },
                         childTrees: [
-                          {
-                            body: {
-                              contents: {
-                                fst: "PatternCon",
-                                snd: {
-                                  baseName: "Succ",
-                                  qualifiedModule: ["Builtins"],
-                                },
-                              },
-                              tag: "TextBody",
-                            },
-                            childTrees: [],
-                            nodeId: "15P1B",
-                          },
                           {
                             body: {
                               contents: {
@@ -491,7 +483,7 @@ export const oddEvenTrees: [string, Tree][] = [
                             nodeId: "18",
                           },
                         ],
-                        nodeId: "18A",
+                        nodeId: "15P1B",
                       },
                     },
                     tag: "BoxBody",
@@ -605,22 +597,17 @@ export const oddEvenTreesMiscStyles: [string, Tree][] = [
                 contents: {
                   fst: "Pattern",
                   snd: {
-                    body: { tag: "NoBody", contents: "PatternApp" },
-                    childTrees: [
-                      {
-                        body: {
-                          contents: {
-                            fst: "PatternCon",
-                            snd: {
-                              baseName: "Succ",
-                              qualifiedModule: ["Builtins"],
-                            },
-                          },
-                          tag: "TextBody",
+                    body: {
+                      contents: {
+                        fst: "PatternCon",
+                        snd: {
+                          baseName: "Succ",
+                          qualifiedModule: ["Builtins"],
                         },
-                        childTrees: [],
-                        nodeId: "4P1B",
                       },
+                      tag: "TextBody",
+                    },
+                    childTrees: [
                       {
                         body: {
                           contents: {
@@ -633,7 +620,7 @@ export const oddEvenTreesMiscStyles: [string, Tree][] = [
                         nodeId: "7",
                       },
                     ],
-                    nodeId: "7A",
+                    nodeId: "4P1B",
                   },
                 },
                 tag: "BoxBody",

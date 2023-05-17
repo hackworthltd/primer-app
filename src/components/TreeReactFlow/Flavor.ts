@@ -177,8 +177,6 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
         "hover:ring-blue-quaternary",
         commonHoverClasses
       );
-    case "PatternApp":
-      return "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary";
   }
 };
 
@@ -238,8 +236,6 @@ export const flavorContentClasses = (
       return "text-blue-primary";
     case "PatternBind":
       return "text-blue-primary";
-    case "PatternApp":
-      return "text-white-primary";
   }
 };
 
@@ -299,8 +295,6 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
       return "bg-green-primary border-green-primary text-white-primary";
     case "PatternBind":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary";
-    case "PatternApp":
-      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
   }
 };
 
@@ -360,8 +354,6 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
       return "stroke-green-primary";
     case "PatternBind":
       return "stroke-blue-quaternary";
-    case "PatternApp":
-      return "stroke-blue-tertiary";
   }
 };
 
@@ -421,8 +413,6 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
       return "V";
     case "PatternBind":
       return "Var";
-    case "PatternApp":
-      return "$";
   }
 };
 
@@ -442,8 +432,6 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
       return "function type";
     case "TApp":
       return "apply type";
-    case "PatternApp":
-      return "apply";
     case "Hole":
       return "{?}";
     case "EmptyHole":

@@ -47,9 +47,7 @@ export const actionName = (
     case "DeleteType":
       return prose("⌫");
     case "MakeCon":
-      return code("V");
-    case "MakeConSat":
-      return code("V $ ?");
+      return code("V ? ?");
     case "MakeInt":
       return code("1");
     case "MakeChar":
@@ -139,8 +137,6 @@ export const actionDescription = (
       return "Delete this type";
     case "MakeCon":
       return "Use a value constructor";
-    case "MakeConSat":
-      return "Apply a value constructor to arguments";
     case "MakeInt":
       return "Insert a whole number";
     case "MakeChar":
@@ -215,8 +211,6 @@ export const actionType = (action: NoInputAction | InputAction): ActionType => {
     case "DeleteType":
       return "Destructive";
     case "MakeCon":
-      return "Primary";
-    case "MakeConSat":
       return "Primary";
     case "MakeInt":
       return "Primary";

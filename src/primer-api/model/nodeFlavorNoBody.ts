@@ -18,7 +18,6 @@ export const NodeFlavorNoBody = {
   APP: 'APP',
   Case: 'Case',
   CaseWith: 'CaseWith',
-  PatternApp: 'PatternApp',
   TEmptyHole: 'TEmptyHole',
   THole: 'THole',
   TFun: 'TFun',
