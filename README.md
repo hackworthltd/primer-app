@@ -4,7 +4,7 @@ This repo contains the Primer frontend application and related packages.
 
 ## License
 
-The source code for this project is licensed under the [GNU Affero General Public License, version 3](https://www.gnu.org/licenses/agpl-3.0.html).
+The source code for this project is licensed under the [GNU Affero General Public License, version 3 or later](https://www.gnu.org/licenses/agpl-3.0.html).
 
 ### Third party assets & licenses
 
