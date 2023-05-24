@@ -21,6 +21,7 @@ const ChooseSession = (): JSX.Element => {
   // NOTE: pagination in our API is 1-indexed.
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
+  const [sessionNameFilter, setSessionNameFilter] = useState("");
   const queryClient = useQueryClient();
   const deleteSession = useDeleteSession({
     mutation: {
@@ -30,7 +31,11 @@ const ChooseSession = (): JSX.Element => {
     },
   });
 
-  const params: GetSessionListParams = { page: page, pageSize: pageSize };
+  const params: GetSessionListParams = {
+    page: page,
+    pageSize: pageSize,
+    nameLike: sessionNameFilter,
+  };
   const { data } = useGetSessionList(params);
 
   const sessions: Session[] = data ? data.items : [];
@@ -84,12 +89,14 @@ const ChooseSession = (): JSX.Element => {
       onClickNextPage={onClickNextPage}
       onClickPreviousPage={onClickPreviousPage}
       onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
-      onSubmitSearch={(searchString: string) =>
-        console.log(`Search: ${searchString}`)
-      }
-      onChangeSearch={(searchString: string) =>
-        console.log(`Search change: ${searchString}`)
-      }
+      onSubmitSearch={(nameFilter: string) => {
+        setSessionNameFilter(nameFilter);
+        setPage(1);
+      }}
+      onChangeSearch={(nameFilter: string) => {
+        setSessionNameFilter(nameFilter);
+        setPage(1);
+      }}
     />
   );
 };
