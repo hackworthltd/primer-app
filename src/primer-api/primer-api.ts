@@ -97,7 +97,7 @@ export const useCopySessionMutationOptions = <TError = ErrorType<void>,
     }
     
 /**
- * Get a list of all sessions and their human-readable names. By default, this method returns the list of all sessions in the persistent database, but optionally it can return just the list of all sessions in memory, which is mainly useful for testing. Note that in a production system, this endpoint should obviously be authentication-scoped and only return the list of sessions that the caller is authorized to see.
+ * Get a list of all sessions and their human-readable names, with an optional filter for matching on session names. Note that in a production system, this endpoint should obviously be authentication-scoped and only return the list of sessions that the caller is authorized to see.
  * @summary Get the list of sessions
  */
 export const useGetSessionListHook = () => {
