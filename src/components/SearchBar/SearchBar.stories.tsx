@@ -17,6 +17,10 @@ export default {
       description: "The onSubmit handler.",
       action: "submit",
     },
+    onChange: {
+      description: "The onChange handler.",
+      action: "change",
+    },
   },
 } as ComponentMeta<typeof SearchBar>;
 

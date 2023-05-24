@@ -78,6 +78,11 @@ export interface SessionsPageProps {
   onClickDelete: (id: Uuid) => void;
 
   /**
+   * The search bar's onChange handler.
+   */
+  onChangeSearch: (searchString: string) => void;
+
+  /**
    * The search bar's onSubmit handler.
    */
   onSubmitSearch: (searchString: string) => void;
@@ -96,6 +101,7 @@ export const SessionsPage = (p: SessionsPageProps): JSX.Element => {
           onClickNewProgram={onClickNewProgram}
           account={p.account}
           onSubmitSearch={p.onSubmitSearch}
+          onChangeSearch={p.onChangeSearch}
         />
       </div>
       <div className="max-h-screen overflow-auto rounded-sm bg-grey-primary p-3 shadow-inner">

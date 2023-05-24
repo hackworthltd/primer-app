@@ -30,6 +30,10 @@ export default {
       description: "The search bar's onSubmit handler.",
       action: "submitSearch",
     },
+    onChangeSearch: {
+      description: "The search bar's onChange handler.",
+      action: "changeSearch",
+    },
   },
 } as ComponentMeta<typeof SessionsPage>;
 

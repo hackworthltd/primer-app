@@ -87,6 +87,9 @@ const ChooseSession = (): JSX.Element => {
       onSubmitSearch={(searchString: string) =>
         console.log(`Search: ${searchString}`)
       }
+      onChangeSearch={(searchString: string) =>
+        console.log(`Search change: ${searchString}`)
+      }
     />
   );
 };

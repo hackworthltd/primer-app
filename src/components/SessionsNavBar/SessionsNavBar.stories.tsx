@@ -20,6 +20,10 @@ export default {
       description: "the onSubmit handler for the search form.",
       action: "submitSearch",
     },
+    onChangeSearch: {
+      description: "the onChange handler for the search form.",
+      action: "changeSearch",
+    },
   },
 } as ComponentMeta<typeof SessionsNavBar>;
 

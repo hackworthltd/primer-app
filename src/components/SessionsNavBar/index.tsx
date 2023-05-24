@@ -22,6 +22,11 @@ export interface SessionsNavBarProps {
   onClickNewProgram: MouseEventHandler<unknown> | undefined;
 
   /**
+   * The search bar's onChange handler.
+   */
+  onChangeSearch: (searchString: string) => void;
+
+  /**
    * The search bar's onSubmit handler.
    */
   onSubmitSearch: (searchString: string) => void;
@@ -44,6 +49,7 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
           ariaLabel="Search programs"
           placeholder="Program name"
           onSubmit={p.onSubmitSearch}
+          onChange={p.onChangeSearch}
         />
       </div>
       <div className="flex items-center justify-end pl-3">

@@ -1,7 +1,8 @@
 import "@/index.css";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm, useWatch, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
@@ -31,6 +32,12 @@ export interface SearchBarProps {
   placeholder: string;
 
   /**
+   * Called whenever the search bar value changes. This is useful for
+   * live search.
+   */
+  onChange: (searchTerm: string) => void;
+
+  /**
    * Called when the search bar form is submitted.
    */
   onSubmit: (searchTerm: string) => void;
@@ -45,9 +52,37 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export const SearchBar = (p: SearchBarProps): JSX.Element => {
-  const { register, handleSubmit } = useForm<FormData>({
+  const { register, handleSubmit, control } = useForm<FormData>({
+    defaultValues: {
+      searchTerm: "",
+    },
     resolver: zodResolver(schema),
   });
+
+  // This will watch the search bar value and submit it whenever it
+  // changes, rather than waiting for a manual form submission.
+  //
+  // Note that if you're inclined to ignore this callback and only use
+  // `onSubmit`, then when you clear the search bar using the "x"
+  // icon, that will not be visible to the caller until the student
+  // manually submits the form. In other words, a so-called "onClear"
+  // event is only visible via the `onChange` callback wired up via
+  // `useWatch`.
+  //
+  // (We could probably change this behavior such that it only gets
+  // triggered when cleared, in case the live updates are too
+  // expensive but we still want to know when the search bar is
+  // cleared.)
+  const searchTerm = useWatch({
+    control,
+    name: "searchTerm",
+  });
+  useEffect(() => {
+    p.onChange(searchTerm);
+  }, [p, searchTerm]);
+
+  // Also handle manual submission, just in case the caller wants to
+  // distinguish the live updates from manual submissions.
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
     p.onSubmit(data.searchTerm);
   };
