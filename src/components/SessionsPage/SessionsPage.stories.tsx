@@ -26,6 +26,10 @@ export default {
       action: "clicked",
     },
     onClickDelete: { action: "delete" },
+    onSubmitSearch: {
+      description: "The search bar's onSubmit handler.",
+      action: "submitSearch",
+    },
   },
 } as ComponentMeta<typeof SessionsPage>;
 

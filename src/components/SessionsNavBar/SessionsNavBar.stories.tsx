@@ -16,6 +16,10 @@ export default {
       description: 'the onClick handler for the "New program" button.',
       action: "clicked",
     },
+    onSubmitSearch: {
+      description: "the onSubmit handler for the search form.",
+      action: "submitSearch",
+    },
   },
 } as ComponentMeta<typeof SessionsNavBar>;
 

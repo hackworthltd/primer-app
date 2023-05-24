@@ -84,6 +84,9 @@ const ChooseSession = (): JSX.Element => {
       onClickNextPage={onClickNextPage}
       onClickPreviousPage={onClickPreviousPage}
       onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
+      onSubmitSearch={(searchString: string) =>
+        console.log(`Search: ${searchString}`)
+      }
     />
   );
 };
