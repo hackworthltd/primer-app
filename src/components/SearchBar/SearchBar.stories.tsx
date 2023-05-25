@@ -13,6 +13,14 @@ export default {
     placeholder: {
       description: "The search bar placeholder text.",
     },
+    onSubmit: {
+      description: "The onSubmit handler.",
+      action: "submit",
+    },
+    onChange: {
+      description: "The onChange handler.",
+      action: "change",
+    },
   },
 } as ComponentMeta<typeof SearchBar>;
 

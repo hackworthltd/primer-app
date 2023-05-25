@@ -20,6 +20,16 @@ export interface SessionsNavBarProps {
    * @type {React.MouseEventHandler<unknown>}
    */
   onClickNewProgram: MouseEventHandler<unknown> | undefined;
+
+  /**
+   * The search bar's onChange handler.
+   */
+  onChangeSearch: (searchString: string) => void;
+
+  /**
+   * The search bar's onSubmit handler.
+   */
+  onSubmitSearch: (searchString: string) => void;
 }
 
 const accountNavigation = [
@@ -35,7 +45,12 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
         <Branding />
       </div>
       <div className="min-w-0 flex-1 items-center px-3 py-6">
-        <SearchBar ariaLabel="Search programs" placeholder="Program name" />
+        <SearchBar
+          ariaLabel="Search programs"
+          placeholder="Program name"
+          onSubmit={p.onSubmitSearch}
+          onChange={p.onChangeSearch}
+        />
       </div>
       <div className="flex items-center justify-end pl-3">
         {/* Profile dropdown */}

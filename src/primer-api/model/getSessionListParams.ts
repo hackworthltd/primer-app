@@ -7,7 +7,7 @@
  */
 
 export type GetSessionListParams = {
-inMemory?: boolean;
+nameLike?: string;
 page?: number;
 pageSize?: number;
 };
