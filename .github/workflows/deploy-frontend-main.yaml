@@ -12,6 +12,7 @@ jobs:
     uses: ./.github/workflows/build-frontend.yaml
     with:
       api-url: "https://api.hackworth.codes/"
+      withCredentials: true
 
   deploy-frontend-production:
     needs: build-frontend-production
