@@ -90,12 +90,23 @@ const ChooseSession = (): JSX.Element => {
       onClickPreviousPage={onClickPreviousPage}
       onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
       onSubmitSearch={(nameFilter: string) => {
+        // Unlike `onChangeSearch`, this callback is always triggered
+        // by an explicit action, and never by, e.g., a page refresh,
+        // so we always want to reset the page when this callback is
+        // invoked.
         setSessionNameFilter(nameFilter);
         setPage(1);
       }}
       onChangeSearch={(nameFilter: string) => {
-        setSessionNameFilter(nameFilter);
-        setPage(1);
+        // For technical reasons, this callback may be triggered even
+        // if the value of the search term didn't actually change
+        // (e.g., because the page is redrawn), and in these cases, we
+        // don't want to update the page, so we filter these spurious
+        // "changes" out.
+        if (nameFilter != sessionNameFilter) {
+          setSessionNameFilter(nameFilter);
+          setPage(1);
+        }
       }}
     />
   );
