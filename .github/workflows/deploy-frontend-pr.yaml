@@ -11,6 +11,7 @@ jobs:
     uses: ./.github/workflows/build-frontend.yaml
     with:
       api-url: "https://pr-${{ github.event.pull_request.number }}.hackworth.dev/"
+      withCredentials: false
 
   deploy-frontend-pr:
     needs: build-frontend-pr

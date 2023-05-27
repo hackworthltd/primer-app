@@ -2,7 +2,7 @@ import Axios, { AxiosRequestConfig, AxiosError } from "axios";
 
 export const instance = Axios.create({
   baseURL: import.meta.env["VITE_API_URL"],
-  withCredentials: true,
+  withCredentials: import.meta.env["VITE_WITH_CREDENTIALS"] === "true",
 });
 
 // Ugh, Orval doesn't do date conversion for us. The following is

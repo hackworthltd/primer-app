@@ -6,6 +6,9 @@ on:
       api-url:
         required: true
         type: string
+      withCredentials:
+        required: true
+        type: boolean
 
 jobs:
   build-frontend:
@@ -42,7 +45,7 @@ jobs:
         # This URL scheme for PR's is baked into other parts of the
         # repo, so if you change it here, make sure you change it
         # elsewhere, as well (and vice versa).
-        run: VITE_API_URL="${{ inputs.api-url }}" pnpm build
+        run: VITE_API_URL="${{ inputs.api-url }}" VITE_WITH_CREDENTIALS="${{ inputs.withCredentials }}" pnpm build
 
       # Note: linting must come after building, or else eslint won't
       # be able to resolve some paths.
