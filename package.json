@@ -6,7 +6,7 @@
   "sideEffects": false,
   "engines": {
     "node": "^18.6.0",
-    "pnpm": "^7.1.0"
+    "pnpm": "^8.5"
   },
   "scripts": {
     "watch": "vite",
@@ -74,7 +74,7 @@
     "eslint-plugin-storybook": "^0.6.12",
     "eslint-plugin-tailwindcss": "^3.12.0",
     "orval": "^6.16.0",
-    "pnpm": "^7.28.0",
+    "pnpm": "^8.5.1",
     "postcss": "^8.4.23",
     "postcss-import": "^15.1.0",
     "prettier": "^2.8.8",
