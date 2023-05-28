@@ -1,5 +1,5 @@
 agents:
-  private: "true"
+  public: "true"
   os: "linux"
 
 steps:
