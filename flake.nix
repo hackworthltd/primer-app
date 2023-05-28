@@ -95,6 +95,7 @@
                 "CONTRIBUTING.md"
                 "DCO.md"
                 "README.md"
+                "docs"
                 "package.json"
                 "pnpm-lock.yaml"
               ];
