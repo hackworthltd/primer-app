@@ -99,6 +99,7 @@
               };
 
               excludes = [
+                "CONTRIBUTING.md"
                 "DCO.md"
                 "README.md"
                 "package.json"
