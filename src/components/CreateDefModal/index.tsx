@@ -21,13 +21,13 @@ export interface CreateDefModalProps {
   onSubmit: (name: string) => void;
 
   /**
-   * The modal's on-cancel handler. This is called when the user clicks the
+   * The modal's on-cancel handler. This is called when the student clicks the
    * Cancel button.
    */
   onCancel: () => void;
 
   /**
-   * The modal's on-close handler. This is called when the user presses Esc or
+   * The modal's on-close handler. This is called when the student presses Esc or
    * clicks outside the modal.
    */
   onClose: () => void;
