@@ -99,6 +99,7 @@
               };
 
               excludes = [
+                "DCO.md"
                 "README.md"
                 "package.json"
                 "pnpm-lock.yaml"
