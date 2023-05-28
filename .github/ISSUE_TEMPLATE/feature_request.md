@@ -7,6 +7,12 @@ assignees: ''
 
 ---
 
+Thank you for helping us improve our software!
+
+**Before filing your feature request, please read and acknowledge the following by checking all the boxes:**
+
+- [ ] I have read the project's [code of conduct](https://github.com/hackworthltd/primer-app/blob/main/CODE_OF_CONDUCT.md), and by submitting this feature request, I agree to follow it.
+
 ## Description
 
 This is a feature request.
