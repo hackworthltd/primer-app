@@ -88,14 +88,7 @@
               hooks = {
                 prettier.enable = true;
                 nixpkgs-fmt.enable = true;
-
-                actionlint = {
-                  enable = true;
-                  name = "actionlint";
-                  entry = "${pkgs.actionlint}/bin/actionlint";
-                  language = "system";
-                  files = "^.github/workflows/";
-                };
+                actionlint.enable = true;
               };
 
               excludes = [
@@ -132,7 +125,6 @@
 
           devShells.default = pkgs.mkShell {
             buildInputs = (with pkgs; [
-              actionlint
               nixpkgs-fmt
               nodejs-18_x
               rnix-lsp
