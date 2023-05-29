@@ -64,6 +64,18 @@ export const actionName = (
       return code("λx");
     case "MakeLAM":
       return code("Λx");
+    case "AddBranch":
+      return prose("w+");
+    case "AddBranchInt":
+      return prose("w+");
+    case "AddBranchChar":
+      return prose("w+");
+    case "DeleteBranch":
+      return prose("w-");
+    case "DeleteBranchInt":
+      return prose("w-");
+    case "DeleteBranchChar":
+      return prose("w-");
     case "RenamePattern":
       return prose("r");
     case "RenameLet":
@@ -153,6 +165,18 @@ export const actionDescription = (
       return "Make a function with an input";
     case "MakeLAM":
       return "Make a type abstraction";
+    case "AddBranch":
+      return "Add a branch to this match";
+    case "AddBranchInt":
+      return "Add a branch to this match";
+    case "AddBranchChar":
+      return "Add a branch to this match";
+    case "DeleteBranch":
+      return "Remove a branch from this match";
+    case "DeleteBranchInt":
+      return "Remove a branch from this match";
+    case "DeleteBranchChar":
+      return "Remove a branch from this match";
     case "RenamePattern":
       return "Rename this pattern variable";
     case "RenameLet":
@@ -228,6 +252,18 @@ export const actionType = (action: NoInputAction | InputAction): ActionType => {
       return "Primary";
     case "MakeLAM":
       return "Primary";
+    case "AddBranch":
+      return "Primary";
+    case "AddBranchInt":
+      return "Primary";
+    case "AddBranchChar":
+      return "Primary";
+    case "DeleteBranch":
+      return "Destructive";
+    case "DeleteBranchInt":
+      return "Destructive";
+    case "DeleteBranchChar":
+      return "Destructive";
     case "RenamePattern":
       return "Primary";
     case "RenameLet":

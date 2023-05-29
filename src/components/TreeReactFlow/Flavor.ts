@@ -171,6 +171,10 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
 
     case "PatternCon":
       return "border-green-primary ring-green-primary bg-white-primary";
+    case "PrimPattern":
+      return "border-black-primary ring-black-primary bg-white-primary";
+    case "PatternWildcard":
+      return "border-green-primary ring-green-primary bg-white-primary";
     case "PatternBind":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-white-primary",
@@ -234,6 +238,10 @@ export const flavorContentClasses = (
       return "text-white-primary";
     case "PatternCon":
       return "text-blue-primary";
+    case "PrimPattern":
+      return "text-blue-primary";
+    case "PatternWildcard":
+      return "text-blue-primary";
     case "PatternBind":
       return "text-blue-primary";
   }
@@ -292,6 +300,10 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "Pattern":
       return "bg-yellow-primary border-yellow-primary text-white-primary";
     case "PatternCon":
+      return "bg-green-primary border-green-primary text-white-primary";
+    case "PrimPattern":
+      return "bg-black-primary border-black-primary text-white-primary";
+    case "PatternWildcard":
       return "bg-green-primary border-green-primary text-white-primary";
     case "PatternBind":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary";
@@ -352,6 +364,10 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
       return "stroke-yellow-primary";
     case "PatternCon":
       return "stroke-green-primary";
+    case "PrimPattern":
+      return "stroke-black-primary";
+    case "PatternWildcard":
+      return "stroke-green-primary";
     case "PatternBind":
       return "stroke-blue-quaternary";
   }
@@ -410,6 +426,10 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "Pattern":
       return "P";
     case "PatternCon":
+      return "V";
+    case "PrimPattern":
+      return "V";
+    case "PatternWildcard":
       return "V";
     case "PatternBind":
       return "Var";
