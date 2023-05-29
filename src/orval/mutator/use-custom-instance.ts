@@ -35,14 +35,9 @@ export function handleDates(body: any) {
 export const useCustomInstance = <T>(): ((
   config: AxiosRequestConfig
 ) => Promise<T>) => {
-  const token = "placeholder";
-
   return (config: AxiosRequestConfig) => {
     const promise = instance({
       ...config,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     }).then(({ data }) => data);
 
     return promise;
