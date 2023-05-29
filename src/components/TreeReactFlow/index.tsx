@@ -754,6 +754,10 @@ export const ReactFlowSafe = <
     <ReactFlow
       {...{
         ...p,
+        fitView: true,
+        // Note: we should try to detect this based on the bounding
+        // box of the canvas.
+        minZoom: 0.001,
         edgeTypes,
         onNodeClick: (e, n) => {
           "onNodeClick" in p &&
