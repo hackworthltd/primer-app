@@ -217,7 +217,7 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
         )}
 	  {type ? (
         <div>
-          <div className={subHeaderStyle}>Type</div>
+          <div className={subHeaderStyle}>{type.tag}</div>
           <div className={itemStyle}>{JSON.stringify(type)}</div>
         </div>) : ([])}
         <div>
