@@ -19,7 +19,6 @@ export const NodeFlavorTextBody = {
   Letrec: 'Letrec',
   PatternBind: 'PatternBind',
   PatternCon: 'PatternCon',
-  PatternWildcard: 'PatternWildcard',
   TCon: 'TCon',
   TVar: 'TVar',
   TForall: 'TForall',
