@@ -127,7 +127,8 @@
           devShells.default = pkgs.mkShell {
             buildInputs = (with pkgs; [
               nixpkgs-fmt
-              nodejs-18_x
+              nodejs_18
+              nodejs_18.pkgs.pnpm
               rnix-lsp
             ]);
 
@@ -141,13 +142,7 @@
               in
               ''
                 export PATH="$(pwd)/node_modules/.bin:$PATH"
-
-                if ! type -P pnpm ; then
-                  npx pnpm@8.5.1 add pnpm
-                else
-                  pnpm install
-                fi
-
+                pnpm install
                 rm -f ${local-spec}
                 ln -s ${spec} ${local-spec}
                 pnpm generate
