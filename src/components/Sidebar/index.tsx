@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
-import { EvalFullResp, GlobalName, Level } from "@/primer-api";
+import { EvalFullResp, GlobalName, Level, TypeOrKind } from "@/primer-api";
 import { TreeReactFlowOne } from "@/components";
 import { defaultTreeReactFlowProps } from "../TreeReactFlow";
 
@@ -35,7 +35,7 @@ type TypesAndDefinitionsProps = {
 };
 type InfoProps = {
   shadowed: boolean;
-  type: string;
+  type?: TypeOrKind;
   folder: string;
 };
 type EvalProps = {
@@ -215,10 +215,11 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
         ) : (
           []
         )}
+	  {type ? (
         <div>
           <div className={subHeaderStyle}>Type</div>
-          <div className={itemStyle}>{type}</div>
-        </div>
+          <div className={itemStyle}>{JSON.stringify(type)}</div>
+        </div>) : ([])}
         <div>
           <div className={subHeaderStyle}>Folder</div>
           <div className={itemStyle}>{folder}</div>

@@ -34,7 +34,9 @@ import {
   useEvalFull,
   Level,
   useUndo,
-  useRedo,
+    useRedo,
+    useSetSelection,
+    TypeOrKind,
 } from "./primer-api";
 import { defaultTreeReactFlowProps } from "./components/TreeReactFlow";
 
@@ -77,10 +79,17 @@ const App = (): JSX.Element => {
 };
 
 const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
-  const [prog, setProg0] = useState<Prog>(p.initialProg);
-  const [selection, setSelection] = useState<Selection | undefined>(
-    prog.selection
-  );
+    const [prog, setProg0] = useState<Prog>(p.initialProg);
+    const setBackendSelection = useSetSelection();
+    const [selection, setSelection0] = useState<Selection | undefined>(
+	prog.selection
+    );
+    const [selectionType, setSelectionType] = useState<TypeOrKind | undefined>();
+    const setSelection = (s : Selection | undefined) => {
+	s && setBackendSelection.mutateAsync({sessionId: p.sessionId,data: s}).then(setSelectionType);
+	s || setSelectionType(undefined);
+	setSelection0(s);
+    };
   const setProg = (prog: Prog) => {
     setProg0(prog);
     setSelection(prog.selection);
@@ -107,7 +116,8 @@ const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
       module={module}
       imports={importedModules}
       selection={selection}
-      setSelection={setSelection}
+	setSelection={setSelection}
+    selectionType={selectionType}
       setProg={setProg}
       undoAvailable={prog.undoAvailable}
       redoAvailable={prog.redoAvailable}
@@ -164,9 +174,10 @@ const AppNoError = ({
   sessionId: string;
   module: Module;
   imports: Module[];
-  selection: Selection | undefined;
-  setSelection: (s: Selection) => void;
-  setProg: (p: Prog) => void;
+    selection: Selection | undefined;
+    selectionType: TypeOrKind | undefined;
+    setSelection: (s: Selection) => void;
+    setProg: (p: Prog) => void;
   undoAvailable: boolean;
   redoAvailable: boolean;
 }): JSX.Element => {
@@ -201,195 +212,195 @@ const AppNoError = ({
   const canvasDimensions = useDimensions(canvasRef);
 
   return (
-    <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
-      <div className="overflow-scroll">
-        <Sidebar
-          initialMode="T&D"
-          prog={{
-            defs: p.module.defs
-              .sort((a, b) => cmpName(a.name, b.name))
-              .map((d) => d.name.baseName),
-            types: p.module.types
-              .sort((a, b) => cmpName(a, b))
-              .map((t) => t.baseName),
-            importedDefs: p.imports
-              .flatMap((m) => m.defs)
-              .sort((a, b) => cmpName(a.name, b.name))
-              .map((d) => d.name.baseName),
-            importedTypes: p.imports
-              .flatMap((m) => m.types)
-              .sort((a, b) => cmpName(a, b))
-              .map((t) => t.baseName),
-          }}
-          onClickDef={(_label, _event) => ({})}
-          onClickAddDef={onClickAddDef}
-          onClickTypeDef={(_label, _event) => ({})}
-          onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
-          shadowed={false}
-          type="?"
-          folder="unknown"
-          moduleName={p.module.modname}
-          evalFull={{
-            request: setEvalTarget,
-            ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
-          }}
-          level={level}
-        />
-      </div>
+      <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
+	  <div className="overflow-scroll">
+              <Sidebar
+		  initialMode="T&D"
+		  prog={{
+		      defs: p.module.defs
+			     .sort((a, b) => cmpName(a.name, b.name))
+			     .map((d) => d.name.baseName),
+		      types: p.module.types
+			      .sort((a, b) => cmpName(a, b))
+			      .map((t) => t.baseName),
+		      importedDefs: p.imports
+				     .flatMap((m) => m.defs)
+				     .sort((a, b) => cmpName(a.name, b.name))
+				     .map((d) => d.name.baseName),
+		      importedTypes: p.imports
+				      .flatMap((m) => m.types)
+				      .sort((a, b) => cmpName(a, b))
+				      .map((t) => t.baseName),
+		  }}
+		  onClickDef={(_label, _event) => ({})}
+		  onClickAddDef={onClickAddDef}
+		  onClickTypeDef={(_label, _event) => ({})}
+		  onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
+		  shadowed={false}
+		  folder="unknown"
+		  moduleName={p.module.modname}
+		  evalFull={{
+		      request: setEvalTarget,
+		      ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
+		  }}
+		  level={level}
+	      {...(p.selectionType&&{type:p.selectionType})}
+              />
+	  </div>
 
-      <div ref={canvasRef}>
-        {
-          // Wait for the `div` above to be rendered before we create
-          // the floating toolbar element, otherwise its initial
-          // position will always be (0,0).
-          //
-          // Note that we should probably make this check something
-          // like `canvasDimensions.width < n`, where `n` is some
-          // minimum breakpoint beneath which we draw a non-floating
-          // element(s), instead of the floating toolbar. This is for
-          // 2 reasons:
-          //
-          // 1. A floating toolbar doesn't make much sense on small
-          // mobile devices. See:
-          // https://github.com/hackworthltd/primer-app/issues/836
-          //
-          // 2. `@neodrag/react` has undefined behavior when parented
-          // to an element that's smaller than the draggable.
-          //
-          // But we keep it simple for now until we've figured out
-          // what to do about mobile form factors.
-          canvasDimensions.width == 0 ? (
-            <></>
-          ) : (
-            <FloatingToolbar
-              onModeChange={() => {
-                console.log("Toggle mode");
-              }}
-              undoAvailable={p.undoAvailable}
-              onClickUndo={() => {
-                undo
-                  .mutateAsync({
-                    sessionId: p.sessionId,
-                  })
-                  .then(p.setProg);
-              }}
-              redoAvailable={p.redoAvailable}
-              onClickRedo={() => {
-                redo
-                  .mutateAsync({
-                    sessionId: p.sessionId,
-                  })
-                  .then(p.setProg);
-              }}
-              onClickChevron={() => {
-                console.log("Toggle chevron");
-              }}
-              initialMode="tree"
-              // Note: these offsets are rather arbitrary.
-              initialPosition={{ x: canvasDimensions.width - 100, y: 15 }}
-            />
-          )
-        }
-        <TreeReactFlow
-          {...defaultTreeReactFlowProps}
-          {...(selection && { selection })}
-          onNodeClick={(_e, node) => {
-            if (!("nodeType" in node.data)) {
-              setSelection({
-                def: node.data.def,
-              });
-            } else {
-              const id = Number(node.id);
-              // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
-              if (!isNaN(id)) {
-                setSelection({
-                  def: node.data.def,
-                  node: { id, nodeType: node.data.nodeType },
-                });
+	  <div ref={canvasRef}>
+              {
+		  // Wait for the `div` above to be rendered before we create
+		  // the floating toolbar element, otherwise its initial
+		  // position will always be (0,0).
+		  //
+		  // Note that we should probably make this check something
+		  // like `canvasDimensions.width < n`, where `n` is some
+		  // minimum breakpoint beneath which we draw a non-floating
+		  // element(s), instead of the floating toolbar. This is for
+		  // 2 reasons:
+		  //
+		  // 1. A floating toolbar doesn't make much sense on small
+		  // mobile devices. See:
+		  // https://github.com/hackworthltd/primer-app/issues/836
+		  //
+		  // 2. `@neodrag/react` has undefined behavior when parented
+		  // to an element that's smaller than the draggable.
+		  //
+		  // But we keep it simple for now until we've figured out
+		  // what to do about mobile form factors.
+		  canvasDimensions.width == 0 ? (
+		      <></>
+		  ) : (
+		      <FloatingToolbar
+			  onModeChange={() => {
+			      console.log("Toggle mode");
+			  }}
+			  undoAvailable={p.undoAvailable}
+			  onClickUndo={() => {
+			      undo
+				  .mutateAsync({
+				      sessionId: p.sessionId,
+				  })
+				  .then(p.setProg);
+			  }}
+			  redoAvailable={p.redoAvailable}
+			  onClickRedo={() => {
+			      redo
+				  .mutateAsync({
+				      sessionId: p.sessionId,
+				  })
+				  .then(p.setProg);
+			  }}
+			  onClickChevron={() => {
+			      console.log("Toggle chevron");
+			  }}
+			  initialMode="tree"
+		      // Note: these offsets are rather arbitrary.
+			  initialPosition={{ x: canvasDimensions.width - 100, y: 15 }}
+		      />
+		  )
               }
-            }
-          }}
-          defs={p.module.defs}
-          level={level}
-        />
-      </div>
+              <TreeReactFlow
+		  {...defaultTreeReactFlowProps}
+              {...(selection && { selection })}
+		  onNodeClick={(_e, node) => {
+		      if (!("nodeType" in node.data)) {
+			  setSelection({
+			      def: node.data.def,
+			  });
+		      } else {
+			  const id = Number(node.id);
+			  // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
+			  if (!isNaN(id)) {
+			      setSelection({
+				  def: node.data.def,
+				  node: { id, nodeType: node.data.nodeType },
+			      });
+			  }
+		      }
+		  }}
+		  defs={p.module.defs}
+		  level={level}
+              />
+	  </div>
 
-      {selection ? (
-        <ActionsListSelection
-          level={level}
-          onChangeLevel={setLevel}
-          selection={selection}
-          sessionId={p.sessionId}
-          onAction={(action) => {
-            applyAction
-              .mutateAsync({
-                sessionId: p.sessionId,
-                params: { action },
-                data: selection,
-              })
-              .then(p.setProg);
-          }}
-          onInputAction={(action, option) => {
-            applyActionWithInput
-              .mutateAsync({
-                sessionId: p.sessionId,
-                params: { action },
-                data: { option, selection },
-              })
-              .then(p.setProg);
-          }}
-          onRequestOpts={(action) => {
-            return getOptions.mutateAsync({
-              data: selection,
-              sessionId: p.sessionId,
-              params: { action: action, level },
-            });
-          }}
-        />
-      ) : (
-        <div className="p-10">
-          Click something on the canvas to see available actions!
-        </div>
-      )}
-      {showCreateDefModal ? (
-        <CreateDefModal
-          open={showCreateDefModal}
-          onClose={() => setShowCreateDefModal(false)}
-          onCancel={() => setShowCreateDefModal(false)}
-          onSubmit={(name: string) => {
-            createDef
-              .mutateAsync({
-                sessionId: p.sessionId,
-                params: { name },
-                data: p.module.modname,
-              })
-              .then(p.setProg);
-            setShowCreateDefModal(false);
-          }}
-        />
-      ) : null}
-      {showCreateTypeDefModal ? (
-        <CreateTypeDefModal
-          moduleTypeDefNames={new Set(p.module.types.map((t) => t.baseName))}
-          open={showCreateTypeDefModal}
-          onClose={() => setShowCreateTypeDefModal(false)}
-          onCancel={() => setShowCreateTypeDefModal(false)}
-          onSubmit={(typeName: string, ctorNames: string[]) => {
-            createTypeDef
-              .mutateAsync({
-                sessionId: p.sessionId,
-                data: {
-                  moduleName: p.module.modname,
-                  typeName,
-                  ctors: ctorNames,
-                },
-              })
-              .then(p.setProg)
-              .then(() => setShowCreateTypeDefModal(false));
-          }}
-        />
-      ) : null}
-    </div>
+	  {selection ? (
+              <ActionsListSelection
+		  level={level}
+		  onChangeLevel={setLevel}
+		  selection={selection}
+		  sessionId={p.sessionId}
+		  onAction={(action) => {
+		      applyAction
+			  .mutateAsync({
+			      sessionId: p.sessionId,
+			      params: { action },
+			      data: selection,
+			  })
+			  .then(p.setProg);
+		  }}
+		  onInputAction={(action, option) => {
+		      applyActionWithInput
+			  .mutateAsync({
+			      sessionId: p.sessionId,
+			      params: { action },
+			      data: { option, selection },
+			  })
+			  .then(p.setProg);
+		  }}
+		  onRequestOpts={(action) => {
+		      return getOptions.mutateAsync({
+			  data: selection,
+			  sessionId: p.sessionId,
+			  params: { action: action, level },
+		      });
+		  }}
+              />
+	  ) : (
+              <div className="p-10">
+		  Click something on the canvas to see available actions!
+              </div>
+	  )}
+	  {showCreateDefModal ? (
+              <CreateDefModal
+		  open={showCreateDefModal}
+		  onClose={() => setShowCreateDefModal(false)}
+		  onCancel={() => setShowCreateDefModal(false)}
+		  onSubmit={(name: string) => {
+		      createDef
+			  .mutateAsync({
+			      sessionId: p.sessionId,
+			      params: { name },
+			      data: p.module.modname,
+			  })
+			  .then(p.setProg);
+		      setShowCreateDefModal(false);
+		  }}
+              />
+	  ) : null}
+	  {showCreateTypeDefModal ? (
+              <CreateTypeDefModal
+		  moduleTypeDefNames={new Set(p.module.types.map((t) => t.baseName))}
+		  open={showCreateTypeDefModal}
+		  onClose={() => setShowCreateTypeDefModal(false)}
+		  onCancel={() => setShowCreateTypeDefModal(false)}
+		  onSubmit={(typeName: string, ctorNames: string[]) => {
+		      createTypeDef
+			  .mutateAsync({
+			      sessionId: p.sessionId,
+			      data: {
+				  moduleName: p.module.modname,
+				  typeName,
+				  ctors: ctorNames,
+			      },
+			  })
+			  .then(p.setProg)
+			  .then(() => setShowCreateTypeDefModal(false));
+		  }}
+              />
+	  ) : null}
+      </div>
   );
 };
 

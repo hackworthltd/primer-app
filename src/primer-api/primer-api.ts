@@ -35,6 +35,7 @@ import type {
   EvalFullResp,
   GlobalName,
   EvalFullParams,
+  TypeOrKind,
   CreateTypeDefBody
 } from './model'
 import { useCustomInstance } from '../orval/mutator/use-custom-instance';
@@ -869,6 +870,64 @@ export const useRedo = <TError = ErrorType<void>,
 ) => {
     
       const mutationOptions = useRedoMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Set the current selection, and obtain the type of the selected node
+ */
+export const useSetSelectionHook = () => {
+        const setSelection = useCustomInstance<TypeOrKind>();
+
+        return (
+    sessionId: string,
+    selection: Selection,
+ ) => {
+        return setSelection(
+          {url: `/openapi/sessions/${sessionId}/selection`, method: 'post',
+      headers: {'Content-Type': 'application/json;charset=utf-8', },
+      data: selection
+    },
+          );
+        }
+      }
+    
+
+
+export const useSetSelectionMutationOptions = <TError = ErrorType<void>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useSetSelectionHook>>>, TError,{sessionId: string;data: Selection}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useSetSelectionHook>>>, TError,{sessionId: string;data: Selection}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      const setSelection =  useSetSelectionHook()
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useSetSelectionHook>>>, {sessionId: string;data: Selection}> = (props) => {
+          const {sessionId,data} = props ?? {};
+
+          return  setSelection(sessionId,data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type SetSelectionMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSetSelectionHook>>>>
+    export type SetSelectionMutationBody = Selection
+    export type SetSelectionMutationError = ErrorType<void>
+
+    /**
+ * @summary Set the current selection, and obtain the type of the selected node
+ */
+export const useSetSelection = <TError = ErrorType<void>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useSetSelectionHook>>>, TError,{sessionId: string;data: Selection}, TContext>, }
+) => {
+    
+      const mutationOptions = useSetSelectionMutationOptions(options);
      
       return useMutation(mutationOptions);
     }
