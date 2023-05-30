@@ -14,7 +14,8 @@ const useQueryPost: {
     return {
       [op]: {
         query: {
-          useQuery: true,
+            useQuery: true,
+	    options: { cacheTime: 0},
         },
       },
     };

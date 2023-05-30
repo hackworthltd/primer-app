@@ -433,7 +433,7 @@ const {query: queryOptions} = options ?? {};
     
       
       
-   return  { queryKey, queryFn, enabled: !!(sessionId), ...queryOptions}}
+   return  { queryKey, queryFn, enabled: !!(sessionId),  cacheTime: 0,  ...queryOptions}}
 
 export type GetAvailableActionsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>>
 export type GetAvailableActionsQueryError = ErrorType<void>
@@ -620,7 +620,7 @@ const {query: queryOptions} = options ?? {};
     
       
       
-   return  { queryKey, queryFn, enabled: !!(sessionId), ...queryOptions}}
+   return  { queryKey, queryFn, enabled: !!(sessionId),  cacheTime: 0,  ...queryOptions}}
 
 export type EvalFullQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>>
 export type EvalFullQueryError = ErrorType<void>
