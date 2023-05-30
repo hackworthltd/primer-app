@@ -36,7 +36,8 @@ type TypesAndDefinitionsProps = {
 type InfoProps = {
   shadowed: boolean;
   type?: TypeOrKind;
-  folder: string;
+    folder: string;
+    level: Level;
 };
 type EvalProps = {
   moduleName: string[];
@@ -44,11 +45,11 @@ type EvalProps = {
     request: (baseName: string | undefined) => void;
     result?: EvalFullResp;
   };
-  level: Level;
+    level: Level;
 };
 type OnClick = (
-  label: string,
-  event: React.MouseEvent<HTMLButtonElement>
+    label: string,
+    event: React.MouseEvent<HTMLButtonElement>
 ) => void;
 
 type Tab = "T&D" | "Info" | "Eval";
@@ -198,7 +199,7 @@ const DefList = ({
   );
 };
 
-const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
+const Info = ({ shadowed, type, folder, level }: InfoProps): JSX.Element => {
   return (
     <div className="h-full overflow-auto">
       <div className={headerStyle}>Selection Info</div>
@@ -216,16 +217,20 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
           []
         )}
 	  {type ? (
-        <div>
-          <div className={subHeaderStyle}>{type.tag}</div>
-          <div className={itemStyle}>{JSON.stringify(type)}</div>
-        </div>) : ([])}
-        <div>
+              <div className="w-96 h-96">
+		  <div className={subHeaderStyle}>{type.tag}</div>
+		  <TreeReactFlowOne
+	          {...defaultTreeReactFlowProps}
+		      tree={type.contents}
+		      level={level}
+		  />
+              </div>) : ([])}
+      <div>
           <div className={subHeaderStyle}>Folder</div>
           <div className={itemStyle}>{folder}</div>
-        </div>
       </div>
-    </div>
+      </div>
+      </div>
   );
 };
 
