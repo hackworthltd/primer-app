@@ -28,6 +28,7 @@ export default {
 
 const props: Omit<TreeReactFlowProps, "defs"> = {
   ...defaultTreeReactFlowProps,
+  scrollToDefRef: { current: undefined },
   forestLayout: "Vertical",
 };
 
@@ -93,7 +94,11 @@ export const Tree1: ComponentStory<typeof TreeReactFlow> = (
   });
 export const Tree2: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
-) => treeSized({ ...args, defs: [def2] });
+) =>
+  treeSized({
+    ...args,
+    defs: [def2],
+  });
 export const Tree3: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
 ) =>
