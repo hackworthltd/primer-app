@@ -174,7 +174,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
     case "PrimPattern":
       return "border-black-primary ring-black-primary bg-white-primary";
     case "PatternWildcard":
-      return "border-green-primary ring-green-primary bg-white-primary";
+      return "border-blue-quaternary ring-blue-quaternary bg-white-primary";
     case "PatternBind":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-white-primary",
@@ -304,7 +304,7 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "PrimPattern":
       return "bg-black-primary border-black-primary text-white-primary";
     case "PatternWildcard":
-      return "bg-green-primary border-green-primary text-white-primary";
+      return "hidden";
     case "PatternBind":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary";
   }
@@ -430,7 +430,7 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "PrimPattern":
       return "V";
     case "PatternWildcard":
-      return "WILD";
+      return "◌";
     case "PatternBind":
       return "Var";
   }
@@ -461,7 +461,7 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
     case "THole":
 	  return "{?}";
       case "PatternWildcard":
-	  return "WILD";
+	  return "◌";
   }
 };
 
