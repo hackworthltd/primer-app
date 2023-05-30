@@ -37,6 +37,7 @@ import {
   useRedo,
 } from "./primer-api";
 import { defaultTreeReactFlowProps } from "./components/TreeReactFlow";
+import { FitView } from "reactflow";
 
 // hardcoded values (for now)
 const initialLevel: Level = "Expert";
@@ -200,6 +201,8 @@ const AppNoError = ({
   const canvasRef: RefObject<HTMLDivElement> = useRef(null);
   const canvasDimensions = useDimensions(canvasRef);
 
+  const fitViewRef = useRef<FitView | undefined>(undefined);
+
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="overflow-scroll">
@@ -221,7 +224,12 @@ const AppNoError = ({
               .sort((a, b) => cmpName(a, b))
               .map((t) => t.baseName),
           }}
-          onClickDef={(_label, _event) => ({})}
+          onClickDef={(label, _event) => {
+            // console.log(label);
+            if (fitViewRef.current != undefined) {
+              fitViewRef.current({ nodes: [{ id: "def-" + label }] });
+            }
+          }}
           onClickAddDef={onClickAddDef}
           onClickTypeDef={(_label, _event) => ({})}
           onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
@@ -291,6 +299,7 @@ const AppNoError = ({
           )
         }
         <TreeReactFlow
+          fitViewRef={fitViewRef}
           {...defaultTreeReactFlowProps}
           {...(selection && { selection })}
           onNodeClick={(_e, node) => {

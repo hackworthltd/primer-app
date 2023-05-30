@@ -20,9 +20,11 @@ import {
   EdgeProps,
   getBezierPath,
   EdgeTypes,
+  useReactFlow,
+  FitView,
 } from "reactflow";
 import "./reactflow.css";
-import { useEffect, useId, useState } from "react";
+import { MutableRefObject, useEffect, useId, useState } from "react";
 import classNames from "classnames";
 import { unzip } from "fp-ts/lib/Array";
 import {
@@ -78,6 +80,7 @@ export type TreeReactFlowProps = {
   forestLayout: "Horizontal" | "Vertical";
   defNameNodeSizeMultipliers: { width: number; height: number };
   layout: LayoutParams;
+  fitViewRef: MutableRefObject<FitView | undefined>;
 } & NodeParams;
 export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
@@ -668,8 +671,20 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
     >
       <Background gap={25} size={1.6} color="#81818a" />
       <ZoomBar />
+      <Dummy fitViewRef={p.fitViewRef} />
     </ReactFlowSafe>
   );
+};
+
+export const Dummy = ({
+  fitViewRef,
+}: {
+  fitViewRef: MutableRefObject<FitView | undefined>;
+}) => {
+  const { fitView } = useReactFlow();
+  fitViewRef.current = fitView;
+  // const unblockRef = useRef<(() => void) | null>(null);
+  return <></>;
 };
 
 export default TreeReactFlow;
