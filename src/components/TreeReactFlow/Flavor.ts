@@ -174,7 +174,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
     case "PrimPattern":
       return "border-black-primary ring-black-primary bg-white-primary";
     case "PatternWildcard":
-      return "border-blue-quaternary ring-blue-quaternary bg-white-primary";
+	  return "border-none bg-transparent"; //border-blue-quaternary ring-blue-quaternary bg-white-primary";
     case "PatternBind":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-white-primary",
