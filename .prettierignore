@@ -1,4 +1,4 @@
-README.md
+*.md
 .direnv/
 node_modules/
 dist/
@@ -13,5 +13,3 @@ primer-api.json
 src/primer-api/
 licenses/
 COPYING
-CODE_OF_CONDUCT.md
-SECURITY.md
