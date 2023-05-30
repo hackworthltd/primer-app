@@ -430,7 +430,7 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "PrimPattern":
       return "V";
     case "PatternWildcard":
-      return "◌";
+      return "*";
     case "PatternBind":
       return "Var";
   }
@@ -461,7 +461,7 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
     case "THole":
 	  return "{?}";
       case "PatternWildcard":
-	  return "◌";
+	  return "*";
   }
 };
 
