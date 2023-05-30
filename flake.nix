@@ -143,7 +143,7 @@
                 export PATH="$(pwd)/node_modules/.bin:$PATH"
 
                 if ! type -P pnpm ; then
-                  npx pnpm add pnpm
+                  npx pnpm@8.5.1 add pnpm
                 else
                   pnpm install
                 fi
