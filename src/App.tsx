@@ -86,7 +86,8 @@ const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
     );
     const [selectionType, setSelectionType] = useState<TypeOrKind | undefined>();
     const setSelection = (s : Selection | undefined) => {
-	s && setBackendSelection.mutateAsync({sessionId: p.sessionId,data: s}).then(setSelectionType);
+	s && setBackendSelection.mutateAsync({sessionId: p.sessionId,data: s}).then(setSelectionType)
+	  .catch(_ => setSelectionType(undefined));
 	s || setSelectionType(undefined);
 	setSelection0(s);
     };
