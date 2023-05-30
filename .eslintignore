@@ -9,3 +9,6 @@ orval.config.ts
 src/primer-api/
 tailwind.config.js
 storybook-static/
+*.sqlite3
+*.sqlite3-journal
+*.md
