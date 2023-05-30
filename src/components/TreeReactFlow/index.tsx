@@ -57,6 +57,7 @@ import {
   flavorLabelClasses,
   noBodyFlavorContents,
 } from "./Flavor";
+import { ZoomBar } from "./ZoomBar";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
 
 /** These properties are needed to construct nodes, but are invariant across all nodes. */
@@ -666,6 +667,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
     >
       <Background gap={25} size={1.6} color="#81818a" />
+      <ZoomBar />
     </ReactFlowSafe>
   );
 };
@@ -718,6 +720,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
     >
       <Background gap={25} size={1.6} color="#81818a" />
+      <ZoomBar />
     </ReactFlowSafe>
   );
 };
@@ -754,6 +757,10 @@ export const ReactFlowSafe = <
     <ReactFlow
       {...{
         ...p,
+        fitView: true,
+        // Note: we should try to detect this based on the bounding
+        // box of the canvas.
+        minZoom: 0.001,
         edgeTypes,
         onNodeClick: (e, n) => {
           "onNodeClick" in p &&
