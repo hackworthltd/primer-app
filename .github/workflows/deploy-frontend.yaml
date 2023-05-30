@@ -39,7 +39,7 @@ jobs:
         # latest release again. See:
         #
         # https://github.com/cloudflare/pages-action/pull/70
-        uses: cloudflare/pages-action@v1.4.0
+        uses: cloudflare/pages-action@v1.5.0
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
