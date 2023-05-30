@@ -1,8 +1,10 @@
+import { useRef } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import {
   defaultTreeReactFlowProps,
   TreeReactFlow,
   TreeReactFlowProps,
+  ScrollToDef,
 } from "./";
 import {
   tree1,
@@ -88,17 +90,24 @@ export const Tree1: ComponentStory<typeof TreeReactFlow> = (
 ) =>
   treeSized({
     ...args,
+    scrollToDefRef: useRef<ScrollToDef | undefined>(undefined),
     defs: [def1],
     selection: { def: def1.name, node: { nodeType: "BodyNode", id: 100 } },
   });
 export const Tree2: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
-) => treeSized({ ...args, defs: [def2] });
+) =>
+  treeSized({
+    ...args,
+    scrollToDefRef: useRef<ScrollToDef | undefined>(undefined),
+    defs: [def2],
+  });
 export const Tree3: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
 ) =>
   treeSized({
     ...args,
+    scrollToDefRef: useRef<ScrollToDef | undefined>(undefined),
     defs: [def3],
     selection: { def: def3.name, node: { nodeType: "BodyNode", id: 301 } },
   });
@@ -107,6 +116,7 @@ export const Tree4: ComponentStory<typeof TreeReactFlow> = (
 ) =>
   treeSized({
     ...args,
+    scrollToDefRef: useRef<ScrollToDef | undefined>(undefined),
     defs: [def4],
     selection: { def: def4.name, node: { nodeType: "BodyNode", id: 409 } },
   });
@@ -115,6 +125,7 @@ export const Tree5: ComponentStory<typeof TreeReactFlow> = (
 ) =>
   treeSized({
     ...args,
+    scrollToDefRef: useRef<ScrollToDef | undefined>(undefined),
     defs: [def5],
     selection: { def: def5.name, node: { nodeType: "BodyNode", id: 503 } },
   });
@@ -123,6 +134,7 @@ export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
 ) =>
   treeSized({
     ...args,
+    scrollToDefRef: useRef<ScrollToDef | undefined>(undefined),
     defs: [def1, def2, def3, def4, def5],
     selection: { def: def3.name, node: { nodeType: "BodyNode", id: 301 } },
   });
@@ -131,6 +143,7 @@ export const OddAndEven: ComponentStory<typeof TreeReactFlow> = (
 ) =>
   treeSized({
     ...args,
+    scrollToDefRef: useRef<ScrollToDef | undefined>(undefined),
     defs: oddEvenDefs,
     selection: { def: def5.name, node: { nodeType: "BodyNode", id: 5 } },
   });
@@ -139,6 +152,7 @@ export const OddAndEvenMiscStyles: ComponentStory<typeof TreeReactFlow> = (
 ) =>
   treeSized({
     ...args,
+    scrollToDefRef: useRef<ScrollToDef | undefined>(undefined),
     defs: oddEvenDefsMiscStyles,
     selection: { def: def5.name, node: { nodeType: "BodyNode", id: 5 } },
   });
