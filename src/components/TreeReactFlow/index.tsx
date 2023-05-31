@@ -683,6 +683,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
       <Background gap={25} size={1.6} color="#81818a" />
       <ZoomBar />
       <SetCallbacks scrollToDefRef={p.scrollToDefRef} />
+      <FitView />
     </ReactFlowSafe>
   );
 };
@@ -796,7 +797,6 @@ export const ReactFlowSafe = <
     <ReactFlow
       {...{
         ...p,
-        fitView: true,
         // Note: we should try to detect this based on the bounding
         // box of the canvas.
         minZoom: 0.001,
