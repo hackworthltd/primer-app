@@ -20,9 +20,10 @@ import {
   EdgeProps,
   getBezierPath,
   EdgeTypes,
+  useReactFlow,
 } from "reactflow";
 import "./reactflow.css";
-import { useEffect, useId, useState } from "react";
+import { MutableRefObject, useEffect, useId, useState } from "react";
 import classNames from "classnames";
 import { unzip } from "fp-ts/lib/Array";
 import {
@@ -60,6 +61,8 @@ import {
 import { ZoomBar } from "./ZoomBar";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
 
+export type ScrollToDef = (defName: string) => void;
+
 /** These properties are needed to construct nodes, but are invariant across all nodes. */
 type NodeParams = {
   nodeWidth: number;
@@ -78,6 +81,7 @@ export type TreeReactFlowProps = {
   forestLayout: "Horizontal" | "Vertical";
   defNameNodeSizeMultipliers: { width: number; height: number };
   layout: LayoutParams;
+  scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
 } & NodeParams;
 export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
@@ -99,6 +103,10 @@ export const defaultTreeReactFlowProps: Pick<
     margins: { child: 25, sibling: 18 },
   },
 };
+
+// This should probably take a `GlobalName` instead, but we're not
+// quite there yet.
+const defNameToNodeId = (name: string) => `def-${name}`;
 
 const handle = (type: HandleType, position: Position) => (
   <Handle id={position} isConnectable={false} type={type} position={position} />
@@ -550,7 +558,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
             ]
           >
         >(async (def) => {
-          const defNodeId = "def-" + def.name.baseName;
+          const defNodeId = defNameToNodeId(def.name.baseName);
           const sigEdgeId = "def-sig-" + def.name.baseName;
           const bodyEdgeId = "def-body-" + def.name.baseName;
           const defNameNode: PrimerNode = {
@@ -668,8 +676,32 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => {
     >
       <Background gap={25} size={1.6} color="#81818a" />
       <ZoomBar />
+      <SetTreeReactFlowCallbacks scrollToDefRef={p.scrollToDefRef} />
     </ReactFlowSafe>
   );
+};
+
+// This component is rendered purely for side effects. We do this
+// rather than wrap our `ReactFlow` components with
+// `ReactFlowProvider`s.
+const SetTreeReactFlowCallbacks = ({
+  scrollToDefRef,
+}: {
+  scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
+}) => {
+  const { fitView, getZoom } = useReactFlow();
+  const scrollToDef: ScrollToDef = (defName: string) => {
+    // Don't change the current zoom level when scrolling to a
+    // definition.
+    const zoomLevel: number = getZoom();
+    fitView({
+      nodes: [{ id: defNameToNodeId(defName) }],
+      minZoom: zoomLevel,
+      maxZoom: zoomLevel,
+    });
+  };
+  scrollToDefRef.current = scrollToDef;
+  return <></>;
 };
 
 export default TreeReactFlow;

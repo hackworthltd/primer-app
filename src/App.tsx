@@ -36,7 +36,10 @@ import {
   useUndo,
   useRedo,
 } from "./primer-api";
-import { defaultTreeReactFlowProps } from "./components/TreeReactFlow";
+import {
+  defaultTreeReactFlowProps,
+  ScrollToDef,
+} from "@/components/TreeReactFlow";
 
 // hardcoded values (for now)
 const initialLevel: Level = "Expert";
@@ -200,6 +203,8 @@ const AppNoError = ({
   const canvasRef: RefObject<HTMLDivElement> = useRef(null);
   const canvasDimensions = useDimensions(canvasRef);
 
+  const scrollToDefRef = useRef<ScrollToDef | undefined>(undefined);
+
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="overflow-scroll">
@@ -221,7 +226,11 @@ const AppNoError = ({
               .sort((a, b) => cmpName(a, b))
               .map((t) => t.baseName),
           }}
-          onClickDef={(_label, _event) => ({})}
+          onClickDef={(defName, _event) => {
+            if (scrollToDefRef.current != undefined) {
+              scrollToDefRef.current(defName);
+            }
+          }}
           onClickAddDef={onClickAddDef}
           onClickTypeDef={(_label, _event) => ({})}
           onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
@@ -291,6 +300,7 @@ const AppNoError = ({
           )
         }
         <TreeReactFlow
+          scrollToDefRef={scrollToDefRef}
           {...defaultTreeReactFlowProps}
           {...(selection && { selection })}
           onNodeClick={(_e, node) => {
