@@ -529,6 +529,12 @@ const makePrimerNode = async (
   }
 };
 
+const FitView = (): JSX.Element => {
+  const { fitView } = useReactFlow();
+  fitView();
+  return <></>;
+};
+
 type PrimerNodeWithDefNoPos = PrimerNode<{ def: GlobalName }>;
 type PrimerNodeWithDef = Positioned<PrimerNodeWithDefNoPos>;
 
@@ -753,6 +759,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => {
     >
       <Background gap={25} size={1.6} color="#81818a" />
       <ZoomBar />
+      <FitView />
     </ReactFlowSafe>
   );
 };
