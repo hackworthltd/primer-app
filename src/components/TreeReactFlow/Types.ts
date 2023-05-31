@@ -7,6 +7,7 @@ import {
   NodeType,
 } from "@/primer-api";
 import { unzip } from "fp-ts/lib/Array";
+import { Position } from "reactflow";
 import { NodeFlavor } from "./Flavor";
 
 /** A generic graph. */
@@ -168,8 +169,8 @@ export type PrimerEdge = {
   id: string;
   source: string;
   target: string;
-  sourceHandle: string;
-  targetHandle: string;
+  sourceHandle: Position;
+  targetHandle: Position;
   zIndex: number;
 } & ({ type: "primer"; data: PrimerEdgeProps } | { type: "primer-def-name" });
 
