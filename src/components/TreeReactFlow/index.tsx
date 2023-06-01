@@ -99,13 +99,13 @@ export const defaultTreeReactFlowProps: Pick<
   level: "Expert",
   forestLayout: "Horizontal",
   treePadding: 100,
-  nodeWidth: 80,
-  nodeHeight: 35,
+  nodeWidth: 50,
+  nodeHeight: 30,
   boxPadding: 50,
   defParams: { nameNodeMultipliers: { width: 3, height: 2 } },
   layout: {
     type: WasmLayoutType.Tidy,
-    margins: { child: 25, sibling: 18 },
+    margins: { child: 15, sibling: 15 },
   },
 };
 
@@ -132,8 +132,8 @@ const nodeTypes = {
           flavorClasses(data.flavor)
         )}
         style={{
-          width: data.width,
-          height: data.height,
+          minWidth: data.width,
+          minHeight: data.height,
         }}
       >
         <div
@@ -176,8 +176,8 @@ const nodeTypes = {
           flavorClasses(data.flavor)
         )}
         style={{
-          width: data.width,
-          height: data.height,
+          minWidth: data.width,
+          minHeight: data.height,
         }}
       >
         {
@@ -211,8 +211,8 @@ const nodeTypes = {
           "bg-white-primary"
         )}
         style={{
-          width: data.width,
-          height: data.height,
+          minWidth: data.width,
+          minHeight: data.height,
         }}
       >
         <div
@@ -253,8 +253,8 @@ const nodeTypes = {
           !data.selected && "hover:ring-opacity-50"
         )}
         style={{
-          width: data.width,
-          height: data.height,
+          minWidth: data.width,
+          minHeight: data.height,
         }}
       >
         <div className="font-code text-4xl text-grey-tertiary">
@@ -282,8 +282,8 @@ const nodeTypes = {
           !data.selected && "hover:ring-opacity-50"
         )}
         style={{
-          width: data.width,
-          height: data.height,
+          minWidth: data.width,
+          minHeight: data.height,
         }}
       >
         <div className="font-code text-4xl text-grey-tertiary">
@@ -313,8 +313,8 @@ const nodeTypes = {
           !data.selected && "hover:ring-opacity-50"
         )}
         style={{
-          width: data.width,
-          height: data.height,
+          minWidth: data.width,
+          minHeight: data.height,
         }}
       >
         {
@@ -346,8 +346,8 @@ const nodeTypes = {
           flavorClasses("Con")
         )}
         style={{
-          width: data.width,
-          height: data.height,
+          minWidth: data.width,
+          minHeight: data.height,
         }}
       >
         <div
