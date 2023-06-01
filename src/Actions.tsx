@@ -82,6 +82,16 @@ export const actionName = (
       return prose("r");
     case "RenameDef":
       return prose("r");
+    case "RenameType":
+      return prose("r");
+    case "AddCon":
+      return prose("+");
+    case "RenameCon":
+      return prose("r");
+    case "RenameTypeParam":
+      return prose("r");
+    case "AddConField":
+      return prose("+");
   }
 };
 
@@ -171,6 +181,16 @@ export const actionDescription = (
       return "Rename this type variable";
     case "RenameDef":
       return "Rename this definition";
+    case "RenameType":
+      return "Rename this type";
+    case "AddCon":
+      return "Add a constructor to this type";
+    case "RenameCon":
+      return "Rename this constructor";
+    case "RenameTypeParam":
+      return "Rename this parameter";
+    case "AddConField":
+      return "Add a parameter to this constructor";
   }
 };
 
@@ -245,6 +265,16 @@ export const actionType = (action: NoInputAction | InputAction): ActionType => {
     case "RenameForall":
       return "Primary";
     case "RenameDef":
+      return "Primary";
+    case "RenameType":
+      return "Primary";
+    case "AddCon":
+      return "Primary";
+    case "RenameCon":
+      return "Primary";
+    case "RenameTypeParam":
+      return "Primary";
+    case "AddConField":
       return "Primary";
   }
 };

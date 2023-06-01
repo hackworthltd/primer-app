@@ -7,6 +7,7 @@ import {
   NodeType,
 } from "@/primer-api";
 import { unzip } from "fp-ts/lib/Array";
+import { Position } from "reactflow";
 import { NodeFlavor } from "./Flavor";
 
 /** A generic graph. */
@@ -120,6 +121,9 @@ export type PrimerNode<T = unknown> = {
   | { type: "primer-simple"; data: PrimerSimpleNodeProps }
   | { type: "primer-box"; data: PrimerBoxNodeProps }
   | { type: "primer-def-name"; data: PrimerDefNameNodeProps }
+  | { type: "primer-typedef-name"; data: PrimerTypeDefNameNodeProps }
+  | { type: "primer-typedef-param"; data: PrimerTypeDefParamNodeProps }
+  | { type: "primer-typedef-cons"; data: PrimerTypeDefConsNodeProps }
 );
 
 export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> =>
@@ -130,9 +134,25 @@ export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> =>
     data: { ...n1.data, ...x },
   }))(n);
 
+/** Data corresponding to a node from the backend.
+ * This is not used by special nodes, like term definition names or most parts of type definitions,
+ * but only in places where the backend allows an arbitrarily nested (term or type) expression.
+ * These are: the bodies and signatures of term defs, and the types of constructor fields in type defs.
+ * */
+export type NodeData =
+  | {
+      tag: "termDefNode";
+      nodeType: NodeType;
+    }
+  | {
+      tag: "typeDefFieldNode";
+      con: GlobalName;
+      index: number;
+    };
+
 /** Node properties. */
 export type PrimerNodeProps = {
-  nodeType: NodeType;
+  nodeData: NodeData;
   syntax: boolean;
   flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
   contents: string;
@@ -140,19 +160,34 @@ export type PrimerNodeProps = {
 
 /** Properties for a simple node. */
 export type PrimerSimpleNodeProps = {
-  nodeType: NodeType;
+  nodeData: NodeData;
   flavor: NodeFlavorNoBody;
 };
 
 /** Properties for a box node. */
 export type PrimerBoxNodeProps = {
-  nodeType: NodeType;
+  nodeData: NodeData;
   flavor: NodeFlavorBoxBody;
 };
 
 /** Properties for the special definition name node. */
 export type PrimerDefNameNodeProps = {
   def: GlobalName;
+};
+
+/** Properties for the root of a type definition. */
+export type PrimerTypeDefNameNodeProps = {
+  name: GlobalName;
+};
+
+/** Properties for a typedef parameter node. */
+export type PrimerTypeDefParamNodeProps = {
+  name: string;
+};
+
+/** Properties for a constructor node. */
+export type PrimerTypeDefConsNodeProps = {
+  name: GlobalName;
 };
 
 /** Properties common to every type of node. */
@@ -168,10 +203,10 @@ export type PrimerEdge = {
   id: string;
   source: string;
   target: string;
-  sourceHandle: string;
-  targetHandle: string;
+  sourceHandle: Position;
+  targetHandle: Position;
   zIndex: number;
-} & ({ type: "primer"; data: PrimerEdgeProps } | { type: "primer-def-name" });
+} & ({ type: "primer"; data: PrimerEdgeProps } | { type: "primer-def" });
 
 export type PrimerEdgeProps = { flavor: NodeFlavor };
 

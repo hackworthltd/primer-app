@@ -28,4 +28,5 @@ export const NoInputAction = {
   DeleteType: 'DeleteType',
   DuplicateDef: 'DuplicateDef',
   DeleteDef: 'DeleteDef',
+  AddConField: 'AddConField',
 } as const;

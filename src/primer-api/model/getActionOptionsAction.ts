@@ -29,4 +29,8 @@ export const GetActionOptionsAction = {
   MakeForall: 'MakeForall',
   RenameForall: 'RenameForall',
   RenameDef: 'RenameDef',
+  RenameType: 'RenameType',
+  RenameCon: 'RenameCon',
+  RenameTypeParam: 'RenameTypeParam',
+  AddCon: 'AddCon',
 } as const;

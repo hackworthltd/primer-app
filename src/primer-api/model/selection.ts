@@ -5,10 +5,7 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { GlobalName } from './globalName';
-import type { NodeSelection } from './nodeSelection';
+import type { SelectionOneOf } from './selectionOneOf';
+import type { SelectionOneOfThree } from './selectionOneOfThree';
 
-export interface Selection {
-  def: GlobalName;
-  node?: NodeSelection;
-}
+export type Selection = SelectionOneOf | SelectionOneOfThree;

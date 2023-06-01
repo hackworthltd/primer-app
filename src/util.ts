@@ -1,4 +1,11 @@
-import { RefObject, useMemo, useSyncExternalStore } from "react";
+import deepEqual from "deep-equal";
+import {
+  RefObject,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
 /** Evaluates to the type `true` when both parameters are equal, and `false` otherwise.
  * NB. this actually tests mutual extendability, which is mostly a reasonable definition of
@@ -34,3 +41,21 @@ export function useDimensions(ref: RefObject<HTMLElement>) {
   );
   return useMemo(() => JSON.parse(dimensions), [dimensions]);
 }
+
+/** Use some initial data, while waiting for an asynchronous update.
+ * This encapsulates a common React pattern, which may eventually have a built-in solution:
+ * https://github.com/reactjs/rfcs/pull/229.
+ * Using this hook also leads to better type inference.
+ */
+export const usePromise = <T>(initial: T, p: Promise<T>): T => {
+  const [data, setData] = useState<T>(initial);
+  useEffect(() => {
+    p.then(setData);
+  }, [p]);
+  return data;
+};
+
+/** Like `deepEqual`, but also statically checks that types are compatible.
+ * Makes it easier to avoid mistakes.
+ */
+export const deepEqualTyped = <T>(a: T, b: T) => deepEqual(a, b);
