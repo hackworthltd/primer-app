@@ -153,9 +153,14 @@ const nodeTypes = {
           {data.contents}
         </div>
         <div
+          style={{
+            minWidth: 35,
+            height: 35,
+          }}
           className={classNames(
-            "z-20 p-1 absolute rounded-full text-sm xl:text-base",
-            data.syntax ? "-top-4" : "-right-2 -top-4",
+            "z-20 p-1 absolute",
+            "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
+            data.syntax ? "-top-4" : "-right-4 -top-4",
             flavorLabelClasses(data.flavor)
           )}
         >
@@ -234,9 +239,14 @@ const nodeTypes = {
           )}
         ></div>
         <div
+          style={{
+            minWidth: 35,
+            height: 35,
+          }}
           className={classNames(
-            "z-20 p-1 absolute rounded-full text-sm xl:text-base",
+            "z-20 p-1 absolute",
             "-top-4",
+            "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
             flavorLabelClasses(data.flavor)
           )}
         >
