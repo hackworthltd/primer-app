@@ -156,7 +156,7 @@ const nodeTypes = {
             "ring-4 ring-offset-4": data.selected,
             "hover:ring-opacity-50": !data.selected,
           },
-          "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
+          "flex items-center justify-center border-4 text-grey-tertiary",
           flavorClasses(data.flavor)
         )}
         style={{
@@ -201,7 +201,7 @@ const nodeTypes = {
             "ring-4 ring-offset-4": data.selected,
             "hover:ring-opacity-50": !data.selected,
           },
-          "flex items-center justify-center rounded-md border-4 text-grey-tertiary",
+          "flex items-center justify-center border-4 text-grey-tertiary",
           flavorClasses(data.flavor)
         )}
         style={{
