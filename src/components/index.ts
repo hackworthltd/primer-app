@@ -1,4 +1,5 @@
 export { default as ActionButton } from "./ActionButton";
+export { default as ActionPanelButton } from "./ActionPanelButton";
 export { default as ActionPanel } from "./ActionPanel";
 export { default as Avatar } from "./Avatar";
 export { default as BinaryTreePlaceholder } from "./BinaryTreePlaceholder";

@@ -1,6 +1,6 @@
 import "@/index.css";
 
-import { ActionButton } from "@/components";
+import { ActionButton, ActionPanelButton } from "@/components";
 import {
   Action,
   Level,
@@ -13,8 +13,6 @@ import { actionType } from "@/Actions";
 import { partition } from "fp-ts/lib/Array";
 import { useState } from "react";
 import { ActionInput } from "../ActionInput";
-import { buttonClassesPrimary, buttonClassesSecondary } from "../ActionButton";
-import classNames from "classnames";
 
 export interface ActionPanelProps {
   actions: Action[];
@@ -91,29 +89,23 @@ export const ActionPanel = ({
                   )}
                   <ul>
                     {state.opts.opts.map((option) => (
-                      <li key={JSON.stringify(option)}>
-                        <button
-                          className={classNames(
-                            buttonClassesPrimary,
-                            "w-full p-2 mt-2"
-                          )}
+                      <li key={JSON.stringify(option)} className="pt-2">
+                        <ActionPanelButton
+                          appearance="primary"
                           onClick={(_) => onOption(option)}
-                        >
-                          {option.option}
-                        </button>
+                          name={{ text: option.option, style: "code" }}
+                        />
                       </li>
                     ))}
                   </ul>
+                  <div className="pt-2">
+                    <ActionPanelButton
+                      appearance="danger"
+                      onClick={(_) => setState({ state: "ActionList" })}
+                      description="Cancel"
+                    />
+                  </div>
                 </div>
-                <button
-                  className={classNames(
-                    buttonClassesSecondary,
-                    "w-full justify-center p-3 pt-2 mt-8"
-                  )}
-                  onClick={(_) => setState({ state: "ActionList" })}
-                >
-                  Cancel
-                </button>
               </div>
             );
           }

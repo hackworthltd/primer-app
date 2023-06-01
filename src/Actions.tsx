@@ -1,15 +1,14 @@
-import { InputAction, NoInputAction, Level } from "./primer-api";
+import { InputAction, NoInputAction, Level } from "@/primer-api";
+import type { Name } from "@/components/ActionPanelButton";
 
 export type ActionType = "Primary" | "Destructive";
 
-export const actionName = (
-  action: NoInputAction | InputAction
-): { font?: string; text: string } => {
-  const code = (text: string) => {
-    return { font: "font-code", text };
+export const actionName = (action: NoInputAction | InputAction): Name => {
+  const code = (text: string): Name => {
+    return { text: text, style: "code" };
   };
-  const prose = (text: string) => {
-    return { text };
+  const prose = (text: string): Name => {
+    return { text: text, style: "prose" };
   };
   switch (action) {
     case "MakeCase":
