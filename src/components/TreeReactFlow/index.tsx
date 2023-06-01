@@ -794,6 +794,10 @@ export const ReactFlowSafe = <
         // box of the canvas.
         minZoom: 0.001,
         edgeTypes,
+        nodesDraggable: false,
+        // Note that despite the name, we can still select nodes in
+        // the tree in order to perform actions on them.
+        elementsSelectable: false,
         onNodeClick: (e, n) => {
           "onNodeClick" in p &&
             p.onNodeClick(
