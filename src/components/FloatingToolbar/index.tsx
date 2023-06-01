@@ -4,18 +4,24 @@ import {
   ArrowUturnLeftIcon,
   ChevronDownIcon,
   EllipsisHorizontalIcon,
+  BeakerIcon,
+  AcademicCapIcon,
+  RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import { MouseEventHandler, useRef, useState } from "react";
 import { useDraggable, DragOptions } from "@neodrag/react";
+import { Level } from "@/primer-api";
 
 export type FloatingToolbarProps = {
   initialPosition: { x: number; y: number };
   initialMode: Mode;
+  level: Level;
   onModeChange: (
     mode: Mode,
     event: React.MouseEvent<HTMLButtonElement>
   ) => void;
+  onLevelChange: () => void;
   redoAvailable: boolean;
   onClickRedo: MouseEventHandler<HTMLButtonElement>;
   undoAvailable: boolean;
@@ -38,6 +44,28 @@ const nextMode = (m: Mode): Mode => {
       return "tree";
     case "tree":
       return "text";
+  }
+};
+
+const levelSvg = (level: Level) => {
+  switch (level) {
+    case "Beginner":
+      return <BeakerIcon />;
+    case "Intermediate":
+      return <AcademicCapIcon />;
+    case "Expert":
+      return <RocketLaunchIcon />;
+  }
+};
+
+const levelButtonTitle = (level: Level) => {
+  switch (level) {
+    case "Beginner":
+      return "Beginner";
+    case "Intermediate":
+      return "Intermediate";
+    case "Expert":
+      return "Expert";
   }
 };
 
@@ -109,6 +137,15 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
       >
         {arrow}
         undo
+      </button>
+      <button
+        title={levelButtonTitle(p.level)}
+        type="button"
+        onClick={p.onLevelChange}
+        className="flex h-12 w-12 flex-col items-center rounded text-blue-primary hover:bg-blue-primary hover:text-white-primary disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {levelSvg(p.level)}
+        level
       </button>
       <button type="button" onClick={p.onClickChevron}>
         <ChevronDownIcon className="w-6" />
