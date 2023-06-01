@@ -1,3 +1,4 @@
+import deepEqual from "deep-equal";
 import {
   RefObject,
   useEffect,
@@ -53,3 +54,8 @@ export const usePromise = <T>(initial: T, p: Promise<T>): T => {
   }, [p]);
   return data;
 };
+
+/** Like `deepEqual`, but also statically checks that types are compatible.
+ * Makes it easier to avoid mistakes.
+ */
+export const deepEqualTyped = <T>(a: T, b: T) => deepEqual(a, b);

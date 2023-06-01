@@ -228,16 +228,16 @@ const AppNoError = ({
               .sort((a, b) => cmpName(a.name, b.name))
               .map((d) => d.name.baseName),
             types: p.module.types
-              .sort((a, b) => cmpName(a, b))
-              .map((t) => t.baseName),
+              .sort((a, b) => cmpName(a.name, b.name))
+              .map((t) => t.name.baseName),
             importedDefs: p.imports
               .flatMap((m) => m.defs)
               .sort((a, b) => cmpName(a.name, b.name))
               .map((d) => d.name.baseName),
             importedTypes: p.imports
               .flatMap((m) => m.types)
-              .sort((a, b) => cmpName(a, b))
-              .map((t) => t.baseName),
+              .sort((a, b) => cmpName(a.name, b.name))
+              .map((t) => t.name.baseName),
           }}
           onClickDef={(defName, _event) => {
             if (scrollToDefRef.current != undefined) {
@@ -318,23 +318,9 @@ const AppNoError = ({
           scrollToDefRef={scrollToDefRef}
           {...defaultTreeReactFlowProps}
           {...(selection && { selection })}
-          onNodeClick={(_e, node) => {
-            if (!("nodeType" in node.data)) {
-              setSelection({
-                def: node.data.def,
-              });
-            } else {
-              const id = Number(node.id);
-              // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
-              if (!isNaN(id)) {
-                setSelection({
-                  def: node.data.def,
-                  node: { id, nodeType: node.data.nodeType },
-                });
-              }
-            }
-          }}
+          onNodeClick={(_e, sel) => sel && setSelection(sel)}
           defs={p.module.defs}
+          typeDefs={p.module.types}
           level={level}
         />
       </div>
@@ -394,7 +380,9 @@ const AppNoError = ({
       ) : null}
       {showCreateTypeDefModal ? (
         <CreateTypeDefModal
-          moduleTypeDefNames={new Set(p.module.types.map((t) => t.baseName))}
+          moduleTypeDefNames={
+            new Set(p.module.types.map((t) => t.name.baseName))
+          }
           open={showCreateTypeDefModal}
           onClose={() => setShowCreateTypeDefModal(false)}
           onCancel={() => setShowCreateTypeDefModal(false)}

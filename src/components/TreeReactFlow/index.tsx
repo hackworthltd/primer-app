@@ -6,6 +6,7 @@ import {
   GlobalName,
   NodeType,
   Level,
+  TypeDef,
 } from "@/primer-api";
 import {
   ReactFlow,
@@ -23,7 +24,7 @@ import {
   useReactFlow,
 } from "reactflow";
 import "./reactflow.css";
-import { MutableRefObject, useId } from "react";
+import { MutableRefObject, PropsWithChildren, useId } from "react";
 import classNames from "classnames";
 import {
   combineGraphs,
@@ -44,9 +45,12 @@ import {
   PrimerCommonNodeProps,
   treeNodes,
   PrimerEdgeProps,
+  PrimerTypeDefConsNodeProps,
+  PrimerTypeDefParamNodeProps,
+  PrimerTypeDefNameNodeProps,
+  NodeData,
 } from "./Types";
 import { LayoutParams, layoutTree } from "./layoutTree";
-import deepEqual from "deep-equal";
 import {
   boxFlavorBackground,
   commonHoverClasses,
@@ -59,7 +63,8 @@ import {
 } from "./Flavor";
 import { ZoomBar } from "./ZoomBar";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
-import { usePromise } from "@/util";
+import { deepEqualTyped, usePromise } from "@/util";
+import { mapSnd } from "fp-ts/lib/Tuple";
 
 export type ScrollToDef = (defName: string) => void;
 
@@ -76,9 +81,10 @@ type DefParams = {
 };
 export type TreeReactFlowProps = {
   defs: Def[];
-  onNodeClick?: (
+  typeDefs: TypeDef[];
+  onNodeClick: (
     event: React.MouseEvent,
-    node: Positioned<PrimerNode<{ def: GlobalName }>>
+    selection: Selection | undefined
   ) => void;
   treePadding: number;
   forestLayout: "Horizontal" | "Vertical";
@@ -258,6 +264,105 @@ const nodeTypes = {
       {handle("source", Position.Bottom)}
     </>
   ),
+  "primer-typedef-name": ({
+    data,
+  }: {
+    data: PrimerCommonNodeProps & PrimerTypeDefNameNodeProps;
+  }) => (
+    <>
+      <div
+        className={classNames(
+          "flex items-center justify-center",
+          "rounded-md",
+          "bg-grey-primary",
+          "border-8 border-grey-tertiary ring-grey-tertiary",
+          data.selected && "ring-4 ring-offset-4",
+          commonHoverClasses,
+          "hover:ring-grey-tertiary",
+          !data.selected && "hover:ring-opacity-50"
+        )}
+        style={{
+          width: data.width,
+          height: data.height,
+        }}
+      >
+        <div className="font-code text-4xl text-grey-tertiary">
+          {data.name.baseName}
+        </div>
+      </div>
+      {handle("source", Position.Bottom)}
+      {handle("source", Position.Right)}
+    </>
+  ),
+  "primer-typedef-param": ({
+    data,
+  }: {
+    data: PrimerCommonNodeProps & PrimerTypeDefParamNodeProps;
+  }) => (
+    <>
+      {handle("target", Position.Left)}
+      <div
+        className={classNames(
+          "flex items-center justify-center",
+          "rounded-md",
+          "bg-grey-primary",
+          "border-4 border-grey-tertiary ring-grey-tertiary",
+          data.selected && "ring-4 ring-offset-4",
+          commonHoverClasses,
+          "hover:ring-grey-tertiary",
+          !data.selected && "hover:ring-opacity-50"
+        )}
+        style={{
+          width: data.width,
+          height: data.height,
+        }}
+      >
+        {
+          <div className={classNames("font-code text-sm text-grey-tertiary")}>
+            {data.name}
+          </div>
+        }
+      </div>
+      {handle("source", Position.Bottom)}
+      {handle("source", Position.Right)}
+    </>
+  ),
+  "primer-typedef-cons": ({
+    data,
+  }: {
+    data: PrimerCommonNodeProps & PrimerTypeDefConsNodeProps;
+  }) => (
+    <>
+      {handle("target", Position.Top)}
+      {handle("target", Position.Left)}
+      <div
+        className={classNames(
+          "flex items-center justify-center",
+          "rounded-md",
+          "border-4",
+          data.selected && "ring-4 ring-offset-4",
+          commonHoverClasses,
+          !data.selected && "hover:ring-opacity-50",
+          flavorClasses("Con")
+        )}
+        style={{
+          width: data.width,
+          height: data.height,
+        }}
+      >
+        <div
+          className={classNames(
+            "font-code text-sm",
+            flavorContentClasses("Con")
+          )}
+        >
+          {data.name.baseName}
+        </div>
+      </div>
+      {handle("source", Position.Bottom)}
+      {handle("source", Position.Right)}
+    </>
+  ),
 };
 
 const edgeTypes = {
@@ -290,7 +395,7 @@ const edgeTypes = {
       />
     );
   },
-  "primer-def-name": ({
+  "primer-def": ({
     id,
     sourceX,
     sourceY,
@@ -354,7 +459,8 @@ const makePrimerNode = async (
   p: NodeParams,
   layout: LayoutParams,
   zIndex: number,
-  nodeType: NodeType
+  nodeData: NodeData,
+  def?: GlobalName
 ): Promise<
   [
     PrimerNode,
@@ -364,13 +470,16 @@ const makePrimerNode = async (
     PrimerGraph[]
   ]
 > => {
-  const selected = p.selection?.node?.id?.toString() == node.nodeId;
+  const selected = deepEqualTyped(
+    def && makeSelectionFromNodeData(def, node.nodeId, nodeData),
+    p.selection
+  );
   const id = node.nodeId;
   const common = {
     width: p.nodeWidth,
     height: p.nodeHeight,
     selected,
-    nodeType,
+    nodeData,
   };
   const edgeCommon = (
     child: PrimerNode,
@@ -485,7 +594,7 @@ const makePrimerNode = async (
     case "BoxBody": {
       const { fst: flavor, snd: t } = node.body.contents;
       const bodyTree = await augmentTree(t, (n0) =>
-        makePrimerNode(n0, p, layout, zIndex + 1, nodeType).then(
+        makePrimerNode(n0, p, layout, zIndex + 1, nodeData, def).then(
           ([n, e, nested]) => [primerNodeWith(n, { nested }), e]
         )
       );
@@ -528,6 +637,89 @@ const makePrimerNode = async (
   }
 };
 
+const makeSelectionFromNode = (
+  node: PrimerNode<{ def: GlobalName }>
+): Selection | undefined => {
+  if (node.type == "primer-typedef-name") {
+    return {
+      tag: "SelectionTypeDef",
+      contents: { def: node.data.def },
+    };
+  } else if (node.type == "primer-def-name") {
+    return {
+      tag: "SelectionDef",
+      contents: { def: node.data.def },
+    };
+  } else if (node.type == "primer-typedef-param") {
+    return {
+      tag: "SelectionTypeDef",
+      contents: {
+        def: node.data.def,
+        node: {
+          tag: "TypeDefParamNodeSelection",
+          contents: node.data.name,
+        },
+      },
+    };
+  } else if (node.type == "primer-typedef-cons") {
+    return {
+      tag: "SelectionTypeDef",
+      contents: {
+        def: node.data.def,
+        node: {
+          tag: "TypeDefConsNodeSelection",
+          contents: { con: node.data.name },
+        },
+      },
+    };
+  } else {
+    return makeSelectionFromNodeData(
+      node.data.def,
+      node.id,
+      node.data.nodeData
+    );
+  }
+};
+
+const makeSelectionFromNodeData = (
+  def: GlobalName,
+  id0: string,
+  nodeData: NodeData
+): Selection | undefined => {
+  const id = Number(id0);
+  // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
+  if (!isNaN(id)) {
+    if (nodeData.tag == "termDefNode") {
+      return {
+        tag: "SelectionDef",
+        contents: {
+          def,
+          node: { meta: id, nodeType: nodeData.nodeType },
+        },
+      };
+    } else {
+      return {
+        tag: "SelectionTypeDef",
+        contents: {
+          def,
+          node: {
+            tag: "TypeDefConsNodeSelection",
+            contents: {
+              con: nodeData.con,
+              field: {
+                index: nodeData.index,
+                meta: id,
+              },
+            },
+          },
+        },
+      };
+    }
+  } else {
+    return undefined;
+  }
+};
+
 type PrimerNodeWithNested<N> = PrimerNode<
   N & { nested: Graph<Positioned<PrimerNode<N>>, PrimerEdge>[] }
 >;
@@ -546,7 +738,10 @@ const defToTree = async (
       def: def.name,
       width: p.nodeWidth * p.nameNodeMultipliers.width,
       height: p.nodeHeight * p.nameNodeMultipliers.height,
-      selected: deepEqual(p.selection?.def, def.name) && !p.selection?.node,
+      selected: deepEqualTyped(p.selection, {
+        tag: "SelectionDef",
+        contents: { def: def.name },
+      }),
       nested: [],
     },
     type: "primer-def-name",
@@ -558,7 +753,14 @@ const defToTree = async (
     edgeId: string
   ): Promise<[Tree<PrimerNodeWithNestedAndDef, PrimerEdge>, PrimerEdge]> =>
     augmentTree(tree, (n0) =>
-      makePrimerNode(n0, p, p.layout, 0, nodeType).then(([n, e, nested]) => [
+      makePrimerNode(
+        n0,
+        p,
+        p.layout,
+        0,
+        { tag: "termDefNode", nodeType },
+        def.name
+      ).then(([n, e, nested]) => [
         primerNodeWith(n, {
           def: def.name,
           nested: nested.map((g) =>
@@ -576,7 +778,7 @@ const defToTree = async (
         id: edgeId,
         source: defNodeId,
         target: t.node.id,
-        type: "primer-def-name",
+        type: "primer-def",
         zIndex: 0,
         sourceHandle: Position.Bottom,
         targetHandle: Position.Top,
@@ -592,6 +794,162 @@ const defToTree = async (
   };
 };
 
+const typeDefToTree = async (
+  def: TypeDef,
+  p: DefParams & NodeParams & { layout: LayoutParams }
+): Promise<Tree<PrimerNode<{ def: GlobalName }>, PrimerEdge>> => {
+  type N = PrimerNode<{ def: GlobalName }>;
+  type E = PrimerEdge;
+  type T = Tree<N, E>;
+
+  const rootId = "typedef-name-" + def.name.baseName;
+  const paramsTree = def.params.reduceRight<
+    [T, (parentId: string) => E] | undefined
+  >((child, name) => {
+    const id = "typedef-param-" + name;
+    const node: N = {
+      id,
+      type: "primer-typedef-param",
+      data: {
+        def: def.name,
+        width: p.nodeWidth,
+        height: p.nodeHeight,
+        name,
+        selected: deepEqualTyped(p.selection, {
+          tag: "SelectionTypeDef",
+          contents: {
+            def: def.name,
+            node: {
+              tag: "TypeDefParamNodeSelection",
+              contents: name,
+            },
+          },
+        }),
+      },
+      zIndex: 0,
+    };
+    return [
+      {
+        node,
+        childTrees: [],
+        ...(child
+          ? { rightChild: mapSnd((f: (parentId: string) => E) => f(id))(child) }
+          : {}),
+      },
+      (parentId) => ({
+        id: JSON.stringify([parentId, id]),
+        source: parentId,
+        target: id,
+        type: "primer-def",
+        zIndex: 0,
+        sourceHandle: Position.Right,
+        targetHandle: Position.Left,
+      }),
+    ];
+  }, undefined);
+  const constructorTrees: [T, E][] = await Promise.all(
+    (def.constructors ?? []).map(async (cons) => {
+      const consId = "typedef-cons-" + cons.name.baseName;
+      const fieldTrees = await Promise.all(
+        cons.fields.map<Promise<[T, E]>>((t, index) =>
+          augmentTree(t, (n0) =>
+            makePrimerNode(
+              n0,
+              p,
+              p.layout,
+              0,
+              { tag: "typeDefFieldNode", con: cons.name, index },
+              def.name
+            ).then(([n, e, nested]) => [
+              primerNodeWith(n, {
+                def: def.name,
+                nested: nested.map((g) =>
+                  graphMap(g, ({ position, ...n }) => ({
+                    ...primerNodeWith(n, { def: def.name }),
+                    position,
+                  }))
+                ),
+              }),
+              e,
+            ])
+          ).then((t) => [
+            t,
+            {
+              id: JSON.stringify([consId, t.node.id]),
+              source: consId,
+              target: t.node.id,
+              type: "primer-def",
+              zIndex: 0,
+              sourceHandle: Position.Bottom,
+              targetHandle: Position.Top,
+            },
+          ])
+        )
+      );
+      return [
+        {
+          node: {
+            id: consId,
+            type: "primer-typedef-cons",
+            data: {
+              def: def.name,
+              name: cons.name,
+              width: p.nodeWidth,
+              height: p.nodeHeight,
+              selected: deepEqualTyped(p.selection, {
+                tag: "SelectionTypeDef",
+                contents: {
+                  def: def.name,
+                  node: {
+                    tag: "TypeDefConsNodeSelection",
+                    contents: { con: cons.name },
+                  },
+                },
+              }),
+            },
+            zIndex: 0,
+          },
+          childTrees: fieldTrees,
+        },
+        {
+          id: JSON.stringify([rootId, consId]),
+          type: "primer-def",
+          source: rootId,
+          target: consId,
+          sourceHandle: Position.Bottom,
+          targetHandle: Position.Top,
+          zIndex: 0,
+        },
+      ];
+    })
+  );
+  return {
+    node: {
+      id: rootId,
+      type: "primer-typedef-name",
+      data: {
+        def: def.name,
+        name: def.name,
+        height: p.nodeHeight * p.nameNodeMultipliers.height,
+        width: p.nodeWidth * p.nameNodeMultipliers.width,
+        selected: deepEqualTyped(p.selection, {
+          tag: "SelectionTypeDef",
+          contents: { def: def.name },
+        }),
+      },
+      zIndex: 0,
+    },
+    childTrees: constructorTrees,
+    ...(paramsTree
+      ? {
+          rightChild: mapSnd((f: (parentId: string) => E) => f(rootId))(
+            paramsTree
+          ),
+        }
+      : {}),
+  };
+};
+
 /** Renders multiple definitions on one canvas.
  * For each definition, it displays three things:
  * - the definition's name
@@ -602,13 +960,27 @@ const defToTree = async (
  */
 export const TreeReactFlow = (p: TreeReactFlowProps) => (
   <Trees
-    makeTrees={Promise.all(
-      p.defs.map((def) =>
+    makeTrees={Promise.all([
+      ...p.typeDefs.map((def) =>
+        typeDefToTree(def, { ...p.defParams, ...p }).then((t) =>
+          layoutTree(t, p.layout).then(({ tree, width, height }) => ({
+            // All we're doing here is adding `nested: []` to all type def nodes.
+            // We just have to be very explicit here in order to please the typechecker.
+            width,
+            height,
+            tree: treeMap(tree, ({ position, ...n }) => ({
+              position,
+              ...primerNodeWith(n, { nested: [], ...n.data }),
+            })),
+          }))
+        )
+      ),
+      ...p.defs.map((def) =>
         defToTree(def, { ...p.defParams, ...p }).then((t) =>
           layoutTree(t, p.layout)
         )
-      )
-    ).then(
+      ),
+    ]).then(
       // Space out the forest.
       (sizedTrees) =>
         sizedTrees.reduce<
@@ -645,9 +1017,12 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => (
           [[], 0]
         )[0]
     )}
-    {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
-    scrollToDefRef={p.scrollToDefRef}
-  ></Trees>
+    onNodeClick={(mouseEvent, node) =>
+      p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
+    }
+  >
+    <SetTreeReactFlowCallbacks scrollToDefRef={p.scrollToDefRef} />
+  </Trees>
 );
 export default TreeReactFlow;
 
@@ -655,7 +1030,6 @@ export type TreeReactFlowOneProps = {
   tree?: APITree;
   onNodeClick?: (event: React.MouseEvent, node: Positioned<PrimerNode>) => void;
   layout: LayoutParams;
-  scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
 } & NodeParams;
 
 /** Renders one `APITree` (e.g. one type or one term) on its own individual canvas.
@@ -666,29 +1040,30 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => (
     makeTrees={
       p.tree
         ? augmentTree(p.tree, (n0) =>
-            makePrimerNode(n0, p, p.layout, 0, "BodyNode").then(
-              ([n, e, nested]) => [primerNodeWith(n, { nested }), e]
-            )
+            makePrimerNode(n0, p, p.layout, 0, {
+              tag: "termDefNode",
+              nodeType: "BodyNode",
+            }).then(([n, e, nested]) => [primerNodeWith(n, { nested }), e])
           )
             .then((t) => layoutTree(t, p.layout))
             .then(({ tree }) => [tree])
         : new Promise(() => [])
     }
     {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
-    scrollToDefRef={p.scrollToDefRef}
   ></Trees>
 );
 
 // The core of our interaction with ReactFlow: take some abstract trees, and render them.
 // This is not exported, but various wrappers around it are.
-const Trees = <N,>(p: {
-  makeTrees: Promise<Tree<Positioned<PrimerNodeWithNested<N>>, PrimerEdge>[]>;
-  onNodeClick?: (
-    event: React.MouseEvent,
-    node: Positioned<PrimerNode<N>>
-  ) => void;
-  scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
-}): JSX.Element => {
+const Trees = <N,>(
+  p: PropsWithChildren<{
+    makeTrees: Promise<Tree<Positioned<PrimerNodeWithNested<N>>, PrimerEdge>[]>;
+    onNodeClick?: (
+      event: React.MouseEvent,
+      node: Positioned<PrimerNode<N>>
+    ) => void;
+  }>
+): JSX.Element => {
   const trees = usePromise([], p.makeTrees);
   const { nodes, edges } = combineGraphs([
     ...trees.map(treeToGraph),
@@ -712,7 +1087,7 @@ const Trees = <N,>(p: {
     >
       <Background gap={25} size={1.6} color="#81818a" />
       <ZoomBar />
-      <SetTreeReactFlowCallbacks scrollToDefRef={p.scrollToDefRef} />
+      {p.children}
     </ReactFlowSafe>
   );
 };

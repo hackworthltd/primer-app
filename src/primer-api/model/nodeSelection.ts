@@ -8,6 +8,6 @@
 import type { NodeType } from './nodeType';
 
 export interface NodeSelection {
-  id: number;
+  meta: number;
   nodeType: NodeType;
 }
