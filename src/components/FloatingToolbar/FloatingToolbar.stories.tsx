@@ -14,6 +14,10 @@ export default {
       description: 'The event handler for the "Mode" button.',
       action: "mode",
     },
+    onLevelChange: {
+      description: 'The event handler for the "Level" button.',
+      action: "level",
+    },
     redoAvailable: {
       description: "Whether redo is available.",
       control: "boolean",
@@ -49,4 +53,5 @@ export const Default = Template.bind({});
 Default.args = {
   initialMode: "tree",
   initialPosition: { x: 100, y: 50 },
+  level: "Beginner",
 };

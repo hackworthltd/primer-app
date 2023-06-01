@@ -174,6 +174,19 @@ const AppNoError = ({
   redoAvailable: boolean;
 }): JSX.Element => {
   const [level, setLevel] = useState<Level>(initialLevel);
+  const toggleLevel = (): void => {
+    switch (level) {
+      case "Beginner":
+        setLevel("Intermediate");
+        break;
+      case "Intermediate":
+        setLevel("Expert");
+        break;
+      case "Expert":
+        setLevel("Beginner");
+        break;
+    }
+  };
   const [showCreateDefModal, setShowCreateDefModal] = useState<boolean>(false);
   const [showCreateTypeDefModal, setShowCreateTypeDefModal] =
     useState<boolean>(false);
@@ -274,6 +287,8 @@ const AppNoError = ({
               onModeChange={() => {
                 console.log("Toggle mode");
               }}
+              level={level}
+              onLevelChange={toggleLevel}
               undoAvailable={p.undoAvailable}
               onClickUndo={() => {
                 undo
@@ -327,7 +342,6 @@ const AppNoError = ({
       {selection ? (
         <ActionsListSelection
           level={level}
-          onChangeLevel={setLevel}
           selection={selection}
           sessionId={p.sessionId}
           onAction={(action) => {
@@ -407,7 +421,6 @@ const ActionsListSelection = (p: {
   selection: Selection;
   sessionId: string;
   level: Level;
-  onChangeLevel: (level: Level) => void;
   onAction: (action: NoInputAction) => void;
   onInputAction: (action: InputAction, option: Option) => void;
   onRequestOpts: (acrion: InputAction) => Promise<Options>;
