@@ -33,10 +33,12 @@
     "fp-ts": "^2.16.0",
     "history": "^5.3.0",
     "react": "^18.2.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.1",
     "react-router-dom": "^6.11.2",
     "reactflow": "^11.7.2",
+    "universal-cookie": "^4.0.4",
     "uuid": "^9.0.0",
     "zod": "^3.21.4"
   },
