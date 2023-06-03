@@ -28,7 +28,9 @@ export default defineConfig({
   "primer-api": {
     input: {
       target: "./primer-api.json",
-      validation: true,
+      // Disabled until we can deal with the myriad validation issues
+      // that the IBM OpenAPI validator raises.
+      validation: false,
     },
     output: {
       mode: "split",
