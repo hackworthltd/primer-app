@@ -1,5 +1,5 @@
 // Abstract avatar styles.
-export type AvatarStyle = "bottts" | "identicon" | "jdenticon";
+export type AvatarStyle = "bottts" | "identicon";
 
 // Placeholder account type.
 export interface Account {
