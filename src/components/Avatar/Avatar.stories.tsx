@@ -22,7 +22,7 @@ const imgSrcs: (string | undefined)[] = [
 ];
 
 const allDecorations: Decoration[] = ["plain", "alert"];
-const allStyles: AvatarStyle[] = ["identicon", "jdenticon", "bottts"];
+const allStyles: AvatarStyle[] = ["identicon", "bottts"];
 const allSizes: Size[] = ["responsive", "sm", "md", "lg", "xl", "2xl"];
 const fixedSizes: Size[] = ["sm", "md", "lg", "xl", "2xl"];
 
@@ -95,20 +95,6 @@ const AllButtonsTemplate: ComponentStory<typeof Avatar> = () => (
       ))}
     </div>
 
-    <h1 className="text-xl">Jdenticon</h1>
-    <div className="mb-8 flex flex-row items-center justify-around">
-      {zipSizeIDs.map(([sz, id]) => (
-        <Avatar
-          id={id}
-          style="jdenticon"
-          imgSrc={undefined}
-          decoration="plain"
-          size={sz}
-          key={sz}
-        />
-      ))}
-    </div>
-
     <h1 className="text-xl">Bottts</h1>
     <div className="mb-8 flex flex-row items-center justify-around">
       {zipSizeIDs.map(([sz, id]) => (
@@ -149,20 +135,6 @@ const AllButtonsWithAlertTemplate: ComponentStory<typeof Avatar> = () => (
         <Avatar
           id={id}
           style="identicon"
-          imgSrc={undefined}
-          decoration="alert"
-          size={sz}
-          key={sz}
-        />
-      ))}
-    </div>
-
-    <h1 className="text-xl">Jdenticon with alert</h1>
-    <div className="mb-8 flex flex-row items-center justify-around">
-      {zipSizeIDs.map(([sz, id]) => (
-        <Avatar
-          id={id}
-          style="jdenticon"
           imgSrc={undefined}
           decoration="alert"
           size={sz}

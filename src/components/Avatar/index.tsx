@@ -1,11 +1,9 @@
 import "@/index.css";
 
 import { useMemo } from "react";
-import type { Style, StyleOptions, Options } from "@dicebear/avatars";
-import { createAvatar } from "@dicebear/avatars";
-import * as bottts from "@dicebear/avatars-bottts-sprites";
-import * as identicon from "@dicebear/avatars-identicon-sprites";
-import * as jdenticon from "@dicebear/avatars-jdenticon-sprites";
+import type { Style, StyleOptions, Options } from "@dicebear/core";
+import { createAvatar } from "@dicebear/core";
+import { bottts, identicon } from "@dicebear/collection";
 import type { AvatarStyle } from "@/Types";
 import classNames from "classnames";
 
@@ -82,8 +80,6 @@ export const avatarStyle = (
       return bottts;
     case "identicon":
       return identicon;
-    case "jdenticon":
-      return jdenticon;
   }
 };
 
@@ -105,9 +101,8 @@ export const Avatar = (p: AvatarProps): JSX.Element => {
   const avatar = useMemo(() => {
     return createAvatar(avatarStyle(p.style), {
       seed: p.id,
-      dataUri: true,
       ...avatarOptions(p.style),
-    });
+    }).toDataUriSync();
   }, [p.id, p.style]);
   const src = p.imgSrc ? p.imgSrc : avatar;
 
