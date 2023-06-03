@@ -220,7 +220,7 @@ const AppNoError = ({
 
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
-      <div className="overflow-scroll">
+      <div className="h-full overflow-hidden">
         <Sidebar
           initialMode="T&D"
           prog={{
@@ -259,7 +259,7 @@ const AppNoError = ({
         />
       </div>
 
-      <div ref={canvasRef}>
+      <div className="h-full" ref={canvasRef}>
         {
           // Wait for the `div` above to be rendered before we create
           // the floating toolbar element, otherwise its initial
@@ -325,82 +325,84 @@ const AppNoError = ({
         />
       </div>
 
-      {selection ? (
-        <ActionsListSelection
-          level={level}
-          selection={selection}
-          sessionId={p.sessionId}
-          onAction={(action) => {
-            applyAction
-              .mutateAsync({
-                sessionId: p.sessionId,
-                params: { action },
+      <div className="h-full overflow-hidden">
+        {selection ? (
+          <ActionsListSelection
+            level={level}
+            selection={selection}
+            sessionId={p.sessionId}
+            onAction={(action) => {
+              applyAction
+                .mutateAsync({
+                  sessionId: p.sessionId,
+                  params: { action },
+                  data: selection,
+                })
+                .then(p.setProg);
+            }}
+            onInputAction={(action, option) => {
+              applyActionWithInput
+                .mutateAsync({
+                  sessionId: p.sessionId,
+                  params: { action },
+                  data: { option, selection },
+                })
+                .then(p.setProg);
+            }}
+            onRequestOpts={(action) => {
+              return getOptions.mutateAsync({
                 data: selection,
-              })
-              .then(p.setProg);
-          }}
-          onInputAction={(action, option) => {
-            applyActionWithInput
-              .mutateAsync({
                 sessionId: p.sessionId,
-                params: { action },
-                data: { option, selection },
-              })
-              .then(p.setProg);
-          }}
-          onRequestOpts={(action) => {
-            return getOptions.mutateAsync({
-              data: selection,
-              sessionId: p.sessionId,
-              params: { action: action, level },
-            });
-          }}
-        />
-      ) : (
-        <div className="p-10">
-          Click something on the canvas to see available actions!
-        </div>
-      )}
-      {showCreateDefModal ? (
-        <CreateDefModal
-          open={showCreateDefModal}
-          onClose={() => setShowCreateDefModal(false)}
-          onCancel={() => setShowCreateDefModal(false)}
-          onSubmit={(name: string) => {
-            createDef
-              .mutateAsync({
-                sessionId: p.sessionId,
-                params: { name },
-                data: p.module.modname,
-              })
-              .then(p.setProg);
-            setShowCreateDefModal(false);
-          }}
-        />
-      ) : null}
-      {showCreateTypeDefModal ? (
-        <CreateTypeDefModal
-          moduleTypeDefNames={
-            new Set(p.module.types.map((t) => t.name.baseName))
-          }
-          open={showCreateTypeDefModal}
-          onClose={() => setShowCreateTypeDefModal(false)}
-          onCancel={() => setShowCreateTypeDefModal(false)}
-          onSubmit={(typeName: string, ctorNames: string[]) => {
-            createTypeDef
-              .mutateAsync({
-                sessionId: p.sessionId,
-                data: {
-                  moduleName: p.module.modname,
-                  typeName,
-                  ctors: ctorNames,
-                },
-              })
-              .then(p.setProg)
-              .then(() => setShowCreateTypeDefModal(false));
-          }}
-        />
-      ) : null}
+                params: { action: action, level },
+              });
+            }}
+          />
+        ) : (
+          <div className="p-10">
+            Click something on the canvas to see available actions!
+          </div>
+        )}
+        {showCreateDefModal ? (
+          <CreateDefModal
+            open={showCreateDefModal}
+            onClose={() => setShowCreateDefModal(false)}
+            onCancel={() => setShowCreateDefModal(false)}
+            onSubmit={(name: string) => {
+              createDef
+                .mutateAsync({
+                  sessionId: p.sessionId,
+                  params: { name },
+                  data: p.module.modname,
+                })
+                .then(p.setProg);
+              setShowCreateDefModal(false);
+            }}
+          />
+        ) : null}
+        {showCreateTypeDefModal ? (
+          <CreateTypeDefModal
+            moduleTypeDefNames={
+              new Set(p.module.types.map((t) => t.name.baseName))
+            }
+            open={showCreateTypeDefModal}
+            onClose={() => setShowCreateTypeDefModal(false)}
+            onCancel={() => setShowCreateTypeDefModal(false)}
+            onSubmit={(typeName: string, ctorNames: string[]) => {
+              createTypeDef
+                .mutateAsync({
+                  sessionId: p.sessionId,
+                  data: {
+                    moduleName: p.module.modname,
+                    typeName,
+                    ctors: ctorNames,
+                  },
+                })
+                .then(p.setProg)
+                .then(() => setShowCreateTypeDefModal(false));
+            }}
+          />
+        ) : null}
+      </div>
     </div>
   );
 };

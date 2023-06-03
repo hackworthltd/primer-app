@@ -35,41 +35,45 @@ export const ActionPanel = ({
 }: ActionPanelProps): JSX.Element => {
   const [state, setState] = useState<State>({ state: "ActionList" });
   return (
-    <div className="h-full overflow-scroll bg-grey-primary p-4 pt-2">
-      <div className="flex flex-row py-4 font-bold text-blue-primary lg:text-lg">
-        {"Actions"}
-      </div>
+    <div className="h-full bg-grey-primary p-4 pt-2">
       {(() => {
         switch (state.state) {
           case "ActionList":
             return (
-              <ul role="list">
-                {sortActions(actions).map((action) => (
-                  <li key={action.contents} className="pt-2">
-                    <ActionButton
-                      level={level}
-                      action={action}
-                      onClick={(_, action) => {
-                        switch (action.tag) {
-                          case "NoInput":
-                            onAction(action.contents);
-                            break;
-                          case "Input": {
-                            onRequestOpts(action.contents).then((opts) => {
-                              setState({
-                                state: "Input",
-                                action: action.contents,
-                                opts,
-                              });
-                            });
-                            break;
-                          }
-                        }
-                      }}
-                    />
-                  </li>
-                ))}
-              </ul>
+              <div className="flex h-full flex-col overflow-hidden">
+                <div className="flex-none py-4 font-bold text-blue-primary lg:text-lg">
+                  Actions
+                </div>
+                <div className="min-h-0 flex-auto overflow-y-auto">
+                  <ul role="list">
+                    {sortActions(actions).map((action) => (
+                      <li key={action.contents} className="pt-2">
+                        <ActionButton
+                          level={level}
+                          action={action}
+                          onClick={(_, action) => {
+                            switch (action.tag) {
+                              case "NoInput":
+                                onAction(action.contents);
+                                break;
+                              case "Input": {
+                                onRequestOpts(action.contents).then((opts) => {
+                                  setState({
+                                    state: "Input",
+                                    action: action.contents,
+                                    opts,
+                                  });
+                                });
+                                break;
+                              }
+                            }
+                          }}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             );
           case "Input": {
             const onOption = (option: Option) => {
@@ -77,16 +81,32 @@ export const ActionPanel = ({
               setState({ state: "ActionList" });
             };
             return (
-              <div>
-                <div>
-                  {state.opts.free != "FreeNone" && (
-                    <div className="mb-3 pt-2">
-                      <ActionInput
-                        sort={state.opts.free}
-                        onSubmit={(option) => onOption({ option })}
-                      ></ActionInput>
+              <div className="flex h-full flex-col overflow-hidden">
+                {state.opts.free === "FreeNone" ? (
+                  <div className="flex-none py-4 font-bold text-blue-primary lg:text-lg">
+                    Select an option
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex-none">
+                      <div className="py-4 font-bold text-blue-primary lg:text-lg">
+                        Enter a value
+                      </div>
+                      <div className="mb-3 pt-2">
+                        <ActionInput
+                          sort={state.opts.free}
+                          onSubmit={(option) => onOption({ option })}
+                        ></ActionInput>
+                      </div>
                     </div>
-                  )}
+                    {state.opts.opts.length > 0 && (
+                      <div className="flex-none py-4 pl-4 text-blue-primary">
+                        …or choose one:
+                      </div>
+                    )}
+                  </>
+                )}
+                <div className="min-h-0 shrink overflow-y-auto">
                   <ul>
                     {state.opts.opts.map((option) => (
                       <li key={JSON.stringify(option)} className="pt-2">
@@ -98,13 +118,13 @@ export const ActionPanel = ({
                       </li>
                     ))}
                   </ul>
-                  <div className="pt-2">
-                    <ActionPanelButton
-                      appearance="danger"
-                      onClick={(_) => setState({ state: "ActionList" })}
-                      description="Cancel"
-                    />
-                  </div>
+                </div>
+                <div className="flex-none pt-2">
+                  <ActionPanelButton
+                    appearance="danger"
+                    onClick={(_) => setState({ state: "ActionList" })}
+                    description="Cancel"
+                  />
                 </div>
               </div>
             );
