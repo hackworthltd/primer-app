@@ -3,10 +3,8 @@ export type AvatarStyle = "bottts" | "identicon";
 
 // Placeholder account type.
 export interface Account {
-  name: string;
-  email: string;
+  id: string;
   avatarStyle: AvatarStyle;
-  imageUrl: string | undefined;
 }
 
 // Placeholder type for our backend session type.
