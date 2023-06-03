@@ -1,5 +1,6 @@
 import type { MouseEventHandler } from "react";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 import type { SessionMeta } from "@/Types";
 import { exampleAccount, SessionsPage } from "@/components";
 import type {
@@ -18,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
 const ChooseSession = (): JSX.Element => {
+  const [cookies] = useCookies(["id"]);
+
   // NOTE: pagination in our API is 1-indexed.
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
@@ -78,7 +81,7 @@ const ChooseSession = (): JSX.Element => {
 
   return (
     <SessionsPage
-      account={exampleAccount}
+      account={{ ...exampleAccount, id: cookies.id }}
       sessions={sessionsMeta}
       startIndex={startIndex}
       numItems={meta.pageSize}

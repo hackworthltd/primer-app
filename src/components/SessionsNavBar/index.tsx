@@ -56,12 +56,12 @@ export const SessionsNavBar = (p: SessionsNavBarProps): JSX.Element => (
         {/* Profile dropdown */}
         <Menu as="div" className="relative shrink-0">
           <div>
-            <Menu.Button className="flex rounded-full bg-white-primary focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2">
+            <Menu.Button className="flex rounded-full ring-2 ring-grey-quaternary focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2">
               <span className="sr-only">Open account menu</span>
               <Avatar
-                id={p.account.email}
+                id={p.account.id}
                 style={p.account.avatarStyle}
-                imgSrc={p.account.imageUrl}
+                imgSrc={undefined}
                 decoration="plain"
                 size="responsive"
               />
