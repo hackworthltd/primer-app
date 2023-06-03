@@ -44,7 +44,7 @@ import {
 // hardcoded values (for now)
 const initialLevel: Level = "Expert";
 
-const App = (): JSX.Element => {
+const Edit = (): JSX.Element => {
   const params = useParams();
   const sessionId = params["sessionId"];
 
@@ -422,4 +422,4 @@ const ActionsListSelection = (p: {
   return <ActionPanel {...{ actions, ...p }} />;
 };
 
-export default App;
+export default Edit;

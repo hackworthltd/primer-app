@@ -6,7 +6,7 @@ import "./index.css";
 
 import { NoMatch } from "@/components";
 import ChooseSession from "./ChooseSession";
-import App from "./App";
+import Edit from "./Edit";
 
 const queryClient = new QueryClient();
 const rootElement: HTMLElement | null = document.getElementById("root");
@@ -26,7 +26,7 @@ root.render(
           <Route path="/" element={<Navigate to="/sessions" />} />
           <Route path="/sessions">
             <Route index element={<ChooseSession />} />
-            <Route path=":sessionId" element={<App />} />
+            <Route path=":sessionId" element={<Edit />} />
           </Route>
           <Route path="*" element={<NoMatch />} />
         </Routes>
