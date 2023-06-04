@@ -91,6 +91,7 @@ export type TreeReactFlowProps = {
   defParams: DefParams;
   layout: LayoutParams;
   scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
+  scrollToTypeDefRef: MutableRefObject<ScrollToDef | undefined>;
 } & NodeParams;
 export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
@@ -109,9 +110,10 @@ export const defaultTreeReactFlowProps: Pick<
   },
 };
 
-// This should probably take a `GlobalName` instead, but we're not
+// These should probably take a `GlobalName` instead, but we're not
 // quite there yet.
 const defNameToNodeId = (name: string) => `def-${name}`;
+const typeDefNameToNodeId = (name: string) => `typedef-name-${name}`;
 
 const handle = (type: HandleType, position: Position) => (
   <Handle id={position} isConnectable={false} type={type} position={position} />
@@ -802,7 +804,7 @@ const typeDefToTree = async (
   type E = PrimerEdge;
   type T = Tree<N, E>;
 
-  const rootId = "typedef-name-" + def.name.baseName;
+  const rootId = typeDefNameToNodeId(def.name.baseName);
   const paramsTree = def.params.reduceRight<
     [T, (parentId: string) => E] | undefined
   >((child, name) => {
@@ -1021,7 +1023,10 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => (
       p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
     }
   >
-    <SetTreeReactFlowCallbacks scrollToDefRef={p.scrollToDefRef} />
+    <SetTreeReactFlowCallbacks
+      scrollToDefRef={p.scrollToDefRef}
+      scrollToTypeDefRef={p.scrollToTypeDefRef}
+    />
   </Trees>
 );
 export default TreeReactFlow;
@@ -1097,10 +1102,13 @@ const Trees = <N,>(
 // `ReactFlowProvider`s.
 const SetTreeReactFlowCallbacks = ({
   scrollToDefRef,
+  scrollToTypeDefRef,
 }: {
   scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
+  scrollToTypeDefRef: MutableRefObject<ScrollToDef | undefined>;
 }) => {
   const { fitView, getZoom } = useReactFlow();
+
   const scrollToDef: ScrollToDef = (defName: string) => {
     // Don't change the current zoom level when scrolling to a
     // definition.
@@ -1112,6 +1120,19 @@ const SetTreeReactFlowCallbacks = ({
     });
   };
   scrollToDefRef.current = scrollToDef;
+
+  const scrollToTypeDef: ScrollToDef = (defName: string) => {
+    // Don't change the current zoom level when scrolling to a
+    // definition.
+    const zoomLevel: number = getZoom();
+    fitView({
+      nodes: [{ id: typeDefNameToNodeId(defName) }],
+      minZoom: zoomLevel,
+      maxZoom: zoomLevel,
+    });
+  };
+  scrollToTypeDefRef.current = scrollToTypeDef;
+
   return <></>;
 };
 
