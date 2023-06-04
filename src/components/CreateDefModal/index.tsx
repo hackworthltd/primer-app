@@ -9,7 +9,29 @@ import { UIButton } from "@/components";
 
 import "@/index.css";
 
+export type DefType = "definition" | "type";
+
 export interface CreateDefModalProps {
+  /**
+   * The type of definition being created.
+   */
+  defType: DefType;
+
+  /**
+   * The names of all existing definitions in the current module that
+   * are also in the same namespace as the definition being created.
+   * These are checked against the modal's input form for name
+   * conflicts.
+   *
+   * This is a rare case where the frontend assumes something about
+   * the language's semantics. Ideally we would move all these checks
+   * to the backend, but at the moment, doing this client-side
+   * provides better UX. See:
+   *
+   * https://github.com/hackworthltd/primer-app/issues/942
+   */
+  moduleDefNames: Set<string>;
+
   /**
    * The modal's visibility state.
    */
@@ -33,16 +55,19 @@ export interface CreateDefModalProps {
   onClose: () => void;
 }
 
-const schema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, { message: "Please provide a name for the definition" }),
-});
-
-type FormData = z.infer<typeof schema>;
-
 export const CreateDefModal = (p: CreateDefModalProps): JSX.Element => {
+  const defFormSchema = z.object({
+    defName: z
+      .string()
+      .trim()
+      .min(1, { message: `Please provide a name for the ${p.defType}` })
+      .refine((name) => !p.moduleDefNames.has(name), {
+        message: `There's already another ${p.defType} with this name in this module`,
+      }),
+  });
+
+  type FormData = z.infer<typeof defFormSchema>;
+
   const {
     register,
     handleSubmit,
@@ -50,15 +75,15 @@ export const CreateDefModal = (p: CreateDefModalProps): JSX.Element => {
     setFocus,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(defFormSchema),
   });
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
-    p.onSubmit(data.name);
+    p.onSubmit(data.defName);
   };
 
   useEffect(() => {
     if (p.open) {
-      setFocus("name");
+      setFocus("defName");
     }
   }, [p.open, setFocus]);
 
@@ -111,12 +136,12 @@ export const CreateDefModal = (p: CreateDefModalProps): JSX.Element => {
                       as="h3"
                       className="text-lg font-medium leading-6 text-blue-primary"
                     >
-                      Create a new definition
+                      Create a new {p.defType}
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-blue-primary">
-                        Give your new definition a name. You can rename it later
-                        if you change your mind.
+                        Give your new {p.defType} a name. You can rename it
+                        later if you change your mind.
                       </p>
                     </div>
                     <form
@@ -131,13 +156,13 @@ export const CreateDefModal = (p: CreateDefModalProps): JSX.Element => {
                           type="text"
                           id="name"
                           className="block w-full rounded-md border-grey-primary text-sm shadow-sm focus:ring-blue-secondary"
-                          aria-invalid={errors.name ? "true" : "false"}
-                          {...register("name")}
-                          placeholder="Definition name"
+                          aria-invalid={errors.defName ? "true" : "false"}
+                          {...register("defName")}
+                          placeholder={`New ${p.defType} name`}
                         />
-                        {errors.name?.message && (
+                        {errors.defName?.message && (
                           <p className="mt-2 text-sm text-red-primary">
-                            <span role="alert">{errors.name.message}</span>
+                            <span role="alert">{errors.defName.message}</span>
                           </p>
                         )}
                       </div>
@@ -146,7 +171,7 @@ export const CreateDefModal = (p: CreateDefModalProps): JSX.Element => {
                 </div>
                 <div className="mt-5 sm:flex sm:flex-row-reverse">
                   <UIButton
-                    text="Create definition"
+                    text={`Create ${p.defType}`}
                     size="lg"
                     appearance="primary"
                     className="w-full justify-center sm:ml-3 sm:w-auto"

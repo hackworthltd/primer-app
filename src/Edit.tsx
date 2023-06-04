@@ -1,12 +1,12 @@
 import {
   CreateDefModal,
-  CreateTypeDefModal,
   TreeReactFlow,
   Error,
   ActionPanel,
   Sidebar,
   FloatingToolbar,
 } from "@/components";
+import type { Def, TypeDef } from "@/primer-api/model";
 import {
   QueryKey,
   useQueryClient,
@@ -370,6 +370,10 @@ const AppNoError = ({
         )}
         {showCreateDefModal ? (
           <CreateDefModal
+            defType="definition"
+            moduleDefNames={
+              new Set(p.module.defs.map((d: Def) => d.name.baseName))
+            }
             open={showCreateDefModal}
             onClose={() => setShowCreateDefModal(false)}
             onCancel={() => setShowCreateDefModal(false)}
@@ -386,21 +390,22 @@ const AppNoError = ({
           />
         ) : null}
         {showCreateTypeDefModal ? (
-          <CreateTypeDefModal
-            moduleTypeDefNames={
-              new Set(p.module.types.map((t) => t.name.baseName))
+          <CreateDefModal
+            defType="type"
+            moduleDefNames={
+              new Set(p.module.types.map((t: TypeDef) => t.name.baseName))
             }
             open={showCreateTypeDefModal}
             onClose={() => setShowCreateTypeDefModal(false)}
             onCancel={() => setShowCreateTypeDefModal(false)}
-            onSubmit={(typeName: string, ctorNames: string[]) => {
+            onSubmit={(name: string) => {
               createTypeDef
                 .mutateAsync({
                   sessionId: p.sessionId,
                   data: {
                     moduleName: p.module.modname,
-                    typeName,
-                    ctors: ctorNames,
+                    typeName: name,
+                    ctors: [],
                   },
                 })
                 .then(p.setProg)
