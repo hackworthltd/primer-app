@@ -217,6 +217,7 @@ const AppNoError = ({
   const canvasDimensions = useDimensions(canvasRef);
 
   const scrollToDefRef = useRef<ScrollToDef | undefined>(undefined);
+  const scrollToTypeDefRef = useRef<ScrollToDef | undefined>(undefined);
 
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
@@ -245,7 +246,11 @@ const AppNoError = ({
             }
           }}
           onClickAddDef={onClickAddDef}
-          onClickTypeDef={(_label, _event) => ({})}
+          onClickTypeDef={(defName, _event) => {
+            if (scrollToTypeDefRef.current != undefined) {
+              scrollToTypeDefRef.current(defName);
+            }
+          }}
           onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
           shadowed={false}
           type="?"
@@ -316,6 +321,7 @@ const AppNoError = ({
         }
         <TreeReactFlow
           scrollToDefRef={scrollToDefRef}
+          scrollToTypeDefRef={scrollToTypeDefRef}
           {...defaultTreeReactFlowProps}
           {...(selection && { selection })}
           onNodeClick={(_e, sel) => sel && setSelection(sel)}

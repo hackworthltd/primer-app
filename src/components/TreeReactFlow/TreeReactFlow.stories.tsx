@@ -29,6 +29,7 @@ export default {
 const props: Omit<TreeReactFlowProps, "defs" | "typeDefs" | "onNodeClick"> = {
   ...defaultTreeReactFlowProps,
   scrollToDefRef: { current: undefined },
+  scrollToTypeDefRef: { current: undefined },
   forestLayout: "Vertical",
 };
 
