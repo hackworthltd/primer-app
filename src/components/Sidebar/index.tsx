@@ -7,9 +7,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
-import { EvalFullResp, GlobalName, Level } from "@/primer-api";
-import { TreeReactFlowOne } from "@/components";
-import { defaultTreeReactFlowProps } from "../TreeReactFlow";
+import type { EvalProps } from "@/components/Eval";
+import { Eval } from "@/components";
 
 export type Prog = {
   defs: string[];
@@ -37,14 +36,6 @@ type InfoProps = {
   shadowed: boolean;
   type: string;
   folder: string;
-};
-type EvalProps = {
-  moduleName: string[];
-  evalFull: {
-    request: (baseName: string | undefined) => void;
-    result?: EvalFullResp;
-  };
-  level: Level;
 };
 type OnClick = (
   label: string,
@@ -223,69 +214,6 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
           <div className={subHeaderStyle}>Folder</div>
           <div className={itemStyle}>{folder}</div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-const Evaluated = (p: {
-  defName: GlobalName;
-  evaluated?: EvalFullResp;
-  level: Level;
-}) => {
-  return (
-    <TreeReactFlowOne
-      {...defaultTreeReactFlowProps}
-      {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
-      level={p.level}
-    />
-  );
-};
-
-// We only offer to evaluate the definitions in the "main" module
-const Eval = ({
-  defs,
-  evalFull,
-  moduleName,
-  level,
-}: EvalProps & { defs: string[] }): JSX.Element => {
-  const [evalDef, setEvalDef0] = useState("");
-  const setEvalDef = (e: string) => {
-    setEvalDef0(e);
-    evalFull.request(e === "" ? undefined : e);
-  };
-  return (
-    <div className="flex h-full flex-col overflow-auto">
-      <div className={headerStyle}>Evaluation</div>
-      <div className="flex grow flex-col gap-5 overflow-hidden p-2 leading-8">
-        <div>
-          <div className={subHeaderStyle}>Evaluating</div>
-          <select value={evalDef} onChange={(e) => setEvalDef(e.target.value)}>
-            <option key="" value="">
-              ---None---
-            </option>
-            {
-              /* NB: all def names are distinct and non-empty*/
-              defs.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))
-            }
-          </select>
-        </div>
-        {evalDef !== "" && (
-          <>
-            <div className="grow">
-              <div className={subHeaderStyle}>gives</div>
-              <Evaluated
-                defName={{ qualifiedModule: moduleName, baseName: evalDef }}
-                {...(evalFull.result ? { evaluated: evalFull.result } : {})}
-                level={level}
-              />
-            </div>
-          </>
-        )}
       </div>
     </div>
   );
