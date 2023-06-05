@@ -310,9 +310,6 @@ const AppNoError = ({
                   })
                   .then(p.setProg);
               }}
-              onClickChevron={() => {
-                console.log("Toggle chevron");
-              }}
               initialMode="tree"
               // Note: these offsets are rather arbitrary.
               initialPosition={{ x: canvasDimensions.width - 100, y: 15 }}

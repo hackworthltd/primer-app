@@ -2,7 +2,6 @@ import {
   CodeBracketIcon,
   ShareIcon,
   ArrowUturnLeftIcon,
-  ChevronDownIcon,
   EllipsisHorizontalIcon,
   BeakerIcon,
   AcademicCapIcon,
@@ -26,7 +25,6 @@ export type FloatingToolbarProps = {
   onClickRedo: MouseEventHandler<HTMLButtonElement>;
   undoAvailable: boolean;
   onClickUndo: MouseEventHandler<HTMLButtonElement>;
-  onClickChevron: MouseEventHandler<HTMLButtonElement>;
 };
 export type Mode = "text" | "tree";
 
@@ -146,9 +144,6 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
       >
         {levelSvg(p.level)}
         level
-      </button>
-      <button type="button" onClick={p.onClickChevron}>
-        <ChevronDownIcon className="w-6" />
       </button>
     </div>
   );

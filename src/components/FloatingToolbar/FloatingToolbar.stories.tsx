@@ -34,10 +34,6 @@ export default {
       description: 'The event handler for the "Undo" button.',
       action: "undo",
     },
-    onClickChevron: {
-      description: 'The event handler for the "Chevron" button.',
-      action: "chevron",
-    },
   },
 } as ComponentMeta<typeof FloatingToolbar>;
 
