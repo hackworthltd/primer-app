@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { tree3 } from "../examples/trees";
 
-import { Eval } from "./";
+import { EvalFull } from "./";
 
-const meta: Meta<typeof Eval> = {
-  title: "Application/Component Library/Eval",
-  component: Eval,
+const meta: Meta<typeof EvalFull> = {
+  title: "Application/Component Library/EvalFull",
+  component: EvalFull,
   decorators: [
     (Story) => (
       <div className="h-screen">
@@ -16,7 +16,7 @@ const meta: Meta<typeof Eval> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Eval>;
+type Story = StoryObj<typeof EvalFull>;
 
 export const Default: Story = {
   args: {

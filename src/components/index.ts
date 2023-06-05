@@ -5,7 +5,7 @@ export { default as Avatar } from "./Avatar";
 export { default as BinaryTreePlaceholder } from "./BinaryTreePlaceholder";
 export { default as CreateDefModal } from "./CreateDefModal";
 export { default as Error } from "./Error";
-export { default as Eval } from "./Eval";
+export { default as EvalFull } from "./EvalFull";
 export { default as FloatingToolbar } from "./FloatingToolbar";
 export { default as GroupedButtonList } from "./GroupedButtonList";
 export { default as NoMatch } from "./NoMatch";

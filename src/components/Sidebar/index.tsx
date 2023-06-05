@@ -7,8 +7,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
-import type { EvalProps } from "@/components/Eval";
-import { Eval } from "@/components";
+import type { EvalFullProps } from "@/components/EvalFull";
+import { EvalFull } from "@/components";
 
 export type Prog = {
   defs: string[];
@@ -24,7 +24,7 @@ const itemStyle =
 
 export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
   InfoProps &
-  EvalProps;
+  EvalFullProps;
 type TypesAndDefinitionsProps = {
   prog: Prog;
   onClickDef: OnClick;
@@ -80,7 +80,7 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
             case "Info":
               return <Info {...p}></Info>;
             case "Eval":
-              return <Eval {...p} defs={p.prog.defs}></Eval>;
+              return <EvalFull {...p} defs={p.prog.defs}></EvalFull>;
           }
         })()}
       </div>

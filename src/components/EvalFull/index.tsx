@@ -3,7 +3,7 @@ import { EvalFullResp, GlobalName, Level } from "@/primer-api";
 import { TreeReactFlowOne } from "@/components";
 import { defaultTreeReactFlowProps } from "../TreeReactFlow";
 
-export type EvalProps = {
+export type EvalFullProps = {
   moduleName: string[];
   evalFull: {
     request: (baseName: string | undefined) => void;
@@ -30,12 +30,12 @@ const headerStyle = "pb-3 text-base lg:text-lg font-bold text-blue-primary";
 const subHeaderStyle = "mb-1 text-sm lg:text-base font-bold text-blue-primary";
 
 // We only offer to evaluate the definitions in the "main" module
-export const Eval = ({
+export const EvalFull = ({
   defs,
   evalFull,
   moduleName,
   level,
-}: EvalProps & { defs: string[] }): JSX.Element => {
+}: EvalFullProps & { defs: string[] }): JSX.Element => {
   const [evalDef, setEvalDef0] = useState("");
   const setEvalDef = (e: string) => {
     setEvalDef0(e);
@@ -78,4 +78,4 @@ export const Eval = ({
   );
 };
 
-export default Eval;
+export default EvalFull;
