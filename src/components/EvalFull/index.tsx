@@ -10,6 +10,7 @@ export type EvalFullProps = {
     result?: EvalFullResp;
   };
   level: Level;
+  defs: string[];
 };
 
 const Evaluated = (p: {
@@ -35,7 +36,7 @@ export const EvalFull = ({
   evalFull,
   moduleName,
   level,
-}: EvalFullProps & { defs: string[] }): JSX.Element => {
+}: EvalFullProps): JSX.Element => {
   const [evalDef, setEvalDef0] = useState("");
   const setEvalDef = (e: string) => {
     setEvalDef0(e);

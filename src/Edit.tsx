@@ -218,16 +218,16 @@ const AppNoError = ({
 
   const scrollToDefRef = useRef<ScrollToDef | undefined>(undefined);
   const scrollToTypeDefRef = useRef<ScrollToDef | undefined>(undefined);
-
+  const defs = p.module.defs
+    .sort((a, b) => cmpName(a.name, b.name))
+    .map((d) => d.name.baseName);
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="h-full overflow-hidden">
         <Sidebar
           initialMode="T&D"
           prog={{
-            defs: p.module.defs
-              .sort((a, b) => cmpName(a.name, b.name))
-              .map((d) => d.name.baseName),
+            defs,
             types: p.module.types
               .sort((a, b) => cmpName(a.name, b.name))
               .map((t) => t.name.baseName),
@@ -261,6 +261,7 @@ const AppNoError = ({
             ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
           }}
           level={level}
+          defs={defs}
         />
       </div>
 
