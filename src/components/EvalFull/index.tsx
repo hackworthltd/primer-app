@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { EvalFullResp, GlobalName, Level } from "@/primer-api";
-import { TreeReactFlowOne } from "@/components";
+import { SelectMenu, TreeReactFlowOne } from "@/components";
 import { defaultTreeReactFlowProps } from "../TreeReactFlow";
 
 export type EvalFullProps = {
@@ -27,8 +27,7 @@ const Evaluated = (p: {
   );
 };
 
-const headerStyle = "pb-3 text-base lg:text-lg font-bold text-blue-primary";
-const subHeaderStyle = "mb-1 text-sm lg:text-base font-bold text-blue-primary";
+const disableEval = "<disabled>";
 
 // We only offer to evaluate the definitions in the "main" module
 export const EvalFull = ({
@@ -37,44 +36,33 @@ export const EvalFull = ({
   moduleName,
   level,
 }: EvalFullProps): JSX.Element => {
-  const [evalDef, setEvalDef0] = useState("");
+  const [evalDef, setEvalDef0] = useState(disableEval);
   const setEvalDef = (e: string) => {
     setEvalDef0(e);
-    evalFull.request(e === "" ? undefined : e);
+    evalFull.request(e === disableEval ? undefined : e);
   };
   return (
     <div className="flex h-full flex-col overflow-auto">
-      <div className={headerStyle}>Evaluation</div>
-      <div className="flex grow flex-col gap-5 overflow-hidden p-2 leading-8">
-        <div>
-          <div className={subHeaderStyle}>Evaluating</div>
-          <select value={evalDef} onChange={(e) => setEvalDef(e.target.value)}>
-            <option key="" value="">
-              ---None---
-            </option>
-            {
-              /* NB: all def names are distinct and non-empty*/
-              defs.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))
-            }
-          </select>
-        </div>
-        {evalDef !== "" && (
-          <>
-            <div className="grow">
-              <div className={subHeaderStyle}>gives</div>
-              <Evaluated
-                defName={{ qualifiedModule: moduleName, baseName: evalDef }}
-                {...(evalFull.result ? { evaluated: evalFull.result } : {})}
-                level={level}
-              />
-            </div>
-          </>
-        )}
+      <div className="mx-2 mt-2">
+        <SelectMenu
+          label="Evaluate"
+          selected={evalDef}
+          options={[disableEval].concat(defs)}
+          optionType="code"
+          onChange={(selection: string) => setEvalDef(selection)}
+        />
       </div>
+      {evalDef !== disableEval && (
+        <>
+          <div className="grow">
+            <Evaluated
+              defName={{ qualifiedModule: moduleName, baseName: evalDef }}
+              {...(evalFull.result ? { evaluated: evalFull.result } : {})}
+              level={level}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

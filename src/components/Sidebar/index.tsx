@@ -3,12 +3,9 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   PlusIcon,
-  PlayCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
-import type { EvalFullProps } from "@/components/EvalFull";
-import { EvalFull } from "@/components";
 
 export type Prog = {
   defs: string[];
@@ -23,8 +20,7 @@ const itemStyle =
   "block truncate font-code text-sm lg:text-base leading-5 text-left text-grey-secondary";
 
 export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
-  InfoProps &
-  EvalFullProps;
+  InfoProps;
 type TypesAndDefinitionsProps = {
   prog: Prog;
   onClickDef: OnClick;
@@ -42,7 +38,7 @@ type OnClick = (
   event: React.MouseEvent<HTMLButtonElement>
 ) => void;
 
-type Tab = "T&D" | "Info" | "Eval";
+type Tab = "T&D" | "Info";
 
 export const Sidebar = (p: SidebarProps): JSX.Element => {
   const [currentTab, switchTab] = useState(p.initialMode);
@@ -64,13 +60,12 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="grid h-20 grid-cols-3 text-grey-secondary">
+      <div className="grid h-20 grid-cols-2 text-grey-secondary">
         {tab(
           "T&D",
           <div className="text-center text-base font-bold lg:text-lg">T&D</div>
         )}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
-        {tab("Eval", <PlayCircleIcon className="h-8" />)}
       </div>
       <div className="h-full overflow-scroll bg-grey-primary p-6 pr-4">
         {(() => {
@@ -79,8 +74,6 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
               return <TypesAndDefinitions {...p}></TypesAndDefinitions>;
             case "Info":
               return <Info {...p}></Info>;
-            case "Eval":
-              return <EvalFull {...p} defs={p.prog.defs}></EvalFull>;
           }
         })()}
       </div>

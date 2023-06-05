@@ -1,53 +1,35 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
+import { tree3 } from "../examples/trees";
 
-import { FloatingToolbar, FloatingToolbarProps } from "./";
+import { FloatingToolbar } from "./";
 
-export default {
+const meta: Meta<typeof FloatingToolbar> = {
   title: "Application/Component Library/FloatingToolbar",
   component: FloatingToolbar,
-  argTypes: {
-    initialPosition: {
-      description: "The toolbar's initial position.",
-      control: "object",
+  decorators: [
+    (Story) => (
+      <div className="h-screen">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export default meta;
+type Story = StoryObj<typeof FloatingToolbar>;
+
+export const Default: Story = {
+  args: {
+    initialMode: "tree",
+    initialPosition: { x: 100, y: 50 },
+    moduleName: ["Primer", "Examples"],
+    evalFull: {
+      request: () => {
+        return;
+      },
+      result: { tag: "EvalFullRespTimedOut", contents: tree3 },
     },
-    onModeChange: {
-      description: 'The event handler for the "Mode" button.',
-      action: "mode",
-    },
-    onLevelChange: {
-      description: 'The event handler for the "Level" button.',
-      action: "level",
-    },
-    redoAvailable: {
-      description: "Whether redo is available.",
-      control: "boolean",
-    },
-    onClickRedo: {
-      description: 'The event handler for the "Redo" button.',
-      action: "redo",
-    },
-    undoAvailable: {
-      description: "Whether undo is available.",
-      control: "boolean",
-    },
-    onClickUndo: {
-      description: 'The event handler for the "Undo" button.',
-      action: "undo",
-    },
+    level: "Expert",
+    defs: ["footballGame", "whatsopposite"],
   },
-} as ComponentMeta<typeof FloatingToolbar>;
-
-const Template: ComponentStory<typeof FloatingToolbar> = (
-  args: FloatingToolbarProps
-) => (
-  <div>
-    <FloatingToolbar {...args} />
-  </div>
-);
-
-export const Default = Template.bind({});
-Default.args = {
-  initialMode: "tree",
-  initialPosition: { x: 100, y: 50 },
-  level: "Beginner",
 };

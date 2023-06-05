@@ -255,13 +255,6 @@ const AppNoError = ({
           shadowed={false}
           type="?"
           folder="unknown"
-          moduleName={p.module.modname}
-          evalFull={{
-            request: setEvalTarget,
-            ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
-          }}
-          level={level}
-          defs={defs}
         />
       </div>
 
@@ -313,7 +306,13 @@ const AppNoError = ({
               }}
               initialMode="tree"
               // Note: these offsets are rather arbitrary.
-              initialPosition={{ x: canvasDimensions.width - 100, y: 15 }}
+              initialPosition={{ x: canvasDimensions.width - 410, y: 10 }}
+              moduleName={p.module.modname}
+              evalFull={{
+                request: setEvalTarget,
+                ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
+              }}
+              defs={defs}
             />
           )
         }
