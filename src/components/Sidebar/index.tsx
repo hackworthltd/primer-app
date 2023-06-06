@@ -21,7 +21,7 @@ export type Prog = {
 const headerStyle = "pb-3 text-base lg:text-lg font-bold text-blue-primary";
 const subHeaderStyle = "mb-1 text-sm lg:text-base font-bold text-blue-primary";
 const itemStyle =
-  "font-code text-sm lg:text-base leading-5 text-left text-grey-secondary";
+  "block truncate font-code text-sm lg:text-base leading-5 text-left text-grey-secondary";
 
 export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
   InfoProps &
