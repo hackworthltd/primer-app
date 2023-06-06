@@ -3,13 +3,9 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   PlusIcon,
-  PlayCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import classNames from "classnames";
-import { EvalFullResp, GlobalName, Level } from "@/primer-api";
-import { TreeReactFlowOne } from "@/components";
-import { defaultTreeReactFlowProps } from "../TreeReactFlow";
 
 export type Prog = {
   defs: string[];
@@ -24,8 +20,7 @@ const itemStyle =
   "block truncate font-code text-sm lg:text-base leading-5 text-left text-grey-secondary";
 
 export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
-  InfoProps &
-  EvalProps;
+  InfoProps;
 type TypesAndDefinitionsProps = {
   prog: Prog;
   onClickDef: OnClick;
@@ -38,20 +33,12 @@ type InfoProps = {
   type: string;
   folder: string;
 };
-type EvalProps = {
-  moduleName: string[];
-  evalFull: {
-    request: (baseName: string | undefined) => void;
-    result?: EvalFullResp;
-  };
-  level: Level;
-};
 type OnClick = (
   label: string,
   event: React.MouseEvent<HTMLButtonElement>
 ) => void;
 
-type Tab = "T&D" | "Info" | "Eval";
+type Tab = "T&D" | "Info";
 
 export const Sidebar = (p: SidebarProps): JSX.Element => {
   const [currentTab, switchTab] = useState(p.initialMode);
@@ -73,13 +60,12 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="grid h-20 grid-cols-3 text-grey-secondary">
+      <div className="grid h-20 grid-cols-2 text-grey-secondary">
         {tab(
           "T&D",
           <div className="text-center text-base font-bold lg:text-lg">T&D</div>
         )}
         {tab("Info", <InformationCircleIcon className="h-8" />)}
-        {tab("Eval", <PlayCircleIcon className="h-8" />)}
       </div>
       <div className="h-full overflow-scroll bg-grey-primary p-6 pr-4">
         {(() => {
@@ -88,8 +74,6 @@ export const Sidebar = (p: SidebarProps): JSX.Element => {
               return <TypesAndDefinitions {...p}></TypesAndDefinitions>;
             case "Info":
               return <Info {...p}></Info>;
-            case "Eval":
-              return <Eval {...p} defs={p.prog.defs}></Eval>;
           }
         })()}
       </div>
@@ -223,69 +207,6 @@ const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
           <div className={subHeaderStyle}>Folder</div>
           <div className={itemStyle}>{folder}</div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-const Evaluated = (p: {
-  defName: GlobalName;
-  evaluated?: EvalFullResp;
-  level: Level;
-}) => {
-  return (
-    <TreeReactFlowOne
-      {...defaultTreeReactFlowProps}
-      {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
-      level={p.level}
-    />
-  );
-};
-
-// We only offer to evaluate the definitions in the "main" module
-const Eval = ({
-  defs,
-  evalFull,
-  moduleName,
-  level,
-}: EvalProps & { defs: string[] }): JSX.Element => {
-  const [evalDef, setEvalDef0] = useState("");
-  const setEvalDef = (e: string) => {
-    setEvalDef0(e);
-    evalFull.request(e === "" ? undefined : e);
-  };
-  return (
-    <div className="flex h-full flex-col overflow-auto">
-      <div className={headerStyle}>Evaluation</div>
-      <div className="flex grow flex-col gap-5 overflow-hidden p-2 leading-8">
-        <div>
-          <div className={subHeaderStyle}>Evaluating</div>
-          <select value={evalDef} onChange={(e) => setEvalDef(e.target.value)}>
-            <option key="" value="">
-              ---None---
-            </option>
-            {
-              /* NB: all def names are distinct and non-empty*/
-              defs.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))
-            }
-          </select>
-        </div>
-        {evalDef !== "" && (
-          <>
-            <div className="grow">
-              <div className={subHeaderStyle}>gives</div>
-              <Evaluated
-                defName={{ qualifiedModule: moduleName, baseName: evalDef }}
-                {...(evalFull.result ? { evaluated: evalFull.result } : {})}
-                level={level}
-              />
-            </div>
-          </>
-        )}
       </div>
     </div>
   );

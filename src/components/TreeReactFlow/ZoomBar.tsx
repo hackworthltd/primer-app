@@ -8,7 +8,11 @@ import {
 const buttonClasses =
   "w-8 rounded text-blue-primary hover:bg-blue-primary hover:text-white-primary focus:ring-blue-primary";
 
-export const ZoomBar = (): JSX.Element => {
+export type ZoomBarProps = {
+  padding?: number;
+};
+
+export const ZoomBar = (p: ZoomBarProps): JSX.Element => {
   const { zoomIn, zoomOut, fitView } = useReactFlow();
   const onZoomIn = () => {
     zoomIn();
@@ -17,7 +21,7 @@ export const ZoomBar = (): JSX.Element => {
     zoomOut();
   };
   const onFitView = () => {
-    fitView();
+    fitView({ ...p });
   };
 
   return (

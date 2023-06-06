@@ -218,16 +218,16 @@ const AppNoError = ({
 
   const scrollToDefRef = useRef<ScrollToDef | undefined>(undefined);
   const scrollToTypeDefRef = useRef<ScrollToDef | undefined>(undefined);
-
+  const defs = p.module.defs
+    .sort((a, b) => cmpName(a.name, b.name))
+    .map((d) => d.name.baseName);
   return (
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="h-full overflow-hidden">
         <Sidebar
           initialMode="T&D"
           prog={{
-            defs: p.module.defs
-              .sort((a, b) => cmpName(a.name, b.name))
-              .map((d) => d.name.baseName),
+            defs,
             types: p.module.types
               .sort((a, b) => cmpName(a.name, b.name))
               .map((t) => t.name.baseName),
@@ -255,12 +255,6 @@ const AppNoError = ({
           shadowed={false}
           type="?"
           folder="unknown"
-          moduleName={p.module.modname}
-          evalFull={{
-            request: setEvalTarget,
-            ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
-          }}
-          level={level}
         />
       </div>
 
@@ -310,12 +304,15 @@ const AppNoError = ({
                   })
                   .then(p.setProg);
               }}
-              onClickChevron={() => {
-                console.log("Toggle chevron");
-              }}
               initialMode="tree"
               // Note: these offsets are rather arbitrary.
-              initialPosition={{ x: canvasDimensions.width - 100, y: 15 }}
+              initialPosition={{ x: canvasDimensions.width - 410, y: 10 }}
+              moduleName={p.module.modname}
+              evalFull={{
+                request: setEvalTarget,
+                ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
+              }}
+              defs={defs}
             />
           )
         }
@@ -328,6 +325,7 @@ const AppNoError = ({
           defs={p.module.defs}
           typeDefs={p.module.types}
           level={level}
+          zoomBarProps={{}}
         />
       </div>
 

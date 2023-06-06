@@ -2,7 +2,6 @@ import {
   CodeBracketIcon,
   ShareIcon,
   ArrowUturnLeftIcon,
-  ChevronDownIcon,
   EllipsisHorizontalIcon,
   BeakerIcon,
   AcademicCapIcon,
@@ -12,6 +11,8 @@ import classNames from "classnames";
 import { MouseEventHandler, useRef, useState } from "react";
 import { useDraggable, DragOptions } from "@neodrag/react";
 import { Level } from "@/primer-api";
+import type { EvalFullProps } from "@/components/EvalFull";
+import { EvalFull } from "@/components";
 
 export type FloatingToolbarProps = {
   initialPosition: { x: number; y: number };
@@ -26,8 +27,7 @@ export type FloatingToolbarProps = {
   onClickRedo: MouseEventHandler<HTMLButtonElement>;
   undoAvailable: boolean;
   onClickUndo: MouseEventHandler<HTMLButtonElement>;
-  onClickChevron: MouseEventHandler<HTMLButtonElement>;
-};
+} & EvalFullProps;
 export type Mode = "text" | "tree";
 
 const modeSvg = (m: Mode) => {
@@ -82,7 +82,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
   const draggableRef = useRef(null);
   const options: DragOptions = {
     defaultPosition: p.initialPosition,
-    cancel: "button",
+    handle: ".neodrag-react-handle",
     bounds: "parent",
     onDragStart: (_) => {
       setTouchDragging(true);
@@ -97,59 +97,58 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
     <div
       ref={draggableRef}
       className={classNames(
-        "flex flex-col gap-2 justify-center items-center",
-        "text-blue-primary bg-grey-primary rounded shadow-lg",
-        "select-none",
-        "absolute z-30",
-        touchDragging ? "p-5 w-24 -my-1 -mx-2" : "p-4 w-20"
+        "rounded bg-grey-primary absolute z-30 grid grid-cols-5 grid-rows-5 divide-x divide-grey-quaternary",
+        touchDragging ? "shadow-2xl -my-1 -mx-2" : "shadow-lg"
       )}
     >
-      <div className="-mb-1 -mt-2 w-6">
-        <EllipsisHorizontalIcon className="stroke-grey-secondary" />
-        <EllipsisHorizontalIcon className="-mt-4 stroke-grey-secondary" />
-      </div>
-      <button
-        type="button"
-        onClick={(e) => {
-          const m = nextMode(mode);
-          setMode(m);
-          p.onModeChange(m, e);
-        }}
-        className="flex h-6 w-12
+      <div className="neodrag-react-handle col-span-1 row-span-5 flex w-20 select-none flex-col items-center justify-center gap-2 p-4 text-blue-primary">
+        <div className="-mb-1 -mt-2 w-6">
+          <EllipsisHorizontalIcon className="stroke-grey-secondary" />
+          <EllipsisHorizontalIcon className="-mt-4 stroke-grey-secondary" />
+        </div>
+        <button
+          type="button"
+          onClick={(e) => {
+            const m = nextMode(mode);
+            setMode(m);
+            p.onModeChange(m, e);
+          }}
+          className="flex h-6 w-12
             flex-col items-center rounded bg-blue-primary text-white-primary shadow-lg hover:bg-blue-secondary"
-      >
-        {modeSvg(mode)}
-      </button>
-      <button
-        type="button"
-        onClick={p.onClickRedo}
-        disabled={!p.redoAvailable}
-        className={undoRedoClasses}
-      >
-        <div className="scale-x-[-1]">{arrow}</div>
-        redo
-      </button>
-      <button
-        type="button"
-        onClick={p.onClickUndo}
-        disabled={!p.undoAvailable}
-        className={classNames(undoRedoClasses, "text-red-secondary")}
-      >
-        {arrow}
-        undo
-      </button>
-      <button
-        title={levelButtonTitle(p.level)}
-        type="button"
-        onClick={p.onLevelChange}
-        className="flex h-12 w-12 flex-col items-center rounded text-blue-primary hover:bg-blue-primary hover:text-white-primary disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {levelSvg(p.level)}
-        level
-      </button>
-      <button type="button" onClick={p.onClickChevron}>
-        <ChevronDownIcon className="w-6" />
-      </button>
+        >
+          {modeSvg(mode)}
+        </button>
+        <button
+          type="button"
+          onClick={p.onClickRedo}
+          disabled={!p.redoAvailable}
+          className={undoRedoClasses}
+        >
+          <div className="scale-x-[-1]">{arrow}</div>
+          redo
+        </button>
+        <button
+          type="button"
+          onClick={p.onClickUndo}
+          disabled={!p.undoAvailable}
+          className={classNames(undoRedoClasses, "text-red-secondary")}
+        >
+          {arrow}
+          undo
+        </button>
+        <button
+          title={levelButtonTitle(p.level)}
+          type="button"
+          onClick={p.onLevelChange}
+          className="flex h-12 w-12 flex-col items-center rounded text-blue-primary hover:bg-blue-primary hover:text-white-primary disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {levelSvg(p.level)}
+          level
+        </button>
+      </div>
+      <div className="col-span-4 row-span-5">
+        <EvalFull {...p} />
+      </div>
     </div>
   );
 };

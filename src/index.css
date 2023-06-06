@@ -45,3 +45,9 @@
     src: url("/fonts/Inter-italic.var.woff2") format("woff2-variations");
   }
 }
+
+@layer components {
+  .neodrag-react-handle {
+    @apply cursor-grab active:cursor-grabbing;
+  }
+}

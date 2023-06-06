@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { tree3 } from "../examples/trees";
 
-import { FloatingToolbar } from "./";
+import { EvalFull } from "./";
 
-const meta: Meta<typeof FloatingToolbar> = {
-  title: "Application/Component Library/FloatingToolbar",
-  component: FloatingToolbar,
+const meta: Meta<typeof EvalFull> = {
+  title: "Application/Component Library/EvalFull",
+  component: EvalFull,
   decorators: [
     (Story) => (
       <div className="h-screen">
@@ -16,12 +16,10 @@ const meta: Meta<typeof FloatingToolbar> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof FloatingToolbar>;
+type Story = StoryObj<typeof EvalFull>;
 
 export const Default: Story = {
   args: {
-    initialMode: "tree",
-    initialPosition: { x: 100, y: 50 },
     moduleName: ["Primer", "Examples"],
     evalFull: {
       request: () => {
