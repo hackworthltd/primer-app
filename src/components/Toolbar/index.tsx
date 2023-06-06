@@ -88,6 +88,15 @@ export const Toolbar = (p: ToolbarProps): JSX.Element => {
   return (
     <div className="flex select-none flex-row items-center justify-center gap-2 rounded bg-grey-primary p-2 text-sm font-medium text-blue-primary shadow-sm">
       <button
+        title={levelButtonTitle(p.level)}
+        type="button"
+        onClick={p.onLevelChange}
+        className={buttonClasses("primary", false)}
+      >
+        {levelSvg(p.level)}
+        level
+      </button>
+      <button
         type="button"
         onClick={(e) => {
           const m = nextMode(mode);
@@ -116,15 +125,6 @@ export const Toolbar = (p: ToolbarProps): JSX.Element => {
       >
         {arrow}
         undo
-      </button>
-      <button
-        title={levelButtonTitle(p.level)}
-        type="button"
-        onClick={p.onLevelChange}
-        className={buttonClasses("primary", false)}
-      >
-        {levelSvg(p.level)}
-        level
       </button>
     </div>
   );
