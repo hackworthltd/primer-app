@@ -82,7 +82,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
   const draggableRef = useRef(null);
   const options: DragOptions = {
     defaultPosition: p.initialPosition,
-    cancel: "button",
+    handle: ".neodrag-react-handle",
     bounds: "parent",
     onDragStart: (_) => {
       setTouchDragging(true);
@@ -101,7 +101,7 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
         touchDragging ? "shadow-2xl -my-1 -mx-2" : "shadow-lg"
       )}
     >
-      <div className="col-span-1 row-span-5 flex w-20 select-none flex-col items-center justify-center gap-2 p-4 text-blue-primary">
+      <div className="neodrag-react-handle col-span-1 row-span-5 flex w-20 select-none flex-col items-center justify-center gap-2 p-4 text-blue-primary">
         <div className="-mb-1 -mt-2 w-6">
           <EllipsisHorizontalIcon className="stroke-grey-secondary" />
           <EllipsisHorizontalIcon className="-mt-4 stroke-grey-secondary" />
