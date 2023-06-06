@@ -10,6 +10,7 @@ import {
   tree3,
   tree4,
   tree5,
+  tree6,
   oddEvenTrees,
   oddEvenTreesMiscStyles,
 } from "@/components/examples/trees";
@@ -64,6 +65,14 @@ const def5 = {
   name: { qualifiedModule: [], baseName: "Example 5" },
   term: tree5,
   type_: emptyTypeTree("5"),
+};
+const def6 = {
+  name: {
+    qualifiedModule: [],
+    baseName: "Example 6 is really annoying because of its long name",
+  },
+  term: tree6,
+  type_: emptyTypeTree("6"),
 };
 const typeDef1: TypeDef = {
   name: { qualifiedModule: [], baseName: "Either-ish" },
@@ -222,6 +231,18 @@ export const Tree5: ComponentStory<typeof TreeReactFlow> = (
       contents: { def: def5.name, node: { nodeType: "BodyNode", meta: 503 } },
     },
   });
+export const Tree6: ComponentStory<typeof TreeReactFlow> = (
+  args: TreeReactFlowProps
+) =>
+  treeSized({
+    ...args,
+    defs: [def6],
+    typeDefs: [],
+    selection: {
+      tag: "SelectionDef",
+      contents: { def: def6.name, node: { nodeType: "BodyNode", meta: 503 } },
+    },
+  });
 export const TreeType1: ComponentStory<typeof TreeReactFlow> = (
   args: TreeReactFlowProps
 ) =>
@@ -242,7 +263,7 @@ export const AllTrees: ComponentStory<typeof TreeReactFlow> = (
 ) =>
   treeSized({
     ...args,
-    defs: [def1, def2, def3, def4, def5],
+    defs: [def1, def2, def3, def4, def5, def6],
     typeDefs: [typeDef1],
     selection: {
       tag: "SelectionDef",

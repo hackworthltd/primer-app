@@ -158,6 +158,46 @@ export const tree5: Tree = {
   nodeId: "500",
 };
 
+export const tree6: Tree = {
+  body: {
+    tag: "TextBody",
+    contents: {
+      fst: "Lam",
+      snd: { baseName: "a very very very long variable name" },
+    },
+  },
+  childTrees: [
+    {
+      body: { tag: "NoBody", contents: "Case" },
+      childTrees: [
+        {
+          body: {
+            tag: "TextBody",
+            contents: {
+              fst: "LocalVar",
+              snd: { baseName: "a very very very long variable name" },
+            },
+          },
+          childTrees: [],
+          nodeId: "602",
+        },
+        {
+          body: { tag: "NoBody", contents: "EmptyHole" },
+          childTrees: [],
+          nodeId: "603",
+        },
+        {
+          body: { tag: "NoBody", contents: "EmptyHole" },
+          childTrees: [],
+          nodeId: "606",
+        },
+      ],
+      nodeId: "601",
+    },
+  ],
+  nodeId: "600",
+};
+
 export const oddEvenTrees: [string, Tree][] = [
   [
     "even",
