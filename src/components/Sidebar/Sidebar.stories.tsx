@@ -30,8 +30,16 @@ export const Default: ComponentStory<typeof Sidebar> = (args: SidebarProps) => (
     <Sidebar
       {...args}
       prog={{
-        types: ["GoalOrMiss", "WinLoseDraw"],
-        defs: ["footballGame", "whatsopposite"],
+        types: [
+          "GoalOrMiss",
+          "A really really really really really long type name",
+          "WinLoseDraw",
+        ],
+        defs: [
+          "A really really really really quite long function name",
+          "footballGame",
+          "whatsopposite",
+        ],
         importedTypes: [],
         importedDefs: ["opposite"].concat(
           Array(30)

@@ -67,6 +67,27 @@ const AllButtonsTemplate: ComponentStory<typeof ActionPanelButton> = (args) => (
       />
     </div>
 
+    <h1 className="text-xl">Primary, name only, code</h1>
+    <div className="mb-8 mt-4 w-96">
+      <ActionPanelButton
+        {...args}
+        appearance="primary"
+        name={{ text: "x", style: "code" }}
+      />
+    </div>
+
+    <h1 className="text-xl">Primary, name only, code, long</h1>
+    <div className="mb-8 mt-4 w-96">
+      <ActionPanelButton
+        {...args}
+        appearance="primary"
+        name={{
+          text: "This is a really really really long and verbose name",
+          style: "code",
+        }}
+      />
+    </div>
+
     <h1 className="text-xl">Danger with name as prose</h1>
     <div className="mb-8 mt-4 w-96">
       <ActionPanelButton
