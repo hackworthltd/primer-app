@@ -61,7 +61,7 @@ import {
   flavorLabelClasses,
   noBodyFlavorContents,
 } from "./Flavor";
-import { ZoomBar } from "./ZoomBar";
+import { ZoomBar, ZoomBarProps } from "./ZoomBar";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
 import { deepEqualTyped, usePromise } from "@/util";
 import { mapSnd } from "fp-ts/lib/Tuple";
@@ -92,6 +92,7 @@ export type TreeReactFlowProps = {
   layout: LayoutParams;
   scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
   scrollToTypeDefRef: MutableRefObject<ScrollToDef | undefined>;
+  zoomBarProps: ZoomBarProps;
 } & NodeParams;
 export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
@@ -1032,6 +1033,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => (
     onNodeClick={(mouseEvent, node) =>
       p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
     }
+    zoomBarProps={p.zoomBarProps}
   >
     <SetTreeReactFlowCallbacks
       scrollToDefRef={p.scrollToDefRef}
@@ -1045,6 +1047,7 @@ export type TreeReactFlowOneProps = {
   tree?: APITree;
   onNodeClick?: (event: React.MouseEvent, node: Positioned<PrimerNode>) => void;
   layout: LayoutParams;
+  zoomBarProps: ZoomBarProps;
 } & NodeParams;
 
 /** Renders one `APITree` (e.g. one type or one term) on its own individual canvas.
@@ -1065,6 +1068,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => (
         : new Promise(() => [])
     }
     {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
+    zoomBarProps={p.zoomBarProps}
   ></Trees>
 );
 
@@ -1077,6 +1081,7 @@ const Trees = <N,>(
       event: React.MouseEvent,
       node: Positioned<PrimerNode<N>>
     ) => void;
+    zoomBarProps: ZoomBarProps;
   }>
 ): JSX.Element => {
   const trees = usePromise([], p.makeTrees);
@@ -1101,7 +1106,7 @@ const Trees = <N,>(
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
     >
       <Background gap={25} size={1.6} color="#81818a" />
-      <ZoomBar />
+      <ZoomBar {...p.zoomBarProps} />
       {p.children}
     </ReactFlowSafe>
   );

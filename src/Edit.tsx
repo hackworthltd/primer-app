@@ -325,6 +325,7 @@ const AppNoError = ({
           defs={p.module.defs}
           typeDefs={p.module.types}
           level={level}
+          zoomBarProps={{}}
         />
       </div>
 
