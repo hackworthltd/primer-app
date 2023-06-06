@@ -74,7 +74,7 @@ export const Toolbar = (p: ToolbarProps): JSX.Element => {
   const [mode, setMode] = useState(p.initialMode);
 
   return (
-    <div className="flex select-none flex-row items-center justify-center gap-2 rounded bg-grey-primary p-2 text-blue-primary shadow-sm">
+    <div className="flex select-none flex-row items-center justify-center gap-2 rounded bg-grey-primary p-2 text-sm font-medium text-blue-primary shadow-sm">
       <button
         type="button"
         onClick={(e) => {
