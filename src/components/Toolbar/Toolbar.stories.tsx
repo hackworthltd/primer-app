@@ -7,7 +7,7 @@ const meta: Meta<typeof Toolbar> = {
   component: Toolbar,
   decorators: [
     (Story) => (
-      <div className="h-screen">
+      <div className="absolute">
         <Story />
       </div>
     ),
@@ -19,7 +19,6 @@ type Story = StoryObj<typeof Toolbar>;
 
 export const Default: Story = {
   args: {
-    initialPosition: { x: 100, y: 50 },
     initialMode: "tree",
     level: "Expert",
     redoAvailable: true,

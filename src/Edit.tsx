@@ -259,7 +259,7 @@ const AppNoError = ({
         />
       </div>
 
-      <div className="h-full" ref={canvasRef}>
+      <div className="relative h-full" ref={canvasRef}>
         {
           // Wait for the `div` above to be rendered before we create
           // the floating toolbar element, otherwise its initial
@@ -284,6 +284,33 @@ const AppNoError = ({
             <></>
           ) : (
             <>
+              <div className="absolute bottom-4 right-4 z-30">
+                <Toolbar
+                  onModeChange={() => {
+                    console.log("Toggle mode");
+                  }}
+                  level={level}
+                  onLevelChange={toggleLevel}
+                  undoAvailable={p.undoAvailable}
+                  onClickUndo={() => {
+                    undo
+                      .mutateAsync({
+                        sessionId: p.sessionId,
+                      })
+                      .then(p.setProg);
+                  }}
+                  redoAvailable={p.redoAvailable}
+                  onClickRedo={() => {
+                    redo
+                      .mutateAsync({
+                        sessionId: p.sessionId,
+                      })
+                      .then(p.setProg);
+                  }}
+                  initialMode="tree"
+                />
+              </div>
+
               <PictureInPicture
                 level={level}
                 // Note: these offsets are rather arbitrary.
@@ -294,33 +321,6 @@ const AppNoError = ({
                   ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
                 }}
                 defs={defs}
-              />
-
-              <Toolbar
-                onModeChange={() => {
-                  console.log("Toggle mode");
-                }}
-                level={level}
-                onLevelChange={toggleLevel}
-                undoAvailable={p.undoAvailable}
-                onClickUndo={() => {
-                  undo
-                    .mutateAsync({
-                      sessionId: p.sessionId,
-                    })
-                    .then(p.setProg);
-                }}
-                redoAvailable={p.redoAvailable}
-                onClickRedo={() => {
-                  redo
-                    .mutateAsync({
-                      sessionId: p.sessionId,
-                    })
-                    .then(p.setProg);
-                }}
-                initialMode="tree"
-                // Note: these offsets are rather arbitrary.
-                initialPosition={{ x: canvasDimensions.width - 90, y: 10 }}
               />
             </>
           )

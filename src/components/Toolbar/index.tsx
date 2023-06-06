@@ -2,18 +2,15 @@ import {
   CodeBracketIcon,
   ShareIcon,
   ArrowUturnLeftIcon,
-  EllipsisHorizontalIcon,
   BeakerIcon,
   AcademicCapIcon,
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
 import classNames from "classnames";
-import { MouseEventHandler, useRef, useState } from "react";
-import { useDraggable, DragOptions } from "@neodrag/react";
+import { MouseEventHandler, useState } from "react";
 import { Level } from "@/primer-api";
 
 export type ToolbarProps = {
-  initialPosition: { x: number; y: number };
   initialMode: Mode;
   level: Level;
   onModeChange: (
@@ -75,75 +72,47 @@ const undoRedoClasses =
 
 export const Toolbar = (p: ToolbarProps): JSX.Element => {
   const [mode, setMode] = useState(p.initialMode);
-  const [touchDragging, setTouchDragging] = useState(false);
-
-  const draggableRef = useRef(null);
-  const options: DragOptions = {
-    defaultPosition: p.initialPosition,
-    handle: ".neodrag-react-handle",
-    bounds: "parent",
-    onDragStart: (_) => {
-      setTouchDragging(true);
-    },
-    onDragEnd: (_) => {
-      setTouchDragging(false);
-    },
-  };
-  useDraggable(draggableRef, options);
 
   return (
-    <div
-      ref={draggableRef}
-      className={classNames(
-        "rounded bg-grey-primary absolute z-30 grid grid-cols-1 grid-rows-5 divide-x divide-grey-quaternary",
-        touchDragging ? "shadow-2xl -my-1 -mx-2" : "shadow-lg"
-      )}
-    >
-      <div className="col-span-1 row-span-5 flex w-20 select-none flex-col items-center justify-center gap-2 p-4 text-blue-primary">
-        <div className="neodrag-react-handle -mb-1 -mt-2 w-6">
-          <EllipsisHorizontalIcon className="stroke-grey-secondary" />
-          <EllipsisHorizontalIcon className="-mt-4 stroke-grey-secondary" />
-        </div>
-        <button
-          type="button"
-          onClick={(e) => {
-            const m = nextMode(mode);
-            setMode(m);
-            p.onModeChange(m, e);
-          }}
-          className="flex h-6 w-12
-            flex-col items-center rounded bg-blue-primary text-white-primary shadow-lg hover:bg-blue-secondary"
-        >
-          {modeSvg(mode)}
-        </button>
-        <button
-          type="button"
-          onClick={p.onClickRedo}
-          disabled={!p.redoAvailable}
-          className={undoRedoClasses}
-        >
-          <div className="scale-x-[-1]">{arrow}</div>
-          redo
-        </button>
-        <button
-          type="button"
-          onClick={p.onClickUndo}
-          disabled={!p.undoAvailable}
-          className={classNames(undoRedoClasses, "text-red-secondary")}
-        >
-          {arrow}
-          undo
-        </button>
-        <button
-          title={levelButtonTitle(p.level)}
-          type="button"
-          onClick={p.onLevelChange}
-          className="flex h-12 w-12 flex-col items-center rounded text-blue-primary hover:bg-blue-primary hover:text-white-primary disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {levelSvg(p.level)}
-          level
-        </button>
-      </div>
+    <div className="flex select-none flex-row items-center justify-center gap-2 rounded bg-grey-primary p-2 text-blue-primary shadow-sm">
+      <button
+        type="button"
+        onClick={(e) => {
+          const m = nextMode(mode);
+          setMode(m);
+          p.onModeChange(m, e);
+        }}
+        className="flex h-6 w-12 flex-col items-center rounded bg-blue-primary text-white-primary shadow-lg hover:bg-blue-secondary"
+      >
+        {modeSvg(mode)}
+      </button>
+      <button
+        type="button"
+        onClick={p.onClickRedo}
+        disabled={!p.redoAvailable}
+        className={undoRedoClasses}
+      >
+        <div className="scale-x-[-1]">{arrow}</div>
+        redo
+      </button>
+      <button
+        type="button"
+        onClick={p.onClickUndo}
+        disabled={!p.undoAvailable}
+        className={classNames(undoRedoClasses, "text-red-secondary")}
+      >
+        {arrow}
+        undo
+      </button>
+      <button
+        title={levelButtonTitle(p.level)}
+        type="button"
+        onClick={p.onLevelChange}
+        className="flex h-12 w-12 flex-col items-center rounded text-blue-primary hover:bg-blue-primary hover:text-white-primary disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {levelSvg(p.level)}
+        level
+      </button>
     </div>
   );
 };
