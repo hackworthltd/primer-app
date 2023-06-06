@@ -25,14 +25,18 @@ export type ToolbarProps = {
 };
 export type Mode = "text" | "tree";
 
+const iconClasses = "stroke-[2] p-1";
+const heavyIconClasses = "w-7 stroke-[3] p-1";
+
 const modeSvg = (m: Mode) => {
   switch (m) {
     case "text":
-      return <CodeBracketIcon className="p-0.5" />;
+      return <CodeBracketIcon className={iconClasses} />;
     case "tree":
-      return <ShareIcon className="rotate-90 p-1" />;
+      return <ShareIcon className={classNames(iconClasses, "rotate-90")} />;
   }
 };
+
 const nextMode = (m: Mode): Mode => {
   switch (m) {
     case "text":
@@ -45,11 +49,11 @@ const nextMode = (m: Mode): Mode => {
 const levelSvg = (level: Level) => {
   switch (level) {
     case "Beginner":
-      return <BeakerIcon />;
+      return <BeakerIcon className={iconClasses} />;
     case "Intermediate":
-      return <AcademicCapIcon />;
+      return <AcademicCapIcon className={iconClasses} />;
     case "Expert":
-      return <RocketLaunchIcon />;
+      return <RocketLaunchIcon className={iconClasses} />;
   }
 };
 
@@ -64,11 +68,19 @@ const levelButtonTitle = (level: Level) => {
   }
 };
 
-// https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/130
-// eslint-disable-next-line tailwindcss/no-custom-classname
-const arrow = <ArrowUturnLeftIcon className="w-6 stroke-[3]" />;
-const undoRedoClasses =
-  "flex flex-col items-center w-12 hover:bg-grey-primary-hover rounded disabled:opacity-50 disabled:cursor-not-allowed";
+const arrow = <ArrowUturnLeftIcon className={heavyIconClasses} />;
+
+type appearance = "primary" | "warning";
+
+const buttonClasses = (appearance: appearance, canBeDisabled: boolean) =>
+  classNames(
+    "flex h-12 w-12 flex-col items-center rounded hover:text-white-primary",
+    {
+      "text-blue-primary hover:bg-blue-primary": appearance === "primary",
+      "text-red-secondary hover:bg-red-secondary": appearance === "warning",
+      "disabled:cursor-not-allowed disabled:opacity-50": canBeDisabled,
+    }
+  );
 
 export const Toolbar = (p: ToolbarProps): JSX.Element => {
   const [mode, setMode] = useState(p.initialMode);
@@ -82,15 +94,16 @@ export const Toolbar = (p: ToolbarProps): JSX.Element => {
           setMode(m);
           p.onModeChange(m, e);
         }}
-        className="flex h-6 w-12 flex-col items-center rounded bg-blue-primary text-white-primary shadow-lg hover:bg-blue-secondary"
+        className={buttonClasses("primary", false)}
       >
         {modeSvg(mode)}
+        {mode}
       </button>
       <button
         type="button"
         onClick={p.onClickRedo}
         disabled={!p.redoAvailable}
-        className={undoRedoClasses}
+        className={buttonClasses("primary", true)}
       >
         <div className="scale-x-[-1]">{arrow}</div>
         redo
@@ -99,7 +112,7 @@ export const Toolbar = (p: ToolbarProps): JSX.Element => {
         type="button"
         onClick={p.onClickUndo}
         disabled={!p.undoAvailable}
-        className={classNames(undoRedoClasses, "text-red-secondary")}
+        className={buttonClasses("warning", true)}
       >
         {arrow}
         undo
@@ -108,7 +121,7 @@ export const Toolbar = (p: ToolbarProps): JSX.Element => {
         title={levelButtonTitle(p.level)}
         type="button"
         onClick={p.onLevelChange}
-        className="flex h-12 w-12 flex-col items-center rounded text-blue-primary hover:bg-blue-primary hover:text-white-primary disabled:cursor-not-allowed disabled:opacity-50"
+        className={buttonClasses("primary", false)}
       >
         {levelSvg(p.level)}
         level
