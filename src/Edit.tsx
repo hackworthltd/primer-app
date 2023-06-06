@@ -306,7 +306,7 @@ const AppNoError = ({
               }}
               initialMode="tree"
               // Note: these offsets are rather arbitrary.
-              initialPosition={{ x: canvasDimensions.width - 410, y: 10 }}
+              initialPosition={{ x: 10, y: 10 }}
               moduleName={p.module.modname}
               evalFull={{
                 request: setEvalTarget,
