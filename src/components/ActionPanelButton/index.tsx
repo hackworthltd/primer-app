@@ -47,7 +47,7 @@ export const ActionPanelButton = (p: ActionPanelButtonProps): JSX.Element => {
           <div
             className={classNames(
               "mr-4 w-8 flex-none",
-              p.name.style === "code" ? "font-code" : "",
+              p.name.style === "code" ? "block truncate font-code" : "",
               p.description ? "text-left" : "grow text-center"
             )}
             aria-hidden="true"
