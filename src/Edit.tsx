@@ -3,8 +3,9 @@ import {
   TreeReactFlow,
   Error,
   ActionPanel,
+  PictureInPicture,
   Sidebar,
-  FloatingToolbar,
+  Toolbar,
 } from "@/components";
 import type { Def, TypeDef } from "@/primer-api/model";
 import {
@@ -282,38 +283,46 @@ const AppNoError = ({
           canvasDimensions.width == 0 ? (
             <></>
           ) : (
-            <FloatingToolbar
-              onModeChange={() => {
-                console.log("Toggle mode");
-              }}
-              level={level}
-              onLevelChange={toggleLevel}
-              undoAvailable={p.undoAvailable}
-              onClickUndo={() => {
-                undo
-                  .mutateAsync({
-                    sessionId: p.sessionId,
-                  })
-                  .then(p.setProg);
-              }}
-              redoAvailable={p.redoAvailable}
-              onClickRedo={() => {
-                redo
-                  .mutateAsync({
-                    sessionId: p.sessionId,
-                  })
-                  .then(p.setProg);
-              }}
-              initialMode="tree"
-              // Note: these offsets are rather arbitrary.
-              initialPosition={{ x: 10, y: 10 }}
-              moduleName={p.module.modname}
-              evalFull={{
-                request: setEvalTarget,
-                ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
-              }}
-              defs={defs}
-            />
+            <>
+              <PictureInPicture
+                level={level}
+                // Note: these offsets are rather arbitrary.
+                initialPosition={{ x: 10, y: 10 }}
+                moduleName={p.module.modname}
+                evalFull={{
+                  request: setEvalTarget,
+                  ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
+                }}
+                defs={defs}
+              />
+
+              <Toolbar
+                onModeChange={() => {
+                  console.log("Toggle mode");
+                }}
+                level={level}
+                onLevelChange={toggleLevel}
+                undoAvailable={p.undoAvailable}
+                onClickUndo={() => {
+                  undo
+                    .mutateAsync({
+                      sessionId: p.sessionId,
+                    })
+                    .then(p.setProg);
+                }}
+                redoAvailable={p.redoAvailable}
+                onClickRedo={() => {
+                  redo
+                    .mutateAsync({
+                      sessionId: p.sessionId,
+                    })
+                    .then(p.setProg);
+                }}
+                initialMode="tree"
+                // Note: these offsets are rather arbitrary.
+                initialPosition={{ x: canvasDimensions.width - 90, y: 10 }}
+              />
+            </>
           )
         }
         <TreeReactFlow

@@ -11,10 +11,8 @@ import classNames from "classnames";
 import { MouseEventHandler, useRef, useState } from "react";
 import { useDraggable, DragOptions } from "@neodrag/react";
 import { Level } from "@/primer-api";
-import type { EvalFullProps } from "@/components/EvalFull";
-import { EvalFull } from "@/components";
 
-export type FloatingToolbarProps = {
+export type ToolbarProps = {
   initialPosition: { x: number; y: number };
   initialMode: Mode;
   level: Level;
@@ -27,7 +25,7 @@ export type FloatingToolbarProps = {
   onClickRedo: MouseEventHandler<HTMLButtonElement>;
   undoAvailable: boolean;
   onClickUndo: MouseEventHandler<HTMLButtonElement>;
-} & EvalFullProps;
+};
 export type Mode = "text" | "tree";
 
 const modeSvg = (m: Mode) => {
@@ -75,7 +73,7 @@ const arrow = <ArrowUturnLeftIcon className="w-6 stroke-[3]" />;
 const undoRedoClasses =
   "flex flex-col items-center w-12 hover:bg-grey-primary-hover rounded disabled:opacity-50 disabled:cursor-not-allowed";
 
-export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
+export const Toolbar = (p: ToolbarProps): JSX.Element => {
   const [mode, setMode] = useState(p.initialMode);
   const [touchDragging, setTouchDragging] = useState(false);
 
@@ -97,12 +95,12 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
     <div
       ref={draggableRef}
       className={classNames(
-        "rounded bg-grey-primary absolute z-30 grid grid-cols-5 grid-rows-5 divide-x divide-grey-quaternary",
+        "rounded bg-grey-primary absolute z-30 grid grid-cols-1 grid-rows-5 divide-x divide-grey-quaternary",
         touchDragging ? "shadow-2xl -my-1 -mx-2" : "shadow-lg"
       )}
     >
-      <div className="neodrag-react-handle col-span-1 row-span-5 flex w-20 select-none flex-col items-center justify-center gap-2 p-4 text-blue-primary">
-        <div className="-mb-1 -mt-2 w-6">
+      <div className="col-span-1 row-span-5 flex w-20 select-none flex-col items-center justify-center gap-2 p-4 text-blue-primary">
+        <div className="neodrag-react-handle -mb-1 -mt-2 w-6">
           <EllipsisHorizontalIcon className="stroke-grey-secondary" />
           <EllipsisHorizontalIcon className="-mt-4 stroke-grey-secondary" />
         </div>
@@ -146,11 +144,8 @@ export const FloatingToolbar = (p: FloatingToolbarProps): JSX.Element => {
           level
         </button>
       </div>
-      <div className="col-span-4 row-span-5">
-        <EvalFull {...p} />
-      </div>
     </div>
   );
 };
 
-export default FloatingToolbar;
+export default Toolbar;
