@@ -140,7 +140,7 @@ const nodeTypes = {
       >
         <div
           className={classNames(
-            "font-code text-sm xl:text-base",
+            "block truncate px-1 font-code text-sm xl:text-base",
             flavorContentClasses(data.flavor)
           )}
         >
@@ -185,7 +185,7 @@ const nodeTypes = {
         {
           <div
             className={classNames(
-              "font-code text-sm xl:text-base",
+              "block truncate px-1 font-code text-sm xl:text-base",
               flavorContentClasses(data.flavor)
             )}
           >
@@ -259,7 +259,7 @@ const nodeTypes = {
           height: data.height,
         }}
       >
-        <div className="font-code text-4xl text-grey-tertiary">
+        <div className="block truncate px-1 font-code text-4xl text-grey-tertiary">
           {data.def.baseName}
         </div>
       </div>
@@ -288,7 +288,7 @@ const nodeTypes = {
           height: data.height,
         }}
       >
-        <div className="font-code text-4xl text-grey-tertiary">
+        <div className="block truncate px-1 font-code text-4xl text-grey-tertiary">
           {data.name.baseName}
         </div>
       </div>
@@ -320,7 +320,11 @@ const nodeTypes = {
         }}
       >
         {
-          <div className={classNames("font-code text-sm text-grey-tertiary")}>
+          <div
+            className={classNames(
+              "block truncate px-1 font-code text-sm text-grey-tertiary"
+            )}
+          >
             {data.name}
           </div>
         }
@@ -354,7 +358,7 @@ const nodeTypes = {
       >
         <div
           className={classNames(
-            "font-code text-sm",
+            "block truncate px-1 font-code text-sm",
             flavorContentClasses("Con")
           )}
         >
