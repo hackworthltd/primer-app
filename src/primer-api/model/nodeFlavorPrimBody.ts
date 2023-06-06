@@ -12,4 +12,5 @@ export type NodeFlavorPrimBody = typeof NodeFlavorPrimBody[keyof typeof NodeFlav
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const NodeFlavorPrimBody = {
   PrimCon: 'PrimCon',
+  PrimPattern: 'PrimPattern',
 } as const;
