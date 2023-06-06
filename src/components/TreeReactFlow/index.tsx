@@ -125,6 +125,7 @@ const nodeTypes = {
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
       <div
+        title={data.contents}
         className={classNames(
           {
             "ring-4 ring-offset-4": data.selected,
@@ -169,6 +170,7 @@ const nodeTypes = {
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
       <div
+        title={data.flavor}
         className={classNames(
           {
             "ring-4 ring-offset-4": data.selected,
@@ -244,6 +246,7 @@ const nodeTypes = {
   }) => (
     <>
       <div
+        title={data.def.baseName}
         className={classNames(
           "flex items-center justify-center",
           "rounded-md",
@@ -273,6 +276,7 @@ const nodeTypes = {
   }) => (
     <>
       <div
+        title={data.name.baseName}
         className={classNames(
           "flex items-center justify-center",
           "rounded-md",
@@ -304,6 +308,7 @@ const nodeTypes = {
     <>
       {handle("target", Position.Left)}
       <div
+        title={data.name}
         className={classNames(
           "flex items-center justify-center",
           "rounded-md",
@@ -342,6 +347,7 @@ const nodeTypes = {
       {handle("target", Position.Top)}
       {handle("target", Position.Left)}
       <div
+        title={data.name.baseName}
         className={classNames(
           "flex items-center justify-center",
           "rounded-md",
