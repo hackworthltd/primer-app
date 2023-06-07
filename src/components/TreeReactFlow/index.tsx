@@ -61,7 +61,7 @@ import {
   flavorLabelClasses,
   noBodyFlavorContents,
 } from "./Flavor";
-import { ZoomBar, ZoomBarProps } from "./ZoomBar";
+import { ZoomBar } from "./ZoomBar";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
 import { deepEqualTyped, usePromise } from "@/util";
 import { mapSnd } from "fp-ts/lib/Tuple";
@@ -79,6 +79,9 @@ type NodeParams = {
 type DefParams = {
   nameNodeMultipliers: { width: number; height: number };
 };
+export type FitViewParams = {
+  padding?: number;
+};
 export type TreeReactFlowProps = {
   defs: Def[];
   typeDefs: TypeDef[];
@@ -92,7 +95,7 @@ export type TreeReactFlowProps = {
   layout: LayoutParams;
   scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
   scrollToTypeDefRef: MutableRefObject<ScrollToDef | undefined>;
-  zoomBarProps: ZoomBarProps;
+  fitViewParams: FitViewParams | undefined;
 } & NodeParams;
 export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
@@ -1033,7 +1036,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => (
     onNodeClick={(mouseEvent, node) =>
       p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
     }
-    zoomBarProps={p.zoomBarProps}
+    fitViewParams={p.fitViewParams}
   >
     <SetTreeReactFlowCallbacks
       scrollToDefRef={p.scrollToDefRef}
@@ -1047,7 +1050,7 @@ export type TreeReactFlowOneProps = {
   tree?: APITree;
   onNodeClick?: (event: React.MouseEvent, node: Positioned<PrimerNode>) => void;
   layout: LayoutParams;
-  zoomBarProps: ZoomBarProps;
+  fitViewParams: FitViewParams | undefined;
 } & NodeParams;
 
 /** Renders one `APITree` (e.g. one type or one term) on its own individual canvas.
@@ -1068,7 +1071,7 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => (
         : new Promise(() => [])
     }
     {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
-    zoomBarProps={p.zoomBarProps}
+    fitViewParams={p.fitViewParams}
   ></Trees>
 );
 
@@ -1081,7 +1084,7 @@ const Trees = <N,>(
       event: React.MouseEvent,
       node: Positioned<PrimerNode<N>>
     ) => void;
-    zoomBarProps: ZoomBarProps;
+    fitViewParams: FitViewParams | undefined;
   }>
 ): JSX.Element => {
   const trees = usePromise([], p.makeTrees);
@@ -1104,9 +1107,10 @@ const Trees = <N,>(
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
+      fitViewOptions={{ ...p.fitViewParams }}
     >
       <Background gap={25} size={1.6} color="#81818a" />
-      <ZoomBar {...p.zoomBarProps} />
+      <ZoomBar {...p.fitViewParams} />
       {p.children}
     </ReactFlowSafe>
   );

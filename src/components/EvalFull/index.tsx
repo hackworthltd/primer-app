@@ -23,7 +23,7 @@ const Evaluated = (p: {
       {...defaultTreeReactFlowProps}
       {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
       level={p.level}
-      zoomBarProps={{ padding: 3.0 }}
+      fitViewParams={{ padding: 3.0 }}
     />
   );
 };
