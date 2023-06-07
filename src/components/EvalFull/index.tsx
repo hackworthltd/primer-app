@@ -32,6 +32,7 @@ const Evaluated = (p: {
       level={p.level}
       zoomBarProps={{ padding }}
       onNodesChange={onNodesChange}
+      fitViewOptions={{ padding }}
     />
   );
 };

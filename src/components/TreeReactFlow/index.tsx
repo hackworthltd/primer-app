@@ -70,12 +70,24 @@ import { mapSnd } from "fp-ts/lib/Tuple";
 export type ScrollToDef = (defName: string) => void;
 
 /**
+ * Only the `FitViewOptions` from `ReactFlow` that we want to expose.
+ */
+export type FitViewOptions = {
+  padding?: number;
+};
+
+/**
  * A subset of the properties that `ReactFlow` supports and that we want to
  * expose to users of `TreeReactFlow` and `TreeReactFlowOne`.
  */
 export type OnNodesChange = (nodesChanges: NodeChange[]) => void;
 type ReactFlowParams = {
   onNodesChange?: OnNodesChange;
+
+  /**
+   * Options that are passed to the initial `fitView` call.
+   */
+  fitViewOptions?: FitViewOptions;
 };
 
 /** These properties are needed to construct nodes, but are invariant across all nodes. */
@@ -1126,6 +1138,7 @@ const Trees = <N,>(
       edgeTypes={edgeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
       onNodesChange={p.onNodesChange}
+      fitViewOptions={p.fitViewOptions}
     >
       <Background gap={25} size={1.6} color="#81818a" />
       <ZoomBar {...p.zoomBarProps} />
