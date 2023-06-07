@@ -7,9 +7,9 @@ export type OptionType = "code" | "prose";
 
 export type SelectMenuProps = {
   /*
-   * The menu's label.
+   * The menu's optional label.
    */
-  label: string;
+  label?: string | undefined;
 
   /*
    * The currently selected option. This option should be in the `options`
@@ -37,16 +37,18 @@ export type SelectMenuProps = {
 };
 
 // Note: the listbox options are currently limited to `max-h-40`, which is
-// equivalent to 4 menu options, in order to fit in the `FloatingToolbar`
+// equivalent to 4 menu options, in order to fit in the `PictureInPicture`
 // bounds. We should fix this once we figure out the proper CSS incanations.
 export const SelectMenu = (p: SelectMenuProps) => {
   return (
     <Listbox value={p.selected} onChange={p.onChange}>
       {({ open }) => (
         <>
-          <Listbox.Label className="block text-sm font-medium leading-6 text-blue-primary">
-            {p.label}
-          </Listbox.Label>
+          {p.label && (
+            <Listbox.Label className="block text-sm font-medium leading-6 text-blue-primary">
+              {p.label}
+            </Listbox.Label>
+          )}
           <div className="relative mt-2">
             <Listbox.Button
               title={p.selected}
