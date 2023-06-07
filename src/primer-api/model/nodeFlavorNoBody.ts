@@ -22,4 +22,5 @@ export const NodeFlavorNoBody = {
   THole: 'THole',
   TFun: 'TFun',
   TApp: 'TApp',
+  PatternWildcard: 'PatternWildcard',
 } as const;

@@ -171,6 +171,10 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
 
     case "PatternCon":
       return "border-green-primary ring-green-primary bg-white-primary";
+    case "PrimPattern":
+      return "border-black-primary ring-black-primary bg-white-primary";
+    case "PatternWildcard":
+      return "border-none bg-transparent";
     case "PatternBind":
       return classNames(
         "border-blue-quaternary ring-blue-quaternary bg-white-primary",
@@ -234,6 +238,13 @@ export const flavorContentClasses = (
       return "text-white-primary";
     case "PatternCon":
       return "text-blue-primary";
+    case "PrimPattern":
+      return "text-blue-primary";
+    case "PatternWildcard":
+      // We use `scale-150` here because the text is an emoji which doesn't
+      // respond to Tailwind's font size classes. The `text-grey-secondary` is a
+      // backup in case the emoji doesn't render on a particular client.
+      return "text-grey-secondary scale-150";
     case "PatternBind":
       return "text-blue-primary";
   }
@@ -293,6 +304,10 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
       return "bg-yellow-primary border-yellow-primary text-white-primary";
     case "PatternCon":
       return "bg-green-primary border-green-primary text-white-primary";
+    case "PrimPattern":
+      return "bg-black-primary border-black-primary text-white-primary";
+    case "PatternWildcard":
+      return "hidden";
     case "PatternBind":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary";
   }
@@ -352,6 +367,10 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
       return "stroke-yellow-primary";
     case "PatternCon":
       return "stroke-green-primary";
+    case "PrimPattern":
+      return "stroke-black-primary";
+    case "PatternWildcard":
+      return "stroke-black-primary";
     case "PatternBind":
       return "stroke-blue-quaternary";
   }
@@ -411,6 +430,10 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
       return "P";
     case "PatternCon":
       return "V";
+    case "PrimPattern":
+      return "V";
+    case "PatternWildcard":
+      return "🤷🏽‍♀️";
     case "PatternBind":
       return "Var";
   }
@@ -440,6 +463,8 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
       return "?";
     case "THole":
       return "{?}";
+    case "PatternWildcard":
+      return "🤷🏽‍♀️";
   }
 };
 
