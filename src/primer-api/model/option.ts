@@ -8,5 +8,6 @@
 
 export interface Option {
   context?: string[];
+  matchesType: boolean;
   option: string;
 }

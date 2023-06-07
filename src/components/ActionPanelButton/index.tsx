@@ -4,7 +4,7 @@ import "@/index.css";
 
 import classNames from "classnames";
 
-export type Appearance = "primary" | "danger";
+export type Appearance = "exactMatch" | "primary" | "danger";
 export type NameStyle = "code" | "prose";
 export type Name = {
   text: string;
@@ -28,6 +28,8 @@ const buttonClasses = (appearance: Appearance, height: Height) =>
     "py-3": height === "short",
     "border-grey-primary text-blue-primary bg-white-primary hover:bg-blue-primary hover:text-white-primary focus:ring-blue-primary":
       appearance === "primary",
+    "border-grey-secondary text-white-primary bg-blue-secondary hover:bg-blue-primary focus:ring-blue-primary":
+      appearance === "exactMatch",
     "border-red-secondary text-white-primary bg-red-secondary hover:bg-red-secondary-hover hover:border-red-secondary-hover focus:ring-red-primary":
       appearance === "danger",
   });

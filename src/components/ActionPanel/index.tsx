@@ -95,7 +95,15 @@ export const ActionPanel = ({
                       <div className="mb-3 pt-2">
                         <ActionInput
                           sort={state.opts.free}
-                          onSubmit={(option) => onOption({ option })}
+                          onSubmit={(option) =>
+                            // Note: `matchesType` here is really a
+                            // don't-care, as the backend ignores it,
+                            // but it's required by the type. We
+                            // should break the `Option` type into two
+                            // different server-provided and
+                            // client-provided types.
+                            onOption({ option, matchesType: false })
+                          }
                         ></ActionInput>
                       </div>
                     </div>
@@ -111,7 +119,9 @@ export const ActionPanel = ({
                     {state.opts.opts.map((option) => (
                       <li key={JSON.stringify(option)} className="pt-2">
                         <ActionPanelButton
-                          appearance="primary"
+                          appearance={
+                            option.matchesType ? "exactMatch" : "primary"
+                          }
                           onClick={(_) => onOption(option)}
                           name={{ text: option.option, style: "code" }}
                         />

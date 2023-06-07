@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import type { ActionPanelButtonProps, Appearance } from "./";
 import { ActionPanelButton } from "./";
 
-const appearances: Array<Appearance> = ["primary", "danger"];
+const appearances: Array<Appearance> = ["exactMatch", "primary", "danger"];
 
 export default {
   title: "Application/Component Library/Buttons/ActionPanelButton",
@@ -85,6 +85,15 @@ const AllButtonsTemplate: ComponentStory<typeof ActionPanelButton> = (args) => (
           text: "This is a really really really long and verbose name",
           style: "code",
         }}
+      />
+    </div>
+
+    <h1 className="text-xl">Exact match</h1>
+    <div className="mb-8 mt-4 w-96">
+      <ActionPanelButton
+        {...args}
+        appearance="exactMatch"
+        name={{ text: "x", style: "code" }}
       />
     </div>
 
