@@ -971,7 +971,7 @@ const typeDefToTree = async (
  * It ensures that these are clearly displayed as "one atomic thing",
  * i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc).
  */
-export const TreeReactFlow = (p: TreeReactFlowProps) => (
+export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => (
   <Trees
     makeTrees={Promise.all([
       ...p.typeDefs.map((def) =>
@@ -1039,6 +1039,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => (
       scrollToDefRef={p.scrollToDefRef}
       scrollToTypeDefRef={p.scrollToTypeDefRef}
     />
+    {p.children}
   </Trees>
 );
 export default TreeReactFlow;
@@ -1053,7 +1054,9 @@ export type TreeReactFlowOneProps = {
 /** Renders one `APITree` (e.g. one type or one term) on its own individual canvas.
  * This is essentially a much simpler version of `TreeReactFlow`.
  */
-export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => (
+export const TreeReactFlowOne = (
+  p: PropsWithChildren<TreeReactFlowOneProps>
+) => (
   <Trees
     makeTrees={
       p.tree
@@ -1069,7 +1072,9 @@ export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => (
     }
     {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
     zoomBarProps={p.zoomBarProps}
-  ></Trees>
+  >
+    {p.children}
+  </Trees>
 );
 
 // The core of our interaction with ReactFlow: take some abstract trees, and render them.

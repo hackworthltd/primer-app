@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ReactFlowProvider } from "reactflow";
 import { EvalFullResp, GlobalName, Level } from "@/primer-api";
 import { SelectMenu, TreeReactFlowOne } from "@/components";
 import { defaultTreeReactFlowProps } from "../TreeReactFlow";
@@ -55,11 +56,13 @@ export const EvalFull = ({
       {evalDef !== disableEval && (
         <>
           <div className="grow">
-            <Evaluated
-              defName={{ qualifiedModule: moduleName, baseName: evalDef }}
-              {...(evalFull.result ? { evaluated: evalFull.result } : {})}
-              level={level}
-            />
+            <ReactFlowProvider>
+              <Evaluated
+                defName={{ qualifiedModule: moduleName, baseName: evalDef }}
+                {...(evalFull.result ? { evaluated: evalFull.result } : {})}
+                level={level}
+              />
+            </ReactFlowProvider>
           </div>
         </>
       )}
