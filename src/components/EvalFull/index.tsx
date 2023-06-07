@@ -24,6 +24,7 @@ const Evaluated = (p: {
       {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
       level={p.level}
       fitViewParams={{ padding: 1.0 }}
+      fitOnChange={true}
     />
   );
 };

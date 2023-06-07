@@ -22,6 +22,7 @@ import {
   EdgeProps,
   getBezierPath,
   EdgeTypes,
+  NodeChange,
   useReactFlow,
 } from "reactflow";
 import "./reactflow.css";
@@ -976,75 +977,80 @@ const typeDefToTree = async (
  * i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc).
  */
 export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => (
-  <Trees
-    makeTrees={Promise.all([
-      ...p.typeDefs.map((def) =>
-        typeDefToTree(def, { ...p.defParams, ...p }).then((t) =>
-          layoutTree(t, p.layout).then(({ tree, width, height }) => ({
-            // All we're doing here is adding `nested: []` to all type def nodes.
-            // We just have to be very explicit here in order to please the typechecker.
-            width,
-            height,
-            tree: treeMap(tree, ({ position, ...n }) => ({
-              position,
-              ...primerNodeWith(n, { nested: [], ...n.data }),
-            })),
-          }))
-        )
-      ),
-      ...p.defs.map((def) =>
-        defToTree(def, { ...p.defParams, ...p }).then((t) =>
-          layoutTree(t, p.layout)
-        )
-      ),
-    ]).then(
-      // Space out the forest.
-      (sizedTrees) =>
-        sizedTrees.reduce<
-          [Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>[], number]
-        >(
-          ([trees, offset], { tree, width, height }) => {
-            const { increment, offsetVector } = (() => {
-              switch (p.forestLayout) {
-                case "Horizontal":
-                  return {
-                    increment: width,
-                    offsetVector: { x: offset, y: 0 },
-                  };
-                case "Vertical":
-                  return {
-                    increment: height,
-                    offsetVector: { x: 0, y: offset },
-                  };
-              }
-            })();
-            return [
-              trees.concat(
-                treeMap(tree, (n) => ({
-                  ...n,
-                  position: {
-                    x: n.position.x + p.layout.margins.sibling + offsetVector.x,
-                    y: n.position.y + p.layout.margins.child + offsetVector.y,
-                  },
-                }))
-              ),
-              offset + increment + p.treePadding,
-            ];
-          },
-          [[], 0]
-        )[0]
-    )}
-    onNodeClick={(mouseEvent, node) =>
-      p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
-    }
-    fitViewParams={p.fitViewParams}
-  >
-    <SetTreeReactFlowCallbacks
-      scrollToDefRef={p.scrollToDefRef}
-      scrollToTypeDefRef={p.scrollToTypeDefRef}
-    />
-    {p.children}
-  </Trees>
+  <ReactFlowProvider>
+    <Trees
+      makeTrees={Promise.all([
+        ...p.typeDefs.map((def) =>
+          typeDefToTree(def, { ...p.defParams, ...p }).then((t) =>
+            layoutTree(t, p.layout).then(({ tree, width, height }) => ({
+              // All we're doing here is adding `nested: []` to all type def nodes.
+              // We just have to be very explicit here in order to please the typechecker.
+              width,
+              height,
+              tree: treeMap(tree, ({ position, ...n }) => ({
+                position,
+                ...primerNodeWith(n, { nested: [], ...n.data }),
+              })),
+            }))
+          )
+        ),
+        ...p.defs.map((def) =>
+          defToTree(def, { ...p.defParams, ...p }).then((t) =>
+            layoutTree(t, p.layout)
+          )
+        ),
+      ]).then(
+        // Space out the forest.
+        (sizedTrees) =>
+          sizedTrees.reduce<
+            [Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>[], number]
+          >(
+            ([trees, offset], { tree, width, height }) => {
+              const { increment, offsetVector } = (() => {
+                switch (p.forestLayout) {
+                  case "Horizontal":
+                    return {
+                      increment: width,
+                      offsetVector: { x: offset, y: 0 },
+                    };
+                  case "Vertical":
+                    return {
+                      increment: height,
+                      offsetVector: { x: 0, y: offset },
+                    };
+                }
+              })();
+              return [
+                trees.concat(
+                  treeMap(tree, (n) => ({
+                    ...n,
+                    position: {
+                      x:
+                        n.position.x +
+                        p.layout.margins.sibling +
+                        offsetVector.x,
+                      y: n.position.y + p.layout.margins.child + offsetVector.y,
+                    },
+                  }))
+                ),
+                offset + increment + p.treePadding,
+              ];
+            },
+            [[], 0]
+          )[0]
+      )}
+      onNodeClick={(mouseEvent, node) =>
+        p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
+      }
+      fitViewParams={p.fitViewParams}
+    >
+      <SetTreeReactFlowCallbacks
+        scrollToDefRef={p.scrollToDefRef}
+        scrollToTypeDefRef={p.scrollToTypeDefRef}
+      />
+      {p.children}
+    </Trees>
+  </ReactFlowProvider>
 );
 export default TreeReactFlow;
 
@@ -1053,28 +1059,32 @@ export type TreeReactFlowOneProps = {
   onNodeClick?: (event: React.MouseEvent, node: Positioned<PrimerNode>) => void;
   layout: LayoutParams;
   fitViewParams: FitViewParams | undefined;
+  fitOnChange?: boolean;
 } & NodeParams;
 
 /** Renders one `APITree` (e.g. one type or one term) on its own individual canvas.
  * This is essentially a much simpler version of `TreeReactFlow`.
  */
 export const TreeReactFlowOne = (p: TreeReactFlowOneProps) => (
-  <Trees
-    makeTrees={
-      p.tree
-        ? augmentTree(p.tree, (n0) =>
-            makePrimerNode(n0, p, p.layout, 0, {
-              tag: "termDefNode",
-              nodeType: "BodyNode",
-            }).then(([n, e, nested]) => [primerNodeWith(n, { nested }), e])
-          )
-            .then((t) => layoutTree(t, p.layout))
-            .then(({ tree }) => [tree])
-        : new Promise(() => [])
-    }
-    {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
-    fitViewParams={p.fitViewParams}
-  ></Trees>
+  <ReactFlowProvider>
+    <Trees
+      makeTrees={
+        p.tree
+          ? augmentTree(p.tree, (n0) =>
+              makePrimerNode(n0, p, p.layout, 0, {
+                tag: "termDefNode",
+                nodeType: "BodyNode",
+              }).then(([n, e, nested]) => [primerNodeWith(n, { nested }), e])
+            )
+              .then((t) => layoutTree(t, p.layout))
+              .then(({ tree }) => [tree])
+          : new Promise(() => [])
+      }
+      {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
+      fitViewParams={p.fitViewParams}
+      fitOnChange
+    ></Trees>
+  </ReactFlowProvider>
 );
 
 // The core of our interaction with ReactFlow: take some abstract trees, and render them.
@@ -1087,6 +1097,7 @@ const Trees = <N,>(
       node: Positioned<PrimerNode<N>>
     ) => void;
     fitViewParams: FitViewParams | undefined;
+    fitOnChange?: boolean;
   }>
 ): JSX.Element => {
   const trees = usePromise([], p.makeTrees);
@@ -1094,6 +1105,10 @@ const Trees = <N,>(
     ...trees.map(treeToGraph),
     ...trees.flatMap((tree) => treeNodes(tree).flatMap((n) => n.data.nested)),
   ]);
+  const { fitView } = useReactFlow();
+  const fitViewOnNodesChange = (_: NodeChange[]) => {
+    fitView({ padding: 1.0 });
+  };
 
   // ReactFlow requires a unique id to be passed in if there are
   // multiple flows on one page. We simply get react to generate
@@ -1101,22 +1116,21 @@ const Trees = <N,>(
   const id = useId();
 
   return (
-    <ReactFlowProvider>
-      <ReactFlowSafe<Positioned<PrimerNode<N>>, PrimerEdge>
-        id={id}
-        {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        proOptions={{ hideAttribution: true, account: "paid-pro" }}
-        fitViewOptions={{ ...p.fitViewParams }}
-      >
-        <Background gap={25} size={1.6} color="#81818a" />
-        <ZoomBar {...p.fitViewParams} />
-        {p.children}
-      </ReactFlowSafe>
-    </ReactFlowProvider>
+    <ReactFlowSafe<Positioned<PrimerNode<N>>, PrimerEdge>
+      id={id}
+      {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
+      proOptions={{ hideAttribution: true, account: "paid-pro" }}
+      fitViewOptions={{ ...p.fitViewParams }}
+      {...(p.fitOnChange && { onNodesChange: fitViewOnNodesChange })}
+    >
+      <Background gap={25} size={1.6} color="#81818a" />
+      <ZoomBar {...p.fitViewParams} />
+      {p.children}
+    </ReactFlowSafe>
   );
 };
 
