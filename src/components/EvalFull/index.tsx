@@ -23,7 +23,7 @@ const Evaluated = (p: {
       {...defaultTreeReactFlowProps}
       {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
       level={p.level}
-      fitViewParams={{ padding: 3.0 }}
+      fitViewParams={{ padding: 1.0 }}
     />
   );
 };
