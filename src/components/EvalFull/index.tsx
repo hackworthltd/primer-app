@@ -19,7 +19,7 @@ const Evaluated = (p: {
   evaluated?: EvalFullResp;
   level: Level;
 }) => {
-  const padding = 3.0;
+  const padding = 1.0;
   const { fitView } = useReactFlow();
   const onNodesChange = (_: NodeChange[]) => {
     fitView({ padding });
