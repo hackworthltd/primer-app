@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ReactFlowProvider } from "reactflow";
+import { NodeChange, ReactFlowProvider, useReactFlow } from "reactflow";
 import { EvalFullResp, GlobalName, Level } from "@/primer-api";
 import { SelectMenu, TreeReactFlowOne } from "@/components";
 import { defaultTreeReactFlowProps } from "../TreeReactFlow";
@@ -19,12 +19,19 @@ const Evaluated = (p: {
   evaluated?: EvalFullResp;
   level: Level;
 }) => {
+  const padding = 3.0;
+  const { fitView } = useReactFlow();
+  const onNodesChange = (_: NodeChange[]) => {
+    fitView({ padding });
+  };
+
   return (
     <TreeReactFlowOne
       {...defaultTreeReactFlowProps}
       {...(p?.evaluated ? { tree: p?.evaluated?.contents } : {})}
       level={p.level}
-      zoomBarProps={{ padding: 3.0 }}
+      zoomBarProps={{ padding }}
+      onNodesChange={onNodesChange}
     />
   );
 };
