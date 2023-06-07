@@ -1,11 +1,5 @@
 import deepEqual from "deep-equal";
-import {
-  RefObject,
-  useEffect,
-  useMemo,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { useEffect, useState } from "react";
 
 /** Evaluates to the type `true` when both parameters are equal, and `false` otherwise.
  * NB. this actually tests mutual extendability, which is mostly a reasonable definition of
@@ -24,23 +18,6 @@ export type Equal<T, S> = [T] extends [S]
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
 export const assertType = <T extends true>() => {};
-
-function subscribe(callback: (e: Event) => void) {
-  window.addEventListener("resize", callback);
-  return () => {
-    window.removeEventListener("resize", callback);
-  };
-}
-
-export function useDimensions(ref: RefObject<HTMLElement>) {
-  const dimensions = useSyncExternalStore(subscribe, () =>
-    JSON.stringify({
-      width: ref.current?.offsetWidth ?? 0,
-      height: ref.current?.offsetHeight ?? 0,
-    })
-  );
-  return useMemo(() => JSON.parse(dimensions), [dimensions]);
-}
 
 /** Use some initial data, while waiting for an asynchronous update.
  * This encapsulates a common React pattern, which may eventually have a built-in solution:

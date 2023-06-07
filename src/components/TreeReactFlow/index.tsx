@@ -10,6 +10,7 @@ import {
 } from "@/primer-api";
 import {
   ReactFlow,
+  ReactFlowProvider,
   Node as RFNode,
   Edge as RFEdge,
   Handle,
@@ -974,7 +975,7 @@ const typeDefToTree = async (
  * It ensures that these are clearly displayed as "one atomic thing",
  * i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc).
  */
-export const TreeReactFlow = (p: TreeReactFlowProps) => (
+export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => (
   <Trees
     makeTrees={Promise.all([
       ...p.typeDefs.map((def) =>
@@ -1042,6 +1043,7 @@ export const TreeReactFlow = (p: TreeReactFlowProps) => (
       scrollToDefRef={p.scrollToDefRef}
       scrollToTypeDefRef={p.scrollToTypeDefRef}
     />
+    {p.children}
   </Trees>
 );
 export default TreeReactFlow;
@@ -1099,20 +1101,22 @@ const Trees = <N,>(
   const id = useId();
 
   return (
-    <ReactFlowSafe<Positioned<PrimerNode<N>>, PrimerEdge>
-      id={id}
-      {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
-      nodes={nodes}
-      edges={edges}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      proOptions={{ hideAttribution: true, account: "paid-pro" }}
-      fitViewOptions={{ ...p.fitViewParams }}
-    >
-      <Background gap={25} size={1.6} color="#81818a" />
-      <ZoomBar {...p.fitViewParams} />
-      {p.children}
-    </ReactFlowSafe>
+    <ReactFlowProvider>
+      <ReactFlowSafe<Positioned<PrimerNode<N>>, PrimerEdge>
+        id={id}
+        {...(p.onNodeClick && { onNodeClick: p.onNodeClick })}
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        proOptions={{ hideAttribution: true, account: "paid-pro" }}
+        fitViewOptions={{ ...p.fitViewParams }}
+      >
+        <Background gap={25} size={1.6} color="#81818a" />
+        <ZoomBar {...p.fitViewParams} />
+        {p.children}
+      </ReactFlowSafe>
+    </ReactFlowProvider>
   );
 };
 
