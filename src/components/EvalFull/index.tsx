@@ -65,6 +65,7 @@ export const EvalFull = ({
           <div className="grow">
             <ReactFlowProvider>
               <Evaluated
+                key={evalDef}
                 defName={{ qualifiedModule: moduleName, baseName: evalDef }}
                 {...(evalFull.result ? { evaluated: evalFull.result } : {})}
                 level={level}
