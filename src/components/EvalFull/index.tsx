@@ -56,6 +56,7 @@ export const EvalFull = ({
         <>
           <div className="grow">
             <Evaluated
+              key={evalDef}
               defName={{ qualifiedModule: moduleName, baseName: evalDef }}
               {...(evalFull.result ? { evaluated: evalFull.result } : {})}
               level={level}
