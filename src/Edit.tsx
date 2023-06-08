@@ -223,7 +223,6 @@ const AppNoError = ({
     <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
       <div className="h-full overflow-hidden">
         <Sidebar
-          initialMode="T&D"
           prog={{
             defs,
             types: p.module.types
@@ -250,9 +249,6 @@ const AppNoError = ({
             }
           }}
           onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
-          shadowed={false}
-          type="?"
-          folder="unknown"
         />
       </div>
 

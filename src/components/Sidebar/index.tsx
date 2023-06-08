@@ -1,5 +1,4 @@
 import {
-  InformationCircleIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   PlusIcon,
@@ -14,109 +13,61 @@ export type Prog = {
   importedTypes: string[];
 };
 
-const headerStyle = "pb-3 text-base lg:text-lg font-bold text-blue-primary";
 const subHeaderStyle = "mb-1 text-sm lg:text-base font-bold text-blue-primary";
 const itemStyle =
   "block truncate font-code text-sm lg:text-base leading-5 text-left text-grey-secondary";
 
-export type SidebarProps = { initialMode: Tab } & TypesAndDefinitionsProps &
-  InfoProps;
-type TypesAndDefinitionsProps = {
+export type SidebarProps = {
   prog: Prog;
   onClickDef: OnClick;
   onClickTypeDef: OnClick;
   onClickAddDef: (name: string) => void;
   onClickAddTypeDef: () => void;
 };
-type InfoProps = {
-  shadowed: boolean;
-  type: string;
-  folder: string;
-};
 type OnClick = (
   label: string,
   event: React.MouseEvent<HTMLButtonElement>
 ) => void;
 
-type Tab = "T&D" | "Info";
-
-export const Sidebar = (p: SidebarProps): JSX.Element => {
-  const [currentTab, switchTab] = useState(p.initialMode);
-
-  const tab = (tab: Tab, element: JSX.Element): JSX.Element => (
-    <button
-      key={tab}
-      className={classNames(
-        "flex",
-        tab == currentTab
-          ? "text-blue-primary border-y-8 border-t-transparent"
-          : "hover:text-blue-secondary hover:border-y-8 hover:border-t-transparent"
-      )}
-      onClick={(_) => switchTab(tab)}
-    >
-      <div className="flex w-full flex-col self-center">{element}</div>
-    </button>
-  );
-
-  return (
-    <div className="flex h-full flex-col">
-      <div className="grid h-20 grid-cols-2 text-grey-secondary">
-        {tab(
-          "T&D",
-          <div className="text-center text-base font-bold lg:text-lg">T&D</div>
-        )}
-        {tab("Info", <InformationCircleIcon className="h-8" />)}
-      </div>
-      <div className="h-full overflow-scroll bg-grey-primary p-6 pr-4">
-        {(() => {
-          switch (currentTab) {
-            case "T&D":
-              return <TypesAndDefinitions {...p}></TypesAndDefinitions>;
-            case "Info":
-              return <Info {...p}></Info>;
-          }
-        })()}
-      </div>
-    </div>
-  );
-};
-
-const TypesAndDefinitions = ({
+export const Sidebar = ({
   onClickDef,
   onClickTypeDef,
   onClickAddDef,
   onClickAddTypeDef,
   prog,
-}: TypesAndDefinitionsProps): JSX.Element => {
+}: SidebarProps): JSX.Element => {
   return (
-    <div className="h-full overflow-auto">
-      <div className={headerStyle}>Types & Definitions</div>
-
-      <div className="flex flex-col gap-5 p-2 leading-8">
-        <DefList
-          heading="Types"
-          elems={prog.types}
-          italic={false}
-          {...{ onClickDef: onClickTypeDef, onClickAdd: onClickAddTypeDef }}
-        />
-        <DefList
-          heading="Definitions"
-          elems={prog.defs}
-          italic={false}
-          {...{ onClickDef, onClickAdd: onClickAddDef }}
-        />
-        <DefList
-          heading="Imported Types"
-          elems={prog.importedTypes}
-          italic={true}
-          {...{ onClickDef: onClickTypeDef }}
-        />
-        <DefList
-          heading="Imported Definitions"
-          elems={prog.importedDefs}
-          italic={true}
-          {...{ onClickDef }}
-        />
+    <div className="flex h-full flex-col overflow-hidden bg-grey-primary p-4 pt-2">
+      <div className="flex-none py-4 font-bold text-blue-primary lg:text-lg">
+        Types & Definitions
+      </div>
+      <div className="min-h-0 flex-auto overflow-y-auto">
+        <div className="flex flex-col gap-5 p-2 leading-8">
+          <DefList
+            heading="Types"
+            elems={prog.types}
+            italic={false}
+            {...{ onClickDef: onClickTypeDef, onClickAdd: onClickAddTypeDef }}
+          />
+          <DefList
+            heading="Definitions"
+            elems={prog.defs}
+            italic={false}
+            {...{ onClickDef, onClickAdd: onClickAddDef }}
+          />
+          <DefList
+            heading="Imported Types"
+            elems={prog.importedTypes}
+            italic={true}
+            {...{ onClickDef: onClickTypeDef }}
+          />
+          <DefList
+            heading="Imported Definitions"
+            elems={prog.importedDefs}
+            italic={true}
+            {...{ onClickDef }}
+          />
+        </div>
       </div>
     </div>
   );
@@ -177,36 +128,6 @@ const DefList = ({
               </button>
             ))
           : []}
-      </div>
-    </div>
-  );
-};
-
-const Info = ({ shadowed, type, folder }: InfoProps): JSX.Element => {
-  return (
-    <div className="h-full overflow-auto">
-      <div className={headerStyle}>Selection Info</div>
-      <div className="flex flex-col gap-5 p-2 leading-8">
-        {shadowed ? (
-          <div className="flex items-center gap-1 text-red-primary">
-            <InformationCircleIcon className="h-4" />
-            <div>
-              <span>The definition has been </span>
-              <span className="underline">shadowed</span>
-              <span>.</span>
-            </div>
-          </div>
-        ) : (
-          []
-        )}
-        <div>
-          <div className={subHeaderStyle}>Type</div>
-          <div className={itemStyle}>{type}</div>
-        </div>
-        <div>
-          <div className={subHeaderStyle}>Folder</div>
-          <div className={itemStyle}>{folder}</div>
-        </div>
       </div>
     </div>
   );
