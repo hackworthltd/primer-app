@@ -8,6 +8,7 @@ import {
   Level,
   TypeDef,
 } from "@/primer-api";
+import type { NodeChange } from "reactflow";
 import {
   ReactFlow,
   Node as RFNode,
@@ -68,6 +69,15 @@ import { mapSnd } from "fp-ts/lib/Tuple";
 
 export type ScrollToDef = (defName: string) => void;
 
+/**
+ * A subset of the properties that `ReactFlow` supports and that we want to
+ * expose to users of `TreeReactFlow` and `TreeReactFlowOne`.
+ */
+export type OnNodesChange = (nodesChanges: NodeChange[]) => void;
+type ReactFlowParams = {
+  onNodesChange?: OnNodesChange;
+};
+
 /** These properties are needed to construct nodes, but are invariant across all nodes. */
 type NodeParams = {
   nodeWidth: number;
@@ -79,6 +89,7 @@ type NodeParams = {
 type DefParams = {
   nameNodeMultipliers: { width: number; height: number };
 };
+
 export type TreeReactFlowProps = {
   defs: Def[];
   typeDefs: TypeDef[];
@@ -93,7 +104,8 @@ export type TreeReactFlowProps = {
   scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
   scrollToTypeDefRef: MutableRefObject<ScrollToDef | undefined>;
   zoomBarProps: ZoomBarProps;
-} & NodeParams;
+} & NodeParams &
+  ReactFlowParams;
 export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
   "treePadding" | "forestLayout" | "defParams" | "layout" | keyof NodeParams
@@ -973,6 +985,7 @@ const typeDefToTree = async (
  */
 export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => (
   <Trees
+    {...p}
     makeTrees={Promise.all([
       ...p.typeDefs.map((def) =>
         typeDefToTree(def, { ...p.defParams, ...p }).then((t) =>
@@ -1049,7 +1062,8 @@ export type TreeReactFlowOneProps = {
   onNodeClick?: (event: React.MouseEvent, node: Positioned<PrimerNode>) => void;
   layout: LayoutParams;
   zoomBarProps: ZoomBarProps;
-} & NodeParams;
+} & NodeParams &
+  ReactFlowParams;
 
 /** Renders one `APITree` (e.g. one type or one term) on its own individual canvas.
  * This is essentially a much simpler version of `TreeReactFlow`.
@@ -1058,6 +1072,7 @@ export const TreeReactFlowOne = (
   p: PropsWithChildren<TreeReactFlowOneProps>
 ) => (
   <Trees
+    {...p}
     makeTrees={
       p.tree
         ? augmentTree(p.tree, (n0) =>
@@ -1087,7 +1102,8 @@ const Trees = <N,>(
       node: Positioned<PrimerNode<N>>
     ) => void;
     zoomBarProps: ZoomBarProps;
-  }>
+  }> &
+    ReactFlowParams
 ): JSX.Element => {
   const trees = usePromise([], p.makeTrees);
   const { nodes, edges } = combineGraphs([
@@ -1109,6 +1125,7 @@ const Trees = <N,>(
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
+      onNodesChange={p.onNodesChange}
     >
       <Background gap={25} size={1.6} color="#81818a" />
       <ZoomBar {...p.zoomBarProps} />
