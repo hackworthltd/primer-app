@@ -13,6 +13,7 @@ export { default as Branding } from "./Branding";
 export { default as PictureInPicture } from "./PictureInPicture";
 export { default as SearchBar } from "./SearchBar";
 export { default as SelectMenu } from "./SelectMenu";
+export { default as SelectionInfo } from "./SelectionInfo";
 export { default as SessionList } from "./SessionList";
 export { default as SessionNameModal } from "./SessionNameModal";
 export { default as SessionPreview } from "./SessionPreview";

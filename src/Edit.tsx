@@ -36,6 +36,8 @@ import {
   Level,
   useUndo,
   useRedo,
+  useGetTypeOrKind,
+  TypeOrKind,
 } from "./primer-api";
 import {
   defaultTreeReactFlowProps,
@@ -82,9 +84,22 @@ const Edit = (): JSX.Element => {
 
 const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
   const [prog, setProg0] = useState<Prog>(p.initialProg);
-  const [selection, setSelection] = useState<Selection | undefined>(
+  const [selection, setSelection0] = useState<Selection | undefined>(
     prog.selection
   );
+  const getTypeOrKind = useGetTypeOrKind();
+  const [selectionTypeOrKind, setSelectionTypeOrKind] = useState<
+    TypeOrKind | undefined
+  >();
+  const setSelection = (s: Selection | undefined) => {
+    s
+      ? getTypeOrKind
+          .mutateAsync({ sessionId: p.sessionId, data: s })
+          .then(setSelectionTypeOrKind)
+          .catch((_) => setSelectionTypeOrKind(undefined))
+      : setSelectionTypeOrKind(undefined);
+    setSelection0(s);
+  };
   const setProg = (prog: Prog) => {
     setProg0(prog);
     setSelection(prog.selection);
@@ -108,6 +123,7 @@ const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
   return (
     <AppNoError
       sessionId={p.sessionId}
+      selectionTypeOrKind={selectionTypeOrKind}
       module={module}
       imports={importedModules}
       selection={selection}
@@ -169,6 +185,7 @@ const AppNoError = ({
   module: Module;
   imports: Module[];
   selection: Selection | undefined;
+  selectionTypeOrKind: TypeOrKind | undefined;
   setSelection: (s: Selection) => void;
   setProg: (p: Prog) => void;
   undoAvailable: boolean;
@@ -293,6 +310,7 @@ const AppNoError = ({
             </div>
 
             <PictureInPicture
+              initialTab="Info"
               level={level}
               // Note: these offsets are rather arbitrary.
               initialPosition={{ x: 10, y: 10 }}
@@ -302,6 +320,7 @@ const AppNoError = ({
                 ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
               }}
               defs={defs}
+              typeOrKind={p.selectionTypeOrKind}
             />
           </TreeReactFlow>
         </ReactFlowProvider>
