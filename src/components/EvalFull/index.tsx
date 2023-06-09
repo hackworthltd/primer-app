@@ -12,6 +12,7 @@ export type EvalFullProps = {
   };
   level: Level;
   defs: string[];
+  initialEvalDef: string | undefined;
 };
 
 const Evaluated = (p: {
@@ -45,8 +46,9 @@ export const EvalFull = ({
   evalFull,
   moduleName,
   level,
+  initialEvalDef,
 }: EvalFullProps): JSX.Element => {
-  const [evalDef, setEvalDef0] = useState(disableEval);
+  const [evalDef, setEvalDef0] = useState(initialEvalDef ?? disableEval);
   const setEvalDef = (e: string) => {
     setEvalDef0(e);
     evalFull.request(e === disableEval ? undefined : e);

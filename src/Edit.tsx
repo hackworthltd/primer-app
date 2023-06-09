@@ -320,6 +320,7 @@ const AppNoError = ({
                 ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
               }}
               defs={defs}
+              initialEvalDef={evalTarget}
               typeOrKind={p.selectionTypeOrKind}
             />
           </TreeReactFlow>
