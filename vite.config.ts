@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import { checker } from "vite-plugin-checker";
 import PkgConfig from "vite-plugin-package-config";
 import tsconfigPaths from "vite-tsconfig-paths";
+import vitePluginFaviconsInject from "vite-plugin-favicons-inject";
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -22,6 +23,7 @@ export default ({ mode }) => {
       svgr(),
       tsconfigPaths(),
       PkgConfig(),
+      vitePluginFaviconsInject("./src/logo.svg"),
     ],
 
     server: {
