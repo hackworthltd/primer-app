@@ -23,7 +23,11 @@ export default ({ mode }) => {
       svgr(),
       tsconfigPaths(),
       PkgConfig(),
-      vitePluginFaviconsInject("./src/logo.svg"),
+      // Can cause issues in development mode, and with Storybook builds. See:
+      // https://github.com/JohnPremKumar/vite-plugin-favicons-inject#development-mode
+      process.env.VITE_API_URL !== ""
+        ? vitePluginFaviconsInject("./src/logo.svg")
+        : null,
     ],
 
     server: {
