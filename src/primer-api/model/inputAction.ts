@@ -39,4 +39,5 @@ export const InputAction = {
   RenameCon: 'RenameCon',
   RenameTypeParam: 'RenameTypeParam',
   AddCon: 'AddCon',
+  AddTypeParam: 'AddTypeParam',
 } as const;

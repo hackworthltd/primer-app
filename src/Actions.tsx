@@ -41,6 +41,8 @@ export const actionName = (action: NoInputAction | InputAction): Name => {
       return prose("↑");
     case "DeleteDef":
       return prose("⌫");
+    case "DeleteTypeDef":
+      return prose("⌫");
     case "DuplicateDef":
       return prose("d");
     case "DeleteType":
@@ -97,12 +99,20 @@ export const actionName = (action: NoInputAction | InputAction): Name => {
       return prose("r");
     case "AddCon":
       return prose("+");
+    case "DeleteCon":
+      return prose("⌫");
     case "RenameCon":
       return prose("r");
     case "RenameTypeParam":
       return prose("r");
+    case "AddTypeParam":
+      return prose("t");
+    case "DeleteTypeParam":
+      return prose("⌫");
     case "AddConField":
       return prose("+");
+    case "DeleteConField":
+      return prose("p⌫");
   }
 };
 
@@ -152,6 +162,8 @@ export const actionDescription = (
       return "Replace parent with this subtree";
     case "DeleteDef":
       return "Delete this definition";
+    case "DeleteTypeDef":
+      return "Delete this type definition";
     case "DuplicateDef":
       return "Duplicate this definition";
     case "DeleteType":
@@ -208,12 +220,20 @@ export const actionDescription = (
       return "Rename this type";
     case "AddCon":
       return "Add a constructor to this type";
+    case "DeleteCon":
+      return "Delete this constructor";
     case "RenameCon":
       return "Rename this constructor";
     case "RenameTypeParam":
       return "Rename this parameter";
+    case "AddTypeParam":
+      return "Add a type parameter";
+    case "DeleteTypeParam":
+      return "Delete this parameter";
     case "AddConField":
       return "Add a parameter to this constructor";
+    case "DeleteConField":
+      return "Delete this parameter";
   }
 };
 
@@ -248,6 +268,8 @@ export const actionType = (action: NoInputAction | InputAction): ActionType => {
     case "RaiseType":
       return "Destructive";
     case "DeleteDef":
+      return "Destructive";
+    case "DeleteTypeDef":
       return "Destructive";
     case "DuplicateDef":
       return "Primary";
@@ -305,11 +327,19 @@ export const actionType = (action: NoInputAction | InputAction): ActionType => {
       return "Primary";
     case "AddCon":
       return "Primary";
+    case "DeleteCon":
+      return "Destructive";
     case "RenameCon":
       return "Primary";
     case "RenameTypeParam":
       return "Primary";
+    case "AddTypeParam":
+      return "Primary";
+    case "DeleteTypeParam":
+      return "Destructive";
     case "AddConField":
       return "Primary";
+    case "DeleteConField":
+      return "Destructive";
   }
 };
