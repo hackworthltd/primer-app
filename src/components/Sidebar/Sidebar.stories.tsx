@@ -47,10 +47,6 @@ export const Default: ComponentStory<typeof Sidebar> = (args: SidebarProps) => (
             .map((_, i) => "def".concat(i.toString()))
         ),
       }}
-      initialMode="T&D"
-      shadowed={true}
-      type="Direction → Direction"
-      folder="Direction"
       evalFull={{
         request: () => {
           return;

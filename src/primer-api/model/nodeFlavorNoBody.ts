@@ -23,4 +23,7 @@ export const NodeFlavorNoBody = {
   TFun: 'TFun',
   TApp: 'TApp',
   PatternWildcard: 'PatternWildcard',
+  KType: 'KType',
+  KHole: 'KHole',
+  KFun: 'KFun',
 } as const;

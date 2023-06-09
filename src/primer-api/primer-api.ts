@@ -35,6 +35,7 @@ import type {
   EvalFullResp,
   GlobalName,
   EvalFullParams,
+  TypeOrKind,
   CreateTypeDefBody
 } from './model'
 import { useCustomInstance } from '../orval/mutator/use-custom-instance';
@@ -869,6 +870,64 @@ export const useRedo = <TError = ErrorType<void>,
 ) => {
     
       const mutationOptions = useRedoMutationOptions(options);
+     
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Get the type/kind of a particular node
+ */
+export const useGetTypeOrKindHook = () => {
+        const getTypeOrKind = useCustomInstance<TypeOrKind>();
+
+        return (
+    sessionId: string,
+    selection: Selection,
+ ) => {
+        return getTypeOrKind(
+          {url: `/openapi/sessions/${sessionId}/selection`, method: 'post',
+      headers: {'Content-Type': 'application/json;charset=utf-8', },
+      data: selection
+    },
+          );
+        }
+      }
+    
+
+
+export const useGetTypeOrKindMutationOptions = <TError = ErrorType<void>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetTypeOrKindHook>>>, TError,{sessionId: string;data: Selection}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetTypeOrKindHook>>>, TError,{sessionId: string;data: Selection}, TContext> => {
+ const {mutation: mutationOptions} = options ?? {};
+
+      const getTypeOrKind =  useGetTypeOrKindHook()
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useGetTypeOrKindHook>>>, {sessionId: string;data: Selection}> = (props) => {
+          const {sessionId,data} = props ?? {};
+
+          return  getTypeOrKind(sessionId,data,)
+        }
+
+        
+
+ 
+   return  { mutationFn, ...mutationOptions }}
+
+    export type GetTypeOrKindMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetTypeOrKindHook>>>>
+    export type GetTypeOrKindMutationBody = Selection
+    export type GetTypeOrKindMutationError = ErrorType<void>
+
+    /**
+ * @summary Get the type/kind of a particular node
+ */
+export const useGetTypeOrKind = <TError = ErrorType<void>,
+    
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetTypeOrKindHook>>>, TError,{sessionId: string;data: Selection}, TContext>, }
+) => {
+    
+      const mutationOptions = useGetTypeOrKindMutationOptions(options);
      
       return useMutation(mutationOptions);
     }

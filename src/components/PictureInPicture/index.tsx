@@ -1,12 +1,35 @@
+import {
+  InformationCircleIcon,
+  PlayCircleIcon,
+} from "@heroicons/react/24/outline";
+import {
+  InformationCircleIcon as InformationCircleIconSolid,
+  PlayCircleIcon as PlayCircleIconSolid,
+} from "@heroicons/react/24/solid";
 import classNames from "classnames";
 import { useRef, useState } from "react";
 import { useDraggable, DragOptions } from "@neodrag/react";
+import { Tab } from "@headlessui/react";
 import type { EvalFullProps } from "@/components/EvalFull";
-import { EvalFull } from "@/components";
+import type { SelectionInfoProps } from "@/components/SelectionInfo";
+import { EvalFull, SelectionInfo } from "@/components";
+
+export type PictureInPictureTab = "Eval" | "Info";
 
 export type PictureInPictureProps = {
+  initialTab: PictureInPictureTab;
   initialPosition: { x: number; y: number };
-} & EvalFullProps;
+} & EvalFullProps &
+  SelectionInfoProps;
+
+const tabClasses = (selected: boolean, extra?: string) =>
+  classNames(
+    "w-full px-1 py-2.5 inline-flex items-center text-sm bg-grey-primary hover:bg-grey-primary-hover",
+    selected
+      ? "font-bold text-blue-primary border-b-4 border-b-blue-primary"
+      : "font-medium text-grey-secondary border-b-2 border-b-grey-quaternary",
+    extra
+  );
 
 export const PictureInPicture = (p: PictureInPictureProps): JSX.Element => {
   const [touchDragging, setTouchDragging] = useState(false);
@@ -29,16 +52,56 @@ export const PictureInPicture = (p: PictureInPictureProps): JSX.Element => {
     <div
       ref={draggableRef}
       className={classNames(
-        "rounded bg-grey-primary absolute h-80 w-80 z-30 flex flex-col",
+        "w-full max-w-sm h-70 rounded bg-grey-primary absolute z-30",
         touchDragging ? "shadow-2xl -my-1 -mx-2" : "shadow-lg"
       )}
     >
-      <div className="neodrag-react-handle mx-2 mt-2 block select-none text-sm font-medium leading-6 text-blue-primary">
-        Evaluate
-      </div>
-      <div className="grow">
-        <EvalFull {...p} />
-      </div>
+      <Tab.Group defaultIndex={1}>
+        <Tab.List className="flex flex-row rounded pb-2">
+          <Tab className={({ selected }) => tabClasses(selected, "rounded-tl")}>
+            {({ selected }) =>
+              selected ? (
+                <div className="flex w-full flex-row items-center justify-center gap-x-2">
+                  <PlayCircleIconSolid className="h-8 fill-blue-primary" />
+                  <div>Evaluate</div>
+                </div>
+              ) : (
+                <div className="flex w-full flex-row items-center justify-center gap-x-2">
+                  <PlayCircleIcon className="h-8 text-grey-secondary" />
+                  <div>Evaluate</div>
+                </div>
+              )
+            }
+          </Tab>
+          <Tab className={({ selected }) => tabClasses(selected, "rounded-tr")}>
+            {({ selected }) =>
+              selected ? (
+                <div className="flex w-full flex-row items-center justify-center gap-x-2">
+                  <InformationCircleIconSolid className="h-8 fill-blue-primary" />
+                  <div>Selection info</div>
+                </div>
+              ) : (
+                <div className="flex w-full flex-row items-center justify-center gap-x-2">
+                  <InformationCircleIcon className="h-8 text-grey-secondary" />
+                  <div>Selection Info</div>
+                </div>
+              )
+            }
+          </Tab>
+        </Tab.List>
+        <Tab.Panels>
+          <Tab.Panel>
+            <div className="h-60">
+              <EvalFull {...p} />
+            </div>
+          </Tab.Panel>
+          <Tab.Panel>
+            <div className="h-60">
+              <SelectionInfo {...p} />
+            </div>
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
     </div>
   );
 };
