@@ -29,10 +29,8 @@ export interface SessionsPageProps {
 
   /**
    * The event handler for the "New program" button.
-   *
-   * @type {(name: string) => void}
    */
-  onClickNewProgram: (name: string) => void;
+  onClickNewProgram: (name: string, importPrelude: boolean) => void;
 
   /**
    * The 1-based index of the first item shown on this page.
@@ -89,6 +87,7 @@ export interface SessionsPageProps {
 }
 
 export const SessionsPage = (p: SessionsPageProps): JSX.Element => {
+  const [importPrelude, setImportPrelude] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const onClickNewProgram = (): void => {
     setShowModal(true);
@@ -119,9 +118,14 @@ export const SessionsPage = (p: SessionsPageProps): JSX.Element => {
       </div>
       <SessionNameModal
         open={showModal}
+        importPrelude={importPrelude}
         onClose={() => setShowModal(false)}
         onCancel={() => setShowModal(false)}
-        onSubmit={p.onClickNewProgram}
+        onSubmit={(name: string, _importPrelude: boolean) => {
+          // Remember the student's choice of whether or not to import the Prelude.
+          setImportPrelude(_importPrelude);
+          p.onClickNewProgram(name, _importPrelude);
+        }}
       />
     </div>
   );

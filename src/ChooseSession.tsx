@@ -86,8 +86,8 @@ const ChooseSession = (): JSX.Element => {
       startIndex={startIndex}
       numItems={meta.pageSize}
       totalItems={meta.totalItems}
-      onClickNewProgram={(name: string) =>
-        newSession.mutate({ data: { name: name, importPrelude: true } })
+      onClickNewProgram={(name: string, importPrelude: boolean) =>
+        newSession.mutate({ data: { name, importPrelude } })
       }
       onClickNextPage={onClickNextPage}
       onClickPreviousPage={onClickPreviousPage}
