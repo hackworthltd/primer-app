@@ -55,6 +55,7 @@ export const EvalFull = ({
     <div className="flex h-full flex-col overflow-auto">
       <div className="mx-2">
         <SelectMenu
+          label="Definition"
           selected={evalDef}
           options={[disableEval].concat(defs)}
           optionType="code"

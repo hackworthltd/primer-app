@@ -35,6 +35,9 @@ export const SelectionInfo = ({
     <div className="flex h-full flex-col overflow-auto">
       {typeOrKind && (
         <>
+          <div className="mx-2 block text-sm font-medium leading-6 text-blue-primary">
+            Type
+          </div>
           <div className="grow">
             <ReactFlowProvider>
               <TypeOrKindTree typeOrKind={typeOrKind} level={level} />
