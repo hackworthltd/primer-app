@@ -16,9 +16,14 @@ export interface SessionNameModalProps {
   open: boolean;
 
   /**
+   * The initial state of the import prelude choice.
+   */
+  importPrelude: boolean;
+
+  /**
    * The submit button's on-click handler.
    */
-  onSubmit: (name: string) => void;
+  onSubmit: (name: string, importPrelude: boolean) => void;
 
   /**
    * The modal's on-cancel handler. This is called when the student clicks the
@@ -47,6 +52,10 @@ const schema = z.object({
     .max(64, {
       message: "Sorry, session names can't be longer than 64 characters",
     }),
+  importPrelude: z.boolean({
+    required_error: "Please provide a value for importPrelude",
+    invalid_type_error: "importPrelude must be 'true' or 'false'",
+  }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -62,7 +71,7 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
     resolver: zodResolver(schema),
   });
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
-    p.onSubmit(data.name);
+    p.onSubmit(data.name, data.importPrelude);
   };
 
   useEffect(() => {
@@ -123,14 +132,14 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
                       Create a new session
                     </Dialog.Title>
                     <div className="mt-2">
-                      <p className="text-sm text-blue-primary">
+                      <p className="block text-sm leading-6 text-blue-primary">
                         Give your new session a name. You can rename it later if
                         you change your mind.
                       </p>
                     </div>
                     <form
                       onSubmit={handleSubmit(onSubmit)}
-                      className="mt-5 sm:flex sm:items-center"
+                      className="mt-5 flex flex-col items-center space-y-6"
                     >
                       <div className="w-full">
                         <label htmlFor="name" className="sr-only">
@@ -150,10 +159,25 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
                           </p>
                         )}
                       </div>
+
+                      <div className="flex w-full flex-row items-center justify-between">
+                        <label
+                          htmlFor="importPrelude"
+                          className="text-sm leading-6 text-blue-primary"
+                        >
+                          Include the Primer Prelude
+                        </label>
+                        <input
+                          type="checkbox"
+                          id="importPrelude"
+                          className="h-6 w-6 rounded-md border-grey-quaternary text-blue-primary focus:ring-blue-secondary"
+                          {...register("importPrelude")}
+                        />
+                      </div>
                     </form>
                   </div>
                 </div>
-                <div className="mt-5 sm:flex sm:flex-row-reverse">
+                <div className="mt-10 sm:flex sm:flex-row-reverse">
                   <UIButton
                     text="Create session"
                     size="lg"

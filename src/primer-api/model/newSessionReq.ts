@@ -7,5 +7,6 @@
  */
 
 export interface NewSessionReq {
+  importPrelude: boolean;
   name: string;
 }
