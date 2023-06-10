@@ -468,10 +468,10 @@ type APITreeNode = {
   children: number;
 };
 
-const augmentTree = async <T, E>(
+const augmentTree = async <N, E>(
   tree: APITree,
-  f: (tree: APITreeNode) => Promise<[T, (child: T, isRight: boolean) => E]>
-): Promise<Tree<T, E>> => {
+  f: (tree: APITreeNode) => Promise<[N, (child: N, isRight: boolean) => E]>
+): Promise<Tree<N, E>> => {
   const childTrees = await Promise.all(
     tree.childTrees.map((t) => augmentTree(t, f))
   );
