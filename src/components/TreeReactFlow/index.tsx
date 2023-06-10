@@ -507,10 +507,12 @@ const makePrimerNode = async (
     PrimerGraph[]
   ]
 > => {
-  const selected = deepEqualTyped(
-    def && makeSelectionFromNodeData(def, node.nodeId, nodeData),
-    p.selection
-  );
+  const selected =
+    p.selection != undefined &&
+    deepEqualTyped(
+      def && makeSelectionFromNodeData(def, node.nodeId, nodeData),
+      p.selection
+    );
   const id = node.nodeId;
   const common = {
     width: p.nodeWidth,
