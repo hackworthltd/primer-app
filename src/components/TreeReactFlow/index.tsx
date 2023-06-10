@@ -274,12 +274,12 @@ const nodeTypes = {
         title={data.def.baseName}
         className={classNames(
           "flex items-center justify-center",
-          "rounded-md",
-          "bg-grey-primary",
-          "border-8 border-grey-tertiary ring-grey-tertiary",
+          "rounded-lg",
+          "bg-white-primary",
+          "border-4 border-blue-secondary ring-blue-secondary",
           data.selected && "ring-4 ring-offset-4",
           commonHoverClasses,
-          "hover:ring-grey-tertiary",
+          "hover:ring-blue-secondary",
           !data.selected && "hover:ring-opacity-50"
         )}
         style={{
@@ -287,7 +287,7 @@ const nodeTypes = {
           height: data.height,
         }}
       >
-        <div className="block truncate px-1 font-code text-4xl text-grey-tertiary">
+        <div className="block truncate px-2 font-code text-xl font-semibold text-blue-primary">
           {data.def.baseName}
         </div>
       </div>
@@ -305,11 +305,11 @@ const nodeTypes = {
         className={classNames(
           "flex items-center justify-center",
           "rounded-md",
-          "bg-grey-primary",
-          "border-8 border-grey-tertiary ring-grey-tertiary",
+          "bg-white-primary",
+          "border-4 border-grey-secondary ring-grey-secondary",
           data.selected && "ring-4 ring-offset-4",
           commonHoverClasses,
-          "hover:ring-grey-tertiary",
+          "hover:ring-grey-secondary",
           !data.selected && "hover:ring-opacity-50"
         )}
         style={{
@@ -317,7 +317,7 @@ const nodeTypes = {
           height: data.height,
         }}
       >
-        <div className="block truncate px-1 font-code text-4xl text-grey-tertiary">
+        <div className="block truncate px-2 font-code text-xl font-semibold text-blue-primary">
           {data.name.baseName}
         </div>
       </div>
@@ -337,11 +337,11 @@ const nodeTypes = {
         className={classNames(
           "flex items-center justify-center",
           "rounded-md",
-          "bg-grey-primary",
-          "border-4 border-grey-tertiary ring-grey-tertiary",
+          "bg-white-primary",
+          "border-4 border-grey-secondary ring-grey-secondary",
           data.selected && "ring-4 ring-offset-4",
           commonHoverClasses,
-          "hover:ring-grey-tertiary",
+          "hover:ring-grey-secondary",
           !data.selected && "hover:ring-opacity-50"
         )}
         style={{
@@ -352,7 +352,7 @@ const nodeTypes = {
         {
           <div
             className={classNames(
-              "block truncate px-1 font-code text-sm text-grey-tertiary"
+              "block truncate px-2 font-code text-sm text-blue-primary"
             )}
           >
             {data.name}
