@@ -43,8 +43,8 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       );
     case "APP":
       return classNames(
-        "border-yellow-secondary ring-yellow-secondary bg-yellow-secondary",
-        "hover:ring-yellow-secondary",
+        "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary",
+        "hover:ring-blue-tertiary",
         commonHoverClasses
       );
     case "Con":
@@ -79,8 +79,8 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       );
     case "LAM":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
+        "border-blue-secondary ring-blue-secondary bg-white-primary",
+        "hover:ring-blue-secondary",
         commonHoverClasses
       );
     case "GlobalVar":
@@ -126,56 +126,56 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
 
     case "PrimCon":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
+        "border-green-primary ring-green-primary bg-white-primary",
+        "hover:ring-green-primary",
         commonHoverClasses
       );
     case "TEmptyHole":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
+        "border-red-tertiary ring-red-tertiary bg-white-primary",
+        "hover:ring-red-tertiary",
         commonHoverClasses
       );
     case "THole":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
+        "border-red-tertiary ring-red-tertiary bg-white-primary",
+        "hover:ring-red-tertiary",
         commonHoverClasses
       );
     case "TCon":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
+        "border-green-primary ring-green-primary bg-white-primary",
+        "hover:ring-green-primary",
         commonHoverClasses
       );
     case "TFun":
       return classNames(
-        "border-black-primary ring-black-primary bg-black-primary",
-        "hover:ring-black-primary",
+        "border-blue-primary ring-blue-primary bg-blue-primary",
+        "hover:ring-blue-primary",
         commonHoverClasses
       );
     case "TVar":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
+        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "TApp":
       return classNames(
-        "border-black-primary ring-black-primary bg-black-primary",
-        "hover:ring-black-primary",
+        "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary",
+        "hover:ring-blue-tertiary",
         commonHoverClasses
       );
     case "TForall":
       return classNames(
-        "border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
+        "border-blue-secondary ring-blue-secondary bg-white-primary",
+        "hover:ring-blue-secondary",
         commonHoverClasses
       );
     case "TLet":
       return classNames(
-        "border-black-primary ring-black-primary bg-black-primary",
-        "hover:ring-black-primary",
+        "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "hover:ring-blue-quaternary",
         commonHoverClasses
       );
 
@@ -190,7 +190,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
     case "PatternCon":
       return "border-green-primary ring-green-primary bg-white-primary";
     case "PrimPattern":
-      return "border-black-primary ring-black-primary bg-white-primary";
+      return "border-green-primary ring-green-primary bg-white-primary";
     case "PatternWildcard":
       return "border-none bg-transparent";
     case "PatternBind":
@@ -227,7 +227,7 @@ export const flavorContentClasses = (
     case "Lam":
       return "text-blue-primary";
     case "LAM":
-      return "text-blue-primary";
+      return "text-blue-secondary";
     case "GlobalVar":
       return "text-blue-primary";
     case "LocalVar":
@@ -257,7 +257,7 @@ export const flavorContentClasses = (
     case "TApp":
       return "text-white-primary";
     case "TForall":
-      return "text-blue-primary";
+      return "text-blue-secondary";
     case "TLet":
       return "text-white-primary";
     case "PatternCon":
@@ -285,13 +285,13 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "App":
       return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
     case "APP":
-      return "font-code bg-yellow-secondary border-yellow-secondary text-white-primary";
+      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
     case "Con":
       return "bg-green-primary border-green-primary text-white-primary";
     case "Lam":
       return "font-code bg-blue-primary border-blue-primary text-white-primary";
     case "LAM":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
+      return "font-code bg-blue-secondary border-blue-secondary text-white-primary";
     case "GlobalVar":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "KHole":
@@ -313,29 +313,29 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "CaseWith": // Special case: we hide this label.
       return "hidden font-code bg-yellow-primary border-yellow-primary text-white-primary";
     case "PrimCon":
-      return "bg-black-primary border-black-primary text-white-primary";
+      return "bg-green-primary border-green-primary text-white-primary";
     case "TEmptyHole":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
+      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
     case "THole":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
+      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
     case "TCon":
-      return "bg-black-primary border-black-primary text-white-primary";
+      return "bg-green-primary border-green-primary text-white-primary";
     case "TFun":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
+      return "font-code bg-blue-primary border-blue-primary text-white-primary";
     case "TVar":
-      return "bg-black-primary border-black-primary text-white-primary";
+      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "TApp":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
+      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
     case "TForall":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
+      return "font-code bg-blue-secondary border-blue-secondary text-white-primary";
     case "TLet":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
+      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "Pattern":
       return "bg-yellow-primary border-yellow-primary text-white-primary";
     case "PatternCon":
       return "bg-green-primary border-green-primary text-white-primary";
     case "PrimPattern":
-      return "bg-black-primary border-black-primary text-white-primary";
+      return "bg-green-primary border-green-primary text-white-primary";
     case "PatternWildcard":
       return "hidden";
     case "PatternBind":
@@ -354,7 +354,7 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
     case "App":
       return "stroke-blue-tertiary";
     case "APP":
-      return "stroke-yellow-secondary";
+      return "stroke-blue-tertiary";
     case "Con":
       return "stroke-green-primary";
     case "KHole":
@@ -366,7 +366,7 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
     case "Lam":
       return "stroke-blue-primary";
     case "LAM":
-      return "stroke-black-primary";
+      return "stroke-blue-secondary";
     case "GlobalVar":
       return "stroke-blue-quaternary";
     case "LocalVar":
@@ -382,31 +382,31 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
     case "CaseWith":
       return "stroke-yellow-primary";
     case "PrimCon":
-      return "stroke-black-primary";
+      return "stroke-green-primary";
     case "TEmptyHole":
-      return "stroke-black-primary";
+      return "stroke-red-tertiary";
     case "THole":
-      return "stroke-black-primary";
+      return "stroke-red-tertiaryy";
     case "TCon":
-      return "stroke-black-primary";
+      return "stroke-green-primary";
     case "TFun":
-      return "stroke-black-primary";
+      return "stroke-blue-primary";
     case "TVar":
-      return "stroke-black-primary";
+      return "stroke-blue-quaternary";
     case "TApp":
-      return "stroke-black-primary";
+      return "stroke-blue-tertiary";
     case "TForall":
-      return "stroke-black-primary";
+      return "stroke-blue-secondary";
     case "TLet":
-      return "stroke-black-primary";
+      return "stroke-blue-quaternary";
     case "Pattern":
       return "stroke-yellow-primary";
     case "PatternCon":
       return "stroke-green-primary";
     case "PrimPattern":
-      return "stroke-black-primary";
+      return "stroke-green-primary";
     case "PatternWildcard":
-      return "stroke-black-primary";
+      return "stroke-grey-secondary";
     case "PatternBind":
       return "stroke-blue-quaternary";
   }

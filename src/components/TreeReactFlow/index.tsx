@@ -281,10 +281,10 @@ const nodeTypes = {
           typeOrTermClasses("term"),
           "flex items-center justify-center",
           "bg-white-primary",
-          "border-4 border-blue-secondary ring-blue-secondary",
+          "border-4 border-grey-secondary ring-grey-secondary",
           data.selected && "ring-4 ring-offset-4",
           commonHoverClasses,
-          "hover:ring-blue-secondary",
+          "hover:ring-grey-secondary",
           !data.selected && "hover:ring-opacity-50"
         )}
         style={{
@@ -342,12 +342,10 @@ const nodeTypes = {
         className={classNames(
           typeOrTermClasses("type"),
           "flex items-center justify-center",
-          "bg-white-primary",
-          "border-4 border-grey-secondary ring-grey-secondary",
+          "border-4",
           data.selected && "ring-4 ring-offset-4",
-          commonHoverClasses,
-          "hover:ring-grey-secondary",
-          !data.selected && "hover:ring-opacity-50"
+          !data.selected && "hover:ring-opacity-50",
+          flavorClasses("TVar")
         )}
         style={{
           width: data.width,
