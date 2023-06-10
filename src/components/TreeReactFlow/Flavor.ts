@@ -19,7 +19,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
       return classNames(
-        "rounded-md border-red-tertiary ring-red-tertiary bg-white-primary",
+        "rounded-full border-red-tertiary ring-red-tertiary bg-white-primary",
         "hover:ring-red-tertiary",
         commonHoverClasses
       );
@@ -138,8 +138,8 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       );
     case "THole":
       return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
+        "rounded-full border-red-primary ring-red-primary bg-white-primary",
+        "hover:ring-red-primary",
         commonHoverClasses
       );
     case "TCon":
@@ -207,7 +207,7 @@ export const flavorContentClasses = (
 ): string => {
   switch (flavor) {
     case "Hole":
-      return "text-blue-primary";
+      return "font-code italic text-red-tertiary";
     case "EmptyHole":
       return "font-code italic text-red-tertiary";
     case "Ann":
@@ -247,7 +247,7 @@ export const flavorContentClasses = (
     case "TEmptyHole":
       return "font-code italic text-red-primary";
     case "THole":
-      return "text-blue-primary";
+      return "font-code italic text-red-primary";
     case "TCon":
       return "text-blue-primary";
     case "TFun":
@@ -277,7 +277,7 @@ export const flavorContentClasses = (
 export const flavorLabelClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
-      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
+      return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
     case "EmptyHole":
       return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
     case "Ann":
@@ -317,7 +317,7 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "TEmptyHole":
       return "italic font-code bg-red-primary border-red-primary text-white-primary";
     case "THole":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
+      return "italic font-code bg-red-primary border-red-primary text-white-primary";
     case "TCon":
       return "bg-black-primary border-black-primary text-white-primary";
     case "TFun":
@@ -498,13 +498,13 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
     case "TApp":
       return "apply type";
     case "Hole":
-      return "{?}";
+      return "misfit";
     case "EmptyHole":
       return "hole";
     case "TEmptyHole":
       return "type hole";
     case "THole":
-      return "{?}";
+      return "misfit";
     case "PatternWildcard":
       return "🤷🏽‍♀️";
     case "KType":
