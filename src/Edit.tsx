@@ -4,7 +4,6 @@ import {
   Error,
   ActionPanel,
   PictureInPicture,
-  Sidebar,
   Toolbar,
 } from "@/components";
 import type { Def, TypeDef } from "@/primer-api/model";
@@ -13,7 +12,13 @@ import {
   useQueryClient,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { DependencyList, useEffect, useRef, useState } from "react";
+import {
+  DependencyList,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useParams } from "react-router-dom";
 import { ReactFlowProvider } from "reactflow";
 import {
@@ -208,9 +213,6 @@ const AppNoError = ({
   const [showCreateDefModal, setShowCreateDefModal] = useState<boolean>(false);
   const [showCreateTypeDefModal, setShowCreateTypeDefModal] =
     useState<boolean>(false);
-  const onClickAddDef = (): void => {
-    setShowCreateDefModal(true);
-  };
 
   const createDef = useCreateDefinition();
   const createTypeDef = useCreateTypeDef();
@@ -237,38 +239,7 @@ const AppNoError = ({
     .sort((a, b) => cmpName(a.name, b.name))
     .map((d) => d.name.baseName);
   return (
-    <div className="grid h-screen grid-cols-[18rem_auto_20rem]">
-      <div className="h-full overflow-hidden">
-        <Sidebar
-          prog={{
-            defs,
-            types: p.module.types
-              .sort((a, b) => cmpName(a.name, b.name))
-              .map((t) => t.name.baseName),
-            importedDefs: p.imports
-              .flatMap((m) => m.defs)
-              .sort((a, b) => cmpName(a.name, b.name))
-              .map((d) => d.name.baseName),
-            importedTypes: p.imports
-              .flatMap((m) => m.types)
-              .sort((a, b) => cmpName(a.name, b.name))
-              .map((t) => t.name.baseName),
-          }}
-          onClickDef={(defName, _event) => {
-            if (scrollToDefRef.current != undefined) {
-              scrollToDefRef.current(defName);
-            }
-          }}
-          onClickAddDef={onClickAddDef}
-          onClickTypeDef={(defName, _event) => {
-            if (scrollToTypeDefRef.current != undefined) {
-              scrollToTypeDefRef.current(defName);
-            }
-          }}
-          onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
-        />
-      </div>
-
+    <div className="grid h-screen grid-cols-[auto_20rem]">
       <div className="relative h-full">
         <ReactFlowProvider>
           <TreeReactFlow
@@ -330,6 +301,8 @@ const AppNoError = ({
       <div className="h-full overflow-hidden">
         {selection ? (
           <ActionsListSelection
+            onClickAddDef={() => setShowCreateDefModal(true)}
+            onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
             level={level}
             selection={selection}
             sessionId={p.sessionId}
@@ -415,6 +388,8 @@ const AppNoError = ({
 };
 
 const ActionsListSelection = (p: {
+  onClickAddDef: MouseEventHandler<HTMLButtonElement>;
+  onClickAddTypeDef: MouseEventHandler<HTMLButtonElement>;
   selection: Selection;
   sessionId: string;
   level: Level;

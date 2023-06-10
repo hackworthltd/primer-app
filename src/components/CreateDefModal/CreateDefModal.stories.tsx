@@ -4,7 +4,7 @@ import { CreateDefModal, CreateDefModalProps, DefType } from "./";
 const allDefTypes: DefType[] = ["definition", "type"];
 
 export default {
-  title: "Application/Component Library/Sidebar/CreateDefModal",
+  title: "Application/Component Library/ActionPanel/CreateDefModal",
   component: CreateDefModal,
   argTypes: {
     defType: {
