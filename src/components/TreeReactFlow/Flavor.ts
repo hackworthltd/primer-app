@@ -428,9 +428,9 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "Ann":
       return ":";
     case "App":
-      return "$";
+      return "←";
     case "APP":
-      return "@";
+      return "←";
     case "Con":
       return "V";
     case "Lam":
@@ -464,7 +464,7 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "TVar":
       return "Var";
     case "TApp":
-      return "@";
+      return "←";
     case "TForall":
       return "∀";
     case "TLet":
