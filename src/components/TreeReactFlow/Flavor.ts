@@ -55,13 +55,13 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       );
     case "KHole":
       return classNames(
-        "border-red-tertiary ring-red-tertiary bg-white-primary",
+        "rounded-full border-red-tertiary ring-red-tertiary bg-white-primary",
         "hover:ring-red-tertiary",
         commonHoverClasses
       );
     case "KType":
       return classNames(
-        "border-grey-tertiary ring-grey-tertiary bg-grey-tertiary",
+        "rounded-md border-grey-tertiary ring-grey-tertiary bg-grey-tertiary",
         "hover:ring-grey-tertiary",
         commonHoverClasses
       );
@@ -219,7 +219,7 @@ export const flavorContentClasses = (
     case "Con":
       return "text-blue-primary";
     case "KHole":
-      return "text-blue-primary";
+      return "font-code italic text-red-primary";
     case "KType":
       return "text-white-primary";
     case "KFun":
@@ -295,7 +295,7 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "GlobalVar":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "KHole":
-      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
+      return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
     case "KType":
       return "font-code bg-grey-tertiary bg-grey-tertiary text-white-primary";
     case "KFun":
@@ -358,7 +358,7 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
     case "Con":
       return "stroke-green-primary";
     case "KHole":
-      return "stroke-grey-tertiary";
+      return "stroke-red-tertiary";
     case "KType":
       return "stroke-grey-tertiary";
     case "KFun":
@@ -510,7 +510,7 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
     case "KType":
       return "type";
     case "KHole":
-      return "?";
+      return "kind hole";
     case "KFun":
       return "type constructor";
   }
