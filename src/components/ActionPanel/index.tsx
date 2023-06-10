@@ -11,10 +11,12 @@ import {
 } from "@/primer-api";
 import { actionType } from "@/Actions";
 import { partition } from "fp-ts/lib/Array";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { ActionInput } from "../ActionInput";
 
 export interface ActionPanelProps {
+  onClickAddDef: MouseEventHandler<HTMLButtonElement>;
+  onClickAddTypeDef: MouseEventHandler<HTMLButtonElement>;
   actions: Action[];
   level: Level;
   onAction: (action: NoInputAction) => void;
@@ -27,6 +29,8 @@ type State =
   | { state: "Input"; action: InputAction; opts: Options };
 
 export const ActionPanel = ({
+  onClickAddDef,
+  onClickAddTypeDef,
   actions,
   level,
   onAction,
@@ -45,33 +49,57 @@ export const ActionPanel = ({
                   Actions
                 </div>
                 <div className="min-h-0 flex-auto overflow-y-auto">
-                  <ul role="list">
-                    {sortActions(actions).map((action) => (
-                      <li key={action.contents} className="pt-2">
-                        <ActionButton
-                          level={level}
-                          action={action}
-                          onClick={(_, action) => {
-                            switch (action.tag) {
-                              case "NoInput":
-                                onAction(action.contents);
-                                break;
-                              case "Input": {
-                                onRequestOpts(action.contents).then((opts) => {
-                                  setState({
-                                    state: "Input",
-                                    action: action.contents,
-                                    opts,
-                                  });
-                                });
-                                break;
-                              }
-                            }
-                          }}
+                  <div className="border-b-2 border-grey-quaternary pb-6">
+                    <ul role="list">
+                      <li className="pt-2">
+                        <ActionPanelButton
+                          appearance="primary"
+                          onClick={onClickAddDef}
+                          name={{ text: "+d", style: "prose" }}
+                          description="Add a new definition"
                         />
                       </li>
-                    ))}
-                  </ul>
+                      <li className="pt-2">
+                        <ActionPanelButton
+                          appearance="primary"
+                          onClick={onClickAddTypeDef}
+                          name={{ text: "+t", style: "prose" }}
+                          description="Add a new type"
+                        />
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="pt-4">
+                    <ul role="list">
+                      {sortActions(actions).map((action) => (
+                        <li key={action.contents} className="pt-2">
+                          <ActionButton
+                            level={level}
+                            action={action}
+                            onClick={(_, action) => {
+                              switch (action.tag) {
+                                case "NoInput":
+                                  onAction(action.contents);
+                                  break;
+                                case "Input": {
+                                  onRequestOpts(action.contents).then(
+                                    (opts) => {
+                                      setState({
+                                        state: "Input",
+                                        action: action.contents,
+                                        opts,
+                                      });
+                                    }
+                                  );
+                                  break;
+                                }
+                              }
+                            }}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             );
