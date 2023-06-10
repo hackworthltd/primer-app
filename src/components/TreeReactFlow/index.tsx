@@ -60,7 +60,9 @@ import {
   flavorEdgeClasses,
   flavorLabel,
   flavorLabelClasses,
+  isTypeLevel,
   noBodyFlavorContents,
+  typeOrTermClasses,
 } from "./Flavor";
 import { ZoomBar, ZoomBarProps } from "./ZoomBar";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
@@ -152,6 +154,7 @@ const nodeTypes = {
       <div
         title={data.contents}
         className={classNames(
+          typeOrTermClasses(isTypeLevel(data.flavor)),
           {
             "ring-4 ring-offset-4": data.selected,
             "hover:ring-opacity-50": !data.selected,
@@ -197,6 +200,7 @@ const nodeTypes = {
       <div
         title={data.flavor}
         className={classNames(
+          typeOrTermClasses(isTypeLevel(data.flavor)),
           {
             "ring-4 ring-offset-4": data.selected,
             "hover:ring-opacity-50": !data.selected,
@@ -234,7 +238,8 @@ const nodeTypes = {
       {handle("target", Position.Left)}
       <div
         className={classNames(
-          "flex justify-center rounded-md border-4",
+          typeOrTermClasses(isTypeLevel(data.flavor)),
+          "flex justify-center border-4",
           flavorClasses(data.flavor),
           // We use a white base so that the "transparent" background will not appear as such.
           "bg-white-primary"
@@ -273,8 +278,8 @@ const nodeTypes = {
       <div
         title={data.def.baseName}
         className={classNames(
+          typeOrTermClasses("term"),
           "flex items-center justify-center",
-          "rounded-lg",
           "bg-white-primary",
           "border-4 border-blue-secondary ring-blue-secondary",
           data.selected && "ring-4 ring-offset-4",
@@ -303,8 +308,8 @@ const nodeTypes = {
       <div
         title={data.name.baseName}
         className={classNames(
+          typeOrTermClasses("type"),
           "flex items-center justify-center",
-          "rounded-md",
           "bg-white-primary",
           "border-4 border-grey-secondary ring-grey-secondary",
           data.selected && "ring-4 ring-offset-4",
@@ -335,8 +340,8 @@ const nodeTypes = {
       <div
         title={data.name}
         className={classNames(
+          typeOrTermClasses("type"),
           "flex items-center justify-center",
-          "rounded-md",
           "bg-white-primary",
           "border-4 border-grey-secondary ring-grey-secondary",
           data.selected && "ring-4 ring-offset-4",
@@ -374,8 +379,8 @@ const nodeTypes = {
       <div
         title={data.name.baseName}
         className={classNames(
+          typeOrTermClasses("term"),
           "flex items-center justify-center",
-          "rounded-md",
           "border-4",
           data.selected && "ring-4 ring-offset-4",
           commonHoverClasses,

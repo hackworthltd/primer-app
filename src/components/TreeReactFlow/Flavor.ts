@@ -522,3 +522,53 @@ export const boxFlavorBackground = (flavor: NodeFlavorBoxBody): string => {
       return "bg-yellow-primary";
   }
 };
+
+// TODO get from backend? this comes down to whether these are from `Expr` or `Type`
+export const isTypeLevel = (flavor: NodeFlavor): "term" | "type" => {
+  switch (flavor) {
+    case "Con":
+    case "Lam":
+    case "LAM":
+    case "Let":
+    case "Letrec":
+    case "PatternBind":
+    case "PatternCon":
+    case "LetType":
+    case "GlobalVar":
+    case "LocalVar":
+    case "PrimCon":
+    case "Pattern":
+    case "Hole":
+    case "EmptyHole":
+    case "Ann":
+    case "App":
+    case "APP":
+    case "Case":
+    case "CaseWith":
+    case "PatternWildcard":
+    case "PrimPattern":
+      return "term";
+    case "TCon":
+    case "TVar":
+    case "TForall":
+    case "TLet":
+    case "TEmptyHole":
+    case "THole":
+    case "TFun":
+    case "TApp":
+      return "type";
+    // TODO separate rendering for kinds?
+    case "KFun":
+    case "KHole":
+    case "KType":
+      return "type";
+  }
+};
+export const typeOrTermClasses = (x: "term" | "type"): string => {
+  switch (x) {
+    case "term":
+      return "rounded-3xl";
+    case "type":
+      return "";
+  }
+};
