@@ -94,7 +94,7 @@ export const SessionsPage = (p: SessionsPageProps): JSX.Element => {
   };
 
   return (
-    <div className="relative grid h-screen grid-cols-1 grid-rows-[auto,1fr] overflow-hidden">
+    <div className="relative grid h-[100dvh] grid-cols-1 grid-rows-[auto,1fr] overflow-hidden">
       <div className="relative z-40 px-1 shadow-md lg:px-4">
         <SessionsNavBar
           onClickNewProgram={onClickNewProgram}
