@@ -277,9 +277,9 @@ export const flavorContentClasses = (
 export const flavorLabelClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
-      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
+      return "";
     case "EmptyHole":
-      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
+      return "";
     case "Ann":
       return "font-code bg-black-primary border-black-primary text-white-primary";
     case "App":
@@ -295,7 +295,7 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "GlobalVar":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "KHole":
-      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
+      return "";
     case "KType":
       return "font-code bg-grey-tertiary bg-grey-tertiary text-white-primary";
     case "KFun":
@@ -315,9 +315,9 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "PrimCon":
       return "bg-green-primary border-green-primary text-white-primary";
     case "TEmptyHole":
-      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
+      return "";
     case "THole":
-      return "font-code bg-red-tertiary border-red-tertiary text-white-primary";
+      return "";
     case "TCon":
       return "bg-green-primary border-green-primary text-white-primary";
     case "TFun":
