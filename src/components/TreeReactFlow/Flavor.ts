@@ -441,7 +441,7 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "Letrec":
       return "let rec";
     case "Case":
-      return "match";
+      return "m";
     case "CaseWith":
       return "w";
     case "PrimCon":
