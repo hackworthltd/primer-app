@@ -331,7 +331,7 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "TLet":
       return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
     case "Pattern":
-      return "bg-yellow-primary border-yellow-primary text-white-primary";
+      return "";
     case "PatternCon":
       return "bg-green-primary border-green-primary text-white-primary";
     case "PrimPattern":
@@ -463,7 +463,7 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "TLet":
       return "let";
     case "Pattern":
-      return "P";
+      return "";
     case "PatternCon":
       return "V";
     case "PrimPattern":
