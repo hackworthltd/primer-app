@@ -843,7 +843,8 @@ const typeDefToTree = async (
   const paramsTree = def.params.reduceRight<
     [T, (parentId: string) => E] | undefined
   >((child, name) => {
-    const id = "typedef-param-" + name;
+    const id =
+      "typedef-param-" + JSON.stringify({ def: def.name.baseName, name });
     const node: N = {
       id,
       type: "primer-typedef-param",
