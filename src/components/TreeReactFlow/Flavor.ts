@@ -15,264 +15,271 @@ export type NodeFlavor =
 
 export const commonHoverClasses = "hover:ring hover:ring-4 hover:ring-offset-4";
 
-export const flavorClasses = (flavor: NodeFlavor): string => {
-  switch (flavor) {
-    case "Hole":
-      return classNames(
-        "rounded-full border-red-tertiary ring-red-tertiary bg-white-primary",
-        "hover:ring-red-tertiary",
-        commonHoverClasses
-      );
-    case "EmptyHole":
-      return classNames(
-        "rounded-full border-red-tertiary ring-red-tertiary bg-white-primary",
-        "hover:ring-red-tertiary",
-        commonHoverClasses
-      );
-    case "Ann":
-      return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-black-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "App":
-      return classNames(
-        "rounded-md border-blue-tertiary ring-blue-tertiary bg-blue-tertiary",
-        "hover:ring-blue-tertiary",
-        commonHoverClasses
-      );
-    case "APP":
-      return classNames(
-        "rounded-md border-yellow-secondary ring-yellow-secondary bg-yellow-secondary",
-        "hover:ring-yellow-secondary",
-        commonHoverClasses
-      );
-    case "Con":
-      return classNames(
-        "rounded-md border-green-primary ring-green-primary bg-white-primary",
-        "hover:ring-green-primary",
-        commonHoverClasses
-      );
-    case "KHole":
-      return classNames(
-        "rounded-full border-grey-tertiary ring-grey-tertiary bg-white-primary",
-        "hover:ring-grey-tertiary",
-        commonHoverClasses
-      );
-    case "KType":
-      return classNames(
-        "rounded-md border-grey-tertiary ring-grey-tertiary bg-grey-tertiary",
-        "hover:ring-grey-tertiary",
-        commonHoverClasses
-      );
-    case "KFun":
-      return classNames(
-        "border-grey-tertiary ring-grey-tertiary bg-grey-tertiary",
-        "hover:ring-grey-tertiary",
-        commonHoverClasses
-      );
-    case "Lam":
-      return classNames(
-        "rounded-md border-blue-primary ring-blue-primary bg-white-primary",
-        "hover:ring-blue-primary",
-        commonHoverClasses
-      );
-    case "LAM":
-      return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "GlobalVar":
-      return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-white-primary",
-        "hover:ring-blue-quaternary",
-        commonHoverClasses
-      );
-    case "LocalVar":
-      return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-white-primary",
-        "hover:ring-blue-quaternary",
-        commonHoverClasses
-      );
-    case "Let":
-      return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
-        "hover:ring-blue-quaternary",
-        commonHoverClasses
-      );
-    case "LetType":
-      return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
-        "hover:ring-blue-quaternary",
-        commonHoverClasses
-      );
-    case "Letrec":
-      return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
-        "hover:ring-blue-quaternary",
-        commonHoverClasses
-      );
-    case "Case":
-      return classNames(
-        "rounded-md border-yellow-primary ring-yellow-primary bg-yellow-primary",
-        "hover:ring-yellow-primary",
-        commonHoverClasses
-      );
+export const flavorClasses = (flavor: NodeFlavor): string =>
+  classNames(
+    typeOrTermClasses(isTypeLevel(flavor)),
+    (() => {
+      switch (flavor) {
+        case "Hole":
+          return classNames(
+            "border-red-tertiary ring-red-tertiary bg-white-primary",
+            "hover:ring-red-tertiary",
+            commonHoverClasses
+          );
+        case "EmptyHole":
+          return classNames(
+            "border-red-tertiary ring-red-tertiary bg-white-primary",
+            "hover:ring-red-tertiary",
+            commonHoverClasses
+          );
+        case "Ann":
+          return classNames(
+            "border-black-primary ring-black-primary bg-black-primary",
+            "hover:ring-black-primary",
+            commonHoverClasses
+          );
+        case "App":
+          return classNames(
+            "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary",
+            "hover:ring-blue-tertiary",
+            commonHoverClasses
+          );
+        case "APP":
+          return classNames(
+            "border-yellow-secondary ring-yellow-secondary bg-yellow-secondary",
+            "hover:ring-yellow-secondary",
+            commonHoverClasses
+          );
+        case "Con":
+          return classNames(
+            "border-green-primary ring-green-primary bg-white-primary",
+            "hover:ring-green-primary",
+            commonHoverClasses
+          );
+        case "KHole":
+          return classNames(
+            "border-grey-tertiary ring-grey-tertiary bg-white-primary",
+            "hover:ring-grey-tertiary",
+            commonHoverClasses
+          );
+        case "KType":
+          return classNames(
+            "border-grey-tertiary ring-grey-tertiary bg-grey-tertiary",
+            "hover:ring-grey-tertiary",
+            commonHoverClasses
+          );
+        case "KFun":
+          return classNames(
+            "border-grey-tertiary ring-grey-tertiary bg-grey-tertiary",
+            "hover:ring-grey-tertiary",
+            commonHoverClasses
+          );
+        case "Lam":
+          return classNames(
+            "border-blue-primary ring-blue-primary bg-white-primary",
+            "hover:ring-blue-primary",
+            commonHoverClasses
+          );
+        case "LAM":
+          return classNames(
+            "border-black-primary ring-black-primary bg-white-primary",
+            "hover:ring-black-primary",
+            commonHoverClasses
+          );
+        case "GlobalVar":
+          return classNames(
+            "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+            "hover:ring-blue-quaternary",
+            commonHoverClasses
+          );
+        case "LocalVar":
+          return classNames(
+            "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+            "hover:ring-blue-quaternary",
+            commonHoverClasses
+          );
+        case "Let":
+          return classNames(
+            "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+            "hover:ring-blue-quaternary",
+            commonHoverClasses
+          );
+        case "LetType":
+          return classNames(
+            "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+            "hover:ring-blue-quaternary",
+            commonHoverClasses
+          );
+        case "Letrec":
+          return classNames(
+            "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+            "hover:ring-blue-quaternary",
+            commonHoverClasses
+          );
+        case "Case":
+          return classNames(
+            "border-yellow-primary ring-yellow-primary bg-yellow-primary",
+            "hover:ring-yellow-primary",
+            commonHoverClasses
+          );
 
-    // Note: not selectable.
-    case "CaseWith":
-      return "rounded-md border-yellow-primary ring-yellow-primary bg-yellow-primary";
+        // Note: not selectable.
+        case "CaseWith":
+          return "border-yellow-primary ring-yellow-primary bg-yellow-primary";
 
-    case "PrimCon":
-      return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "TEmptyHole":
-      return classNames(
-        "rounded-full border-red-primary ring-red-primary bg-white-primary",
-        "hover:ring-red-primary",
-        commonHoverClasses
-      );
-    case "THole":
-      return classNames(
-        "rounded-full border-red-primary ring-red-primary bg-white-primary",
-        "hover:ring-red-primary",
-        commonHoverClasses
-      );
-    case "TCon":
-      return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "TFun":
-      return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-black-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "TVar":
-      return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "TApp":
-      return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-black-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "TForall":
-      return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-white-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
-    case "TLet":
-      return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-black-primary",
-        "hover:ring-black-primary",
-        commonHoverClasses
-      );
+        case "PrimCon":
+          return classNames(
+            "border-black-primary ring-black-primary bg-white-primary",
+            "hover:ring-black-primary",
+            commonHoverClasses
+          );
+        case "TEmptyHole":
+          return classNames(
+            "border-red-primary ring-red-primary bg-white-primary",
+            "hover:ring-red-primary",
+            commonHoverClasses
+          );
+        case "THole":
+          return classNames(
+            "border-red-primary ring-red-primary bg-white-primary",
+            "hover:ring-red-primary",
+            commonHoverClasses
+          );
+        case "TCon":
+          return classNames(
+            "border-black-primary ring-black-primary bg-white-primary",
+            "hover:ring-black-primary",
+            commonHoverClasses
+          );
+        case "TFun":
+          return classNames(
+            "border-black-primary ring-black-primary bg-black-primary",
+            "hover:ring-black-primary",
+            commonHoverClasses
+          );
+        case "TVar":
+          return classNames(
+            "border-black-primary ring-black-primary bg-white-primary",
+            "hover:ring-black-primary",
+            commonHoverClasses
+          );
+        case "TApp":
+          return classNames(
+            "border-black-primary ring-black-primary bg-black-primary",
+            "hover:ring-black-primary",
+            commonHoverClasses
+          );
+        case "TForall":
+          return classNames(
+            "border-black-primary ring-black-primary bg-white-primary",
+            "hover:ring-black-primary",
+            commonHoverClasses
+          );
+        case "TLet":
+          return classNames(
+            "border-black-primary ring-black-primary bg-black-primary",
+            "hover:ring-black-primary",
+            commonHoverClasses
+          );
 
-    // Note: most parts of patterns aren't selectable.
+        // Note: most parts of patterns aren't selectable.
+        // This node's background is transparent, so that we can draw
+        // edges over it. Otherwise, we'd need to special-case the
+        // z-index of edges when drawn inside a pattern.
+        case "Pattern":
+          return "border-yellow-primary ring-yellow-primary";
 
-    // This node's background is transparent, so that we can draw
-    // edges over it. Otherwise, we'd need to special-case the
-    // z-index of edges when drawn inside a pattern.
-    case "Pattern":
-      return "rounded-md border-yellow-primary ring-yellow-primary";
-
-    case "PatternCon":
-      return "rounded-md border-green-primary ring-green-primary bg-white-primary";
-    case "PrimPattern":
-      return "border-black-primary ring-black-primary bg-white-primary";
-    case "PatternWildcard":
-      return "border-none bg-transparent";
-    case "PatternBind":
-      return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-white-primary",
-        "hover:ring-blue-quaternary",
-        commonHoverClasses
-      );
-  }
-};
+        case "PatternCon":
+          return "border-green-primary ring-green-primary bg-white-primary";
+        case "PrimPattern":
+          return "border-black-primary ring-black-primary bg-white-primary";
+        case "PatternWildcard":
+          return "border-none bg-transparent";
+        case "PatternBind":
+          return classNames(
+            "border-blue-quaternary ring-blue-quaternary bg-white-primary",
+            "hover:ring-blue-quaternary",
+            commonHoverClasses
+          );
+      }
+    })()
+  );
 
 export const flavorContentClasses = (
   flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody
-): string => {
-  switch (flavor) {
-    case "Hole":
-      return "font-code italic text-red-tertiary";
-    case "EmptyHole":
-      return "font-code italic text-red-tertiary";
-    case "Ann":
-      return "text-white-primary";
-    case "App":
-      return "text-white-primary";
-    case "APP":
-      return "text-white-primary";
-    case "Con":
-      return "text-blue-primary";
-    case "KHole":
-      return "font-code italic text-grey-tertiary";
-    case "KType":
-      return "text-white-primary";
-    case "KFun":
-      return "text-white-primary";
-    case "Lam":
-      return "text-blue-primary";
-    case "LAM":
-      return "text-blue-primary";
-    case "GlobalVar":
-      return "text-blue-primary";
-    case "LocalVar":
-      return "text-blue-primary";
-    case "Let":
-      return "text-white-primary";
-    case "LetType":
-      return "text-white-primary";
-    case "Letrec":
-      return "text-white-primary";
-    case "Case":
-      return "text-white-primary";
-    case "CaseWith":
-      return "text-white-primary";
-    case "PrimCon":
-      return "text-blue-primary";
-    case "TEmptyHole":
-      return "font-code italic text-red-primary";
-    case "THole":
-      return "font-code italic text-red-primary";
-    case "TCon":
-      return "text-blue-primary";
-    case "TFun":
-      return "text-white-primary";
-    case "TVar":
-      return "text-blue-primary";
-    case "TApp":
-      return "text-white-primary";
-    case "TForall":
-      return "text-blue-primary";
-    case "TLet":
-      return "text-white-primary";
-    case "PatternCon":
-      return "text-blue-primary";
-    case "PrimPattern":
-      return "text-blue-primary";
-    case "PatternWildcard":
-      // We use `scale-150` here because the text is an emoji which doesn't
-      // respond to Tailwind's font size classes. The `text-grey-secondary` is a
-      // backup in case the emoji doesn't render on a particular client.
-      return "text-grey-secondary scale-150";
-    case "PatternBind":
-      return "text-blue-primary";
-  }
-};
+): string =>
+  classNames(
+    typeOrTermContentClasses(isTypeLevel(flavor)),
+    (() => {
+      switch (flavor) {
+        case "Hole":
+          return "font-code italic text-red-tertiary";
+        case "EmptyHole":
+          return "font-code italic text-red-tertiary";
+        case "Ann":
+          return "text-white-primary";
+        case "App":
+          return "text-white-primary";
+        case "APP":
+          return "text-white-primary";
+        case "Con":
+          return "text-blue-primary";
+        case "KHole":
+          return "font-code italic text-grey-tertiary";
+        case "KType":
+          return "text-white-primary";
+        case "KFun":
+          return "text-white-primary";
+        case "Lam":
+          return "text-blue-primary";
+        case "LAM":
+          return "text-blue-primary";
+        case "GlobalVar":
+          return "text-blue-primary";
+        case "LocalVar":
+          return "text-blue-primary";
+        case "Let":
+          return "text-white-primary";
+        case "LetType":
+          return "text-white-primary";
+        case "Letrec":
+          return "text-white-primary";
+        case "Case":
+          return "text-white-primary";
+        case "CaseWith":
+          return "text-white-primary";
+        case "PrimCon":
+          return "text-blue-primary";
+        case "TEmptyHole":
+          return "font-code italic text-red-primary";
+        case "THole":
+          return "font-code italic text-red-primary";
+        case "TCon":
+          return "text-blue-primary";
+        case "TFun":
+          return "text-white-primary";
+        case "TVar":
+          return "text-blue-primary";
+        case "TApp":
+          return "text-white-primary";
+        case "TForall":
+          return "text-blue-primary";
+        case "TLet":
+          return "text-white-primary";
+        case "PatternCon":
+          return "text-blue-primary";
+        case "PrimPattern":
+          return "text-blue-primary";
+        case "PatternWildcard":
+          // We use `scale-150` here because the text is an emoji which doesn't
+          // respond to Tailwind's font size classes. The `text-grey-secondary` is a
+          // backup in case the emoji doesn't render on a particular client.
+          return "text-grey-secondary scale-150";
+        case "PatternBind":
+          return "text-blue-primary";
+      }
+    })()
+  );
 
 export const flavorLabelClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
@@ -520,5 +527,74 @@ export const boxFlavorBackground = (flavor: NodeFlavorBoxBody): string => {
   switch (flavor) {
     case "Pattern":
       return "bg-yellow-primary";
+  }
+};
+
+/** What sort of node does this flavor correspond to?
+ * Note that the backend could in principal tell us this independently of flavors,
+ * since it comes down to whether the node ultimately comes from an `Expr`, `Type` or `Kind`.
+ */
+export const isTypeLevel = (flavor: NodeFlavor): "term" | "type" | "kind" => {
+  switch (flavor) {
+    case "Con":
+    case "Lam":
+    case "LAM":
+    case "Let":
+    case "Letrec":
+    case "PatternBind":
+    case "PatternCon":
+    case "LetType":
+    case "GlobalVar":
+    case "LocalVar":
+    case "PrimCon":
+    case "Pattern":
+    case "Hole":
+    case "EmptyHole":
+    case "Ann":
+    case "App":
+    case "APP":
+    case "Case":
+    case "CaseWith":
+    case "PatternWildcard":
+    case "PrimPattern":
+      return "term";
+    case "TCon":
+    case "TVar":
+    case "TForall":
+    case "TLet":
+    case "TEmptyHole":
+    case "THole":
+    case "TFun":
+    case "TApp":
+      return "type";
+    case "KFun":
+    case "KHole":
+    case "KType":
+      return "kind";
+  }
+};
+
+export const typeOrTermClasses = (x: "term" | "type" | "kind"): string => {
+  switch (x) {
+    case "term":
+      return "rounded-3xl";
+    case "type":
+      return "";
+    case "kind":
+      return "rotate-45";
+  }
+};
+
+export const typeOrTermContentClasses = (
+  x: "term" | "type" | "kind"
+): string => {
+  switch (x) {
+    case "term":
+      return "";
+    case "type":
+      return "";
+    case "kind":
+      // This keeps the content fixed once the whole node is rotated. See `typeOrTermClasses`.
+      return "-rotate-45";
   }
 };
