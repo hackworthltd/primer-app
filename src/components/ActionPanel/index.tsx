@@ -49,7 +49,7 @@ export const ActionPanel = ({
                   Actions
                 </div>
                 <div className="min-h-0 flex-auto overflow-y-auto">
-                  <div className="border-b-2 border-grey-quaternary pb-3">
+                  <div className="border-b-2 border-grey-quaternary pb-6">
                     <ul role="list">
                       <li className="pt-2">
                         <ActionPanelButton
@@ -69,7 +69,7 @@ export const ActionPanel = ({
                       </li>
                     </ul>
                   </div>
-                  <div className="pt-1">
+                  <div className="pt-4">
                     <ul role="list">
                       {sortActions(actions).map((action) => (
                         <li key={action.contents} className="pt-2">
