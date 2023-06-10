@@ -415,7 +415,7 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
 export const flavorLabel = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
-      return "{?}";
+      return "⚠️";
     case "EmptyHole":
       return "?";
     case "Ann":
@@ -449,7 +449,7 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "TEmptyHole":
       return "?";
     case "THole":
-      return "{?}";
+      return "⚠️";
     case "TCon":
       return "T";
     case "TFun":
