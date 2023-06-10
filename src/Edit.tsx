@@ -251,7 +251,7 @@ const AppNoError = ({
     .sort((a, b) => cmpName(a.name, b.name))
     .map((d) => d.name.baseName);
   return (
-    <div className="grid h-screen grid-cols-[auto_20rem]">
+    <div className="grid h-[100dvh] grid-cols-[auto_20rem]">
       <div className="relative h-full">
         <ReactFlowProvider>
           <TreeReactFlow
