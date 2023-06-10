@@ -384,9 +384,9 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
     case "PrimCon":
       return "stroke-black-primary";
     case "TEmptyHole":
-      return "stroke-black-primary";
+      return "stroke-red-primary";
     case "THole":
-      return "stroke-black-primary";
+      return "stroke-red-primary";
     case "TCon":
       return "stroke-black-primary";
     case "TFun":
