@@ -415,9 +415,9 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
 export const flavorLabel = (flavor: NodeFlavor): string => {
   switch (flavor) {
     case "Hole":
-      return "{?}";
+      return "";
     case "EmptyHole":
-      return "?";
+      return "";
     case "Ann":
       return ":";
     case "App":
@@ -447,9 +447,9 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "PrimCon":
       return "V";
     case "TEmptyHole":
-      return "?";
+      return "";
     case "THole":
-      return "{?}";
+      return "";
     case "TCon":
       return "T";
     case "TFun":
@@ -475,7 +475,7 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "KType":
       return "✱";
     case "KHole":
-      return "?";
+      return "";
     case "KFun":
       return "➜";
   }
@@ -498,19 +498,19 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
     case "TApp":
       return "apply type";
     case "Hole":
-      return "{?}";
+      return "";
     case "EmptyHole":
-      return "?";
+      return "";
     case "TEmptyHole":
-      return "?";
+      return "";
     case "THole":
-      return "{?}";
+      return "";
     case "PatternWildcard":
       return "🤷🏽‍♀️";
     case "KType":
       return "type";
     case "KHole":
-      return "?";
+      return "";
     case "KFun":
       return "type constructor";
   }
