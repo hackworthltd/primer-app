@@ -234,7 +234,19 @@ const AppNoError = ({
   );
 
   const scrollToDefRef = useRef<ScrollToDef | undefined>(undefined);
+  const scrollToDef = (defName: string) => {
+    if (scrollToDefRef.current != undefined) {
+      scrollToDefRef.current(defName);
+    }
+  };
+
   const scrollToTypeDefRef = useRef<ScrollToDef | undefined>(undefined);
+  const scrollToTypeDef = (defName: string) => {
+    if (scrollToTypeDefRef.current != undefined) {
+      scrollToTypeDefRef.current(defName);
+    }
+  };
+
   const defs = p.module.defs
     .sort((a, b) => cmpName(a.name, b.name))
     .map((d) => d.name.baseName);
@@ -353,8 +365,14 @@ const AppNoError = ({
                   params: { name },
                   data: p.module.modname,
                 })
-                .then(p.setProg);
-              setShowCreateDefModal(false);
+                .then(p.setProg)
+                .then(() => setShowCreateDefModal(false))
+                .then(() => {
+                  setTimeout(() => {
+                    // This is a serious hack, but it does the trick, mostly.
+                    scrollToDef(name);
+                  }, 100);
+                });
             }}
           />
         ) : null}
@@ -378,7 +396,13 @@ const AppNoError = ({
                   },
                 })
                 .then(p.setProg)
-                .then(() => setShowCreateTypeDefModal(false));
+                .then(() => setShowCreateTypeDefModal(false))
+                .then(() => {
+                  setTimeout(() => {
+                    // This is a serious hack, but it does the trick, mostly.
+                    scrollToTypeDef(name);
+                  }, 100);
+                });
             }}
           />
         ) : null}
