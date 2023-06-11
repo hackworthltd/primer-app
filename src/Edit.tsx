@@ -1,9 +1,11 @@
 import {
+  CommandPalette,
   CreateDefModal,
   TreeReactFlow,
   Error,
   ActionPanel,
   PictureInPicture,
+  DefsToolbar,
   Toolbar,
 } from "@/components";
 import type { Def, TypeDef } from "@/primer-api/model";
@@ -213,6 +215,7 @@ const AppNoError = ({
   const [showCreateDefModal, setShowCreateDefModal] = useState<boolean>(false);
   const [showCreateTypeDefModal, setShowCreateTypeDefModal] =
     useState<boolean>(false);
+  const [showDefsModal, setShowDefsModal] = useState<boolean>(false);
 
   const createDef = useCreateDefinition();
   const createTypeDef = useCreateTypeDef();
@@ -250,6 +253,18 @@ const AppNoError = ({
   const defs = p.module.defs
     .sort((a, b) => cmpName(a.name, b.name))
     .map((d) => d.name.baseName);
+  const types = p.module.types
+    .sort((a, b) => cmpName(a.name, b.name))
+    .map((t) => t.name.baseName);
+  const importedDefs = p.imports
+    .flatMap((m) => m.defs)
+    .sort((a, b) => cmpName(a.name, b.name))
+    .map((d) => d.name.baseName);
+  const importedTypes = p.imports
+    .flatMap((m) => m.types)
+    .sort((a, b) => cmpName(a.name, b.name))
+    .map((d) => d.name.baseName);
+
   return (
     <div className="grid h-[100dvh] grid-cols-[auto_20rem]">
       <div className="relative h-full">
@@ -265,6 +280,10 @@ const AppNoError = ({
             level={level}
             zoomBarProps={{}}
           >
+            <div className="absolute right-4 top-4 z-30">
+              <DefsToolbar onClickDefs={() => setShowDefsModal(true)} />
+            </div>
+
             <div className="absolute bottom-4 right-4 z-30">
               <Toolbar
                 onModeChange={() => {
@@ -373,6 +392,22 @@ const AppNoError = ({
                     scrollToDef(name);
                   }, 100);
                 });
+            }}
+          />
+        ) : null}
+        {showDefsModal ? (
+          <CommandPalette
+            open={showDefsModal}
+            prog={{ defs, types, importedDefs, importedTypes }}
+            onClose={() => setShowDefsModal(false)}
+            onCancel={() => setShowDefsModal(false)}
+            onClickDef={(name) => {
+              setShowDefsModal(false);
+              scrollToDef(name);
+            }}
+            onClickTypeDef={(name) => {
+              setShowDefsModal(false);
+              scrollToTypeDef(name);
             }}
           />
         ) : null}
