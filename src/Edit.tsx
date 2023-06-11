@@ -230,7 +230,7 @@ const AppNoError = ({
     useEvalFull(
       p.sessionId,
       { qualifiedModule: p.module.modname, baseName: evalTarget || "" },
-      { stepLimit: 100 },
+      { stepLimit: 300 },
       { query: { enabled: !!evalTarget } }
     ),
     [p.module]
