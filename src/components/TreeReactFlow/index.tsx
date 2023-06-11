@@ -1001,78 +1001,99 @@ const typeDefToTree = async (
  * It ensures that these are clearly displayed as "one atomic thing",
  * i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc).
  */
-export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => (
-  <Trees
-    {...p}
-    makeTrees={Promise.all([
-      ...p.typeDefs.map((def) =>
-        typeDefToTree(def, { ...p.defParams, ...p }).then((t) =>
-          layoutTree(t, p.layout).then(({ tree, width, height }) => ({
-            // All we're doing here is adding `nested: []` to all type def nodes.
-            // We just have to be very explicit here in order to please the typechecker.
-            width,
-            height,
-            tree: treeMap(tree, ({ position, ...n }) => ({
-              position,
-              ...primerNodeWith(n, { nested: [], ...n.data }),
-            })),
-          }))
-        )
-      ),
-      ...p.defs.map((def) =>
-        defToTree(def, { ...p.defParams, ...p }).then((t) =>
-          layoutTree(t, p.layout)
-        )
-      ),
-    ]).then(
-      // Space out the forest.
-      (sizedTrees) =>
-        sizedTrees.reduce<
-          [Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>[], number]
-        >(
-          ([trees, offset], { tree, width, height }) => {
-            const { increment, offsetVector } = (() => {
-              switch (p.forestLayout) {
-                case "Horizontal":
-                  return {
-                    increment: width,
-                    offsetVector: { x: offset, y: 0 },
-                  };
-                case "Vertical":
-                  return {
-                    increment: height,
-                    offsetVector: { x: 0, y: offset },
-                  };
-              }
-            })();
-            return [
-              trees.concat(
-                treeMap(tree, (n) => ({
-                  ...n,
-                  position: {
-                    x: n.position.x + p.layout.margins.sibling + offsetVector.x,
-                    y: n.position.y + p.layout.margins.child + offsetVector.y,
-                  },
-                }))
-              ),
-              offset + increment + p.treePadding,
-            ];
-          },
-          [[], 0]
-        )[0]
-    )}
-    onNodeClick={(mouseEvent, node) =>
-      p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
-    }
-    zoomBarProps={p.zoomBarProps}
-  >
-    <SetTreeReactFlowCallbacks
-      scrollToDefRef={p.scrollToDefRef}
-      scrollToTypeDefRef={p.scrollToTypeDefRef}
-    />
-    {p.children}
-  </Trees>
-);
+export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => {
+  const spaceForest = (
+    sizedTrees: {
+      tree: Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>;
+      width: number;
+      height: number;
+    }[],
+    extra: { x: number; y: number } = { x: 0, y: 0 }
+  ) =>
+    sizedTrees.reduce<
+      [Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>[], number]
+    >(
+      ([trees, offset], { tree, width, height }) => {
+        const { increment, offsetVector } = (() => {
+          switch (p.forestLayout) {
+            case "Horizontal":
+              return {
+                increment: width,
+                offsetVector: { x: offset, y: 0 },
+              };
+            case "Vertical":
+              return {
+                increment: height,
+                offsetVector: { x: 0, y: offset },
+              };
+          }
+        })();
+        return [
+          trees.concat(
+            treeMap(tree, (n) => ({
+              ...n,
+              position: {
+                x:
+                  n.position.x +
+                  p.layout.margins.sibling +
+                  offsetVector.x +
+                  extra.x,
+                y:
+                  n.position.y +
+                  p.layout.margins.child +
+                  offsetVector.y +
+                  extra.y,
+              },
+            }))
+          ),
+          offset + increment + p.treePadding,
+        ];
+      },
+      [[], 0]
+    )[0];
+  return (
+    <Trees
+      {...p}
+      // makeTrees={Promise.all(typeDefTrees).then(spaceForest)}
+      makeTrees={(async () => {
+        const typeDefTrees = await Promise.all(
+          p.typeDefs.map((def) =>
+            typeDefToTree(def, { ...p.defParams, ...p }).then((t) =>
+              layoutTree(t, p.layout).then(({ tree, width, height }) => ({
+                // All we're doing here is adding `nested: []` to all type def nodes.
+                // We just have to be very explicit here in order to please the typechecker.
+                width,
+                height,
+                tree: treeMap(tree, ({ position, ...n }) => ({
+                  position,
+                  ...primerNodeWith(n, { nested: [], ...n.data }),
+                })),
+              }))
+            )
+          )
+        );
+        const termDefTrees = await Promise.all(
+          p.defs.map((def) =>
+            defToTree(def, { ...p.defParams, ...p }).then((t) =>
+              layoutTree(t, p.layout)
+            )
+          )
+        );
+        return spaceForest([...typeDefTrees, ...termDefTrees]);
+      })()}
+      onNodeClick={(mouseEvent, node) =>
+        p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
+      }
+      zoomBarProps={p.zoomBarProps}
+    >
+      <SetTreeReactFlowCallbacks
+        scrollToDefRef={p.scrollToDefRef}
+        scrollToTypeDefRef={p.scrollToTypeDefRef}
+      />
+      {p.children}
+    </Trees>
+  );
+};
 export default TreeReactFlow;
 
 export type TreeReactFlowOneProps = {
