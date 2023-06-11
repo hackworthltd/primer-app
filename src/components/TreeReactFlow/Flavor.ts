@@ -31,13 +31,13 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       );
     case "Ann":
       return classNames(
-        "rounded-md border-black-primary ring-black-primary bg-black-primary",
+        "border-black-primary ring-black-primary bg-black-primary",
         "hover:ring-black-primary",
         commonHoverClasses
       );
     case "App":
       return classNames(
-        "rounded-md border-blue-tertiary ring-blue-tertiary bg-blue-tertiary",
+        "border-blue-tertiary ring-blue-tertiary bg-blue-tertiary",
         "hover:ring-blue-tertiary",
         commonHoverClasses
       );
@@ -49,7 +49,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       );
     case "Con":
       return classNames(
-        "rounded-md border-green-primary ring-green-primary bg-white-primary",
+        "border-green-primary ring-green-primary bg-white-primary",
         "hover:ring-green-primary",
         commonHoverClasses
       );
@@ -61,7 +61,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       );
     case "KType":
       return classNames(
-        "rounded-md border-grey-tertiary ring-grey-tertiary bg-grey-tertiary",
+        "border-grey-tertiary ring-grey-tertiary bg-grey-tertiary",
         "hover:ring-grey-tertiary",
         commonHoverClasses
       );
@@ -73,7 +73,7 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       );
     case "Lam":
       return classNames(
-        "rounded-md border-blue-primary ring-blue-primary bg-white-primary",
+        "border-blue-primary ring-blue-primary bg-white-primary",
         "hover:ring-blue-primary",
         commonHoverClasses
       );
@@ -85,44 +85,44 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
       );
     case "GlobalVar":
       return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
         "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "LocalVar":
       return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
         "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "Let":
       return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
         "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "LetType":
       return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
         "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "Letrec":
       return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
+        "border-blue-quaternary ring-blue-quaternary bg-blue-quaternary",
         "hover:ring-blue-quaternary",
         commonHoverClasses
       );
     case "Case":
       return classNames(
-        "rounded-md border-yellow-primary ring-yellow-primary bg-yellow-primary",
+        "border-yellow-primary ring-yellow-primary bg-yellow-primary",
         "hover:ring-yellow-primary",
         commonHoverClasses
       );
 
     // Note: not selectable.
     case "CaseWith":
-      return "rounded-md border-yellow-primary ring-yellow-primary bg-yellow-primary";
+      return "border-yellow-primary ring-yellow-primary bg-yellow-primary";
 
     case "PrimCon":
       return classNames(
@@ -185,17 +185,17 @@ export const flavorClasses = (flavor: NodeFlavor): string => {
     // edges over it. Otherwise, we'd need to special-case the
     // z-index of edges when drawn inside a pattern.
     case "Pattern":
-      return "rounded-md border-yellow-primary ring-yellow-primary";
+      return "border-yellow-primary ring-yellow-primary";
 
     case "PatternCon":
-      return "rounded-md border-green-primary ring-green-primary bg-white-primary";
+      return "border-green-primary ring-green-primary bg-white-primary";
     case "PrimPattern":
       return "border-green-primary ring-green-primary bg-white-primary";
     case "PatternWildcard":
       return "border-none bg-transparent";
     case "PatternBind":
       return classNames(
-        "rounded-md border-blue-quaternary ring-blue-quaternary bg-white-primary",
+        "border-blue-quaternary ring-blue-quaternary bg-white-primary",
         "hover:ring-blue-quaternary",
         commonHoverClasses
       );
