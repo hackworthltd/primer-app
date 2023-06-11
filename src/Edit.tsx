@@ -364,9 +364,11 @@ const AppNoError = ({
             }}
           />
         ) : (
-          <div className="p-10">
-            Click something on the canvas to see available actions!
-          </div>
+          <ActionsListNoSelection
+            onClickAddDef={() => setShowCreateDefModal(true)}
+            onClickAddTypeDef={() => setShowCreateTypeDefModal(true)}
+            level={level}
+          />
         )}
         {showCreateDefModal ? (
           <CreateDefModal
@@ -461,6 +463,32 @@ const ActionsListSelection = (p: {
   });
   const actions = queryRes.isSuccess ? queryRes.data : [];
   return <ActionPanel {...{ actions, ...p }} />;
+};
+
+const ActionsListNoSelection = (p: {
+  onClickAddDef: MouseEventHandler<HTMLButtonElement>;
+  onClickAddTypeDef: MouseEventHandler<HTMLButtonElement>;
+  level: Level;
+}) => {
+  return (
+    <ActionPanel
+      {...{
+        actions: [],
+        // Temporary hack, fix these up later.,
+        onAction: () => {
+          console.log("onAction called with no selection");
+        },
+        onInputAction: () => {
+          console.log("onInputAction called with no selection");
+        },
+        onRequestOpts: () => {
+          console.log("onRequestOpts called with no selection");
+          return Promise.resolve({ free: "FreeNone", opts: [] });
+        },
+        ...p,
+      }}
+    />
+  );
 };
 
 export default Edit;
