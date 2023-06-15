@@ -23,7 +23,7 @@ jobs:
         uses: hashicorp/vault-action@v2.6.0
         id: secrets
         with:
-          url: https://vault.hackworth-corp.com
+          url: https://secrets.hackworth-corp.com
           path: "github-actions"
           role: primer-app-workflow-pages
           method: jwt
