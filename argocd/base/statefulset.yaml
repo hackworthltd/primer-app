@@ -32,3 +32,5 @@ spec:
           env:
             - name: SQLITE_DB
               value: primer.sqlite3
+            - name: CORS_ALLOW_ORIGIN
+              value: "https://primer-app.pages.dev,https://hackworth.dev"
