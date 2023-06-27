@@ -1,22 +1,14 @@
 import type { MouseEventHandler } from "react";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import type { SessionMeta } from "@/Types";
 import { exampleAccount, SessionsPage } from "@/components";
-import type {
-  GetSessionListParams,
-  PaginatedMeta,
-  Session,
-  Uuid,
-} from "@/primer-api";
-import {
-  useGetSessionList,
-  useCreateSession,
-  getGetSessionListQueryKey,
-  useDeleteSession,
-} from "@/primer-api";
+import type { Uuid } from "@/primer-api";
+import { useCreateSession } from "@/primer-api";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import type { PaginatedMeta, Session } from "@/primer-client";
+import { createApiHooks } from "@/primer-client";
+
+const hooks = createApiHooks(import.meta.env["VITE_API_URL"]);
 
 const ChooseSession = (): JSX.Element => {
   const [cookies] = useCookies(["id"]);
@@ -25,29 +17,26 @@ const ChooseSession = (): JSX.Element => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
   const [sessionNameFilter, setSessionNameFilter] = useState("");
-  const queryClient = useQueryClient();
-  const deleteSession = useDeleteSession({
-    mutation: {
-      onSuccess: () => {
-        queryClient.invalidateQueries(getGetSessionListQueryKey());
-      },
-    },
-  });
 
-  const params: GetSessionListParams = {
-    page: page,
-    pageSize: pageSize,
-    nameLike: sessionNameFilter,
-  };
-  const { data } = useGetSessionList(params);
+  const { data, invalidate: invalidateSessions } = hooks.useQuery(
+    "/openapi/sessions",
+    {
+      queries: {
+        page,
+        pageSize,
+        nameLike: sessionNameFilter,
+      },
+    }
+  );
+
+  const { mutate: deleteSession } = hooks.useDeleteSession(
+    { params: { sessionId: "foobar" } },
+    {
+      onSuccess: () => invalidateSessions(),
+    }
+  );
 
   const sessions: Session[] = data ? data.items : [];
-  const sessionsMeta: SessionMeta[] = sessions.map((session: Session) => ({
-    name: session.name,
-    id: session.id,
-    lastModified: session.lastModified,
-  }));
-
   const meta: PaginatedMeta = data
     ? data.meta
     : { totalItems: 0, pageSize: 1, thisPage: 1, firstPage: 1, lastPage: 1 };
@@ -82,7 +71,7 @@ const ChooseSession = (): JSX.Element => {
   return (
     <SessionsPage
       account={{ ...exampleAccount, id: cookies.id }}
-      sessions={sessionsMeta}
+      sessions={sessions}
       startIndex={startIndex}
       numItems={meta.pageSize}
       totalItems={meta.totalItems}
@@ -91,7 +80,7 @@ const ChooseSession = (): JSX.Element => {
       }
       onClickNextPage={onClickNextPage}
       onClickPreviousPage={onClickPreviousPage}
-      onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
+      onClickDelete={(sessionId) => deleteSession(undefined)}
       onSubmitSearch={(nameFilter: string) => {
         // Unlike `onChangeSearch`, this callback is always triggered
         // by an explicit action, and never by, e.g., a page refresh,
