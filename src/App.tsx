@@ -7,9 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import "@/index.css";
 
-import { NoMatch } from "@/components";
-import ChooseSession from "@/ChooseSession";
-import Edit from "@/Edit";
+import { ChooseSession, Edit, NoMatch } from "@/components";
 
 const queryClient = new QueryClient();
 

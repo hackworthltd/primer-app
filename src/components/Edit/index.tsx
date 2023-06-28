@@ -45,7 +45,7 @@ import {
   useRedo,
   useGetTypeOrKind,
   TypeOrKind,
-} from "./primer-api";
+} from "@/primer-api";
 import {
   defaultTreeReactFlowProps,
   ScrollToDef,
