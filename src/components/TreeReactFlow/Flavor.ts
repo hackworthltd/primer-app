@@ -531,7 +531,7 @@ export const boxFlavorBackground = (flavor: NodeFlavorBoxBody): string => {
 };
 
 /** What sort of node does this flavor correspond to?
- * Note that the backend could in principal tell us this independently of flavors,
+ * Note that the backend could in principle tell us this independently of flavors,
  * since it comes down to whether the node ultimately comes from an `Expr`, `Type` or `Kind`.
  */
 export const isTypeLevel = (flavor: NodeFlavor): "term" | "type" | "kind" => {
