@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { CookieSetOptions } from "universal-cookie";
 import { v4 as uuidv4 } from "uuid";
@@ -8,6 +9,14 @@ import { v4 as uuidv4 } from "uuid";
 import "@/index.css";
 
 import { ChooseSession, Edit, NoMatch } from "@/components";
+
+const ReactQueryDevtoolsProduction = lazy(() =>
+  import("@tanstack/react-query-devtools/build/lib/index.prod.js").then(
+    (d) => ({
+      default: d.ReactQueryDevtools,
+    })
+  )
+);
 
 const queryClient = new QueryClient();
 
@@ -24,6 +33,7 @@ const idCookieOptions = (path: string): CookieSetOptions => {
 
 const App = (): JSX.Element => {
   const [cookies, setCookie] = useCookies(["id"]);
+  const [showDevtools, setShowDevtools] = useState(false);
 
   useEffect(() => {
     if (!cookies.id) {
@@ -34,6 +44,12 @@ const App = (): JSX.Element => {
       setCookie("id", uuid, idCookieOptions("/"));
     }
   }, [cookies, setCookie]);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.toggleDevtools = () => setShowDevtools((old) => !old);
+  }, []);
 
   return (
     <CookiesProvider>
@@ -47,6 +63,12 @@ const App = (): JSX.Element => {
             </Route>
             <Route path="*" element={<NoMatch />} />
           </Routes>
+          <ReactQueryDevtools initialIsOpen position="top-left" />
+          {showDevtools && (
+            <Suspense fallback={null}>
+              <ReactQueryDevtoolsProduction position="top-left" />
+            </Suspense>
+          )}
         </QueryClientProvider>
       </BrowserRouter>
     </CookiesProvider>
