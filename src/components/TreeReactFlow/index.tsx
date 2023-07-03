@@ -61,7 +61,7 @@ import {
   flavorLabel,
   flavorLabelClasses,
   noBodyFlavorContents,
-  typeOrTermClasses,
+  sortClasses,
 } from "./Flavor";
 import { ZoomBar, ZoomBarProps } from "./ZoomBar";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
@@ -274,7 +274,7 @@ const nodeTypes = {
       <div
         title={data.def.baseName}
         className={classNames(
-          typeOrTermClasses("term"),
+          sortClasses("term"),
           "flex items-center justify-center",
           "bg-white-primary",
           "border-4 border-grey-secondary ring-grey-secondary",
@@ -304,7 +304,7 @@ const nodeTypes = {
       <div
         title={data.name.baseName}
         className={classNames(
-          typeOrTermClasses("type"),
+          sortClasses("type"),
           "flex items-center justify-center",
           "bg-white-primary",
           "border-4 border-grey-secondary ring-grey-secondary",
@@ -336,7 +336,7 @@ const nodeTypes = {
       <div
         title={data.name}
         className={classNames(
-          typeOrTermClasses("type"),
+          sortClasses("type"),
           "flex items-center justify-center",
           "border-4",
           data.selected && "ring-4 ring-offset-4",
@@ -373,7 +373,7 @@ const nodeTypes = {
       <div
         title={data.name.baseName}
         className={classNames(
-          typeOrTermClasses("term"),
+          sortClasses("term"),
           "flex items-center justify-center",
           "border-4",
           data.selected && "ring-4 ring-offset-4",
