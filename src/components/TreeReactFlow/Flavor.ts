@@ -17,7 +17,7 @@ export const commonHoverClasses = "hover:ring hover:ring-4 hover:ring-offset-4";
 
 export const flavorClasses = (flavor: NodeFlavor): string =>
   classNames(
-    typeOrTermClasses(isTypeLevel(flavor)),
+    sortClasses(flavorSort(flavor)),
     (() => {
       switch (flavor) {
         case "Hole":
@@ -209,7 +209,7 @@ export const flavorContentClasses = (
   flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody
 ): string =>
   classNames(
-    typeOrTermContentClasses(isTypeLevel(flavor)),
+    sortContentClasses(flavorSort(flavor)),
     (() => {
       switch (flavor) {
         case "Hole":
@@ -534,7 +534,7 @@ export const boxFlavorBackground = (flavor: NodeFlavorBoxBody): string => {
  * Note that the backend could in principle tell us this independently of flavors,
  * since it comes down to whether the node ultimately comes from an `Expr`, `Type` or `Kind`.
  */
-export const isTypeLevel = (flavor: NodeFlavor): "term" | "type" | "kind" => {
+export const flavorSort = (flavor: NodeFlavor): "term" | "type" | "kind" => {
   switch (flavor) {
     case "Con":
     case "Lam":
@@ -574,8 +574,8 @@ export const isTypeLevel = (flavor: NodeFlavor): "term" | "type" | "kind" => {
   }
 };
 
-export const typeOrTermClasses = (x: "term" | "type" | "kind"): string => {
-  switch (x) {
+export const sortClasses = (s: "term" | "type" | "kind"): string => {
+  switch (s) {
     case "term":
       return "rounded-3xl";
     case "type":
@@ -585,10 +585,8 @@ export const typeOrTermClasses = (x: "term" | "type" | "kind"): string => {
   }
 };
 
-export const typeOrTermContentClasses = (
-  x: "term" | "type" | "kind"
-): string => {
-  switch (x) {
+export const sortContentClasses = (s: "term" | "type" | "kind"): string => {
+  switch (s) {
     case "term":
       return "";
     case "type":
