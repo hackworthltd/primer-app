@@ -98,6 +98,12 @@
     "yaml-language-server": "^1.13.0"
   },
   "pnpm": {
+    "auditConfig": {
+      "ignoreCves": [
+        "CVE-2022-25883",
+        "CVE-2023-26115"
+      ]
+    },
     "overrides": {
       "trim@<0.0.3": ">=0.0.3",
       "trim-newlines@<3.0.1": ">=3.0.1",
