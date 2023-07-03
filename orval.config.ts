@@ -1,4 +1,5 @@
 import { UseQueryOptions } from "@tanstack/react-query";
+import type { OperationOptions } from "@orval/core";
 import { defineConfig } from "orval";
 
 // For some complex requests, we use POST in order to send a body with what would otherwise be a GET.
@@ -57,11 +58,3 @@ export default defineConfig({
     },
   },
 });
-
-// TODO This is only a subtype of Orval's `OperationOptions`, but the real thing isn't exported.
-// It will be in version 6.11, possibly only as part of the new `@orval/core` package.
-type OperationOptions = {
-  query: {
-    useQuery: boolean;
-  };
-};

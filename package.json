@@ -25,6 +25,7 @@
     "@dicebear/core": "^6.0.4",
     "@hookform/resolvers": "^3.1.1",
     "@neodrag/react": "^2.0.3",
+    "@orval/core": "^6.16.0",
     "@tanstack/react-query": "^4.29.14",
     "@types/deep-equal": "^1.0.1",
     "@zxch3n/tidy": "github:hackworthltd/tidy#e07fdef2ae7bf593701817113dd47b4cd56c7a97",
@@ -97,6 +98,12 @@
     "yaml-language-server": "^1.13.0"
   },
   "pnpm": {
+    "auditConfig": {
+      "ignoreCves": [
+        "CVE-2022-25883",
+        "CVE-2023-26115"
+      ]
+    },
     "overrides": {
       "trim@<0.0.3": ">=0.0.3",
       "trim-newlines@<3.0.1": ">=3.0.1",
