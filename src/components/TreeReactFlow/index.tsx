@@ -1065,7 +1065,19 @@ export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => {
             )
           )
         );
-        return spaceForest([...typeDefTrees, ...termDefTrees]);
+        const typeRowHeight =
+          typeDefTrees.length > 0
+            ? Math.max(...typeDefTrees.map((x) => x.height)) + p.treePadding
+            : 0;
+        return [
+          ...spaceForest(typeDefTrees),
+          ...spaceForest(termDefTrees).map((t) =>
+            treeMap(t, ({ position, ...n }) => ({
+              position: { x: position.x, y: position.y + typeRowHeight },
+              ...n,
+            }))
+          ),
+        ];
       })()}
       onNodeClick={(mouseEvent, node) =>
         p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
