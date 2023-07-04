@@ -1,7 +1,6 @@
 import type { MouseEventHandler } from "react";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import type { SessionMeta } from "@/Types";
 import { exampleAccount, SessionsPage } from "@/components";
 import type {
   GetSessionListParams,
@@ -42,12 +41,6 @@ const ChooseSession = (): JSX.Element => {
   const { data } = useGetSessionList(params);
 
   const sessions: Session[] = data ? data.items : [];
-  const sessionsMeta: SessionMeta[] = sessions.map((session: Session) => ({
-    name: session.name,
-    id: session.id,
-    lastModified: session.lastModified,
-  }));
-
   const meta: PaginatedMeta = data
     ? data.meta
     : { totalItems: 0, pageSize: 1, thisPage: 1, firstPage: 1, lastPage: 1 };
@@ -82,7 +75,7 @@ const ChooseSession = (): JSX.Element => {
   return (
     <SessionsPage
       account={{ ...exampleAccount, id: cookies.id }}
-      sessions={sessionsMeta}
+      sessions={sessions}
       startIndex={startIndex}
       numItems={meta.pageSize}
       totalItems={meta.totalItems}
