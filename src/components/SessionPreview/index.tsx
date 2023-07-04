@@ -4,11 +4,11 @@ import { StarIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 
 import { Link } from "react-router-dom";
 
-import { SessionMeta } from "@/Types";
+import { Session } from "@/primer-client";
 import { BinaryTreePlaceholder } from "@/components";
 
 export interface SessionPreviewProps {
-  session: SessionMeta;
+  session: Session;
   onClickDelete: () => void;
 }
 
@@ -32,12 +32,7 @@ export const SessionPreview = ({
         </h3>
         <dl className="mt-1 flex grow flex-col justify-between">
           <dt className="sr-only">Last modified</dt>
-          <dd className="text-xs text-blue-primary">
-            {new Intl.DateTimeFormat(locale, {
-              dateStyle: "medium",
-              timeStyle: "medium",
-            }).format(session.lastModified)}
-          </dd>
+          <dd className="text-xs text-blue-primary">{session.lastModified}</dd>
           <dt className="sr-only">Tags</dt>
           <dd className="mt-4">{/* Placeholder for tags. */}</dd>
         </dl>

@@ -1,13 +1,13 @@
 import "@/index.css";
 
-import { SessionMeta } from "@/Types";
 import { SessionPreview } from "@/components";
+import { Session } from "@/primer-client";
 
 export interface SessionListProps {
   /**
    * The list of session metadata.
    */
-  sessions: SessionMeta[];
+  sessions: Session[];
   onClickDelete: (id: string) => void;
 }
 

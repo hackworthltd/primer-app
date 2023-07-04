@@ -1,0 +1,86 @@
+import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
+import { ZodiosHooks } from "@zodios/react";
+import { z } from "zod";
+
+{{#if imports}}
+{{#each imports}}
+import { {{{@key}}} } from "./{{{this}}}"
+{{/each}}
+{{/if}}
+
+
+{{#if types}}
+{{#each types}}
+export {{{this}}};
+{{/each}}
+{{/if}}
+
+{{#each schemas}}
+export const {{@key}} = {{{this}}};
+{{#unless (lookup ../types @key)}}export type {{@key}} = z.infer<typeof {{@key}}>;{{/unless}}
+{{/each}}
+
+export const schemas = {
+{{#each schemas}}
+	{{@key}},
+{{/each}}
+};
+
+const endpoints = makeApi([
+{{#each endpoints}}
+	{
+		method: "{{method}}",
+		path: "{{path}}",
+		{{#if @root.options.withAlias}}
+		{{#if alias}}
+		alias: "{{alias}}",
+		{{/if}}
+		{{/if}}
+		{{#if description}}
+		description: `{{description}}`,
+		{{/if}}
+		{{#if requestFormat}}
+		requestFormat: "{{requestFormat}}",
+		{{/if}}
+		{{#if parameters}}
+		parameters: [
+			{{#each parameters}}
+			{
+				name: "{{name}}",
+				{{#if description}}
+				description: `{{description}}`,
+				{{/if}}
+				{{#if type}}
+				type: "{{type}}",
+				{{/if}}
+				schema: {{{schema}}}
+			},
+			{{/each}}
+		],
+		{{/if}}
+		response: {{{response}}},
+		{{#if errors.length}}
+		errors: [
+			{{#each errors}}
+			{
+				{{#ifeq status "default" }}
+				status: "default",
+				{{else}}
+				status: {{status}},
+				{{/ifeq}}
+				{{#if description}}
+				description: `{{description}}`,
+				{{/if}}
+				schema: {{{schema}}}
+			},
+			{{/each}}
+		]
+		{{/if}}
+	},
+{{/each}}
+]);
+
+export function createApiHooks(baseUrl: string, options?: ZodiosOptions) {
+    const client = new Zodios(baseUrl, endpoints, options);
+    return new ZodiosHooks("primer-api", client);
+}
