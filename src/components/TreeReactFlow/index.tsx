@@ -1003,41 +1003,41 @@ export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => {
       tree: Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>;
       width: number;
       height: number;
-    }[],
+    }[]
   ) =>
-        sizedTrees.reduce<
-          [Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>[], number]
-        >(
-          ([trees, offset], { tree, width, height }) => {
-            const { increment, offsetVector } = (() => {
-              switch (p.forestLayout) {
-                case "Horizontal":
-                  return {
-                    increment: width,
-                    offsetVector: { x: offset, y: 0 },
-                  };
-                case "Vertical":
-                  return {
-                    increment: height,
-                    offsetVector: { x: 0, y: offset },
-                  };
-              }
-            })();
-            return [
-              trees.concat(
-                treeMap(tree, (n) => ({
-                  ...n,
-                  position: {
-                    x: n.position.x + p.layout.margins.sibling + offsetVector.x,
-                    y: n.position.y + p.layout.margins.child + offsetVector.y,
-                  },
-                }))
-              ),
-              offset + increment + p.treePadding,
-            ];
-          },
-          [[], 0]
-        )[0];
+    sizedTrees.reduce<
+      [Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>[], number]
+    >(
+      ([trees, offset], { tree, width, height }) => {
+        const { increment, offsetVector } = (() => {
+          switch (p.forestLayout) {
+            case "Horizontal":
+              return {
+                increment: width,
+                offsetVector: { x: offset, y: 0 },
+              };
+            case "Vertical":
+              return {
+                increment: height,
+                offsetVector: { x: 0, y: offset },
+              };
+          }
+        })();
+        return [
+          trees.concat(
+            treeMap(tree, (n) => ({
+              ...n,
+              position: {
+                x: n.position.x + p.layout.margins.sibling + offsetVector.x,
+                y: n.position.y + p.layout.margins.child + offsetVector.y,
+              },
+            }))
+          ),
+          offset + increment + p.treePadding,
+        ];
+      },
+      [[], 0]
+    )[0];
   return (
     <Trees
       {...p}
@@ -1067,18 +1067,18 @@ export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => {
         );
         return spaceForest([...typeDefTrees, ...termDefTrees]);
       })()}
-    onNodeClick={(mouseEvent, node) =>
-      p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
-    }
-    zoomBarProps={p.zoomBarProps}
-  >
-    <SetTreeReactFlowCallbacks
-      scrollToDefRef={p.scrollToDefRef}
-      scrollToTypeDefRef={p.scrollToTypeDefRef}
-    />
-    {p.children}
-  </Trees>
-);
+      onNodeClick={(mouseEvent, node) =>
+        p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
+      }
+      zoomBarProps={p.zoomBarProps}
+    >
+      <SetTreeReactFlowCallbacks
+        scrollToDefRef={p.scrollToDefRef}
+        scrollToTypeDefRef={p.scrollToTypeDefRef}
+      />
+      {p.children}
+    </Trees>
+  );
 };
 export default TreeReactFlow;
 
