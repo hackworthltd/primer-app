@@ -1,14 +1,13 @@
 import "@/index.css";
 
 import { StarIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline";
-
 import { Link } from "react-router-dom";
 
-import { SessionMeta } from "@/Types";
 import { BinaryTreePlaceholder } from "@/components";
+import type { Session } from "@/primer-api";
 
 export interface SessionPreviewProps {
-  session: SessionMeta;
+  session: Session;
   onClickDelete: () => void;
 }
 

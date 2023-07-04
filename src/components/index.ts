@@ -27,6 +27,6 @@ export { default as SimplePaginationBar } from "./SimplePaginationBar";
 export { default as Toolbar } from "./Toolbar";
 export { default as TreeReactFlow, TreeReactFlowOne } from "./TreeReactFlow";
 export { default as UIButton } from "./UIButton";
-export { exampleSessionsMeta } from "./examples/sessions";
+export { exampleSessions } from "./examples/sessions";
 export { exampleAccount } from "./examples/accounts";
 export { tree1, tree2, tree3, tree4, tree5 } from "./examples/trees";

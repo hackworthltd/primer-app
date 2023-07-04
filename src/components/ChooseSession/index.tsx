@@ -1,14 +1,8 @@
 import type { MouseEventHandler } from "react";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import type { SessionMeta } from "@/Types";
 import { exampleAccount, SessionsPage } from "@/components";
-import type {
-  GetSessionListParams,
-  PaginatedMeta,
-  Session,
-  Uuid,
-} from "@/primer-api";
+import type { PaginatedMeta, Session, Uuid } from "@/primer-api";
 import {
   useGetSessionList,
   useCreateSession,
@@ -25,29 +19,21 @@ const ChooseSession = (): JSX.Element => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
   const [sessionNameFilter, setSessionNameFilter] = useState("");
+
   const queryClient = useQueryClient();
   const deleteSession = useDeleteSession({
     mutation: {
-      onSuccess: () => {
-        queryClient.invalidateQueries(getGetSessionListQueryKey());
-      },
+      onSuccess: () =>
+        queryClient.invalidateQueries(getGetSessionListQueryKey()),
     },
   });
-
-  const params: GetSessionListParams = {
-    page: page,
-    pageSize: pageSize,
+  const { data } = useGetSessionList({
+    page,
+    pageSize,
     nameLike: sessionNameFilter,
-  };
-  const { data } = useGetSessionList(params);
+  });
 
   const sessions: Session[] = data ? data.items : [];
-  const sessionsMeta: SessionMeta[] = sessions.map((session: Session) => ({
-    name: session.name,
-    id: session.id,
-    lastModified: session.lastModified,
-  }));
-
   const meta: PaginatedMeta = data
     ? data.meta
     : { totalItems: 0, pageSize: 1, thisPage: 1, firstPage: 1, lastPage: 1 };
@@ -70,7 +56,10 @@ const ChooseSession = (): JSX.Element => {
   const navigate = useNavigate();
   const newSession = useCreateSession({
     mutation: {
-      onSuccess: (newSessionID: Uuid) => navigate(`/sessions/${newSessionID}`),
+      onSuccess: (newSessionID: Uuid) => {
+        queryClient.invalidateQueries(getGetSessionListQueryKey());
+        navigate(`/sessions/${newSessionID}`);
+      },
     },
   });
 
@@ -82,7 +71,7 @@ const ChooseSession = (): JSX.Element => {
   return (
     <SessionsPage
       account={{ ...exampleAccount, id: cookies.id }}
-      sessions={sessionsMeta}
+      sessions={sessions}
       startIndex={startIndex}
       numItems={meta.pageSize}
       totalItems={meta.totalItems}

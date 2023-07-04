@@ -18,25 +18,25 @@ const Template: ComponentStory<typeof SessionPreview> = (args) => (
 
 export const English = Template.bind({});
 English.args = {
-  session: examples.englishSessionMeta,
+  session: examples.englishSession,
 };
 
 export const Japanese = Template.bind({});
 Japanese.args = {
-  session: examples.japaneseSessionMeta,
+  session: examples.japaneseSession,
 };
 
 export const SimplifiedChinese = Template.bind({});
 SimplifiedChinese.args = {
-  session: examples.simplifiedChineseSessionMeta,
+  session: examples.simplifiedChineseSession,
 };
 
 export const Arabic = Template.bind({});
 Arabic.args = {
-  session: examples.arabicSessionMeta,
+  session: examples.arabicSession,
 };
 
 export const Emoji = Template.bind({});
 Emoji.args = {
-  session: examples.emojiSessionMeta,
+  session: examples.emojiSession,
 };

@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SessionsPage } from "./";
-import { exampleSessionsMeta } from "@/components/examples/sessions";
+import { exampleSessions } from "@/components/examples/sessions";
 import { exampleAccount } from "@/components/examples/accounts";
 
 export default {
@@ -44,7 +44,7 @@ const Template: ComponentStory<typeof SessionsPage> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   account: exampleAccount,
-  sessions: exampleSessionsMeta(),
+  sessions: exampleSessions(),
   startIndex: 21,
   totalItems: 95,
 };

@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { exampleSessionsMeta } from "@/components/examples/sessions";
+import { exampleSessions } from "@/components/examples/sessions";
 
 import { SessionList } from "./";
 
@@ -18,5 +18,5 @@ const Template: ComponentStory<typeof SessionList> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  sessions: exampleSessionsMeta(),
+  sessions: exampleSessions(),
 };

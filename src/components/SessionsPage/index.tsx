@@ -7,8 +7,8 @@ import {
   SessionList,
   SessionNameModal,
 } from "@/components";
-import type { SessionMeta, Account } from "@/Types";
-import type { Uuid } from "@/primer-api";
+import type { Account } from "@/Types";
+import type { Session, Uuid } from "@/primer-api";
 
 import "@/index.css";
 
@@ -23,9 +23,9 @@ export interface SessionsPageProps {
   /**
    * The list of session metadata displayed on this page.
    *
-   * @type {SessionMeta[]}
+   * @type {Session[]}
    */
-  sessions: SessionMeta[];
+  sessions: Session[];
 
   /**
    * The event handler for the "New program" button.
