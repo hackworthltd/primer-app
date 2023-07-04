@@ -997,32 +997,14 @@ const typeDefToTree = async (
  * It ensures that these are clearly displayed as "one atomic thing",
  * i.e. to avoid confused readings that group the type of 'foo' with the body of 'bar' (etc).
  */
-export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => (
-  <Trees
-    {...p}
-    makeTrees={Promise.all([
-      ...p.typeDefs.map((def) =>
-        typeDefToTree(def, { ...p.defParams, ...p }).then((t) =>
-          layoutTree(t, p.layout).then(({ tree, width, height }) => ({
-            // All we're doing here is adding `nested: []` to all type def nodes.
-            // We just have to be very explicit here in order to please the typechecker.
-            width,
-            height,
-            tree: treeMap(tree, ({ position, ...n }) => ({
-              position,
-              ...primerNodeWith(n, { nested: [], ...n.data }),
-            })),
-          }))
-        )
-      ),
-      ...p.defs.map((def) =>
-        defToTree(def, { ...p.defParams, ...p }).then((t) =>
-          layoutTree(t, p.layout)
-        )
-      ),
-    ]).then(
-      // Space out the forest.
-      (sizedTrees) =>
+export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => {
+  const spaceForest = (
+    sizedTrees: {
+      tree: Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>;
+      width: number;
+      height: number;
+    }[],
+  ) =>
         sizedTrees.reduce<
           [Tree<Positioned<PrimerNodeWithNestedAndDef>, PrimerEdge>[], number]
         >(
@@ -1055,8 +1037,36 @@ export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => (
             ];
           },
           [[], 0]
-        )[0]
-    )}
+        )[0];
+  return (
+    <Trees
+      {...p}
+      makeTrees={(async () => {
+        const typeDefTrees = await Promise.all(
+          p.typeDefs.map((def) =>
+            typeDefToTree(def, { ...p.defParams, ...p }).then((t) =>
+              layoutTree(t, p.layout).then(({ tree, width, height }) => ({
+                // All we're doing here is adding `nested: []` to all type def nodes.
+                // We just have to be very explicit here in order to please the typechecker.
+                width,
+                height,
+                tree: treeMap(tree, ({ position, ...n }) => ({
+                  position,
+                  ...primerNodeWith(n, { nested: [], ...n.data }),
+                })),
+              }))
+            )
+          )
+        );
+        const termDefTrees = await Promise.all(
+          p.defs.map((def) =>
+            defToTree(def, { ...p.defParams, ...p }).then((t) =>
+              layoutTree(t, p.layout)
+            )
+          )
+        );
+        return spaceForest([...typeDefTrees, ...termDefTrees]);
+      })()}
     onNodeClick={(mouseEvent, node) =>
       p.onNodeClick(mouseEvent, makeSelectionFromNode(node))
     }
@@ -1069,6 +1079,7 @@ export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => (
     {p.children}
   </Trees>
 );
+};
 export default TreeReactFlow;
 
 export type TreeReactFlowOneProps = {
