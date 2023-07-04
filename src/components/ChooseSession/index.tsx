@@ -2,12 +2,7 @@ import type { MouseEventHandler } from "react";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { exampleAccount, SessionsPage } from "@/components";
-import type {
-  GetSessionListParams,
-  PaginatedMeta,
-  Session,
-  Uuid,
-} from "@/primer-api";
+import type { PaginatedMeta, Session, Uuid } from "@/primer-api";
 import {
   useGetSessionList,
   useCreateSession,
@@ -24,21 +19,19 @@ const ChooseSession = (): JSX.Element => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
   const [sessionNameFilter, setSessionNameFilter] = useState("");
+
   const queryClient = useQueryClient();
   const deleteSession = useDeleteSession({
     mutation: {
-      onSuccess: () => {
-        queryClient.invalidateQueries(getGetSessionListQueryKey());
-      },
+      onSuccess: () =>
+        queryClient.invalidateQueries(getGetSessionListQueryKey()),
     },
   });
-
-  const params: GetSessionListParams = {
-    page: page,
-    pageSize: pageSize,
+  const { data } = useGetSessionList({
+    page,
+    pageSize,
     nameLike: sessionNameFilter,
-  };
-  const { data } = useGetSessionList(params);
+  });
 
   const sessions: Session[] = data ? data.items : [];
   const meta: PaginatedMeta = data
@@ -63,7 +56,10 @@ const ChooseSession = (): JSX.Element => {
   const navigate = useNavigate();
   const newSession = useCreateSession({
     mutation: {
-      onSuccess: (newSessionID: Uuid) => navigate(`/sessions/${newSessionID}`),
+      onSuccess: (newSessionID: Uuid) => {
+        queryClient.invalidateQueries(getGetSessionListQueryKey());
+        navigate(`/sessions/${newSessionID}`);
+      },
     },
   });
 
