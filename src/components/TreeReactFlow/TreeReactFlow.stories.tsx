@@ -99,11 +99,11 @@ const typeDef1: TypeDef = {
       fields: [
         {
           nodeId: "1101",
-          body: { tag: "NoBody", contents: "APP" },
+          body: { tag: "NoBody", contents: "TApp" },
           childTrees: [
             {
               nodeId: "1102",
-              body: { tag: "NoBody", contents: "APP" },
+              body: { tag: "NoBody", contents: "TApp" },
               childTrees: [
                 {
                   nodeId: "1103",
