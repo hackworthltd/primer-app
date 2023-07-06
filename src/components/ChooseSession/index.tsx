@@ -15,10 +15,14 @@ import {
   getGetSessionListQueryKey,
   useDeleteSession,
 } from "@/primer-api";
-import { useNavigate } from "react-router-dom";
+import { AnyRoute, useNavigate } from "@tanstack/router";
 import { useQueryClient } from "@tanstack/react-query";
 
-const ChooseSession = (): JSX.Element => {
+export interface ChooseSessionProps {
+  route: AnyRoute;
+}
+
+const ChooseSession = (p: ChooseSessionProps): JSX.Element => {
   const [cookies] = useCookies(["id"]);
 
   // NOTE: pagination in our API is 1-indexed.
@@ -67,10 +71,14 @@ const ChooseSession = (): JSX.Element => {
     setPage(meta.lastPage);
   }
 
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: p.route.id });
   const newSession = useCreateSession({
     mutation: {
-      onSuccess: (newSessionID: Uuid) => navigate(`/sessions/${newSessionID}`),
+      onSuccess: (newSessionId: Uuid) =>
+        navigate({
+          to: "/sessions/$sessionId",
+          params: { sessionId: newSessionId },
+        }),
     },
   });
 

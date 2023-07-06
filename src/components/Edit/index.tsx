@@ -21,7 +21,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { useParams } from "react-router-dom";
+import { AnyRoute, useParams } from "@tanstack/router";
 import { ReactFlowProvider } from "reactflow";
 import {
   useGetAvailableActions,
@@ -54,13 +54,17 @@ import {
 // hardcoded values (for now)
 const initialLevel: Level = "Expert";
 
-const Edit = (): JSX.Element => {
-  const params = useParams();
-  const sessionId = params["sessionId"];
+export interface EditProps {
+  route: AnyRoute;
+}
 
+const Edit = (p: EditProps): JSX.Element => {
+  const { sessionId } = useParams({ from: p.route.id });
   if (!sessionId) {
     return (
-      <Error string={"No sessionId parameter: " + JSON.stringify(params)} />
+      <Error
+        string={"No sessionId parameter: " + JSON.stringify(p.route.path)}
+      />
     );
   }
   // This hook is *technically* conditional.

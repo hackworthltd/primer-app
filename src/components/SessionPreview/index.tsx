@@ -1,8 +1,7 @@
 import "@/index.css";
 
 import { StarIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline";
-
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/router";
 
 import { SessionMeta } from "@/Types";
 import { BinaryTreePlaceholder } from "@/components";
@@ -21,8 +20,8 @@ export const SessionPreview = ({
     <div className="flex flex-col divide-y divide-grey-quaternary rounded-lg bg-white-primary text-center drop-shadow-md">
       <div className="flex flex-1 flex-col">
         <Link
-          to={`/sessions/${session.id}`}
-          key={session.id}
+          to="/sessions/$sessionId"
+          params={{ sessionId: session.id }}
           className="group rounded-t-lg hover:text-blue-primary"
         >
           <BinaryTreePlaceholder className="mx-auto h-16 w-16 shrink-0 fill-current text-white-primary group-hover:text-blue-primary md:h-48 md:w-48" />

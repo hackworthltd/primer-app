@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { RouterProvider } from "@tanstack/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { CookieSetOptions } from "universal-cookie";
@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import "@/index.css";
 
-import { ChooseSession, Edit, NoMatch } from "@/components";
+import { router } from "@/router";
 
 const queryClient = new QueryClient();
 
@@ -37,18 +37,9 @@ const App = (): JSX.Element => {
 
   return (
     <CookiesProvider>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <Routes>
-            <Route path="/" element={<Navigate to="/sessions" />} />
-            <Route path="/sessions">
-              <Route index element={<ChooseSession />} />
-              <Route path=":sessionId" element={<Edit />} />
-            </Route>
-            <Route path="*" element={<NoMatch />} />
-          </Routes>
-        </QueryClientProvider>
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </CookiesProvider>
   );
 };
