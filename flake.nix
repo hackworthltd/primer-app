@@ -16,7 +16,7 @@
 
     # Note: don't override any of primer's Nix flake inputs, or else
     # we won't hit its binary cache.
-    primer.url = github:hackworthltd/primer/8487cfab7b4bce6b9c26d001bd1a098db3d38360;
+    primer.url = github:hackworthltd/primer/ff6c255185a3085ad9ce1e6970ada0776c2c2f37;
 
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
