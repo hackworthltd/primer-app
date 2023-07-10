@@ -22,7 +22,6 @@ export { default as SessionList } from "./SessionList";
 export { default as SessionNameModal } from "./SessionNameModal";
 export { default as SessionPreview } from "./SessionPreview";
 export { default as SessionsNavBar } from "./SessionsNavBar";
-export { default as SessionsPage } from "./SessionsPage";
 export { default as SimplePaginationBar } from "./SimplePaginationBar";
 export { default as Toolbar } from "./Toolbar";
 export { default as TreeReactFlow, TreeReactFlowOne } from "./TreeReactFlow";

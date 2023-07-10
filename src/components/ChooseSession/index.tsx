@@ -1,8 +1,13 @@
-import type { MouseEventHandler } from "react";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import { exampleAccount, SessionsPage } from "@/components";
-import type { PaginatedMeta, Session, Uuid } from "@/primer-api";
+import {
+  exampleAccount,
+  SessionList,
+  SessionNameModal,
+  SessionsNavBar,
+  SimplePaginationBar,
+} from "@/components";
+import type { Uuid } from "@/primer-api";
 import {
   useGetSessionList,
   useCreateSession,
@@ -14,6 +19,12 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const ChooseSession = (): JSX.Element => {
   const [cookies] = useCookies(["id"]);
+
+  const [importPrelude, setImportPrelude] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const onClickNewProgram = (): void => {
+    setShowModal(true);
+  };
 
   // NOTE: pagination in our API is 1-indexed.
   const [page, setPage] = useState(1);
@@ -68,64 +79,88 @@ const ChooseSession = (): JSX.Element => {
     }
   );
 
-  // Note that we show data if it's available, without first checking for
+  // Note that we show data if it's available, regardless of the status of
   // `isLoading` or `isError`. This means we may show stale data, but we prefer
-  // this over showing a loading message or an error for short server outages. See:
+  // this over showing a loading message or an error for short server outages.
+  // See:
   //
   // https://tkdodo.eu/blog/status-checks-in-react-query
   //
   // Note that React Query will not show stale data indefinitely, and will
   // eventually show an error message if the data is stale for too long.
 
-  if (data) {
-    const sessions: Session[] = data.items;
-    const meta: PaginatedMeta = data.meta;
-    const startIndex: number = (meta.thisPage - 1) * meta.pageSize + 1;
-
-    const onClickNextPage: MouseEventHandler<unknown> | undefined =
-      meta.thisPage < meta.lastPage ? () => setPage(page + 1) : undefined;
-    const onClickPreviousPage: MouseEventHandler<unknown> | undefined =
-      meta.thisPage > 1 ? () => setPage(page - 1) : undefined;
-
-    return (
-      <SessionsPage
-        account={{ ...exampleAccount, id: cookies.id }}
-        sessions={sessions}
-        startIndex={startIndex}
-        numItems={meta.pageSize}
-        totalItems={meta.totalItems}
-        onClickNewProgram={(name: string, importPrelude: boolean) =>
-          newSession.mutate({ data: { name, importPrelude } })
-        }
-        onClickNextPage={onClickNextPage}
-        onClickPreviousPage={onClickPreviousPage}
-        onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
-        onSubmitSearch={(nameFilter: string) => {
-          // Unlike `onChangeSearch`, this callback is always triggered
-          // by an explicit action, and never by, e.g., a page refresh,
-          // so we always want to reset the page when this callback is
-          // invoked.
-          setSessionNameFilter(nameFilter);
-          setPage(1);
-        }}
-        onChangeSearch={(nameFilter: string) => {
-          // For technical reasons, this callback may be triggered even
-          // if the value of the search term didn't actually change
-          // (e.g., because the page is redrawn), and in these cases, we
-          // don't want to update the page, so we filter these spurious
-          // "changes" out.
-          if (nameFilter != sessionNameFilter) {
+  return (
+    <div className="relative grid h-[100dvh] grid-cols-1 grid-rows-[auto,1fr] overflow-hidden">
+      <div className="relative z-40 px-1 shadow-md lg:px-4">
+        <SessionsNavBar
+          onClickNewProgram={onClickNewProgram}
+          account={{ ...exampleAccount, id: cookies.id }}
+          onSubmitSearch={(nameFilter: string) => {
+            // Unlike `onChangeSearch`, this callback is always triggered
+            // by an explicit action, and never by, e.g., a page refresh,
+            // so we always want to reset the page when this callback is
+            // invoked.
             setSessionNameFilter(nameFilter);
             setPage(1);
-          }
+          }}
+          onChangeSearch={(nameFilter: string) => {
+            // For technical reasons, this callback may be triggered even
+            // if the value of the search term didn't actually change
+            // (e.g., because the page is redrawn), and in these cases, we
+            // don't want to update the page, so we filter these spurious
+            // "changes" out.
+            if (nameFilter != sessionNameFilter) {
+              setSessionNameFilter(nameFilter);
+              setPage(1);
+            }
+          }}
+        />
+      </div>
+      <div className="max-h-screen overflow-auto rounded-sm bg-grey-primary p-3 shadow-inner">
+        {data ? (
+          <SessionList
+            sessions={data.items}
+            onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
+          />
+        ) : isError ? (
+          <div>Error: {error.message}</div>
+        ) : (
+          <div>Loading...</div>
+        )}
+      </div>
+      <div className="relative z-40 px-1 shadow-2xl lg:px-4">
+        {data && (
+          <SimplePaginationBar
+            itemNamePlural="sessions"
+            startIndex={(data.meta.thisPage - 1) * data.meta.pageSize + 1}
+            numItems={data.items.length}
+            totalItems={data.meta.totalItems}
+            onClickNextPage={
+              data.meta.thisPage < data.meta.lastPage
+                ? () => setPage(page + 1)
+                : undefined
+            }
+            onClickPreviousPage={
+              data.meta.thisPage > 1 ? () => setPage(page - 1) : undefined
+            }
+          />
+        )}
+      </div>
+      <SessionNameModal
+        open={showModal}
+        importPrelude={importPrelude}
+        onClose={() => setShowModal(false)}
+        onCancel={() => setShowModal(false)}
+        onSubmit={(name: string, _importPrelude: boolean) => {
+          // Remember the student's choice of whether or not to import the Prelude.
+          setImportPrelude(_importPrelude);
+          newSession.mutate({
+            data: { name, importPrelude: _importPrelude },
+          });
         }}
       />
-    );
-  } else if (isError) {
-    return <div>Error: {error.message}</div>;
-  } else {
-    return <div>Loading...</div>;
-  }
+    </div>
+  );
 };
 
 export default ChooseSession;
