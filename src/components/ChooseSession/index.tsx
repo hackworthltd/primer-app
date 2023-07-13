@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import {
   exampleAccount,
   SessionList,
@@ -124,7 +125,18 @@ const ChooseSession = (): JSX.Element => {
             onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
           />
         ) : isError ? (
-          <div>Error: {error.message}</div>
+          <div className="flex min-h-full flex-col items-center justify-center">
+            <ExclamationCircleIcon
+              className="mx-auto h-8 w-8 text-red-secondary"
+              aria-hidden="true"
+            />
+            <p className="mt-4 text-lg font-semibold leading-6 text-red-primary">
+              There was an error while fetching your programs:
+            </p>
+            <p className="mt-2 block text-sm leading-6 text-red-primary">
+              {error.message}
+            </p>
+          </div>
         ) : (
           <div className="flex min-h-full flex-col items-center justify-center">
             <Spinner aria-label="Loading…" />
