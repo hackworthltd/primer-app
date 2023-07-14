@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import {
+  ExclamationCircleIcon,
+  FaceFrownIcon,
+} from "@heroicons/react/24/outline";
 import {
   exampleAccount,
   SessionList,
@@ -119,11 +122,34 @@ const ChooseSession = (): JSX.Element => {
         />
       </div>
       <div className="max-h-screen overflow-auto rounded-sm bg-grey-primary p-3 shadow-inner">
-        {data ? (
+        {data && data.items.length > 0 ? (
           <SessionList
             sessions={data.items}
             onClickDelete={(sessionId) => deleteSession.mutate({ sessionId })}
           />
+        ) : data && sessionNameFilter != "" ? (
+          <div className="flex min-h-full flex-col items-center justify-center">
+            <FaceFrownIcon
+              className="mx-auto h-8 w-8 text-blue-primary"
+              aria-hidden="true"
+            />
+            <p className="mt-4 text-lg font-semibold leading-6 text-blue-secondary">
+              No results found
+            </p>
+            <p className="mt-2 block text-center text-sm leading-6 text-blue-primary">
+              No programs found with that name. Please try a different name, or
+              create a new program.
+            </p>
+          </div>
+        ) : data ? (
+          <div className="flex min-h-full flex-col items-center justify-center">
+            <p className="mt-4 text-lg font-semibold leading-6 text-blue-secondary">
+              No programs found
+            </p>
+            <p className="mt-2 block text-center text-sm leading-6 text-blue-primary">
+              You don&apos;t have any programs yet. Create a new one!
+            </p>
+          </div>
         ) : isError ? (
           <div className="flex min-h-full flex-col items-center justify-center">
             <ExclamationCircleIcon
