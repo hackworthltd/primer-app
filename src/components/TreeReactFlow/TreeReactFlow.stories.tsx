@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import {
   defaultTreeReactFlowProps,
+  inlineTreeReactFlowProps,
   TreeReactFlow,
   TreeReactFlowProps,
 } from "./";
@@ -288,6 +289,23 @@ export const OddAndEvenMiscStyles: ComponentStory<typeof TreeReactFlow> = (
   treeSized({
     ...args,
     defs: oddEvenDefsMiscStyles,
+    typeDefs: [],
+    selection: {
+      tag: "SelectionDef",
+      contents: { def: def5.name, node: { nodeType: "BodyNode", meta: 5 } },
+    },
+  });
+export const OddAndEvenInline: ComponentStory<typeof TreeReactFlow> = (
+  args: TreeReactFlowProps
+) =>
+  treeSized({
+    ...inlineTreeReactFlowProps,
+    ...args,
+    defs: oddEvenTrees.map(([baseName, term]) => ({
+      name: { qualifiedModule: [], baseName },
+      term,
+      type_: emptyTypeTree(baseName),
+    })),
     typeDefs: [],
     selection: {
       tag: "SelectionDef",

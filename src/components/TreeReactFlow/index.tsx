@@ -92,7 +92,9 @@ type ReactFlowParams = {
 };
 
 /** These properties are needed to construct nodes, but are invariant across all nodes. */
+export type NodeStyle = "corner" | "inline";
 type NodeParams = {
+  style: NodeStyle;
   nodeWidth: number;
   nodeHeight: number;
   boxPadding: number;
@@ -123,6 +125,7 @@ export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
   "treePadding" | "forestLayout" | "defParams" | "layout" | keyof NodeParams
 > = {
+  style: "corner",
   level: "Expert",
   forestLayout: "Horizontal",
   treePadding: 100,
@@ -133,6 +136,15 @@ export const defaultTreeReactFlowProps: Pick<
   layout: {
     type: WasmLayoutType.Tidy,
     margins: { child: 25, sibling: 18 },
+  },
+};
+export const inlineTreeReactFlowProps: typeof defaultTreeReactFlowProps = {
+  ...defaultTreeReactFlowProps,
+  style: "inline",
+  nodeWidth: 100,
+  layout: {
+    ...defaultTreeReactFlowProps.layout,
+    margins: { child: 15, sibling: 12 },
   },
 };
 
@@ -146,47 +158,70 @@ const handle = (type: HandleType, position: Position) => (
 );
 
 const nodeTypes = {
-  primer: ({ data }: { data: PrimerNodeProps & PrimerCommonNodeProps }) => (
-    <>
-      {handle("target", Position.Top)}
-      {handle("target", Position.Left)}
-      <div
-        title={data.contents}
-        className={classNames(
-          {
-            "ring-4 ring-offset-4": data.selected,
-            "hover:ring-opacity-50": !data.selected,
-          },
-          "flex items-center justify-center border-4 text-grey-tertiary",
-          flavorClasses(data.flavor)
-        )}
-        style={{
-          width: data.width,
-          height: data.height,
-        }}
-      >
+  primer: ({ data }: { data: PrimerNodeProps & PrimerCommonNodeProps }) => {
+    const classes = (() => {
+      switch (data.style) {
+        case "corner":
+          return {
+            root: classNames(
+              {
+                "ring-4 ring-offset-4": data.selected,
+                "hover:ring-opacity-50": !data.selected,
+              },
+              "flex items-center justify-center border-4 text-grey-tertiary",
+              flavorClasses(data.flavor)
+            ),
+            label: classNames(
+              "z-20 p-1 absolute rounded-full text-sm xl:text-base",
+              data.syntax ? "-top-4" : "-right-2 -top-4",
+              flavorLabelClasses(data.flavor)
+            ),
+            contents: classNames(
+              "block truncate px-1 font-code text-sm xl:text-base",
+              flavorContentClasses(data.flavor)
+            ),
+          };
+        case "inline":
+          return {
+            root: classNames(
+              {
+                "ring-4 ring-offset-4": data.selected,
+                "hover:ring-opacity-50": !data.selected,
+              },
+              "grid grid-cols-[2rem_auto] border-4 overflow-hidden text-grey-tertiary",
+              flavorClasses(data.flavor)
+            ),
+            label: classNames(
+              "flex items-center justify-center pr-1 text-sm xl:text-base",
+              flavorLabelClasses(data.flavor)
+            ),
+            contents: classNames(
+              "truncate self-center justify-self-center px-1 font-code text-sm xl:text-base max-w-full",
+              flavorContentClasses(data.flavor)
+            ),
+          };
+      }
+    })();
+    return (
+      <>
+        {handle("target", Position.Top)}
+        {handle("target", Position.Left)}
         <div
-          className={classNames(
-            "block truncate px-1 font-code text-sm xl:text-base",
-            flavorContentClasses(data.flavor)
-          )}
+          title={data.contents}
+          style={{
+            width: data.width,
+            height: data.height,
+          }}
+          className={classes.root}
         >
-          {data.contents}
+          <div className={classes.label}>{flavorLabel(data.flavor)}</div>
+          <div className={classes.contents}>{data.contents}</div>
         </div>
-        <div
-          className={classNames(
-            "z-20 p-1 absolute rounded-full text-sm xl:text-base",
-            data.syntax ? "-top-4" : "-right-2 -top-4",
-            flavorLabelClasses(data.flavor)
-          )}
-        >
-          {flavorLabel(data.flavor)}
-        </div>
-      </div>
-      {handle("source", Position.Bottom)}
-      {handle("source", Position.Right)}
-    </>
-  ),
+        {handle("source", Position.Bottom)}
+        {handle("source", Position.Right)}
+      </>
+    );
+  },
   "primer-simple": ({
     data,
   }: {
@@ -518,6 +553,7 @@ const makePrimerNode = async (
     height: p.nodeHeight,
     selected,
     nodeData,
+    style: p.style,
   };
   const edgeCommon = (
     child: PrimerNode,
@@ -604,7 +640,7 @@ const makePrimerNode = async (
               ...common,
               // TODO This is necessary to ensure that all syntax labels fit.
               // It can be removed when we have dynamic node sizes.
-              width: 130,
+              width: 150,
             },
             zIndex,
           },
@@ -773,6 +809,7 @@ const defToTree = async (
   const defNameNode: PrimerNodeWithNestedAndDef = {
     id: defNodeId,
     data: {
+      style: p.style,
       def: def.name,
       width: p.nodeWidth * p.nameNodeMultipliers.width,
       height: p.nodeHeight * p.nameNodeMultipliers.height,
@@ -850,6 +887,7 @@ const typeDefToTree = async (
       id,
       type: "primer-typedef-param",
       data: {
+        style: p.style,
         def: def.name,
         width: p.nodeWidth,
         height: p.nodeHeight,
@@ -931,6 +969,7 @@ const typeDefToTree = async (
             id: consId,
             type: "primer-typedef-cons",
             data: {
+              style: p.style,
               def: def.name,
               name: cons.name,
               width: p.nodeWidth,
@@ -967,6 +1006,7 @@ const typeDefToTree = async (
       id: rootId,
       type: "primer-typedef-name",
       data: {
+        style: p.style,
         def: def.name,
         name: def.name,
         height: p.nodeHeight * p.nameNodeMultipliers.height,
