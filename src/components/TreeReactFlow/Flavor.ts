@@ -281,7 +281,10 @@ export const flavorContentClasses = (
     })()
   );
 
-export const flavorLabelClasses = (flavor: NodeFlavor): string => {
+export const flavorLabelClasses = (flavor: NodeFlavor): string =>
+  classNames(
+    sortLabelClasses(flavorSort(flavor)),
+    (() => {
   switch (flavor) {
     case "Hole":
       return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
@@ -348,7 +351,8 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string => {
     case "PatternBind":
       return "bg-blue-quaternary border-blue-quaternary text-white-primary";
   }
-};
+    })()
+  );
 
 export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
   switch (flavor) {
@@ -577,7 +581,7 @@ export const flavorSort = (flavor: NodeFlavor): "term" | "type" | "kind" => {
 export const sortClasses = (s: "term" | "type" | "kind"): string => {
   switch (s) {
     case "term":
-      return "rounded-3xl";
+      return classNames("rounded-3xl");
     case "type":
       return "";
     case "kind":
@@ -585,10 +589,22 @@ export const sortClasses = (s: "term" | "type" | "kind"): string => {
   }
 };
 
+export const sortLabelClasses = (s: "term" | "type" | "kind"): string => {
+  switch (s) {
+    case "term":
+      return "rounded-3xl";
+    case "type":
+      return "";
+    case "kind":
+      return "";
+  }
+};
+
 export const sortContentClasses = (s: "term" | "type" | "kind"): string => {
   switch (s) {
     case "term":
-      return "";
+      // This makes the content look more centered, given the rounded ends. See `sortClasses`.
+      return "right-1";
     case "type":
       return "";
     case "kind":

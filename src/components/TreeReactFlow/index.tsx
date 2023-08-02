@@ -188,15 +188,15 @@ const nodeTypes = {
                 "ring-4 ring-offset-4": data.selected,
                 "hover:ring-opacity-50": !data.selected,
               },
-              "grid grid-cols-[2rem_auto] border-4 overflow-hidden text-grey-tertiary",
+              "grid grid-cols-[2rem_auto] gap-1 border-4 text-grey-tertiary",
               flavorClasses(data.flavor)
             ),
             label: classNames(
-              "flex items-center justify-center pr-1 text-sm xl:text-base",
+              "flex items-center justify-center text-sm xl:text-base -m-1 mr-0",
               flavorLabelClasses(data.flavor)
             ),
             contents: classNames(
-              "truncate self-center justify-self-center px-1 font-code text-sm xl:text-base max-w-full",
+              "truncate self-center justify-self-center font-code text-sm xl:text-base max-w-full relative",
               flavorContentClasses(data.flavor)
             ),
           };
