@@ -285,72 +285,72 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string =>
   classNames(
     sortLabelClasses(flavorSort(flavor)),
     (() => {
-  switch (flavor) {
-    case "Hole":
-      return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
-    case "EmptyHole":
-      return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
-    case "Ann":
-      return "font-code bg-black-primary border-black-primary text-white-primary";
-    case "App":
-      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
-    case "APP":
-      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
-    case "Con":
-      return "bg-green-primary border-green-primary text-white-primary";
-    case "Lam":
-      return "font-code bg-blue-primary border-blue-primary text-white-primary";
-    case "LAM":
-      return "font-code bg-blue-secondary border-blue-secondary text-white-primary";
-    case "GlobalVar":
-      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
-    case "KHole":
-      return "italic font-code bg-grey-tertiary border-grey-tertiary text-white-primary";
-    case "KType":
-      return "font-code bg-grey-tertiary bg-grey-tertiary text-white-primary";
-    case "KFun":
-      return "font-code bg-grey-tertiary bg-grey-tertiary text-white-primary";
-    case "LocalVar":
-      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
-    case "Let":
-      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
-    case "LetType":
-      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
-    case "Letrec":
-      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
-    case "Case":
-      return "font-code bg-yellow-primary border-yellow-primary text-white-primary";
-    case "CaseWith": // Special case: we hide this label.
-      return "hidden font-code bg-yellow-primary border-yellow-primary text-white-primary";
-    case "PrimCon":
-      return "bg-green-primary border-green-primary text-white-primary";
-    case "TEmptyHole":
-      return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
-    case "THole":
-      return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
-    case "TCon":
-      return "bg-green-primary border-green-primary text-white-primary";
-    case "TFun":
-      return "font-code bg-blue-primary border-blue-primary text-white-primary";
-    case "TVar":
-      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
-    case "TApp":
-      return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
-    case "TForall":
-      return "font-code bg-blue-secondary border-blue-secondary text-white-primary";
-    case "TLet":
-      return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
-    case "Pattern":
-      return "";
-    case "PatternCon":
-      return "bg-green-primary border-green-primary text-white-primary";
-    case "PrimPattern":
-      return "bg-green-primary border-green-primary text-white-primary";
-    case "PatternWildcard":
-      return "hidden";
-    case "PatternBind":
-      return "bg-blue-quaternary border-blue-quaternary text-white-primary";
-  }
+      switch (flavor) {
+        case "Hole":
+          return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
+        case "EmptyHole":
+          return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
+        case "Ann":
+          return "font-code bg-black-primary border-black-primary text-white-primary";
+        case "App":
+          return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
+        case "APP":
+          return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
+        case "Con":
+          return "bg-green-primary border-green-primary text-white-primary";
+        case "Lam":
+          return "font-code bg-blue-primary border-blue-primary text-white-primary";
+        case "LAM":
+          return "font-code bg-blue-secondary border-blue-secondary text-white-primary";
+        case "GlobalVar":
+          return "bg-blue-quaternary border-blue-quaternary text-white-primary";
+        case "KHole":
+          return "italic font-code bg-grey-tertiary border-grey-tertiary text-white-primary";
+        case "KType":
+          return "font-code bg-grey-tertiary bg-grey-tertiary text-white-primary";
+        case "KFun":
+          return "font-code bg-grey-tertiary bg-grey-tertiary text-white-primary";
+        case "LocalVar":
+          return "bg-blue-quaternary border-blue-quaternary text-white-primary";
+        case "Let":
+          return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
+        case "LetType":
+          return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
+        case "Letrec":
+          return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
+        case "Case":
+          return "font-code bg-yellow-primary border-yellow-primary text-white-primary";
+        case "CaseWith": // Special case: we hide this label.
+          return "hidden font-code bg-yellow-primary border-yellow-primary text-white-primary";
+        case "PrimCon":
+          return "bg-green-primary border-green-primary text-white-primary";
+        case "TEmptyHole":
+          return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
+        case "THole":
+          return "italic font-code bg-red-tertiary border-red-tertiary text-white-primary";
+        case "TCon":
+          return "bg-green-primary border-green-primary text-white-primary";
+        case "TFun":
+          return "font-code bg-blue-primary border-blue-primary text-white-primary";
+        case "TVar":
+          return "bg-blue-quaternary border-blue-quaternary text-white-primary";
+        case "TApp":
+          return "font-code bg-blue-tertiary border-blue-tertiary text-white-primary";
+        case "TForall":
+          return "font-code bg-blue-secondary border-blue-secondary text-white-primary";
+        case "TLet":
+          return "font-code bg-blue-quaternary border-blue-quaternary text-white-primary";
+        case "Pattern":
+          return "";
+        case "PatternCon":
+          return "bg-green-primary border-green-primary text-white-primary";
+        case "PrimPattern":
+          return "bg-green-primary border-green-primary text-white-primary";
+        case "PatternWildcard":
+          return "hidden";
+        case "PatternBind":
+          return "bg-blue-quaternary border-blue-quaternary text-white-primary";
+      }
     })()
   );
 
