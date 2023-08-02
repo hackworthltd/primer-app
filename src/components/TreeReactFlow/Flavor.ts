@@ -592,7 +592,7 @@ export const sortContentClasses = (s: "term" | "type" | "kind"): string => {
     case "type":
       return "";
     case "kind":
-      // This keeps the content fixed once the whole node is rotated. See `typeOrTermClasses`.
+      // This keeps the content fixed once the whole node is rotated. See `sortClasses`.
       return "-rotate-45";
   }
 };
