@@ -19,7 +19,7 @@ type Story = StoryObj<typeof Toolbar>;
 
 export const Default: Story = {
   args: {
-    initialMode: "tree",
+    initialMode: "tree 1",
     level: "Expert",
     redoAvailable: true,
     undoAvailable: true,

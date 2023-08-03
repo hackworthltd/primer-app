@@ -48,8 +48,10 @@ import {
 } from "@/primer-api";
 import {
   defaultTreeReactFlowProps,
+  inlineTreeReactFlowProps,
   ScrollToDef,
 } from "@/components/TreeReactFlow";
+import { Mode } from "../Toolbar";
 
 // hardcoded values (for now)
 const initialLevel: Level = "Expert";
@@ -198,6 +200,8 @@ const AppNoError = ({
   undoAvailable: boolean;
   redoAvailable: boolean;
 }): JSX.Element => {
+  const initialMode = "tree 1";
+  const [mode, setMode] = useState<Mode>(initialMode);
   const [level, setLevel] = useState<Level>(initialLevel);
   const toggleLevel = (): void => {
     switch (level) {
@@ -265,6 +269,17 @@ const AppNoError = ({
     .sort((a, b) => cmpName(a.name, b.name))
     .map((d) => d.name.baseName);
 
+  const treeProps = (() => {
+    switch (mode) {
+      case "text":
+        return defaultTreeReactFlowProps;
+      case "tree 1":
+        return defaultTreeReactFlowProps;
+      case "tree 2":
+        return inlineTreeReactFlowProps;
+    }
+  })();
+
   return (
     <div className="grid h-[100dvh] grid-cols-[auto_20rem]">
       <div className="relative h-full">
@@ -272,7 +287,7 @@ const AppNoError = ({
           <TreeReactFlow
             scrollToDefRef={scrollToDefRef}
             scrollToTypeDefRef={scrollToTypeDefRef}
-            {...defaultTreeReactFlowProps}
+            {...treeProps}
             {...(selection && { selection })}
             onNodeClick={(_e, sel) => sel && setSelection(sel)}
             defs={p.module.defs}
@@ -286,9 +301,7 @@ const AppNoError = ({
 
             <div className="absolute bottom-4 right-4 z-30">
               <Toolbar
-                onModeChange={() => {
-                  console.log("Toggle mode");
-                }}
+                onModeChange={setMode}
                 level={level}
                 onLevelChange={toggleLevel}
                 undoAvailable={p.undoAvailable}
@@ -307,7 +320,7 @@ const AppNoError = ({
                     })
                     .then(p.setProg);
                 }}
-                initialMode="tree"
+                initialMode={mode}
               />
             </div>
 
@@ -324,6 +337,7 @@ const AppNoError = ({
               defs={defs}
               initialEvalDef={evalTarget}
               typeOrKind={p.selectionTypeOrKind}
+              extraTreeProps={treeProps}
             />
           </TreeReactFlow>
         </ReactFlowProvider>

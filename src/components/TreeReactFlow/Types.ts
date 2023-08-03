@@ -195,6 +195,7 @@ export type PrimerCommonNodeProps = {
   width: number;
   height: number;
   selected: boolean;
+  style: "inline" | "corner";
 };
 
 /** Our edge type. Much like `PrimerNode`, `PrimerEdge` extends ReactFlow's `Edge`.

@@ -2,7 +2,10 @@ import { useState } from "react";
 import { NodeChange, ReactFlowProvider, useReactFlow } from "reactflow";
 import { EvalFullResp, GlobalName, Level } from "@/primer-api";
 import { SelectMenu, TreeReactFlowOne } from "@/components";
-import { defaultTreeReactFlowProps } from "../TreeReactFlow";
+import {
+  TreeReactFlowOneProps,
+  defaultTreeReactFlowProps,
+} from "../TreeReactFlow";
 
 export type EvalFullProps = {
   moduleName: string[];
@@ -13,12 +16,14 @@ export type EvalFullProps = {
   level: Level;
   defs: string[];
   initialEvalDef: string | undefined;
+  extraTreeProps: Partial<TreeReactFlowOneProps>;
 };
 
 const Evaluated = (p: {
   defName: GlobalName;
   evaluated?: EvalFullResp;
   level: Level;
+  extraTreeProps: Partial<TreeReactFlowOneProps>;
 }) => {
   const padding = 1.0;
   const { fitView } = useReactFlow();
@@ -34,6 +39,7 @@ const Evaluated = (p: {
       zoomBarProps={{ padding }}
       onNodesChange={onNodesChange}
       fitViewOptions={{ padding }}
+      {...p.extraTreeProps}
     />
   );
 };
@@ -47,6 +53,7 @@ export const EvalFull = ({
   moduleName,
   level,
   initialEvalDef,
+  extraTreeProps,
 }: EvalFullProps): JSX.Element => {
   const [evalDef, setEvalDef0] = useState(initialEvalDef ?? disableEval);
   const setEvalDef = (e: string) => {
@@ -73,6 +80,7 @@ export const EvalFull = ({
                 defName={{ qualifiedModule: moduleName, baseName: evalDef }}
                 {...(evalFull.result ? { evaluated: evalFull.result } : {})}
                 level={level}
+                extraTreeProps={extraTreeProps}
               />
             </ReactFlowProvider>
           </div>
