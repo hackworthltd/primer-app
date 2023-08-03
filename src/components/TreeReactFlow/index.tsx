@@ -173,7 +173,7 @@ const nodeTypes = {
             ),
             label: classNames(
               "z-20 p-1 absolute rounded-full text-sm xl:text-base",
-              data.syntax ? "-top-4" : "-right-2 -top-4",
+              data.syntax ? "-top-4" : "-left-2 -top-4",
               flavorLabelClasses(data.flavor)
             ),
             contents: classNames(
