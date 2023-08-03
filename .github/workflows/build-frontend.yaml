@@ -35,11 +35,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Audit is disabled for now. See discussion at:
+      # https://github.com/hackworthltd/primer-app/pull/1005
+
       # Note: we only audit non-dev dependencies, because there are
       # nearly always dev dependency vulnerabilities, but they're very
       # unlikely to affect the production app.
-      - name: Audit
-        run: pnpm audit --prod
+      # - name: Audit
+      #   run: pnpm audit --prod
 
       - name: Build the frontend
         # This URL scheme for PR's is baked into other parts of the
