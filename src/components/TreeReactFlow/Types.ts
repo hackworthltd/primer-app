@@ -13,7 +13,7 @@ import { NodeFlavor } from "./Flavor";
 /** A generic graph. */
 export type Graph<
   N extends { id: string },
-  E extends { source: string; target: string }
+  E extends { source: string; target: string },
 > = {
   nodes: N[];
   edges: E[];
@@ -22,7 +22,7 @@ export type Graph<
 export const graphMap = <
   N1 extends { id: string },
   N2 extends { id: string },
-  E extends { source: string; target: string }
+  E extends { source: string; target: string },
 >(
   { nodes, edges }: Graph<N1, E>,
   f: (n: N1) => N2
@@ -33,7 +33,7 @@ export const graphMap = <
 
 export const combineGraphs = <
   N extends { id: string },
-  E extends { source: string; target: string }
+  E extends { source: string; target: string },
 >(
   gs: Graph<N, E>[]
 ): Graph<N, E> => {
@@ -77,7 +77,7 @@ export const treeNodes = <N, E>({
 
 export const treeToGraph = <
   N extends { id: string },
-  E extends { source: string; target: string }
+  E extends { source: string; target: string },
 >(
   tree: Tree<N, E>
 ): Graph<N, E & { isRight: boolean }> => {

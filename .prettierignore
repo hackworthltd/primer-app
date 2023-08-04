@@ -13,3 +13,4 @@ primer-api.json
 src/primer-api/
 licenses/
 COPYING
+flake.lock
