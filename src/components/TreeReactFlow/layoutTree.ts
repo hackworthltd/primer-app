@@ -21,7 +21,7 @@ export const layoutTree = <
   E extends {
     source: string;
     target: string;
-  }
+  },
 >(
   primerTree: Tree<N, E>,
   p: LayoutParams
@@ -86,7 +86,7 @@ const makeNodeMap = <
     id: string;
     data: { width: number; height: number };
   },
-  E extends { source: string; target: string }
+  E extends { source: string; target: string },
 >(
   nodeInfos: NodeInfo<N>[],
   edgeInfos: EdgeInfo<E>[],

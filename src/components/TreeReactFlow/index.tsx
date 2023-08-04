@@ -538,7 +538,7 @@ const makePrimerNode = async (
     (child: PrimerNode, isRight: boolean) => PrimerEdge,
     /* Nodes of nested trees, already positioned.
     We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
-    PrimerGraph[]
+    PrimerGraph[],
   ]
 > => {
   const selected =
@@ -1257,7 +1257,7 @@ const SetTreeReactFlowCallbacks = ({
  * and safely act on that type in handlers. */
 export const ReactFlowSafe = <
   N extends RFNode<unknown> & { type: string },
-  E extends RFEdge<unknown> & { type: string }
+  E extends RFEdge<unknown> & { type: string },
 >(
   p: Omit<Parameters<typeof ReactFlow>[0], "onNodeClick" | "edgeTypes"> & {
     nodes: N[];
