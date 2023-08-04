@@ -14,6 +14,9 @@
     pre-commit-hooks-nix.url = github:cachix/pre-commit-hooks.nix;
     pre-commit-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     # Note: don't override any of primer's Nix flake inputs, or else
     # we won't hit its binary cache.
     primer.url = github:hackworthltd/primer/ff6c255185a3085ad9ce1e6970ada0776c2c2f37;
@@ -50,6 +53,7 @@
 
       imports = [
         inputs.pre-commit-hooks-nix.flakeModule
+        inputs.treefmt-nix.flakeModule
       ];
 
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -86,19 +90,9 @@
             settings = {
               src = ./.;
               hooks = {
-                prettier.enable = true;
-                nixpkgs-fmt.enable = true;
+                treefmt.enable = true;
                 actionlint.enable = true;
               };
-
-              excludes = [
-                "CONTRIBUTING.md"
-                "DCO.md"
-                "README.md"
-                "docs"
-                "package.json"
-                "pnpm-lock.yaml"
-              ];
             };
           };
 
@@ -124,9 +118,29 @@
               inherit bump-primer;
             });
 
+          treefmt.config = {
+            projectRootFile = "flake.nix";
+            programs = {
+              prettier.enable = true;
+              nixpkgs-fmt.enable = true;
+            };
+            settings.formatter.prettier = {
+              excludes = [
+                "CONTRIBUTING.md"
+                "DCO.md"
+                "README.md"
+                "docs"
+                "package.json"
+                "pnpm-lock.yaml"
+              ];
+            };
+          };
+
           devShells.default = pkgs.mkShell {
+            inputsFrom = [
+              config.treefmt.build.devShell
+            ];
             buildInputs = (with pkgs; [
-              nixpkgs-fmt
               nodejs_18
               nodejs_18.pkgs.pnpm
               rnix-lsp
