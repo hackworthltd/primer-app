@@ -19,7 +19,7 @@
 
     # Note: don't override any of primer's Nix flake inputs, or else
     # we won't hit its binary cache.
-    primer.url = github:hackworthltd/primer/ff6c255185a3085ad9ce1e6970ada0776c2c2f37;
+    primer.url = github:hackworthltd/primer/cdac69ab9a82e6099d6cc52c8c42a8cc1b1cc674;
 
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
@@ -100,7 +100,7 @@
             let
             in
             {
-              inherit (primerPackages) run-primer-postgresql run-primer-sqlite primer-openapi-spec primer-sqitch;
+              inherit (primerPackages) run-primer-sqlite primer-openapi-spec primer-sqitch;
               inherit bump-primer;
             } // (pkgs.lib.optionalAttrs (system == "x86_64-linux") {
               inherit (primerPackages) primer-service-docker-image;
@@ -114,7 +114,7 @@
               };
             in
             (pkgs.lib.mapAttrs (name: pkg: mkApp pkg name) {
-              inherit (primerPackages) run-primer-postgresql run-primer-sqlite primer-openapi-spec primer-sqitch;
+              inherit (primerPackages) run-primer-sqlite primer-openapi-spec primer-sqitch;
               inherit bump-primer;
             });
 

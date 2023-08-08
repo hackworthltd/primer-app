@@ -136,11 +136,6 @@ directory, run any necessary database migrations, and launch an
 instance of `primer-service` listening on port `8081` on all network
 interfaces.
 
-While it's possible to develop the web app against a local instance of
-`primer-service` that uses PostgreSQL rather than SQLite, we don't
-recommend this, as it's much more complicated, and the web app
-shouldn't behave any differently, in any case.
-
 ### Scripts
 
 #### `pnpm watch`
