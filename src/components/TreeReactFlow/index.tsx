@@ -132,11 +132,11 @@ export const defaultTreeReactFlowProps: Pick<
   treePadding: 100,
   nodeWidth: 80,
   nodeHeight: 35,
-  boxPadding: 50,
+  boxPadding: 55,
   defParams: { nameNodeMultipliers: { width: 3, height: 2 } },
   layout: {
     type: WasmLayoutType.Tidy,
-    margins: { child: 25, sibling: 18 },
+    margins: { child: 28, sibling: 18 },
   },
 };
 export const inlineTreeReactFlowProps: typeof defaultTreeReactFlowProps = {
@@ -174,7 +174,7 @@ const nodeTypes = {
             ),
             label: classNames(
               "flex justify-center z-20 p-1 absolute rounded-full text-sm xl:text-base",
-              data.centerLabel ? "-top-4" : "-left-2 -top-4",
+              data.centerLabel ? "-top-4" : "-left-2 -top-5",
               flavorLabelClasses(data.flavor)
             ),
             contents: classNames(
