@@ -158,7 +158,7 @@ export type NodeData =
 /** Node properties. */
 export type PrimerNodeProps = {
   nodeData: NodeData;
-  syntax: boolean;
+  centerLabel: boolean;
   flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
   contents: string;
 };

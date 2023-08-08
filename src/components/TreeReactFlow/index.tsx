@@ -174,7 +174,7 @@ const nodeTypes = {
             ),
             label: classNames(
               "z-20 p-1 absolute rounded-full text-sm xl:text-base",
-              data.syntax ? "-top-4" : "-left-2 -top-4",
+              data.centerLabel ? "-top-4" : "-left-2 -top-4",
               flavorLabelClasses(data.flavor)
             ),
             contents: classNames(
@@ -587,7 +587,7 @@ const makePrimerNode = async (
           data: {
             flavor,
             contents,
-            syntax: false,
+            centerLabel: false,
             ...common,
           },
           zIndex,
@@ -610,7 +610,7 @@ const makePrimerNode = async (
           data: {
             flavor,
             contents: name.baseName,
-            syntax: false,
+            centerLabel: false,
             ...common,
             width:
               p.style == "inline" ? common.width + common.height : common.width,
@@ -641,7 +641,7 @@ const makePrimerNode = async (
             data: {
               flavor,
               contents: noBodyFlavorContents(node.body.contents),
-              syntax: node.children >= 2,
+              centerLabel: node.children >= 2,
               ...common,
               // TODO This is necessary to ensure that all syntax labels fit.
               // It can be removed when we have dynamic node sizes.
