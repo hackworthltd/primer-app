@@ -141,7 +141,7 @@ export const defaultTreeReactFlowProps: Pick<
 export const inlineTreeReactFlowProps: typeof defaultTreeReactFlowProps = {
   ...defaultTreeReactFlowProps,
   style: "inline",
-  nodeWidth: 100,
+  boxPadding: 35,
   layout: {
     ...defaultTreeReactFlowProps.layout,
     margins: { child: 15, sibling: 12 },
@@ -188,7 +188,7 @@ const nodeTypes = {
                 "ring-4 ring-offset-4": data.selected,
                 "hover:ring-opacity-50": !data.selected,
               },
-              "grid grid-cols-[2rem_auto] gap-1 border-4 text-grey-tertiary",
+              "grid grid-cols-[2rem_auto] gap-1.5 border-4 text-grey-tertiary",
               flavorClasses(data.flavor)
             ),
             label: classNames(
@@ -196,7 +196,7 @@ const nodeTypes = {
               flavorLabelClasses(data.flavor)
             ),
             contents: classNames(
-              "truncate self-center justify-self-center font-code text-sm xl:text-base max-w-full relative",
+              "truncate self-center justify-self-center px-1 font-code text-sm xl:text-base max-w-full relative",
               flavorContentClasses(data.flavor)
             ),
           };
@@ -609,6 +609,8 @@ const makePrimerNode = async (
             contents: name.baseName,
             syntax: false,
             ...common,
+            width:
+              p.style == "inline" ? common.width + common.height : common.width,
           },
           zIndex,
         },
