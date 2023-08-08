@@ -189,15 +189,15 @@ const nodeTypes = {
                 "ring-4 ring-offset-4": data.selected,
                 "hover:ring-opacity-50": !data.selected,
               },
-              "grid grid-cols-[2rem_auto] gap-1.5 border-4 text-grey-tertiary",
+              "flex gap-1.5 border-4 text-grey-tertiary",
               flavorClasses(data.flavor)
             ),
             label: classNames(
-              "flex items-center justify-center text-sm xl:text-base -m-1 mr-0",
+              "w-9 shrink-0 flex items-center justify-center text-sm xl:text-base -m-1 mr-0",
               flavorLabelClasses(data.flavor)
             ),
             contents: classNames(
-              "truncate self-center justify-self-center px-1 font-code text-sm xl:text-base max-w-full relative",
+              "overflow-hidden grow flex self-center justify-center px-1 font-code text-sm xl:text-base",
               flavorContentClasses(data.flavor),
               // This makes the content look more centered, given the rounded ends (see `sortClasses`).
               flavorSort(data.flavor) == "term" ? "relative right-1" : ""
@@ -218,7 +218,9 @@ const nodeTypes = {
           className={classes.root}
         >
           <div className={classes.label}>{flavorLabel(data.flavor)}</div>
-          <div className={classes.contents}>{data.contents}</div>
+          <div className={classes.contents}>
+            <div className="truncate">{data.contents}</div>
+          </div>
         </div>
         {handle("source", Position.Bottom)}
         {handle("source", Position.Right)}
