@@ -60,6 +60,7 @@ import {
   flavorEdgeClasses,
   flavorLabel,
   flavorLabelClasses,
+  flavorSort,
   noBodyFlavorContents,
   sortClasses,
 } from "./Flavor";
@@ -197,7 +198,9 @@ const nodeTypes = {
             ),
             contents: classNames(
               "truncate self-center justify-self-center px-1 font-code text-sm xl:text-base max-w-full relative",
-              flavorContentClasses(data.flavor)
+              flavorContentClasses(data.flavor),
+              // This makes the content look more centered, given the rounded ends (see `sortClasses`).
+              flavorSort(data.flavor) == "term" ? "relative right-1" : ""
             ),
           };
       }

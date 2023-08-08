@@ -603,8 +603,7 @@ export const sortLabelClasses = (s: "term" | "type" | "kind"): string => {
 export const sortContentClasses = (s: "term" | "type" | "kind"): string => {
   switch (s) {
     case "term":
-      // This makes the content look more centered, given the rounded ends. See `sortClasses`.
-      return "right-1";
+      return "";
     case "type":
       return "";
     case "kind":
