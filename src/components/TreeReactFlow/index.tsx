@@ -173,7 +173,7 @@ const nodeTypes = {
               flavorClasses(data.flavor)
             ),
             label: classNames(
-              "z-20 p-1 absolute rounded-full text-sm xl:text-base",
+              "flex justify-center z-20 p-1 absolute rounded-full text-sm xl:text-base",
               data.centerLabel ? "-top-4" : "-left-2 -top-4",
               flavorLabelClasses(data.flavor)
             ),
@@ -193,7 +193,7 @@ const nodeTypes = {
               flavorClasses(data.flavor)
             ),
             label: classNames(
-              "w-9 shrink-0 flex items-center justify-center text-sm xl:text-base -m-1 mr-0",
+              "shrink-0 flex items-center justify-center text-sm xl:text-base -m-1 mr-0",
               flavorLabelClasses(data.flavor)
             ),
             contents: classNames(
@@ -217,7 +217,9 @@ const nodeTypes = {
           }}
           className={classes.root}
         >
-          <div className={classes.label}>{flavorLabel(data.flavor)}</div>
+          <div className={classes.label} style={{ width: data.height }}>
+            {flavorLabel(data.flavor)}
+          </div>
           <div className={classes.contents}>
             <div className="truncate">{data.contents}</div>
           </div>
