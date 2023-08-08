@@ -5,9 +5,10 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
+import type { TypeDefParamSelection } from './typeDefParamSelection';
 import type { TypeDefNodeSelectionOneOfTag } from './typeDefNodeSelectionOneOfTag';
 
 export type TypeDefNodeSelectionOneOf = {
-  contents: string;
+  contents: TypeDefParamSelection;
   tag: TypeDefNodeSelectionOneOfTag;
 };

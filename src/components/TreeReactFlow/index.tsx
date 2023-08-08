@@ -731,7 +731,7 @@ const makeSelectionFromNode = (
         def: node.data.def,
         node: {
           tag: "TypeDefParamNodeSelection",
-          contents: node.data.name,
+          contents: { param: node.data.name },
         },
       },
     };
@@ -763,31 +763,46 @@ const makeSelectionFromNodeData = (
   const id = Number(id0);
   // Non-numeric IDs correspond to non-selectable nodes (those with no ID in backend) e.g. pattern constructors.
   if (!isNaN(id)) {
-    if (nodeData.tag == "termDefNode") {
-      return {
-        tag: "SelectionDef",
-        contents: {
-          def,
-          node: { meta: id, nodeType: nodeData.nodeType },
-        },
-      };
-    } else {
-      return {
-        tag: "SelectionTypeDef",
-        contents: {
-          def,
-          node: {
-            tag: "TypeDefConsNodeSelection",
-            contents: {
-              con: nodeData.con,
-              field: {
-                index: nodeData.index,
-                meta: id,
+    switch (nodeData.tag) {
+      case "termDefNode":
+        return {
+          tag: "SelectionDef",
+          contents: {
+            def,
+            node: { meta: id, nodeType: nodeData.nodeType },
+          },
+        };
+      case "typeDefFieldNode":
+        return {
+          tag: "SelectionTypeDef",
+          contents: {
+            def,
+            node: {
+              tag: "TypeDefConsNodeSelection",
+              contents: {
+                con: nodeData.con,
+                field: {
+                  index: nodeData.index,
+                  meta: id,
+                },
               },
             },
           },
-        },
-      };
+        };
+      case "typeDefParamKindNode":
+        return {
+          tag: "SelectionTypeDef",
+          contents: {
+            def,
+            node: {
+              tag: "TypeDefParamNodeSelection",
+              contents: {
+                param: nodeData.name,
+                kindMeta: id,
+              },
+            },
+          },
+        };
     }
   } else {
     return undefined;
@@ -877,10 +892,35 @@ const typeDefToTree = async (
   type E = PrimerEdge;
   type T = Tree<N, E>;
 
+  const paramKindTrees = await Promise.all(
+    def.params.map(({ name, kind }) =>
+      augmentTree(kind, (n0) =>
+        makePrimerNode(
+          n0,
+          p,
+          p.layout,
+          0,
+          { tag: "typeDefParamKindNode", name },
+          def.name
+        ).then(([n, e, nested]) => [
+          primerNodeWith(n, {
+            def: def.name,
+            nested: nested.map((g) =>
+              graphMap(g, ({ position, ...n }) => ({
+                ...primerNodeWith(n, { def: def.name }),
+                position,
+              }))
+            ),
+          }),
+          e,
+        ])
+      ).then((kind) => ({ name, kind }))
+    )
+  );
   const rootId = typeDefNameToNodeId(def.name.baseName);
-  const paramsTree = def.params.reduceRight<
+  const paramsTree = paramKindTrees.reduceRight<
     [T, (parentId: string) => E] | undefined
-  >((child, name) => {
+  >((child, { name, kind }) => {
     const id =
       "typedef-param-" + JSON.stringify({ def: def.name.baseName, name });
     const node: N = {
@@ -898,17 +938,26 @@ const typeDefToTree = async (
             def: def.name,
             node: {
               tag: "TypeDefParamNodeSelection",
-              contents: name,
+              contents: { param: name },
             },
           },
         }),
       },
       zIndex: 0,
     };
+    const kindEdge: E = {
+      id: JSON.stringify([id, kind.node.id]),
+      source: id,
+      target: kind.node.id,
+      sourceHandle: Position.Bottom,
+      targetHandle: Position.Top,
+      zIndex: 0,
+      type: "primer-def",
+    };
     return [
       {
         node,
-        childTrees: [],
+        childTrees: [[kind, kindEdge]],
         ...(child
           ? { rightChild: mapSnd((f: (parentId: string) => E) => f(id))(child) }
           : {}),

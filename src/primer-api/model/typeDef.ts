@@ -7,10 +7,11 @@
  */
 import type { ValCon } from './valCon';
 import type { GlobalName } from './globalName';
+import type { TypeParam } from './typeParam';
 
 export interface TypeDef {
   constructors?: ValCon[];
   name: GlobalName;
   nameHints: string[];
-  params: string[];
+  params: TypeParam[];
 }

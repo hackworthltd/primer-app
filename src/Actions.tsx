@@ -113,6 +113,12 @@ export const actionName = (action: NoInputAction | InputAction): Name => {
       return prose("+");
     case "DeleteConField":
       return prose("p⌫");
+    case "MakeKType":
+      return prose("*");
+    case "MakeKFun":
+      return prose("→");
+    case "DeleteKind":
+      return prose("⌫");
   }
 };
 
@@ -234,6 +240,12 @@ export const actionDescription = (
       return "Add a parameter to this constructor";
     case "DeleteConField":
       return "Delete this parameter";
+    case "MakeKType":
+      return "Construct a type kind";
+    case "MakeKFun":
+      return "Construct a function kind";
+    case "DeleteKind":
+      return "Delete this kind";
   }
 };
 
@@ -340,6 +352,12 @@ export const actionType = (action: NoInputAction | InputAction): ActionType => {
     case "AddConField":
       return "Primary";
     case "DeleteConField":
+      return "Destructive";
+    case "MakeKType":
+      return "Primary";
+    case "MakeKFun":
+      return "Primary";
+    case "DeleteKind":
       return "Destructive";
   }
 };
