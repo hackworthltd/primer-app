@@ -33,4 +33,7 @@ export const NoInputAction = {
   AddConField: 'AddConField',
   DeleteConField: 'DeleteConField',
   DeleteTypeParam: 'DeleteTypeParam',
+  MakeKType: 'MakeKType',
+  MakeKFun: 'MakeKFun',
+  DeleteKind: 'DeleteKind',
 } as const;

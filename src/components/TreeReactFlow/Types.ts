@@ -137,7 +137,8 @@ export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> =>
 /** Data corresponding to a node from the backend.
  * This is not used by special nodes, like term definition names or most parts of type definitions,
  * but only in places where the backend allows an arbitrarily nested (term or type) expression.
- * These are: the bodies and signatures of term defs, and the types of constructor fields in type defs.
+ * These are: the bodies and signatures of term defs, the types of constructor fields in type defs,
+ * and the kinds of typedef parameters.
  * */
 export type NodeData =
   | {
@@ -148,6 +149,10 @@ export type NodeData =
       tag: "typeDefFieldNode";
       con: GlobalName;
       index: number;
+    }
+  | {
+      tag: "typeDefParamKindNode";
+      name: string;
     };
 
 /** Node properties. */

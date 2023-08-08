@@ -1349,17 +1349,17 @@
         "pre-commit-hooks-nix": "pre-commit-hooks-nix_4"
       },
       "locked": {
-        "lastModified": 1690928652,
-        "narHash": "sha256-R4ZJf2MdVxuLYH3xPNvKcFDE/bW53PgwAXSZBlxgbT4=",
+        "lastModified": 1691486196,
+        "narHash": "sha256-J3cSvDSLsGD8sFBghvsUCcRSV5Crii8I9DR1IlB1q1A=",
         "owner": "hackworthltd",
         "repo": "primer",
-        "rev": "cdac69ab9a82e6099d6cc52c8c42a8cc1b1cc674",
+        "rev": "e603e61697d00a76c52252d154a5179fc9779417",
         "type": "github"
       },
       "original": {
         "owner": "hackworthltd",
         "repo": "primer",
-        "rev": "cdac69ab9a82e6099d6cc52c8c42a8cc1b1cc674",
+        "rev": "e603e61697d00a76c52252d154a5179fc9779417",
         "type": "github"
       }
     },
