@@ -162,18 +162,21 @@ export type PrimerNodeProps = {
   flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
   contents: string;
   hideLabel: boolean;
+  showIDs: boolean;
 };
 
 /** Properties for a simple node. */
 export type PrimerSimpleNodeProps = {
   nodeData: NodeData;
   flavor: NodeFlavorNoBody;
+  showIDs: boolean;
 };
 
 /** Properties for a box node. */
 export type PrimerBoxNodeProps = {
   nodeData: NodeData;
   flavor: NodeFlavorBoxBody;
+  showIDs: boolean;
 };
 
 /** Properties for the special definition name node. */

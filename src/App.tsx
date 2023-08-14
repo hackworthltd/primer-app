@@ -41,6 +41,8 @@ const App = (): JSX.Element => {
 
   const devToolsMinHeight = 250;
   const devToolsMaxHeight = 500;
+  const [showIDs, setShowIDs] = useState(false);
+  const [alwaysShowLabels, setAlwaysShowLabels] = useState(true);
 
   useEffect(() => {
     if (!cookies.id) {
@@ -86,8 +88,28 @@ const App = (): JSX.Element => {
                     setIsOpen={setDevtoolsOpen}
                     onDragStart={(_) => {}}
                   />
-
-                  <div className="bg-blue-primary"></div>
+                  <div className="bg-blue-primary pl-1 text-white-primary">
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="showIDs"
+                        onChange={(e) => setShowIDs(e.target.checked)}
+                        className="mr-1"
+                      />
+                      <label htmlFor="showIDs">show node IDs</label>
+                    </div>
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="alwaysShowLabels"
+                        onChange={(e) => setAlwaysShowLabels(e.target.checked)}
+                        className="mr-1"
+                      />
+                      <label htmlFor="alwaysShowLabels">
+                        always show labels
+                      </label>
+                    </div>
+                  </div>
                 </Resizable>
               )}
             </Suspense>
@@ -96,7 +118,10 @@ const App = (): JSX.Element => {
             <Route path="/" element={<Navigate to="/sessions" />} />
             <Route path="/sessions">
               <Route index element={<ChooseSession />} />
-              <Route path=":sessionId" element={<Edit />} />
+              <Route
+                path=":sessionId"
+                element={<Edit {...{ showIDs, alwaysShowLabels }} />}
+              />
             </Route>
             <Route path="*" element={<NoMatch />} />
           </Routes>

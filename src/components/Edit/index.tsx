@@ -56,7 +56,12 @@ import { Mode } from "../Toolbar";
 // hardcoded values (for now)
 const initialLevel: Level = "Expert";
 
-const Edit = (): JSX.Element => {
+export type DevOptions = {
+  showIDs: boolean;
+  alwaysShowLabels: boolean;
+};
+
+const Edit = (devOpts: DevOptions): JSX.Element => {
   const params = useParams();
   const sessionId = params["sessionId"];
 
@@ -88,10 +93,20 @@ const Edit = (): JSX.Element => {
   }
 
   // At this point, we have successfully received an initial program.
-  return <AppProg initialProg={queryRes.data} {...{ sessionId }}></AppProg>;
+  return (
+    <AppProg
+      initialProg={queryRes.data}
+      {...{ sessionId }}
+      devOpts={devOpts}
+    ></AppProg>
+  );
 };
 
-const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
+const AppProg = (p: {
+  sessionId: string;
+  initialProg: Prog;
+  devOpts: DevOptions;
+}): JSX.Element => {
   const [prog, setProg0] = useState<Prog>(p.initialProg);
   const [selection, setSelection0] = useState<Selection | undefined>(
     prog.selection
@@ -140,6 +155,7 @@ const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
       setProg={setProg}
       undoAvailable={prog.undoAvailable}
       redoAvailable={prog.redoAvailable}
+      devOpts={p.devOpts}
     />
   );
 };
@@ -199,6 +215,7 @@ const AppNoError = ({
   setProg: (p: Prog) => void;
   undoAvailable: boolean;
   redoAvailable: boolean;
+  devOpts: DevOptions;
 }): JSX.Element => {
   const initialMode = "tree 1";
   const [mode, setMode] = useState<Mode>(initialMode);
@@ -288,6 +305,8 @@ const AppNoError = ({
             scrollToDefRef={scrollToDefRef}
             scrollToTypeDefRef={scrollToTypeDefRef}
             {...treeProps}
+            showIDs={p.devOpts.showIDs}
+            alwaysShowLabels={p.devOpts.alwaysShowLabels}
             {...(selection && { selection })}
             onNodeClick={(_e, sel) => sel && setSelection(sel)}
             defs={p.module.defs}
