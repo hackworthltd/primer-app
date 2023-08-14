@@ -27,7 +27,7 @@ jobs:
           version: 8.6.2
 
       - name: Setup nodejs
-        uses: actions/setup-node@v3.7.0
+        uses: actions/setup-node@v3.8.0
         with:
           node-version-file: package.json
           cache: "pnpm"
