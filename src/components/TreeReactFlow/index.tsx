@@ -58,6 +58,7 @@ import {
   flavorClasses,
   flavorContentClasses,
   flavorEdgeClasses,
+  flavorIsSyntax,
   flavorLabel,
   flavorLabelClasses,
   flavorSort,
@@ -200,7 +201,9 @@ const nodeTypes = {
               "overflow-hidden grow flex self-center justify-center px-1 font-code text-sm xl:text-base",
               flavorContentClasses(data.flavor),
               // This makes the content look more centered, given the rounded ends (see `sortClasses`).
-              flavorSort(data.flavor) == "term" ? "relative right-1" : ""
+              flavorSort(data.flavor) == "term" && !data.hideLabel
+                ? "relative right-1"
+                : ""
             ),
           };
       }
@@ -217,9 +220,13 @@ const nodeTypes = {
           }}
           className={classes.root}
         >
-          <div className={classes.label} style={{ width: data.height }}>
-            {flavorLabel(data.flavor)}
-          </div>
+          {data.hideLabel ? (
+            <></>
+          ) : (
+            <div className={classes.label} style={{ width: data.height }}>
+              {flavorLabel(data.flavor)}
+            </div>
+          )}
           <div className={classes.contents}>
             <div className="truncate">{data.contents}</div>
           </div>
@@ -555,6 +562,7 @@ const makePrimerNode = async (
       p.selection
     );
   const id = node.nodeId;
+  const hideLabels = p.level == "Expert" && false;
   const common = {
     width: p.nodeWidth,
     height: p.nodeHeight,
@@ -592,6 +600,7 @@ const makePrimerNode = async (
             flavor,
             contents,
             centerLabel: false,
+            hideLabel: hideLabels,
             ...common,
           },
           zIndex,
@@ -607,6 +616,7 @@ const makePrimerNode = async (
     }
     case "TextBody": {
       const { fst: flavor, snd: name } = node.body.contents;
+      const hideLabel = hideLabels && !flavorIsSyntax(flavor);
       return [
         {
           id,
@@ -615,9 +625,12 @@ const makePrimerNode = async (
             flavor,
             contents: name.baseName,
             centerLabel: false,
+            hideLabel,
             ...common,
             width:
-              p.style == "inline" ? common.width + common.height : common.width,
+              p.style == "inline" && !hideLabel
+                ? common.width + common.height
+                : common.width,
           },
           zIndex,
         },
@@ -646,6 +659,7 @@ const makePrimerNode = async (
               flavor,
               contents: noBodyFlavorContents(node.body.contents),
               centerLabel: node.children >= 2,
+              hideLabel: hideLabels,
               ...common,
               // TODO This is necessary to ensure that all syntax labels fit.
               // It can be removed when we have dynamic node sizes.

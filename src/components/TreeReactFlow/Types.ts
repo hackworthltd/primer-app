@@ -161,6 +161,7 @@ export type PrimerNodeProps = {
   centerLabel: boolean;
   flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
   contents: string;
+  hideLabel: boolean;
 };
 
 /** Properties for a simple node. */
