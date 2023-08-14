@@ -10,6 +10,7 @@ import { Resizable } from "re-resizable";
 import "@/index.css";
 
 import { ChooseSession, Edit, NoMatch } from "@/components";
+import { DevOptions } from "@/components/Edit";
 
 // This ensures that we don't unnecessarily load the tools in production.
 // https://tanstack.com/query/v4/docs/react/devtools#devtools-in-production
@@ -41,8 +42,10 @@ const App = (): JSX.Element => {
 
   const devToolsMinHeight = 250;
   const devToolsMaxHeight = 500;
-  const [showIDs, setShowIDs] = useState(false);
-  const [alwaysShowLabels, setAlwaysShowLabels] = useState(true);
+  const [devOpts, setDevOpts] = useState<DevOptions>({
+    showIDs: false,
+    alwaysShowLabels: true,
+  });
 
   useEffect(() => {
     if (!cookies.id) {
@@ -88,28 +91,7 @@ const App = (): JSX.Element => {
                     setIsOpen={setDevtoolsOpen}
                     onDragStart={(_) => {}}
                   />
-                  <div className="bg-blue-primary pl-1 text-white-primary">
-                    <div>
-                      <input
-                        type="checkbox"
-                        id="showIDs"
-                        onChange={(e) => setShowIDs(e.target.checked)}
-                        className="mr-1"
-                      />
-                      <label htmlFor="showIDs">show node IDs</label>
-                    </div>
-                    <div>
-                      <input
-                        type="checkbox"
-                        id="alwaysShowLabels"
-                        onChange={(e) => setAlwaysShowLabels(e.target.checked)}
-                        className="mr-1"
-                      />
-                      <label htmlFor="alwaysShowLabels">
-                        always show labels
-                      </label>
-                    </div>
-                  </div>
+                  <DevMenu opts={devOpts} set={setDevOpts} />
                 </Resizable>
               )}
             </Suspense>
@@ -118,10 +100,7 @@ const App = (): JSX.Element => {
             <Route path="/" element={<Navigate to="/sessions" />} />
             <Route path="/sessions">
               <Route index element={<ChooseSession />} />
-              <Route
-                path=":sessionId"
-                element={<Edit {...{ showIDs, alwaysShowLabels }} />}
-              />
+              <Route path=":sessionId" element={<Edit {...devOpts} />} />
             </Route>
             <Route path="*" element={<NoMatch />} />
           </Routes>
@@ -130,5 +109,32 @@ const App = (): JSX.Element => {
     </CookiesProvider>
   );
 };
+
+const DevMenu = (p: { opts: DevOptions; set: (opts: DevOptions) => void }) => (
+  <div className="bg-blue-primary pl-1 text-white-primary">
+    <div>
+      <input
+        type="checkbox"
+        id="showIDs"
+        checked={p.opts.showIDs}
+        onChange={(e) => p.set({ ...p.opts, showIDs: e.target.checked })}
+        className="mr-1"
+      />
+      <label htmlFor="showIDs">show node IDs</label>
+    </div>
+    <div>
+      <input
+        type="checkbox"
+        id="alwaysShowLabels"
+        checked={p.opts.alwaysShowLabels}
+        onChange={(e) =>
+          p.set({ ...p.opts, alwaysShowLabels: e.target.checked })
+        }
+        className="mr-1"
+      />
+      <label htmlFor="alwaysShowLabels">always show labels</label>
+    </div>
+  </div>
+);
 
 export default App;
