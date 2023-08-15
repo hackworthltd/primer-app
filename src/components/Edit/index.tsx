@@ -58,6 +58,7 @@ const initialLevel: Level = "Expert";
 
 export type DevOptions = {
   showIDs: boolean;
+  inlineLabels: boolean;
   alwaysShowLabels: boolean;
 };
 
@@ -217,7 +218,7 @@ const AppNoError = ({
   redoAvailable: boolean;
   devOpts: DevOptions;
 }): JSX.Element => {
-  const initialMode = "tree 1";
+  const initialMode = "tree";
   const [mode, setMode] = useState<Mode>(initialMode);
   const [level, setLevel] = useState<Level>(initialLevel);
   const toggleLevel = (): void => {
@@ -286,16 +287,9 @@ const AppNoError = ({
     .sort((a, b) => cmpName(a.name, b.name))
     .map((d) => d.name.baseName);
 
-  const treeProps = (() => {
-    switch (mode) {
-      case "text":
-        return defaultTreeReactFlowProps;
-      case "tree 1":
-        return defaultTreeReactFlowProps;
-      case "tree 2":
-        return inlineTreeReactFlowProps;
-    }
-  })();
+  const treeProps = p.devOpts.inlineLabels
+    ? inlineTreeReactFlowProps
+    : defaultTreeReactFlowProps;
 
   return (
     <div className="grid h-[100dvh] grid-cols-[auto_20rem]">

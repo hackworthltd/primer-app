@@ -44,6 +44,7 @@ const App = (): JSX.Element => {
   const devToolsMaxHeight = 500;
   const [devOpts, setDevOpts] = useState<DevOptions>({
     showIDs: false,
+    inlineLabels: false,
     alwaysShowLabels: true,
   });
 
@@ -133,6 +134,16 @@ const DevMenu = (p: { opts: DevOptions; set: (opts: DevOptions) => void }) => (
         className="mr-1"
       />
       <label htmlFor="alwaysShowLabels">always show labels</label>
+    </div>
+    <div>
+      <input
+        type="checkbox"
+        id="inlineLabels"
+        checked={p.opts.inlineLabels}
+        onChange={(e) => p.set({ ...p.opts, inlineLabels: e.target.checked })}
+        className="mr-1"
+      />
+      <label htmlFor="inlineLabels">inline labels</label>
     </div>
   </div>
 );

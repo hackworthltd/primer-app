@@ -23,7 +23,7 @@ export type ToolbarProps = {
   undoAvailable: boolean;
   onClickUndo: MouseEventHandler<HTMLButtonElement>;
 };
-export type Mode = "text" | "tree 1" | "tree 2";
+export type Mode = "text" | "tree";
 
 const iconClasses = "stroke-[2] p-1";
 const heavyIconClasses = "w-7 stroke-[3] p-1";
@@ -32,8 +32,7 @@ const modeSvg = (m: Mode) => {
   switch (m) {
     case "text":
       return <CodeBracketIcon className={iconClasses} />;
-    case "tree 1":
-    case "tree 2":
+    case "tree":
       return <ShareIcon className={classNames(iconClasses, "rotate-90")} />;
   }
 };
@@ -41,10 +40,8 @@ const modeSvg = (m: Mode) => {
 const nextMode = (m: Mode): Mode => {
   switch (m) {
     case "text":
-      return "tree 1";
-    case "tree 1":
-      return "tree 2";
-    case "tree 2":
+      return "tree";
+    case "tree":
       return "text";
   }
 };
