@@ -73,7 +73,7 @@ const App = (): JSX.Element => {
           {enableDevtools && (
             <Suspense fallback={null}>
               <button
-                className="absolute right-0 z-20 p-4"
+                className="absolute right-0 z-50 p-4"
                 onClick={() => setDevtoolsOpen((old) => !old)}
               >
                 <WrenchScrewdriverIcon className="h-10 fill-grey-primary"></WrenchScrewdriverIcon>
@@ -82,12 +82,11 @@ const App = (): JSX.Element => {
                 <Resizable
                   enable={{ bottom: true }}
                   defaultSize={{ height: devToolsMinHeight, width: "100%" }}
-                  className="fixed z-10 grid grid-cols-[minmax(0,2fr)_1fr]"
+                  className="fixed grid grid-cols-[minmax(0,2fr)_1fr]"
                   minHeight={devToolsMinHeight}
                   maxHeight={devToolsMaxHeight}
                 >
                   <ReactQueryDevtoolsPanel
-                    className="z-20"
                     style={{ height: "inherit", maxHeight: devToolsMaxHeight }}
                     setIsOpen={setDevtoolsOpen}
                     onDragStart={(_) => {}}
