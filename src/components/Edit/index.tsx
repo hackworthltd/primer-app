@@ -56,7 +56,13 @@ import { Mode } from "../Toolbar";
 // hardcoded values (for now)
 const initialLevel: Level = "Expert";
 
-const Edit = (): JSX.Element => {
+export type DevOptions = {
+  showIDs: boolean;
+  inlineLabels: boolean;
+  alwaysShowLabels: boolean;
+};
+
+const Edit = (devOpts: DevOptions): JSX.Element => {
   const params = useParams();
   const sessionId = params["sessionId"];
 
@@ -88,10 +94,20 @@ const Edit = (): JSX.Element => {
   }
 
   // At this point, we have successfully received an initial program.
-  return <AppProg initialProg={queryRes.data} {...{ sessionId }}></AppProg>;
+  return (
+    <AppProg
+      initialProg={queryRes.data}
+      {...{ sessionId }}
+      devOpts={devOpts}
+    ></AppProg>
+  );
 };
 
-const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
+const AppProg = (p: {
+  sessionId: string;
+  initialProg: Prog;
+  devOpts: DevOptions;
+}): JSX.Element => {
   const [prog, setProg0] = useState<Prog>(p.initialProg);
   const [selection, setSelection0] = useState<Selection | undefined>(
     prog.selection
@@ -140,6 +156,7 @@ const AppProg = (p: { sessionId: string; initialProg: Prog }): JSX.Element => {
       setProg={setProg}
       undoAvailable={prog.undoAvailable}
       redoAvailable={prog.redoAvailable}
+      devOpts={p.devOpts}
     />
   );
 };
@@ -199,8 +216,9 @@ const AppNoError = ({
   setProg: (p: Prog) => void;
   undoAvailable: boolean;
   redoAvailable: boolean;
+  devOpts: DevOptions;
 }): JSX.Element => {
-  const initialMode = "tree 1";
+  const initialMode = "tree";
   const [mode, setMode] = useState<Mode>(initialMode);
   const [level, setLevel] = useState<Level>(initialLevel);
   const toggleLevel = (): void => {
@@ -269,16 +287,9 @@ const AppNoError = ({
     .sort((a, b) => cmpName(a.name, b.name))
     .map((d) => d.name.baseName);
 
-  const treeProps = (() => {
-    switch (mode) {
-      case "text":
-        return defaultTreeReactFlowProps;
-      case "tree 1":
-        return defaultTreeReactFlowProps;
-      case "tree 2":
-        return inlineTreeReactFlowProps;
-    }
-  })();
+  const treeProps = p.devOpts.inlineLabels
+    ? inlineTreeReactFlowProps
+    : defaultTreeReactFlowProps;
 
   return (
     <div className="grid h-[100dvh] grid-cols-[auto_20rem]">
@@ -288,6 +299,8 @@ const AppNoError = ({
             scrollToDefRef={scrollToDefRef}
             scrollToTypeDefRef={scrollToTypeDefRef}
             {...treeProps}
+            showIDs={p.devOpts.showIDs}
+            alwaysShowLabels={p.devOpts.alwaysShowLabels}
             {...(selection && { selection })}
             onNodeClick={(_e, sel) => sel && setSelection(sel)}
             defs={p.module.defs}

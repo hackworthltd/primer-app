@@ -102,6 +102,8 @@ type NodeParams = {
   boxPadding: number;
   selection?: Selection;
   level: Level;
+  showIDs: boolean;
+  alwaysShowLabels: boolean;
 };
 type DefParams = {
   nameNodeMultipliers: { width: number; height: number };
@@ -139,6 +141,8 @@ export const defaultTreeReactFlowProps: Pick<
     type: WasmLayoutType.Tidy,
     margins: { child: 28, sibling: 18 },
   },
+  showIDs: false,
+  alwaysShowLabels: false,
 };
 export const inlineTreeReactFlowProps: typeof defaultTreeReactFlowProps = {
   ...defaultTreeReactFlowProps,
@@ -160,7 +164,13 @@ const handle = (type: HandleType, position: Position) => (
 );
 
 const nodeTypes = {
-  primer: ({ data }: { data: PrimerNodeProps & PrimerCommonNodeProps }) => {
+  primer: ({
+    data,
+    id,
+  }: {
+    data: PrimerNodeProps & PrimerCommonNodeProps;
+    id: string;
+  }) => {
     const classes = (() => {
       switch (data.style) {
         case "corner":
@@ -224,7 +234,7 @@ const nodeTypes = {
             <></>
           ) : (
             <div className={classes.label} style={{ width: data.height }}>
-              {flavorLabel(data.flavor)}
+              {data.showIDs ? id : flavorLabel(data.flavor)}
             </div>
           )}
           <div className={classes.contents}>
@@ -238,8 +248,10 @@ const nodeTypes = {
   },
   "primer-simple": ({
     data,
+    id,
   }: {
     data: PrimerSimpleNodeProps & PrimerCommonNodeProps;
+    id: string;
   }) => (
     <>
       {handle("target", Position.Top)}
@@ -262,11 +274,11 @@ const nodeTypes = {
         {
           <div
             className={classNames(
-              "block truncate px-1 font-code text-sm xl:text-base",
+              "block px-1 font-code text-sm xl:text-base",
               flavorContentClasses(data.flavor)
             )}
           >
-            {flavorLabel(data.flavor)}
+            {data.showIDs ? id : flavorLabel(data.flavor)}
           </div>
         }
       </div>
@@ -276,8 +288,10 @@ const nodeTypes = {
   ),
   "primer-box": ({
     data,
+    id,
   }: {
     data: PrimerBoxNodeProps & PrimerCommonNodeProps;
+    id: string;
   }) => (
     <>
       {handle("target", Position.Top)}
@@ -307,7 +321,7 @@ const nodeTypes = {
             flavorLabelClasses(data.flavor)
           )}
         >
-          {flavorLabel(data.flavor)}
+          {data.showIDs ? id : flavorLabel(data.flavor)}
         </div>
       </div>
       {handle("source", Position.Bottom)}
@@ -562,13 +576,14 @@ const makePrimerNode = async (
       p.selection
     );
   const id = node.nodeId;
-  const hideLabels = p.level == "Expert" && false;
+  const hideLabels = p.level == "Expert" && !p.alwaysShowLabels;
   const common = {
     width: p.nodeWidth,
     height: p.nodeHeight,
     selected,
     nodeData,
     style: p.style,
+    showIDs: p.showIDs,
   };
   const edgeCommon = (
     child: PrimerNode,
@@ -616,7 +631,7 @@ const makePrimerNode = async (
     }
     case "TextBody": {
       const { fst: flavor, snd: name } = node.body.contents;
-      const hideLabel = hideLabels && !flavorIsSyntax(flavor);
+      const hideLabel = hideLabels && !flavorIsSyntax(flavor) && !p.showIDs;
       return [
         {
           id,
