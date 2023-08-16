@@ -171,53 +171,6 @@ const nodeTypes = {
     data: PrimerNodeProps & PrimerCommonNodeProps;
     id: string;
   }) => {
-    const classes = (() => {
-      switch (data.style) {
-        case "corner":
-          return {
-            root: classNames(
-              {
-                "ring-4 ring-offset-4": data.selected,
-                "hover:ring-opacity-50": !data.selected,
-              },
-              "flex items-center justify-center border-4 text-grey-tertiary",
-              flavorClasses(data.flavor)
-            ),
-            label: classNames(
-              "flex justify-center z-20 p-1 absolute text-sm xl:text-base",
-              data.centerLabel ? "-top-4" : "-left-2 -top-5",
-              flavorLabelClasses(data.flavor)
-            ),
-            contents: classNames(
-              "block truncate px-1 font-code text-sm xl:text-base",
-              flavorContentClasses(data.flavor)
-            ),
-          };
-        case "inline":
-          return {
-            root: classNames(
-              {
-                "ring-4 ring-offset-4": data.selected,
-                "hover:ring-opacity-50": !data.selected,
-              },
-              "flex gap-1.5 border-4 text-grey-tertiary",
-              flavorClasses(data.flavor)
-            ),
-            label: classNames(
-              "shrink-0 flex items-center justify-center text-sm xl:text-base -m-1 mr-0",
-              flavorLabelClasses(data.flavor)
-            ),
-            contents: classNames(
-              "overflow-hidden grow flex self-center justify-center px-1 font-code text-sm xl:text-base",
-              flavorContentClasses(data.flavor),
-              // This makes the content look more centered, given the rounded ends (see `sortClasses`).
-              flavorSort(data.flavor) == "term" && !data.hideLabel
-                ? "relative right-1"
-                : ""
-            ),
-          };
-      }
-    })();
     return (
       <>
         {handle("target", Position.Top)}
@@ -228,16 +181,42 @@ const nodeTypes = {
             width: data.width,
             height: data.height,
           }}
-          className={classes.root}
+          className={classNames(
+            "flex justify-center gap-1.5 border-4 text-grey-tertiary",
+            data.selected ? "ring-4 ring-offset-4" : "hover:ring-opacity-50",
+            flavorClasses(data.flavor)
+          )}
         >
           {data.hideLabel ? (
             <></>
           ) : (
-            <div className={classes.label} style={{ width: data.height }}>
+            <div
+              className={classNames(
+                "shrink-0 flex items-center justify-center z-20 text-sm xl:text-base",
+                flavorLabelClasses(data.flavor),
+                data.style == "corner" &&
+                  classNames(
+                    "p-1 absolute",
+                    data.centerLabel ? "-top-4" : "-left-2 -top-5"
+                  ),
+                data.style == "inline" && "-m-1 mr-0"
+              )}
+              style={{ width: data.height }}
+            >
               {data.showIDs ? id : flavorLabel(data.flavor)}
             </div>
           )}
-          <div className={classes.contents}>
+          <div
+            className={classNames(
+              "overflow-hidden grow flex self-center justify-center px-1 font-code text-sm xl:text-base",
+              flavorContentClasses(data.flavor),
+              // This makes the content look more centered, given the rounded ends (see `sortClasses`).
+              data.style == "inline" &&
+                flavorSort(data.flavor) == "term" &&
+                !data.hideLabel &&
+                "relative right-1"
+            )}
+          >
             <div className="truncate">{data.contents}</div>
           </div>
         </div>
