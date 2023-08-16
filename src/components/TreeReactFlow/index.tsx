@@ -575,8 +575,13 @@ const makePrimerNode = async (
     sourceHandle: isRight ? Position.Right : Position.Bottom,
     targetHandle: isRight ? Position.Left : Position.Top,
   });
+  const width = (hideLabel: boolean) =>
+    p.style == "inline" && !hideLabel
+      ? common.width + common.height
+      : common.width;
   switch (node.body.tag) {
     case "PrimBody": {
+      const hideLabel = hideLabels;
       const { fst: flavor, snd: prim } = node.body.contents;
       const contents = (() => {
         switch (prim.tag) {
@@ -594,8 +599,9 @@ const makePrimerNode = async (
             flavor,
             contents,
             centerLabel: false,
-            hideLabel: hideLabels,
+            hideLabel,
             ...common,
+            width: width(hideLabel),
           },
           zIndex,
         },
@@ -621,10 +627,7 @@ const makePrimerNode = async (
             centerLabel: false,
             hideLabel,
             ...common,
-            width:
-              p.style == "inline" && !hideLabel
-                ? common.width + common.height
-                : common.width,
+            width: width(hideLabel),
           },
           zIndex,
         },
@@ -653,7 +656,7 @@ const makePrimerNode = async (
               flavor,
               contents: noBodyFlavorContents(node.body.contents),
               centerLabel: node.children >= 2,
-              hideLabel: hideLabels,
+              hideLabel: false,
               ...common,
               // TODO This is necessary to ensure that all syntax labels fit.
               // It can be removed when we have dynamic node sizes.
