@@ -184,7 +184,7 @@ const nodeTypes = {
               flavorClasses(data.flavor)
             ),
             label: classNames(
-              "flex justify-center z-20 p-1 absolute rounded-full text-sm xl:text-base",
+              "flex justify-center z-20 p-1 absolute text-sm xl:text-base",
               data.centerLabel ? "-top-4" : "-left-2 -top-5",
               flavorLabelClasses(data.flavor)
             ),
