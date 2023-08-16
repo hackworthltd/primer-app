@@ -555,7 +555,7 @@ const makePrimerNode = async (
       p.selection
     );
   const id = node.nodeId;
-  const hideLabels = p.level == "Expert" && !p.alwaysShowLabels;
+  const hideLabels = p.level == "Expert" && !p.alwaysShowLabels && !p.showIDs;
   const common = {
     width: p.nodeWidth,
     height: p.nodeHeight,
@@ -616,7 +616,7 @@ const makePrimerNode = async (
     }
     case "TextBody": {
       const { fst: flavor, snd: name } = node.body.contents;
-      const hideLabel = hideLabels && !flavorIsSyntax(flavor) && !p.showIDs;
+      const hideLabel = hideLabels && !flavorIsSyntax(flavor);
       return [
         {
           id,
