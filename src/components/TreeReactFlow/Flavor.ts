@@ -492,6 +492,31 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
   }
 };
 
+/** This is a slightly shaky concept, but essentially it comes down to whether labels can be omitted
+ * without destroying the readability of the program.
+ * In other words, would we show this flavor's label in text mode?
+ */
+export const flavorIsSyntax = (flavor: NodeFlavorTextBody): boolean => {
+  switch (flavor) {
+    case "Lam":
+    case "LAM":
+    case "Let":
+    case "LetType":
+    case "Letrec":
+    case "TForall":
+    case "TLet":
+      return true;
+    case "Con":
+    case "GlobalVar":
+    case "LocalVar":
+    case "TCon":
+    case "TVar":
+    case "PatternCon":
+    case "PatternBind":
+      return false;
+  }
+};
+
 export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
   switch (flavor) {
     case "Ann":
@@ -603,8 +628,7 @@ export const sortLabelClasses = (s: "term" | "type" | "kind"): string => {
 export const sortContentClasses = (s: "term" | "type" | "kind"): string => {
   switch (s) {
     case "term":
-      // This makes the content look more centered, given the rounded ends. See `sortClasses`.
-      return "right-1";
+      return "";
     case "type":
       return "";
     case "kind":

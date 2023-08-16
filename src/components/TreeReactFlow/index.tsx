@@ -58,8 +58,10 @@ import {
   flavorClasses,
   flavorContentClasses,
   flavorEdgeClasses,
+  flavorIsSyntax,
   flavorLabel,
   flavorLabelClasses,
+  flavorSort,
   noBodyFlavorContents,
   sortClasses,
 } from "./Flavor";
@@ -131,17 +133,17 @@ export const defaultTreeReactFlowProps: Pick<
   treePadding: 100,
   nodeWidth: 80,
   nodeHeight: 35,
-  boxPadding: 50,
+  boxPadding: 55,
   defParams: { nameNodeMultipliers: { width: 3, height: 2 } },
   layout: {
     type: WasmLayoutType.Tidy,
-    margins: { child: 25, sibling: 18 },
+    margins: { child: 28, sibling: 18 },
   },
 };
 export const inlineTreeReactFlowProps: typeof defaultTreeReactFlowProps = {
   ...defaultTreeReactFlowProps,
   style: "inline",
-  nodeWidth: 100,
+  boxPadding: 35,
   layout: {
     ...defaultTreeReactFlowProps.layout,
     margins: { child: 15, sibling: 12 },
@@ -172,8 +174,8 @@ const nodeTypes = {
               flavorClasses(data.flavor)
             ),
             label: classNames(
-              "z-20 p-1 absolute rounded-full text-sm xl:text-base",
-              data.syntax ? "-top-4" : "-left-2 -top-4",
+              "flex justify-center z-20 p-1 absolute rounded-full text-sm xl:text-base",
+              data.centerLabel ? "-top-4" : "-left-2 -top-5",
               flavorLabelClasses(data.flavor)
             ),
             contents: classNames(
@@ -188,16 +190,20 @@ const nodeTypes = {
                 "ring-4 ring-offset-4": data.selected,
                 "hover:ring-opacity-50": !data.selected,
               },
-              "grid grid-cols-[2rem_auto] gap-1 border-4 text-grey-tertiary",
+              "flex gap-1.5 border-4 text-grey-tertiary",
               flavorClasses(data.flavor)
             ),
             label: classNames(
-              "flex items-center justify-center text-sm xl:text-base -m-1 mr-0",
+              "shrink-0 flex items-center justify-center text-sm xl:text-base -m-1 mr-0",
               flavorLabelClasses(data.flavor)
             ),
             contents: classNames(
-              "truncate self-center justify-self-center font-code text-sm xl:text-base max-w-full relative",
-              flavorContentClasses(data.flavor)
+              "overflow-hidden grow flex self-center justify-center px-1 font-code text-sm xl:text-base",
+              flavorContentClasses(data.flavor),
+              // This makes the content look more centered, given the rounded ends (see `sortClasses`).
+              flavorSort(data.flavor) == "term" && !data.hideLabel
+                ? "relative right-1"
+                : ""
             ),
           };
       }
@@ -214,8 +220,16 @@ const nodeTypes = {
           }}
           className={classes.root}
         >
-          <div className={classes.label}>{flavorLabel(data.flavor)}</div>
-          <div className={classes.contents}>{data.contents}</div>
+          {data.hideLabel ? (
+            <></>
+          ) : (
+            <div className={classes.label} style={{ width: data.height }}>
+              {flavorLabel(data.flavor)}
+            </div>
+          )}
+          <div className={classes.contents}>
+            <div className="truncate">{data.contents}</div>
+          </div>
         </div>
         {handle("source", Position.Bottom)}
         {handle("source", Position.Right)}
@@ -548,6 +562,7 @@ const makePrimerNode = async (
       p.selection
     );
   const id = node.nodeId;
+  const hideLabels = p.level == "Expert" && false;
   const common = {
     width: p.nodeWidth,
     height: p.nodeHeight,
@@ -584,7 +599,8 @@ const makePrimerNode = async (
           data: {
             flavor,
             contents,
-            syntax: false,
+            centerLabel: false,
+            hideLabel: hideLabels,
             ...common,
           },
           zIndex,
@@ -600,6 +616,7 @@ const makePrimerNode = async (
     }
     case "TextBody": {
       const { fst: flavor, snd: name } = node.body.contents;
+      const hideLabel = hideLabels && !flavorIsSyntax(flavor);
       return [
         {
           id,
@@ -607,8 +624,13 @@ const makePrimerNode = async (
           data: {
             flavor,
             contents: name.baseName,
-            syntax: false,
+            centerLabel: false,
+            hideLabel,
             ...common,
+            width:
+              p.style == "inline" && !hideLabel
+                ? common.width + common.height
+                : common.width,
           },
           zIndex,
         },
@@ -636,7 +658,8 @@ const makePrimerNode = async (
             data: {
               flavor,
               contents: noBodyFlavorContents(node.body.contents),
-              syntax: node.children >= 2,
+              centerLabel: node.children >= 2,
+              hideLabel: hideLabels,
               ...common,
               // TODO This is necessary to ensure that all syntax labels fit.
               // It can be removed when we have dynamic node sizes.
