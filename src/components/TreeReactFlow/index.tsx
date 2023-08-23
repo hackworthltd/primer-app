@@ -171,53 +171,6 @@ const nodeTypes = {
     data: PrimerNodeProps & PrimerCommonNodeProps;
     id: string;
   }) => {
-    const classes = (() => {
-      switch (data.style) {
-        case "corner":
-          return {
-            root: classNames(
-              {
-                "ring-4 ring-offset-4": data.selected,
-                "hover:ring-opacity-50": !data.selected,
-              },
-              "flex items-center justify-center border-4 text-grey-tertiary",
-              flavorClasses(data.flavor)
-            ),
-            label: classNames(
-              "flex justify-center z-20 p-1 absolute text-sm xl:text-base",
-              data.centerLabel ? "-top-4" : "-left-2 -top-5",
-              flavorLabelClasses(data.flavor)
-            ),
-            contents: classNames(
-              "block truncate px-1 font-code text-sm xl:text-base",
-              flavorContentClasses(data.flavor)
-            ),
-          };
-        case "inline":
-          return {
-            root: classNames(
-              {
-                "ring-4 ring-offset-4": data.selected,
-                "hover:ring-opacity-50": !data.selected,
-              },
-              "flex gap-1.5 border-4 text-grey-tertiary",
-              flavorClasses(data.flavor)
-            ),
-            label: classNames(
-              "shrink-0 flex items-center justify-center text-sm xl:text-base -m-1 mr-0",
-              flavorLabelClasses(data.flavor)
-            ),
-            contents: classNames(
-              "overflow-hidden grow flex self-center justify-center px-1 font-code text-sm xl:text-base",
-              flavorContentClasses(data.flavor),
-              // This makes the content look more centered, given the rounded ends (see `sortClasses`).
-              flavorSort(data.flavor) == "term" && !data.hideLabel
-                ? "relative right-1"
-                : ""
-            ),
-          };
-      }
-    })();
     return (
       <>
         {handle("target", Position.Top)}
@@ -228,16 +181,42 @@ const nodeTypes = {
             width: data.width,
             height: data.height,
           }}
-          className={classes.root}
+          className={classNames(
+            "flex justify-center gap-1.5 border-4 text-grey-tertiary",
+            data.selected ? "ring-4 ring-offset-4" : "hover:ring-opacity-50",
+            flavorClasses(data.flavor)
+          )}
         >
           {data.hideLabel ? (
             <></>
           ) : (
-            <div className={classes.label} style={{ width: data.height }}>
+            <div
+              className={classNames(
+                "shrink-0 flex items-center justify-center z-20 text-sm xl:text-base",
+                flavorLabelClasses(data.flavor),
+                data.style == "corner" &&
+                  classNames(
+                    "p-1 absolute",
+                    data.centerLabel ? "-top-4" : "-left-2 -top-5"
+                  ),
+                data.style == "inline" && "-m-1 mr-0"
+              )}
+              style={{ width: data.height }}
+            >
               {data.showIDs ? id : flavorLabel(data.flavor)}
             </div>
           )}
-          <div className={classes.contents}>
+          <div
+            className={classNames(
+              "overflow-hidden grow flex self-center justify-center px-1 font-code text-sm xl:text-base",
+              flavorContentClasses(data.flavor),
+              // This makes the content look more centered, given the rounded ends (see `sortClasses`).
+              data.style == "inline" &&
+                flavorSort(data.flavor) == "term" &&
+                !data.hideLabel &&
+                "relative right-1"
+            )}
+          >
             <div className="truncate">{data.contents}</div>
           </div>
         </div>
@@ -576,7 +555,7 @@ const makePrimerNode = async (
       p.selection
     );
   const id = node.nodeId;
-  const hideLabels = p.level == "Expert" && !p.alwaysShowLabels;
+  const hideLabels = p.level == "Expert" && !p.alwaysShowLabels && !p.showIDs;
   const common = {
     width: p.nodeWidth,
     height: p.nodeHeight,
@@ -596,8 +575,13 @@ const makePrimerNode = async (
     sourceHandle: isRight ? Position.Right : Position.Bottom,
     targetHandle: isRight ? Position.Left : Position.Top,
   });
+  const width = (hideLabel: boolean) =>
+    p.style == "inline" && !hideLabel
+      ? common.width + common.height
+      : common.width;
   switch (node.body.tag) {
     case "PrimBody": {
+      const hideLabel = hideLabels;
       const { fst: flavor, snd: prim } = node.body.contents;
       const contents = (() => {
         switch (prim.tag) {
@@ -615,8 +599,9 @@ const makePrimerNode = async (
             flavor,
             contents,
             centerLabel: false,
-            hideLabel: hideLabels,
+            hideLabel,
             ...common,
+            width: width(hideLabel),
           },
           zIndex,
         },
@@ -631,7 +616,7 @@ const makePrimerNode = async (
     }
     case "TextBody": {
       const { fst: flavor, snd: name } = node.body.contents;
-      const hideLabel = hideLabels && !flavorIsSyntax(flavor) && !p.showIDs;
+      const hideLabel = hideLabels && !flavorIsSyntax(flavor);
       return [
         {
           id,
@@ -642,10 +627,7 @@ const makePrimerNode = async (
             centerLabel: false,
             hideLabel,
             ...common,
-            width:
-              p.style == "inline" && !hideLabel
-                ? common.width + common.height
-                : common.width,
+            width: width(hideLabel),
           },
           zIndex,
         },
@@ -674,7 +656,7 @@ const makePrimerNode = async (
               flavor,
               contents: noBodyFlavorContents(node.body.contents),
               centerLabel: node.children >= 2,
-              hideLabel: hideLabels,
+              hideLabel: false,
               ...common,
               // TODO This is necessary to ensure that all syntax labels fit.
               // It can be removed when we have dynamic node sizes.
