@@ -77,7 +77,46 @@ const def6 = {
 };
 const typeDef1: TypeDef = {
   name: { qualifiedModule: [], baseName: "Either-ish" },
-  params: ["a", "b"],
+  params: [
+    {
+      name: "a",
+      kind: {
+        body: { tag: "NoBody", contents: "KType" },
+        nodeId: "1110",
+        childTrees: [],
+      },
+    },
+    {
+      name: "b",
+      kind: {
+        body: { tag: "NoBody", contents: "KFun" },
+        nodeId: "1111",
+        childTrees: [
+          {
+            body: { tag: "NoBody", contents: "KType" },
+            nodeId: "1112",
+            childTrees: [],
+          },
+          {
+            body: { tag: "NoBody", contents: "KFun" },
+            nodeId: "1113",
+            childTrees: [
+              {
+                body: { tag: "NoBody", contents: "KHole" },
+                nodeId: "1114",
+                childTrees: [],
+              },
+              {
+                body: { tag: "NoBody", contents: "KType" },
+                nodeId: "1115",
+                childTrees: [],
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
   constructors: [
     {
       name: { qualifiedModule: [], baseName: "Left" },
@@ -111,8 +150,8 @@ const typeDef1: TypeDef = {
                   body: {
                     tag: "TextBody",
                     contents: {
-                      fst: "TCon",
-                      snd: { baseName: "Pair" },
+                      fst: "TVar",
+                      snd: { baseName: "b" },
                     },
                   },
                   childTrees: [],
@@ -135,8 +174,8 @@ const typeDef1: TypeDef = {
               body: {
                 tag: "TextBody",
                 contents: {
-                  fst: "TVar",
-                  snd: { baseName: "b" },
+                  fst: "TCon",
+                  snd: { baseName: "Pair" },
                 },
               },
               childTrees: [],
@@ -255,7 +294,10 @@ export const TreeType1: ComponentStory<typeof TreeReactFlow> = (
       tag: "SelectionTypeDef",
       contents: {
         def: typeDef1.name,
-        node: { tag: "TypeDefParamNodeSelection", contents: "a" },
+        node: {
+          tag: "TypeDefParamNodeSelection",
+          contents: { param: "b", kindMeta: 1114 },
+        },
       },
     },
   });
