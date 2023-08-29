@@ -6,7 +6,7 @@ import {
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
 import { unzip } from "fp-ts/lib/Array";
 import { fst, mapFst, mapSnd } from "fp-ts/lib/Tuple";
-import { treeMap, Tree, Positioned } from "./Types";
+import { treeMap, Tree, Positioned, Padding } from "./Types";
 
 export type LayoutParams = {
   type: WasmLayoutType;
@@ -16,7 +16,7 @@ export type LayoutParams = {
 export const layoutTree = <
   N extends {
     id: string;
-    data: { width: number; height: number };
+    data: { width: number; height: number; padding?: Padding };
   },
   E extends {
     source: string;
@@ -47,18 +47,31 @@ export const layoutTree = <
         (id) => nodeMap.get(id)!
       );
       const nodes = Array.from(nodeMap.values()).map((n) => n.node);
-      const minX = Math.min(...nodes.map((n) => n.position.x));
-      const minY = Math.min(...nodes.map((n) => n.position.y));
+      const minX = Math.min(
+        ...nodes.map((n) => n.position.x - (n.data.padding?.left || 0))
+      );
+      const minY = Math.min(
+        ...nodes.map((n) => n.position.y - (n.data.padding?.top || 0))
+      );
       const tree = treeMap(treeUnNormalized, (n) => ({
         ...n,
         // Ensure top-left is at (0,0). This makes the result easier to work with.
         position: { x: n.position.x - minX, y: n.position.y - minY },
       }));
       const width = nodes
-        ? Math.max(...nodes.map((n) => n.position.x + n.data.width)) - minX
+        ? Math.max(
+            ...nodes.map(
+              (n) => n.position.x + n.data.width + (n.data.padding?.right || 0)
+            )
+          ) - minX
         : 0;
       const height = nodes
-        ? Math.max(...nodes.map((n) => n.position.y + n.data.height)) - minY
+        ? Math.max(
+            ...nodes.map(
+              (n) =>
+                n.position.y + n.data.height + (n.data.padding?.bottom || 0)
+            )
+          ) - minY
         : 0;
       return { tree, width, height };
     }
@@ -84,7 +97,7 @@ type TreeNode<N, E> = {
 const makeNodeMap = <
   N extends {
     id: string;
-    data: { width: number; height: number };
+    data: { width: number; height: number; padding?: Padding };
   },
   E extends { source: string; target: string },
 >(
@@ -129,7 +142,10 @@ const makeNodeMap = <
 // since we use dummy edges e.g. in order to obtain a more desirable placement of right-children.
 // Tidy uses numeric IDs, so we must label nodes with ascending integers.
 // As well as the Tidy tree itself, we also output extra info needed to reconstruct the Primer tree from it.
-const primerToTidy = <N extends { data: { width: number; height: number } }, E>(
+const primerToTidy = <
+  N extends { data: { width: number; height: number; padding?: Padding } },
+  E,
+>(
   t0: Tree<N, E>
 ): [TidyNode, NodeInfo<N>[], EdgeInfo<E>[]] => {
   const nodeInfos: NodeInfo<N>[] = [];
@@ -153,8 +169,14 @@ const primerToTidy = <N extends { data: { width: number; height: number } }, E>(
     });
     children.forEach(([_, e]) => edgeInfos.push(e));
     return {
-      width: t.node.data.width,
-      height: t.node.data.height,
+      width:
+        t.node.data.width +
+        (t.node.data.padding?.left || 0) +
+        (t.node.data.padding?.right || 0),
+      height:
+        t.node.data.height +
+        (t.node.data.padding?.bottom || 0) +
+        (t.node.data.padding?.top || 0),
       children: children.map(fst),
       id: tidyId,
       // Initial coordinates are unused and immediately overwritten.

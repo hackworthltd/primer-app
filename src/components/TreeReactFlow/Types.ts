@@ -134,6 +134,13 @@ export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> =>
     data: { ...n1.data, ...x },
   }))(n);
 
+export type Padding = {
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
 /** Data corresponding to a node from the backend.
  * This is not used by special nodes, like term definition names or most parts of type definitions,
  * but only in places where the backend allows an arbitrarily nested (term or type) expression.
@@ -203,6 +210,7 @@ export type PrimerTypeDefConsNodeProps = {
 export type PrimerCommonNodeProps = {
   width: number;
   height: number;
+  padding?: Padding;
   selected: boolean;
   style: "inline" | "corner";
 };
