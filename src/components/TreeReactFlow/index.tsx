@@ -50,6 +50,7 @@ import {
   PrimerTypeDefParamNodeProps,
   PrimerTypeDefNameNodeProps,
   NodeData,
+  Padding,
 } from "./Types";
 import { LayoutParams, layoutTree } from "./layoutTree";
 import {
@@ -100,6 +101,7 @@ type NodeParams = {
   nodeWidth: number;
   nodeHeight: number;
   boxPadding: number;
+  defNodePadding: Padding;
   selection?: Selection;
   level: Level;
   showIDs: boolean;
@@ -137,6 +139,7 @@ export const defaultTreeReactFlowProps: Pick<
   nodeHeight: 35,
   boxPadding: 55,
   defParams: { nameNodeMultipliers: { width: 3, height: 2 } },
+  defNodePadding: { bottom: 16 },
   layout: {
     type: WasmLayoutType.Tidy,
     margins: { child: 28, sibling: 18 },
@@ -853,6 +856,7 @@ const defToTree = async (
         contents: { def: def.name },
       }),
       nested: [],
+      padding: p.defNodePadding,
     },
     type: "primer-def-name",
     zIndex: 0,
@@ -1053,6 +1057,7 @@ const typeDefToTree = async (
                   },
                 },
               }),
+              padding: p.defNodePadding,
             },
             zIndex: 0,
           },
@@ -1084,6 +1089,7 @@ const typeDefToTree = async (
           tag: "SelectionTypeDef",
           contents: { def: def.name },
         }),
+        padding: p.defNodePadding,
       },
       zIndex: 0,
     },
