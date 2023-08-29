@@ -680,6 +680,18 @@ const makePrimerNode = async (
               ...common,
               // Square, with same height as other nodes.
               width: common.height,
+              ...(flavorSort(flavor) == "kind"
+                ? {
+                    padding: {
+                      // Since these nodes are rotated, their width,
+                      // as reported to the layout engine, is off by a factor of √2.
+                      // We don't pad vertically since allowing some overlap in the y-axis actually looks better,
+                      // due to the rotation and the fact that all non-leaf kind nodes have precisely two children.
+                      left: (common.height * Math.sqrt(2) - common.height) / 2,
+                      right: (common.height * Math.sqrt(2) - common.height) / 2,
+                    },
+                  }
+                : {}),
             },
             zIndex,
           },
