@@ -39,7 +39,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.2",
-    "react-router-dom": "^6.14.2",
+    "react-router-dom": "^6.16.0",
     "reactflow": "^11.7.4",
     "universal-cookie": "^4.0.4",
     "uuid": "^9.0.0",
