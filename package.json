@@ -52,7 +52,7 @@
     "@heroicons/react": "^2.0.18",
     "@storybook/addon-actions": "^7.2.1",
     "@storybook/addon-essentials": "^7.2.1",
-    "@storybook/addon-links": "^7.2.1",
+    "@storybook/addon-links": "^7.4.4",
     "@storybook/react": "^7.2.1",
     "@storybook/react-vite": "^7.2.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",
