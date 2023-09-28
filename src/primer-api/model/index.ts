@@ -18,6 +18,7 @@ export * from './createDefinitionParams';
 export * from './createTypeDefBody';
 export * from './def';
 export * from './defSelection';
+export * from './evalFullClosed';
 export * from './evalFullParams';
 export * from './evalFullResp';
 export * from './evalFullRespOneOf';
