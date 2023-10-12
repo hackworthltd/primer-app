@@ -1,6 +1,6 @@
 import "@/index.css";
 
-import { ReactComponent as BinaryTreeSvg } from "./binary-tree.svg";
+import Placeholder from "./binary-tree.svg?react";
 
 export interface BinaryTreePlaceholderProps {
   className?: string;
@@ -10,7 +10,7 @@ export const BinaryTreePlaceholder = ({
   className = "",
 }: BinaryTreePlaceholderProps): JSX.Element => (
   <div>
-    <BinaryTreeSvg className={className} />
+    <Placeholder className={className} />
   </div>
 );
 
