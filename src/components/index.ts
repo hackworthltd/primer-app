@@ -23,6 +23,7 @@ export { default as SessionNameModal } from "./SessionNameModal";
 export { default as SessionPreview } from "./SessionPreview";
 export { default as SessionsNavBar } from "./SessionsNavBar";
 export { default as SimplePaginationBar } from "./SimplePaginationBar";
+export { default as Spinner } from "./Spinner";
 export { default as Toolbar } from "./Toolbar";
 export { default as TreeReactFlow, TreeReactFlowOne } from "./TreeReactFlow";
 export { default as UIButton } from "./UIButton";

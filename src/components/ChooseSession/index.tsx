@@ -6,6 +6,7 @@ import {
   SessionNameModal,
   SessionsNavBar,
   SimplePaginationBar,
+  Spinner,
 } from "@/components";
 import type { Uuid } from "@/primer-api";
 import {
@@ -125,7 +126,9 @@ const ChooseSession = (): JSX.Element => {
         ) : isError ? (
           <div>Error: {error.message}</div>
         ) : (
-          <div>Loading...</div>
+          <div className="flex min-h-full flex-col items-center justify-center">
+            <Spinner aria-label="Loading…" />
+          </div>
         )}
       </div>
       <div className="relative z-40 px-1 shadow-2xl lg:px-4">
