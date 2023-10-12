@@ -43,7 +43,7 @@
     "reactflow": "^11.7.4",
     "universal-cookie": "^4.0.4",
     "uuid": "^9.0.0",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
