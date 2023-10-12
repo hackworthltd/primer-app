@@ -29,7 +29,10 @@ jobs:
       - name: Setup nodejs
         uses: actions/setup-node@v3.7.0
         with:
-          node-version-file: package.json
+          node-version: 18.x
+          check-latest: true
+          # Disabled until we can satisfy Tidy.
+          #node-version-file: package.json
           cache: "pnpm"
 
       - name: Install dependencies
