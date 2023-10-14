@@ -87,7 +87,7 @@
     "typescript-eslint-language-service": "^5.0.5",
     "typescript-language-server": "^3.3.2",
     "unified-language-server": "^4.0.0",
-    "vite": "^4.0.4",
+    "vite": "^4.4.11",
     "vite-plugin-checker": "^0.6.2",
     "vite-plugin-dts": "^3.6.0",
     "vite-plugin-favicons-inject": "^2.2.0",
