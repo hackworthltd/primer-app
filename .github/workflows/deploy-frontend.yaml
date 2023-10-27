@@ -20,7 +20,7 @@ jobs:
         uses: actions/download-artifact@v3.0.2
 
       - name: Import secrets from Vault
-        uses: hashicorp/vault-action@v2.7.3
+        uses: hashicorp/vault-action@v2.7.4
         id: secrets
         with:
           url: https://vault.hackworth-corp.com
