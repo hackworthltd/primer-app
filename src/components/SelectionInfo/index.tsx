@@ -23,10 +23,11 @@ const TypeOrKindTree = (p: {
     fitView({ padding });
   };
 
+  const tk = p.typeOrKind.contents;
   return (
     <TreeReactFlowOne
       {...defaultTreeReactFlowProps}
-      tree={p.typeOrKind.contents}
+      tree={tk.tag === "Ok" ? tk.contents : tk.expected}
       level={p.level}
       zoomBarProps={{ padding }}
       onNodesChange={onNodesChange}
