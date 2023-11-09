@@ -1,5 +1,5 @@
 import { NodeChange, ReactFlowProvider, useReactFlow } from "reactflow";
-import { Level, TypeOrKind } from "@/primer-api";
+import { Tree, Level, TypeOrKind } from "@/primer-api";
 import { TreeReactFlowOne } from "@/components";
 import {
   TreeReactFlowOneProps,
@@ -13,7 +13,7 @@ export type SelectionInfoProps = {
 };
 
 const TypeOrKindTree = (p: {
-  typeOrKind: TypeOrKind;
+  typeOrKind: Tree;
   level: Level;
   extraTreeProps: Partial<TreeReactFlowOneProps>;
 }) => {
@@ -23,17 +23,45 @@ const TypeOrKindTree = (p: {
     fitView({ padding });
   };
 
-  const tk = p.typeOrKind.contents;
   return (
     <TreeReactFlowOne
       {...defaultTreeReactFlowProps}
-      tree={tk.tag === "Ok" ? tk.contents : tk.expected}
+      tree={p.typeOrKind}
       level={p.level}
       zoomBarProps={{ padding }}
       onNodesChange={onNodesChange}
       fitViewOptions={{ padding }}
       {...p.extraTreeProps}
     />
+  );
+};
+
+const SelectionInfoHelper = ({
+  title,
+  tree,
+  level,
+  extraTreeProps,
+}: {
+  title: string;
+  tree: Tree;
+  level: Level;
+  extraTreeProps: Partial<TreeReactFlowOneProps>;
+}) => {
+  return (
+    <div className="flex h-full flex-col overflow-auto">
+      <div className="mx-2 block text-sm font-medium leading-6 text-blue-primary">
+        {title}
+      </div>
+      <div className="grow">
+        <ReactFlowProvider>
+          <TypeOrKindTree
+            typeOrKind={tree}
+            level={level}
+            extraTreeProps={extraTreeProps}
+          />
+        </ReactFlowProvider>
+      </div>
+    </div>
   );
 };
 
@@ -44,22 +72,30 @@ export const SelectionInfo = ({
 }: SelectionInfoProps): JSX.Element => {
   return (
     <div className="flex h-full flex-col overflow-auto">
-      {typeOrKind && (
-        <>
-          <div className="mx-2 block text-sm font-medium leading-6 text-blue-primary">
-            Type
-          </div>
-          <div className="grow">
-            <ReactFlowProvider>
-              <TypeOrKindTree
-                typeOrKind={typeOrKind}
-                level={level}
-                extraTreeProps={extraTreeProps}
-              />
-            </ReactFlowProvider>
-          </div>
-        </>
-      )}
+      {typeOrKind &&
+        (typeOrKind.contents.tag === "Ok" ? (
+          <SelectionInfoHelper
+            title="Type"
+            tree={typeOrKind.contents.contents}
+            level={level}
+            extraTreeProps={extraTreeProps}
+          />
+        ) : (
+          <>
+            <SelectionInfoHelper
+              title="Expected Type"
+              tree={typeOrKind.contents.expected}
+              level={level}
+              extraTreeProps={extraTreeProps}
+            />
+            <SelectionInfoHelper
+              title="Actual Type"
+              tree={typeOrKind.contents.got}
+              level={level}
+              extraTreeProps={extraTreeProps}
+            />
+          </>
+        ))}
     </div>
   );
 };
