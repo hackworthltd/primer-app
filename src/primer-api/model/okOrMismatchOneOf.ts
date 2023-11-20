@@ -5,10 +5,10 @@
  * A backend service implementing a pedagogic functional programming language.
  * OpenAPI spec version: 0.7
  */
-import type { OkOrMismatch } from './okOrMismatch';
-import type { TypeOrKindOneOfTag } from './typeOrKindOneOfTag';
+import type { Tree } from './tree';
+import type { OkOrMismatchOneOfTag } from './okOrMismatchOneOfTag';
 
-export type TypeOrKindOneOf = {
-  contents: OkOrMismatch;
-  tag: TypeOrKindOneOfTag;
+export type OkOrMismatchOneOf = {
+  contents: Tree;
+  tag: OkOrMismatchOneOfTag;
 };
