@@ -64,6 +64,8 @@ export * from './paginatedMeta';
 export * from './paginatedSession';
 export * from './primCon';
 export * from './primConOneOf';
+export * from './primConOneOfFive';
+export * from './primConOneOfFiveTag';
 export * from './primConOneOfTag';
 export * from './primConOneOfThree';
 export * from './primConOneOfThreeTag';

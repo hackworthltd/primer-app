@@ -51,6 +51,7 @@ import {
   PrimerTypeDefNameNodeProps,
   NodeData,
   Padding,
+  PrimerAnimationNodeProps,
 } from "./Types";
 import { LayoutParams, layoutTree } from "./layoutTree";
 import {
@@ -444,6 +445,11 @@ const nodeTypes = {
       {handle("source", Position.Right)}
     </>
   ),
+  "primer-animation": ({
+    data,
+  }: {
+    data: PrimerAnimationNodeProps & PrimerCommonNodeProps;
+  }) => <img src={"data:img/gif;base64," + data.contents} />,
 };
 
 const edgeTypes = {
@@ -586,6 +592,23 @@ const makePrimerNode = async (
     case "PrimBody": {
       const hideLabel = hideLabels;
       const { fst: flavor, snd: prim } = node.body.contents;
+      if (prim.tag == "PrimAnimation") {
+        return [
+          {
+            id,
+            type: "primer-animation",
+            data: { contents: prim.contents, ...common },
+            zIndex,
+          },
+          (child, isRight) => ({
+            type: "primer",
+            data: { flavor },
+            className: flavorEdgeClasses(flavor),
+            ...edgeCommon(child, isRight),
+          }),
+          [],
+        ];
+      }
       const contents = (() => {
         switch (prim.tag) {
           case "PrimInt":
@@ -778,6 +801,18 @@ const makeSelectionFromNode = (
         node: {
           tag: "TypeDefConsNodeSelection",
           contents: { con: node.data.name },
+        },
+      },
+    };
+  } else if (node.type == "primer-animation") {
+    return {
+      tag: "SelectionDef",
+      contents: {
+        def: node.data.def,
+        node: {
+          nodeType: "BodyNode",
+          // This will always be an actual number, since these nodes have backend IDs.
+          meta: Number(node.id),
         },
       },
     };
