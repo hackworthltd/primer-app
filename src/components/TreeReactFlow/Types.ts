@@ -124,6 +124,7 @@ export type PrimerNode<T = unknown> = {
   | { type: "primer-typedef-name"; data: PrimerTypeDefNameNodeProps }
   | { type: "primer-typedef-param"; data: PrimerTypeDefParamNodeProps }
   | { type: "primer-typedef-cons"; data: PrimerTypeDefConsNodeProps }
+  | { type: "primer-animation"; data: PrimerAnimationNodeProps }
 );
 
 export const primerNodeWith = <T>(n: PrimerNode, x: T): PrimerNode<T> =>
@@ -204,6 +205,11 @@ export type PrimerTypeDefParamNodeProps = {
 /** Properties for a constructor node. */
 export type PrimerTypeDefConsNodeProps = {
   name: GlobalName;
+};
+
+/** Properties for an animation node. */
+export type PrimerAnimationNodeProps = {
+  contents: string;
 };
 
 /** Properties common to every type of node. */

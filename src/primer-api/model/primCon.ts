@@ -7,5 +7,6 @@
  */
 import type { PrimConOneOf } from './primConOneOf';
 import type { PrimConOneOfThree } from './primConOneOfThree';
+import type { PrimConOneOfFive } from './primConOneOfFive';
 
-export type PrimCon = PrimConOneOf | PrimConOneOfThree;
+export type PrimCon = PrimConOneOf | PrimConOneOfThree | PrimConOneOfFive;
