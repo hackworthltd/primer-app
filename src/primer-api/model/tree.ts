@@ -6,10 +6,11 @@
  * OpenAPI spec version: 0.7
  */
 import type { NodeBody } from './nodeBody';
+import type { RecordPairEdgeFlavorTree } from './recordPairEdgeFlavorTree';
 
 export interface Tree {
   body: NodeBody;
-  childTrees: Tree[];
+  childTrees: RecordPairEdgeFlavorTree[];
   nodeId: string;
-  rightChild?: Tree;
+  rightChild?: RecordPairEdgeFlavorTree;
 }

@@ -17,12 +17,15 @@ export const tree2: Tree = {
   body: { tag: "TextBody", contents: { fst: "Lam", snd: { baseName: "x" } } },
   childTrees: [
     {
-      body: {
-        tag: "TextBody",
-        contents: { fst: "LocalVar", snd: { baseName: "x" } },
+      fst: "Hole",
+      snd: {
+        body: {
+          tag: "TextBody",
+          contents: { fst: "LocalVar", snd: { baseName: "x" } },
+        },
+        childTrees: [],
+        nodeId: "201",
       },
-      childTrees: [],
-      nodeId: "201",
     },
   ],
   nodeId: "200",
@@ -35,12 +38,15 @@ export const tree3: Tree = {
   },
   childTrees: [
     {
-      body: {
-        tag: "TextBody",
-        contents: { fst: "LocalVar", snd: { baseName: "y" } },
+      fst: "Hole",
+      snd: {
+        body: {
+          tag: "TextBody",
+          contents: { fst: "LocalVar", snd: { baseName: "y" } },
+        },
+        childTrees: [],
+        nodeId: "301",
       },
-      childTrees: [],
-      nodeId: "301",
     },
   ],
   nodeId: "300",
@@ -50,75 +56,105 @@ export const tree4: Tree = {
   body: { tag: "NoBody", contents: "App" },
   childTrees: [
     {
-      body: { tag: "NoBody", contents: "Ann" },
-      childTrees: [
-        {
-          body: {
-            tag: "TextBody",
-            contents: { fst: "LAM", snd: { baseName: "a" } },
-          },
-          childTrees: [
-            {
+      fst: "Hole",
+      snd: {
+        body: { tag: "NoBody", contents: "Ann" },
+        childTrees: [
+          {
+            fst: "Hole",
+            snd: {
               body: {
                 tag: "TextBody",
-                contents: { fst: "Lam", snd: { baseName: "x" } },
+                contents: { fst: "LAM", snd: { baseName: "a" } },
               },
               childTrees: [
                 {
-                  body: {
-                    tag: "TextBody",
-                    contents: { fst: "LocalVar", snd: { baseName: "x" } },
+                  fst: "Hole",
+                  snd: {
+                    body: {
+                      tag: "TextBody",
+                      contents: { fst: "Lam", snd: { baseName: "x" } },
+                    },
+                    childTrees: [
+                      {
+                        fst: "Hole",
+                        snd: {
+                          body: {
+                            tag: "TextBody",
+                            contents: {
+                              fst: "LocalVar",
+                              snd: { baseName: "x" },
+                            },
+                          },
+                          childTrees: [],
+                          nodeId: "404",
+                        },
+                      },
+                    ],
+                    nodeId: "403",
                   },
-                  childTrees: [],
-                  nodeId: "404",
                 },
               ],
-              nodeId: "403",
+              nodeId: "402",
             },
-          ],
-          nodeId: "402",
-        },
-        {
-          body: {
-            tag: "TextBody",
-            contents: { fst: "TForall", snd: { baseName: "a" } },
           },
-          childTrees: [
-            {
-              body: { tag: "NoBody", contents: "TFun" },
+          {
+            fst: "Hole",
+            snd: {
+              body: {
+                tag: "TextBody",
+                contents: { fst: "TForall", snd: { baseName: "a" } },
+              },
               childTrees: [
                 {
-                  body: {
-                    tag: "TextBody",
-                    contents: { fst: "TVar", snd: { baseName: "a" } },
+                  fst: "Hole",
+                  snd: {
+                    body: { tag: "NoBody", contents: "TFun" },
+                    childTrees: [
+                      {
+                        fst: "Hole",
+                        snd: {
+                          body: {
+                            tag: "TextBody",
+                            contents: { fst: "TVar", snd: { baseName: "a" } },
+                          },
+                          childTrees: [],
+                          nodeId: "407",
+                        },
+                      },
+                      {
+                        fst: "Hole",
+                        snd: {
+                          body: {
+                            tag: "TextBody",
+                            contents: { fst: "TVar", snd: { baseName: "a" } },
+                          },
+                          childTrees: [],
+                          nodeId: "408",
+                        },
+                      },
+                    ],
+                    nodeId: "406",
                   },
-                  childTrees: [],
-                  nodeId: "407",
-                },
-                {
-                  body: {
-                    tag: "TextBody",
-                    contents: { fst: "TVar", snd: { baseName: "a" } },
-                  },
-                  childTrees: [],
-                  nodeId: "408",
                 },
               ],
-              nodeId: "406",
+              nodeId: "405",
             },
-          ],
-          nodeId: "405",
-        },
-      ],
-      nodeId: "401",
+          },
+        ],
+        nodeId: "401",
+      },
     },
     {
-      body: {
-        tag: "TextBody",
-        contents: { fst: "Con", snd: { baseName: "Unit" } },
+      fst: "Hole",
+      snd: {
+        body: {
+          tag: "TextBody",
+          contents: { fst: "Con", snd: { baseName: "Unit" } },
+        },
+        childTrees: [],
+        nodeId: "409",
       },
-      childTrees: [],
-      nodeId: "409",
     },
   ],
   nodeId: "400",
@@ -131,28 +167,40 @@ export const tree5: Tree = {
   },
   childTrees: [
     {
-      body: { tag: "NoBody", contents: "Case" },
-      childTrees: [
-        {
-          body: {
-            tag: "TextBody",
-            contents: { fst: "LocalVar", snd: { baseName: "x" } },
+      fst: "Hole",
+      snd: {
+        body: { tag: "NoBody", contents: "Case" },
+        childTrees: [
+          {
+            fst: "Hole",
+            snd: {
+              body: {
+                tag: "TextBody",
+                contents: { fst: "LocalVar", snd: { baseName: "x" } },
+              },
+              childTrees: [],
+              nodeId: "502",
+            },
           },
-          childTrees: [],
-          nodeId: "502",
-        },
-        {
-          body: { tag: "NoBody", contents: "EmptyHole" },
-          childTrees: [],
-          nodeId: "503",
-        },
-        {
-          body: { tag: "NoBody", contents: "EmptyHole" },
-          childTrees: [],
-          nodeId: "506",
-        },
-      ],
-      nodeId: "501",
+          {
+            fst: "Hole",
+            snd: {
+              body: { tag: "NoBody", contents: "EmptyHole" },
+              childTrees: [],
+              nodeId: "503",
+            },
+          },
+          {
+            fst: "Hole",
+            snd: {
+              body: { tag: "NoBody", contents: "EmptyHole" },
+              childTrees: [],
+              nodeId: "506",
+            },
+          },
+        ],
+        nodeId: "501",
+      },
     },
   ],
   nodeId: "500",
@@ -168,31 +216,43 @@ export const tree6: Tree = {
   },
   childTrees: [
     {
-      body: { tag: "NoBody", contents: "Case" },
-      childTrees: [
-        {
-          body: {
-            tag: "TextBody",
-            contents: {
-              fst: "LocalVar",
-              snd: { baseName: "a very very very long variable name" },
+      fst: "Hole",
+      snd: {
+        body: { tag: "NoBody", contents: "Case" },
+        childTrees: [
+          {
+            fst: "Hole",
+            snd: {
+              body: {
+                tag: "TextBody",
+                contents: {
+                  fst: "LocalVar",
+                  snd: { baseName: "a very very very long variable name" },
+                },
+              },
+              childTrees: [],
+              nodeId: "602",
             },
           },
-          childTrees: [],
-          nodeId: "602",
-        },
-        {
-          body: { tag: "NoBody", contents: "EmptyHole" },
-          childTrees: [],
-          nodeId: "603",
-        },
-        {
-          body: { tag: "NoBody", contents: "EmptyHole" },
-          childTrees: [],
-          nodeId: "606",
-        },
-      ],
-      nodeId: "601",
+          {
+            fst: "Hole",
+            snd: {
+              body: { tag: "NoBody", contents: "EmptyHole" },
+              childTrees: [],
+              nodeId: "603",
+            },
+          },
+          {
+            fst: "Hole",
+            snd: {
+              body: { tag: "NoBody", contents: "EmptyHole" },
+              childTrees: [],
+              nodeId: "606",
+            },
+          },
+        ],
+        nodeId: "601",
+      },
     },
   ],
   nodeId: "600",
@@ -208,136 +268,169 @@ export const oddEvenTrees: [string, Tree][] = [
       },
       childTrees: [
         {
-          body: { tag: "NoBody", contents: "Case" },
-          childTrees: [
-            {
-              body: {
-                contents: { fst: "LocalVar", snd: { baseName: "x" } },
-                tag: "TextBody",
-              },
-              childTrees: [],
-              nodeId: "5",
-            },
-            {
-              body: { tag: "NoBody", contents: "CaseWith" },
-              childTrees: [
-                {
+          fst: "Hole",
+          snd: {
+            body: { tag: "NoBody", contents: "Case" },
+            childTrees: [
+              {
+                fst: "Hole",
+                snd: {
                   body: {
-                    contents: {
-                      fst: "Pattern",
+                    contents: { fst: "LocalVar", snd: { baseName: "x" } },
+                    tag: "TextBody",
+                  },
+                  childTrees: [],
+                  nodeId: "5",
+                },
+              },
+              {
+                fst: "Hole",
+                snd: {
+                  body: { tag: "NoBody", contents: "CaseWith" },
+                  childTrees: [
+                    {
+                      fst: "Hole",
                       snd: {
                         body: {
                           contents: {
-                            fst: "PatternCon",
+                            fst: "Pattern",
                             snd: {
-                              baseName: "Zero",
-                              qualifiedModule: ["Builtins"],
+                              body: {
+                                contents: {
+                                  fst: "PatternCon",
+                                  snd: {
+                                    baseName: "Zero",
+                                    qualifiedModule: ["Builtins"],
+                                  },
+                                },
+                                tag: "TextBody",
+                              },
+                              childTrees: [],
+                              nodeId: "4P0B",
                             },
                           },
-                          tag: "TextBody",
+                          tag: "BoxBody",
                         },
-                        childTrees: [],
-                        nodeId: "4P0B",
-                      },
-                    },
-                    tag: "BoxBody",
-                  },
-                  childTrees: [
-                    {
-                      body: {
-                        contents: {
-                          fst: "Con",
-                          snd: {
-                            baseName: "True",
-                            qualifiedModule: ["Builtins"],
-                          },
-                        },
-                        tag: "TextBody",
-                      },
-                      childTrees: [],
-                      nodeId: "6",
-                    },
-                  ],
-                  nodeId: "4P0",
-                },
-                {
-                  body: {
-                    contents: {
-                      fst: "Pattern",
-                      snd: {
-                        body: { tag: "NoBody", contents: "App" },
                         childTrees: [
                           {
-                            body: {
-                              contents: {
-                                fst: "PatternCon",
-                                snd: {
-                                  baseName: "Succ",
-                                  qualifiedModule: ["Builtins"],
+                            fst: "Hole",
+                            snd: {
+                              body: {
+                                contents: {
+                                  fst: "Con",
+                                  snd: {
+                                    baseName: "True",
+                                    qualifiedModule: ["Builtins"],
+                                  },
                                 },
+                                tag: "TextBody",
                               },
-                              tag: "TextBody",
+                              childTrees: [],
+                              nodeId: "6",
                             },
-                            childTrees: [],
-                            nodeId: "4P1B",
-                          },
-                          {
-                            body: {
-                              contents: {
-                                fst: "PatternBind",
-                                snd: { baseName: "n" },
-                              },
-                              tag: "TextBody",
-                            },
-                            childTrees: [],
-                            nodeId: "7",
                           },
                         ],
-                        nodeId: "7A",
+                        nodeId: "4P0",
                       },
                     },
-                    tag: "BoxBody",
-                  },
-                  childTrees: [
                     {
-                      body: { tag: "NoBody", contents: "App" },
-                      childTrees: [
-                        {
-                          body: {
-                            contents: {
-                              fst: "GlobalVar",
-                              snd: {
-                                baseName: "odd",
-                                qualifiedModule: ["Even3"],
-                              },
+                      fst: "Hole",
+                      snd: {
+                        body: {
+                          contents: {
+                            fst: "Pattern",
+                            snd: {
+                              body: { tag: "NoBody", contents: "App" },
+                              childTrees: [
+                                {
+                                  fst: "Hole",
+                                  snd: {
+                                    body: {
+                                      contents: {
+                                        fst: "PatternCon",
+                                        snd: {
+                                          baseName: "Succ",
+                                          qualifiedModule: ["Builtins"],
+                                        },
+                                      },
+                                      tag: "TextBody",
+                                    },
+                                    childTrees: [],
+                                    nodeId: "4P1B",
+                                  },
+                                },
+                                {
+                                  fst: "Hole",
+                                  snd: {
+                                    body: {
+                                      contents: {
+                                        fst: "PatternBind",
+                                        snd: { baseName: "n" },
+                                      },
+                                      tag: "TextBody",
+                                    },
+                                    childTrees: [],
+                                    nodeId: "7",
+                                  },
+                                },
+                              ],
+                              nodeId: "7A",
                             },
-                            tag: "TextBody",
                           },
-                          childTrees: [],
-                          nodeId: "9",
+                          tag: "BoxBody",
                         },
-                        {
-                          body: {
-                            contents: {
-                              fst: "LocalVar",
-                              snd: { baseName: "n" },
+                        childTrees: [
+                          {
+                            fst: "Hole",
+                            snd: {
+                              body: { tag: "NoBody", contents: "App" },
+                              childTrees: [
+                                {
+                                  fst: "Hole",
+                                  snd: {
+                                    body: {
+                                      contents: {
+                                        fst: "GlobalVar",
+                                        snd: {
+                                          baseName: "odd",
+                                          qualifiedModule: ["Even3"],
+                                        },
+                                      },
+                                      tag: "TextBody",
+                                    },
+                                    childTrees: [],
+                                    nodeId: "9",
+                                  },
+                                },
+                                {
+                                  fst: "Hole",
+                                  snd: {
+                                    body: {
+                                      contents: {
+                                        fst: "LocalVar",
+                                        snd: { baseName: "n" },
+                                      },
+                                      tag: "TextBody",
+                                    },
+                                    childTrees: [],
+                                    nodeId: "10",
+                                  },
+                                },
+                              ],
+                              nodeId: "8",
                             },
-                            tag: "TextBody",
                           },
-                          childTrees: [],
-                          nodeId: "10",
-                        },
-                      ],
-                      nodeId: "8",
+                        ],
+                        nodeId: "4P1",
+                      },
                     },
                   ],
-                  nodeId: "4P1",
+                  nodeId: "4W",
                 },
-              ],
-              nodeId: "4W",
-            },
-          ],
-          nodeId: "4",
+              },
+            ],
+            nodeId: "4",
+          },
         },
       ],
       nodeId: "3",
@@ -349,86 +442,110 @@ export const oddEvenTrees: [string, Tree][] = [
       body: { tag: "NoBody", contents: "App" },
       childTrees: [
         {
-          body: {
-            contents: {
-              fst: "GlobalVar",
-              snd: { baseName: "even", qualifiedModule: ["Even3"] },
+          fst: "Hole",
+          snd: {
+            body: {
+              contents: {
+                fst: "GlobalVar",
+                snd: { baseName: "even", qualifiedModule: ["Even3"] },
+              },
+              tag: "TextBody",
             },
-            tag: "TextBody",
+            childTrees: [],
+            nodeId: "24",
           },
-          childTrees: [],
-          nodeId: "24",
         },
         {
-          body: { tag: "NoBody", contents: "App" },
-          childTrees: [
-            {
-              body: {
-                contents: {
-                  fst: "Con",
-                  snd: { baseName: "Succ", qualifiedModule: ["Builtins"] },
-                },
-                tag: "TextBody",
-              },
-              childTrees: [],
-              nodeId: "26",
-            },
-            {
-              body: { tag: "NoBody", contents: "App" },
-              childTrees: [
-                {
+          fst: "Hole",
+          snd: {
+            body: { tag: "NoBody", contents: "App" },
+            childTrees: [
+              {
+                fst: "Hole",
+                snd: {
                   body: {
                     contents: {
                       fst: "Con",
-                      snd: {
-                        baseName: "Succ",
-                        qualifiedModule: ["Builtins"],
-                      },
+                      snd: { baseName: "Succ", qualifiedModule: ["Builtins"] },
                     },
                     tag: "TextBody",
                   },
                   childTrees: [],
-                  nodeId: "28",
+                  nodeId: "26",
                 },
-                {
+              },
+              {
+                fst: "Hole",
+                snd: {
                   body: { tag: "NoBody", contents: "App" },
                   childTrees: [
                     {
-                      body: {
-                        contents: {
-                          fst: "Con",
-                          snd: {
-                            baseName: "Succ",
-                            qualifiedModule: ["Builtins"],
+                      fst: "Hole",
+                      snd: {
+                        body: {
+                          contents: {
+                            fst: "Con",
+                            snd: {
+                              baseName: "Succ",
+                              qualifiedModule: ["Builtins"],
+                            },
                           },
+                          tag: "TextBody",
                         },
-                        tag: "TextBody",
+                        childTrees: [],
+                        nodeId: "28",
                       },
-                      childTrees: [],
-                      nodeId: "30",
                     },
                     {
-                      body: {
-                        contents: {
-                          fst: "Con",
-                          snd: {
-                            baseName: "Zero",
-                            qualifiedModule: ["Builtins"],
+                      fst: "Hole",
+                      snd: {
+                        body: { tag: "NoBody", contents: "App" },
+                        childTrees: [
+                          {
+                            fst: "Hole",
+                            snd: {
+                              body: {
+                                contents: {
+                                  fst: "Con",
+                                  snd: {
+                                    baseName: "Succ",
+                                    qualifiedModule: ["Builtins"],
+                                  },
+                                },
+                                tag: "TextBody",
+                              },
+                              childTrees: [],
+                              nodeId: "30",
+                            },
                           },
-                        },
-                        tag: "TextBody",
+                          {
+                            fst: "Hole",
+                            snd: {
+                              body: {
+                                contents: {
+                                  fst: "Con",
+                                  snd: {
+                                    baseName: "Zero",
+                                    qualifiedModule: ["Builtins"],
+                                  },
+                                },
+                                tag: "TextBody",
+                              },
+                              childTrees: [],
+                              nodeId: "31",
+                            },
+                          },
+                        ],
+                        nodeId: "29",
                       },
-                      childTrees: [],
-                      nodeId: "31",
                     },
                   ],
-                  nodeId: "29",
+                  nodeId: "27",
                 },
-              ],
-              nodeId: "27",
-            },
-          ],
-          nodeId: "25",
+              },
+            ],
+            nodeId: "25",
+          },
         },
       ],
       nodeId: "23",
@@ -443,131 +560,161 @@ export const oddEvenTrees: [string, Tree][] = [
       },
       childTrees: [
         {
-          body: { tag: "NoBody", contents: "Case" },
-          childTrees: [
-            {
-              body: {
-                contents: { fst: "LocalVar", snd: { baseName: "x" } },
-                tag: "TextBody",
-              },
-              childTrees: [],
-              nodeId: "16",
-            },
-            {
-              body: { tag: "NoBody", contents: "CaseWith" },
-              childTrees: [
-                {
+          fst: "Hole",
+          snd: {
+            body: { tag: "NoBody", contents: "Case" },
+            childTrees: [
+              {
+                fst: "Hole",
+                snd: {
                   body: {
-                    contents: {
-                      fst: "Pattern",
-                      snd: {
-                        body: {
-                          contents: {
-                            fst: "PatternCon",
-                            snd: {
-                              baseName: "Zero",
-                              qualifiedModule: ["Builtins"],
-                            },
-                          },
-                          tag: "TextBody",
-                        },
-                        childTrees: [],
-                        nodeId: "15P0B",
-                      },
-                    },
-                    tag: "BoxBody",
+                    contents: { fst: "LocalVar", snd: { baseName: "x" } },
+                    tag: "TextBody",
                   },
+                  childTrees: [],
+                  nodeId: "16",
+                },
+              },
+              {
+                fst: "Hole",
+                snd: {
+                  body: { tag: "NoBody", contents: "CaseWith" },
                   childTrees: [
                     {
-                      body: {
-                        contents: {
-                          fst: "Con",
-                          snd: {
-                            baseName: "False",
-                            qualifiedModule: ["Builtins"],
-                          },
-                        },
-                        tag: "TextBody",
-                      },
-                      childTrees: [],
-                      nodeId: "17",
-                    },
-                  ],
-                  nodeId: "15P0",
-                },
-                {
-                  body: {
-                    contents: {
-                      fst: "Pattern",
+                      fst: "Hole",
                       snd: {
                         body: {
                           contents: {
-                            fst: "PatternCon",
+                            fst: "Pattern",
                             snd: {
-                              baseName: "Succ",
-                              qualifiedModule: ["Builtins"],
+                              body: {
+                                contents: {
+                                  fst: "PatternCon",
+                                  snd: {
+                                    baseName: "Zero",
+                                    qualifiedModule: ["Builtins"],
+                                  },
+                                },
+                                tag: "TextBody",
+                              },
+                              childTrees: [],
+                              nodeId: "15P0B",
                             },
                           },
-                          tag: "TextBody",
+                          tag: "BoxBody",
                         },
                         childTrees: [
                           {
-                            body: {
-                              contents: {
-                                fst: "PatternBind",
-                                snd: { baseName: "n" },
+                            fst: "Hole",
+                            snd: {
+                              body: {
+                                contents: {
+                                  fst: "Con",
+                                  snd: {
+                                    baseName: "False",
+                                    qualifiedModule: ["Builtins"],
+                                  },
+                                },
+                                tag: "TextBody",
                               },
-                              tag: "TextBody",
+                              childTrees: [],
+                              nodeId: "17",
                             },
-                            childTrees: [],
-                            nodeId: "18",
                           },
                         ],
-                        nodeId: "15P1B",
+                        nodeId: "15P0",
                       },
                     },
-                    tag: "BoxBody",
-                  },
-                  childTrees: [
                     {
-                      body: { tag: "NoBody", contents: "App" },
-                      childTrees: [
-                        {
-                          body: {
-                            contents: {
-                              fst: "GlobalVar",
-                              snd: {
-                                baseName: "even",
-                                qualifiedModule: ["Even3"],
+                      fst: "Hole",
+                      snd: {
+                        body: {
+                          contents: {
+                            fst: "Pattern",
+                            snd: {
+                              body: {
+                                contents: {
+                                  fst: "PatternCon",
+                                  snd: {
+                                    baseName: "Succ",
+                                    qualifiedModule: ["Builtins"],
+                                  },
+                                },
+                                tag: "TextBody",
                               },
+                              childTrees: [
+                                {
+                                  fst: "Hole",
+                                  snd: {
+                                    body: {
+                                      contents: {
+                                        fst: "PatternBind",
+                                        snd: { baseName: "n" },
+                                      },
+                                      tag: "TextBody",
+                                    },
+                                    childTrees: [],
+                                    nodeId: "18",
+                                  },
+                                },
+                              ],
+                              nodeId: "15P1B",
                             },
-                            tag: "TextBody",
                           },
-                          childTrees: [],
-                          nodeId: "20",
+                          tag: "BoxBody",
                         },
-                        {
-                          body: {
-                            contents: {
-                              fst: "LocalVar",
-                              snd: { baseName: "n" },
+                        childTrees: [
+                          {
+                            fst: "Hole",
+                            snd: {
+                              body: { tag: "NoBody", contents: "App" },
+                              childTrees: [
+                                {
+                                  fst: "Hole",
+                                  snd: {
+                                    body: {
+                                      contents: {
+                                        fst: "GlobalVar",
+                                        snd: {
+                                          baseName: "even",
+                                          qualifiedModule: ["Even3"],
+                                        },
+                                      },
+                                      tag: "TextBody",
+                                    },
+                                    childTrees: [],
+                                    nodeId: "20",
+                                  },
+                                },
+                                {
+                                  fst: "Hole",
+                                  snd: {
+                                    body: {
+                                      contents: {
+                                        fst: "LocalVar",
+                                        snd: { baseName: "n" },
+                                      },
+                                      tag: "TextBody",
+                                    },
+                                    childTrees: [],
+                                    nodeId: "21",
+                                  },
+                                },
+                              ],
+                              nodeId: "19",
                             },
-                            tag: "TextBody",
                           },
-                          childTrees: [],
-                          nodeId: "21",
-                        },
-                      ],
-                      nodeId: "19",
+                        ],
+                        nodeId: "15P1",
+                      },
                     },
                   ],
-                  nodeId: "15P1",
+                  nodeId: "15W",
                 },
-              ],
-              nodeId: "15W",
-            },
-          ],
-          nodeId: "15",
+              },
+            ],
+            nodeId: "15",
+          },
         },
       ],
       nodeId: "14",
@@ -585,117 +732,150 @@ export const oddEvenTreesMiscStyles: [string, Tree][] = [
       },
       childTrees: [
         {
-          body: { tag: "NoBody", contents: "Case" },
-          childTrees: [
-            {
-              body: {
-                contents: { fst: "LocalVar", snd: { baseName: "x" } },
-                tag: "TextBody",
-              },
-              childTrees: [],
-              nodeId: "5",
-            },
-          ],
-          nodeId: "4",
-          rightChild: {
-            body: {
-              contents: {
-                fst: "Pattern",
+          fst: "Hole",
+          snd: {
+            body: { tag: "NoBody", contents: "Case" },
+            childTrees: [
+              {
+                fst: "Hole",
                 snd: {
                   body: {
-                    contents: {
-                      fst: "PatternCon",
-                      snd: {
-                        baseName: "Zero",
-                        qualifiedModule: ["Builtins"],
-                      },
-                    },
+                    contents: { fst: "LocalVar", snd: { baseName: "x" } },
                     tag: "TextBody",
                   },
                   childTrees: [],
-                  nodeId: "4P0B",
+                  nodeId: "5",
                 },
-              },
-              tag: "BoxBody",
-            },
-            childTrees: [
-              {
-                body: {
-                  contents: {
-                    fst: "Con",
-                    snd: { baseName: "True", qualifiedModule: ["Builtins"] },
-                  },
-                  tag: "TextBody",
-                },
-                childTrees: [],
-                nodeId: "6",
               },
             ],
-            nodeId: "4P0",
+            nodeId: "4",
             rightChild: {
-              body: {
-                contents: {
-                  fst: "Pattern",
+              fst: "Hole",
+              snd: {
+                body: {
+                  contents: {
+                    fst: "Pattern",
+                    snd: {
+                      body: {
+                        contents: {
+                          fst: "PatternCon",
+                          snd: {
+                            baseName: "Zero",
+                            qualifiedModule: ["Builtins"],
+                          },
+                        },
+                        tag: "TextBody",
+                      },
+                      childTrees: [],
+                      nodeId: "4P0B",
+                    },
+                  },
+                  tag: "BoxBody",
+                },
+                childTrees: [
+                  {
+                    fst: "Hole",
+                    snd: {
+                      body: {
+                        contents: {
+                          fst: "Con",
+                          snd: {
+                            baseName: "True",
+                            qualifiedModule: ["Builtins"],
+                          },
+                        },
+                        tag: "TextBody",
+                      },
+                      childTrees: [],
+                      nodeId: "6",
+                    },
+                  },
+                ],
+                nodeId: "4P0",
+                rightChild: {
+                  fst: "Hole",
                   snd: {
                     body: {
                       contents: {
-                        fst: "PatternCon",
+                        fst: "Pattern",
                         snd: {
-                          baseName: "Succ",
-                          qualifiedModule: ["Builtins"],
+                          body: {
+                            contents: {
+                              fst: "PatternCon",
+                              snd: {
+                                baseName: "Succ",
+                                qualifiedModule: ["Builtins"],
+                              },
+                            },
+                            tag: "TextBody",
+                          },
+                          childTrees: [
+                            {
+                              fst: "Hole",
+                              snd: {
+                                body: {
+                                  contents: {
+                                    fst: "PatternBind",
+                                    snd: { baseName: "n" },
+                                  },
+                                  tag: "TextBody",
+                                },
+                                childTrees: [],
+                                nodeId: "7",
+                              },
+                            },
+                          ],
+                          nodeId: "4P1B",
                         },
                       },
-                      tag: "TextBody",
+                      tag: "BoxBody",
                     },
                     childTrees: [
                       {
-                        body: {
-                          contents: {
-                            fst: "PatternBind",
-                            snd: { baseName: "n" },
-                          },
-                          tag: "TextBody",
+                        fst: "Hole",
+                        snd: {
+                          body: { tag: "NoBody", contents: "App" },
+                          childTrees: [
+                            {
+                              fst: "Hole",
+                              snd: {
+                                body: {
+                                  contents: {
+                                    fst: "GlobalVar",
+                                    snd: {
+                                      baseName: "odd",
+                                      qualifiedModule: ["Even3"],
+                                    },
+                                  },
+                                  tag: "TextBody",
+                                },
+                                childTrees: [],
+                                nodeId: "9",
+                              },
+                            },
+                            {
+                              fst: "Hole",
+                              snd: {
+                                body: {
+                                  contents: {
+                                    fst: "LocalVar",
+                                    snd: { baseName: "n" },
+                                  },
+                                  tag: "TextBody",
+                                },
+                                childTrees: [],
+                                nodeId: "10",
+                              },
+                            },
+                          ],
+                          nodeId: "8",
                         },
-                        childTrees: [],
-                        nodeId: "7",
                       },
                     ],
-                    nodeId: "4P1B",
+                    nodeId: "4P1",
                   },
                 },
-                tag: "BoxBody",
               },
-              childTrees: [
-                {
-                  body: { tag: "NoBody", contents: "App" },
-                  childTrees: [
-                    {
-                      body: {
-                        contents: {
-                          fst: "GlobalVar",
-                          snd: {
-                            baseName: "odd",
-                            qualifiedModule: ["Even3"],
-                          },
-                        },
-                        tag: "TextBody",
-                      },
-                      childTrees: [],
-                      nodeId: "9",
-                    },
-                    {
-                      body: {
-                        contents: { fst: "LocalVar", snd: { baseName: "n" } },
-                        tag: "TextBody",
-                      },
-                      childTrees: [],
-                      nodeId: "10",
-                    },
-                  ],
-                  nodeId: "8",
-                },
-              ],
-              nodeId: "4P1",
             },
           },
         },
@@ -709,86 +889,110 @@ export const oddEvenTreesMiscStyles: [string, Tree][] = [
       body: { tag: "NoBody", contents: "App" },
       childTrees: [
         {
-          body: {
-            contents: {
-              fst: "GlobalVar",
-              snd: { baseName: "even", qualifiedModule: ["Even3"] },
+          fst: "Hole",
+          snd: {
+            body: {
+              contents: {
+                fst: "GlobalVar",
+                snd: { baseName: "even", qualifiedModule: ["Even3"] },
+              },
+              tag: "TextBody",
             },
-            tag: "TextBody",
+            childTrees: [],
+            nodeId: "24",
           },
-          childTrees: [],
-          nodeId: "24",
         },
         {
-          body: { tag: "NoBody", contents: "App" },
-          childTrees: [
-            {
-              body: {
-                contents: {
-                  fst: "Con",
-                  snd: { baseName: "Succ", qualifiedModule: ["Builtins"] },
-                },
-                tag: "TextBody",
-              },
-              childTrees: [],
-              nodeId: "26",
-            },
-            {
-              body: { tag: "NoBody", contents: "App" },
-              childTrees: [
-                {
+          fst: "Hole",
+          snd: {
+            body: { tag: "NoBody", contents: "App" },
+            childTrees: [
+              {
+                fst: "Hole",
+                snd: {
                   body: {
                     contents: {
                       fst: "Con",
-                      snd: {
-                        baseName: "Succ",
-                        qualifiedModule: ["Builtins"],
-                      },
+                      snd: { baseName: "Succ", qualifiedModule: ["Builtins"] },
                     },
                     tag: "TextBody",
                   },
                   childTrees: [],
-                  nodeId: "28",
+                  nodeId: "26",
                 },
-                {
+              },
+              {
+                fst: "Hole",
+                snd: {
                   body: { tag: "NoBody", contents: "App" },
                   childTrees: [
                     {
-                      body: {
-                        contents: {
-                          fst: "Con",
-                          snd: {
-                            baseName: "Succ",
-                            qualifiedModule: ["Builtins"],
+                      fst: "Hole",
+                      snd: {
+                        body: {
+                          contents: {
+                            fst: "Con",
+                            snd: {
+                              baseName: "Succ",
+                              qualifiedModule: ["Builtins"],
+                            },
                           },
+                          tag: "TextBody",
                         },
-                        tag: "TextBody",
+                        childTrees: [],
+                        nodeId: "28",
                       },
-                      childTrees: [],
-                      nodeId: "30",
                     },
                     {
-                      body: {
-                        contents: {
-                          fst: "Con",
-                          snd: {
-                            baseName: "Zero",
-                            qualifiedModule: ["Builtins"],
+                      fst: "Hole",
+                      snd: {
+                        body: { tag: "NoBody", contents: "App" },
+                        childTrees: [
+                          {
+                            fst: "Hole",
+                            snd: {
+                              body: {
+                                contents: {
+                                  fst: "Con",
+                                  snd: {
+                                    baseName: "Succ",
+                                    qualifiedModule: ["Builtins"],
+                                  },
+                                },
+                                tag: "TextBody",
+                              },
+                              childTrees: [],
+                              nodeId: "30",
+                            },
                           },
-                        },
-                        tag: "TextBody",
+                          {
+                            fst: "Hole",
+                            snd: {
+                              body: {
+                                contents: {
+                                  fst: "Con",
+                                  snd: {
+                                    baseName: "Zero",
+                                    qualifiedModule: ["Builtins"],
+                                  },
+                                },
+                                tag: "TextBody",
+                              },
+                              childTrees: [],
+                              nodeId: "31",
+                            },
+                          },
+                        ],
+                        nodeId: "29",
                       },
-                      childTrees: [],
-                      nodeId: "31",
                     },
                   ],
-                  nodeId: "29",
+                  nodeId: "27",
                 },
-              ],
-              nodeId: "27",
-            },
-          ],
-          nodeId: "25",
+              },
+            ],
+            nodeId: "25",
+          },
         },
       ],
       nodeId: "23",
@@ -803,117 +1007,150 @@ export const oddEvenTreesMiscStyles: [string, Tree][] = [
       },
       childTrees: [
         {
-          body: { tag: "NoBody", contents: "Case" },
-          childTrees: [
-            {
-              body: {
-                contents: { fst: "LocalVar", snd: { baseName: "x" } },
-                tag: "TextBody",
-              },
-              childTrees: [],
-              nodeId: "16",
-            },
-          ],
-          nodeId: "15",
-          rightChild: {
-            body: {
-              contents: {
-                fst: "Pattern",
+          fst: "Hole",
+          snd: {
+            body: { tag: "NoBody", contents: "Case" },
+            childTrees: [
+              {
+                fst: "Hole",
                 snd: {
                   body: {
-                    contents: {
-                      fst: "PatternCon",
-                      snd: { baseName: "Zero", qualifiedModule: ["Builtins"] },
-                    },
+                    contents: { fst: "LocalVar", snd: { baseName: "x" } },
                     tag: "TextBody",
                   },
                   childTrees: [],
-                  nodeId: "15P0B",
+                  nodeId: "16",
                 },
-              },
-              tag: "BoxBody",
-            },
-            childTrees: [
-              {
-                body: {
-                  contents: {
-                    fst: "Con",
-                    snd: {
-                      baseName: "False",
-                      qualifiedModule: ["Builtins"],
-                    },
-                  },
-                  tag: "TextBody",
-                },
-                childTrees: [],
-                nodeId: "17",
               },
             ],
-            nodeId: "15P0",
+            nodeId: "15",
             rightChild: {
-              body: {
-                contents: {
-                  fst: "Pattern",
+              fst: "Hole",
+              snd: {
+                body: {
+                  contents: {
+                    fst: "Pattern",
+                    snd: {
+                      body: {
+                        contents: {
+                          fst: "PatternCon",
+                          snd: {
+                            baseName: "Zero",
+                            qualifiedModule: ["Builtins"],
+                          },
+                        },
+                        tag: "TextBody",
+                      },
+                      childTrees: [],
+                      nodeId: "15P0B",
+                    },
+                  },
+                  tag: "BoxBody",
+                },
+                childTrees: [
+                  {
+                    fst: "Hole",
+                    snd: {
+                      body: {
+                        contents: {
+                          fst: "Con",
+                          snd: {
+                            baseName: "False",
+                            qualifiedModule: ["Builtins"],
+                          },
+                        },
+                        tag: "TextBody",
+                      },
+                      childTrees: [],
+                      nodeId: "17",
+                    },
+                  },
+                ],
+                nodeId: "15P0",
+                rightChild: {
+                  fst: "Hole",
                   snd: {
                     body: {
                       contents: {
-                        fst: "Con",
+                        fst: "Pattern",
                         snd: {
-                          baseName: "Succ",
-                          qualifiedModule: ["Builtins"],
+                          body: {
+                            contents: {
+                              fst: "Con",
+                              snd: {
+                                baseName: "Succ",
+                                qualifiedModule: ["Builtins"],
+                              },
+                            },
+                            tag: "TextBody",
+                          },
+                          childTrees: [
+                            {
+                              fst: "Hole",
+                              snd: {
+                                body: {
+                                  contents: {
+                                    fst: "PatternBind",
+                                    snd: { baseName: "n" },
+                                  },
+                                  tag: "TextBody",
+                                },
+                                childTrees: [],
+                                nodeId: "18",
+                              },
+                            },
+                          ],
+                          nodeId: "15P1B",
                         },
                       },
-                      tag: "TextBody",
+                      tag: "BoxBody",
                     },
                     childTrees: [
                       {
-                        body: {
-                          contents: {
-                            fst: "PatternBind",
-                            snd: { baseName: "n" },
-                          },
-                          tag: "TextBody",
+                        fst: "Hole",
+                        snd: {
+                          body: { tag: "NoBody", contents: "App" },
+                          childTrees: [
+                            {
+                              fst: "Hole",
+                              snd: {
+                                body: {
+                                  contents: {
+                                    fst: "GlobalVar",
+                                    snd: {
+                                      baseName: "even",
+                                      qualifiedModule: ["Even3"],
+                                    },
+                                  },
+                                  tag: "TextBody",
+                                },
+                                childTrees: [],
+                                nodeId: "20",
+                              },
+                            },
+                            {
+                              fst: "Hole",
+                              snd: {
+                                body: {
+                                  contents: {
+                                    fst: "LocalVar",
+                                    snd: { baseName: "n" },
+                                  },
+                                  tag: "TextBody",
+                                },
+                                childTrees: [],
+                                nodeId: "21",
+                              },
+                            },
+                          ],
+                          nodeId: "19",
                         },
-                        childTrees: [],
-                        nodeId: "18",
                       },
                     ],
-                    nodeId: "15P1B",
+                    nodeId: "15P1",
                   },
                 },
-                tag: "BoxBody",
               },
-              childTrees: [
-                {
-                  body: { tag: "NoBody", contents: "App" },
-                  childTrees: [
-                    {
-                      body: {
-                        contents: {
-                          fst: "GlobalVar",
-                          snd: {
-                            baseName: "even",
-                            qualifiedModule: ["Even3"],
-                          },
-                        },
-                        tag: "TextBody",
-                      },
-                      childTrees: [],
-                      nodeId: "20",
-                    },
-                    {
-                      body: {
-                        contents: { fst: "LocalVar", snd: { baseName: "n" } },
-                        tag: "TextBody",
-                      },
-                      childTrees: [],
-                      nodeId: "21",
-                    },
-                  ],
-                  nodeId: "19",
-                },
-              ],
-              nodeId: "15P1",
             },
           },
         },
