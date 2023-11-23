@@ -1,4 +1,5 @@
 import {
+  EdgeFlavor,
   GlobalName,
   NodeFlavorBoxBody,
   NodeFlavorNoBody,
@@ -229,9 +230,19 @@ export type PrimerEdge = {
   sourceHandle: Position;
   targetHandle: Position;
   zIndex: number;
+  // label?: string;
+  // TODO why? this seems like a bad abstraction
+  // but we can't specify classes in `EdgeBase`
+  // https://github.com/xyflow/xyflow/issues/420
+  // ReactFlow seems to magically make use of this class instead
+  // in _nodes_ we can use classes, since we're not using an equivalent `NodeBase`
+  className: string;
 } & ({ type: "primer"; data: PrimerEdgeProps } | { type: "primer-def" });
 
-export type PrimerEdgeProps = { flavor: NodeFlavor };
+export type PrimerEdgeProps = {
+  flavor: NodeFlavor;
+  edgeFlavor: EdgeFlavor;
+};
 
 export type Positioned<T> = T & {
   position: { x: number; y: number };
