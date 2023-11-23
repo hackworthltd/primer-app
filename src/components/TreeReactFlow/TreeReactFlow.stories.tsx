@@ -93,25 +93,37 @@ const typeDef1: TypeDef = {
         nodeId: "1111",
         childTrees: [
           {
-            body: { tag: "NoBody", contents: "KType" },
-            nodeId: "1112",
-            childTrees: [],
+            fst: "FunIn",
+            snd: {
+              body: { tag: "NoBody", contents: "KType" },
+              nodeId: "1112",
+              childTrees: [],
+            },
           },
           {
-            body: { tag: "NoBody", contents: "KFun" },
-            nodeId: "1113",
-            childTrees: [
-              {
-                body: { tag: "NoBody", contents: "KHole" },
-                nodeId: "1114",
-                childTrees: [],
-              },
-              {
-                body: { tag: "NoBody", contents: "KType" },
-                nodeId: "1115",
-                childTrees: [],
-              },
-            ],
+            fst: "FunOut",
+            snd: {
+              body: { tag: "NoBody", contents: "KFun" },
+              nodeId: "1113",
+              childTrees: [
+                {
+                  fst: "FunIn",
+                  snd: {
+                    body: { tag: "NoBody", contents: "KHole" },
+                    nodeId: "1114",
+                    childTrees: [],
+                  },
+                },
+                {
+                  fst: "FunOut",
+                  snd: {
+                    body: { tag: "NoBody", contents: "KType" },
+                    nodeId: "1115",
+                    childTrees: [],
+                  },
+                },
+              ],
+            },
           },
         ],
       },
@@ -142,43 +154,55 @@ const typeDef1: TypeDef = {
           body: { tag: "NoBody", contents: "TApp" },
           childTrees: [
             {
-              nodeId: "1102",
-              body: { tag: "NoBody", contents: "TApp" },
-              childTrees: [
-                {
-                  nodeId: "1103",
-                  body: {
-                    tag: "TextBody",
-                    contents: {
-                      fst: "TVar",
-                      snd: { baseName: "b" },
+              fst: "AppFun",
+              snd: {
+                nodeId: "1102",
+                body: { tag: "NoBody", contents: "TApp" },
+                childTrees: [
+                  {
+                    fst: "AppFun",
+                    snd: {
+                      nodeId: "1103",
+                      body: {
+                        tag: "TextBody",
+                        contents: {
+                          fst: "TVar",
+                          snd: { baseName: "b" },
+                        },
+                      },
+                      childTrees: [],
                     },
                   },
-                  childTrees: [],
-                },
-                {
-                  nodeId: "1104",
-                  body: {
-                    tag: "TextBody",
-                    contents: {
-                      fst: "TCon",
-                      snd: { baseName: "Bool" },
+                  {
+                    fst: "AppArg",
+                    snd: {
+                      nodeId: "1104",
+                      body: {
+                        tag: "TextBody",
+                        contents: {
+                          fst: "TCon",
+                          snd: { baseName: "Bool" },
+                        },
+                      },
+                      childTrees: [],
                     },
                   },
-                  childTrees: [],
-                },
-              ],
+                ],
+              },
             },
             {
-              nodeId: "1105",
-              body: {
-                tag: "TextBody",
-                contents: {
-                  fst: "TCon",
-                  snd: { baseName: "Pair" },
+              fst: "AppArg",
+              snd: {
+                nodeId: "1105",
+                body: {
+                  tag: "TextBody",
+                  contents: {
+                    fst: "TCon",
+                    snd: { baseName: "Pair" },
+                  },
                 },
+                childTrees: [],
               },
-              childTrees: [],
             },
           ],
         },

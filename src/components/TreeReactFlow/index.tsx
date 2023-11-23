@@ -523,14 +523,14 @@ const augmentTree = async <T, E>(
   f: (tree: APITreeNode) => Promise<[T, (child: T, isRight: boolean) => E]>
 ): Promise<Tree<T, E>> => {
   const childTrees = await Promise.all(
-    tree.childTrees.map((t) => augmentTree(t, f))
+    tree.childTrees.map((t) => augmentTree(t.snd, f))
   );
   const [node, makeEdge] = await f({
     children: tree.childTrees.length + (tree.rightChild ? 1 : 0),
     ...tree,
   });
   const rightChild = await (tree.rightChild
-    ? augmentTree(tree.rightChild, f)
+    ? augmentTree(tree.rightChild.snd, f)
     : undefined);
   return {
     ...(rightChild
