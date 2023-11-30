@@ -6,6 +6,7 @@ import {
 } from "@/primer-api";
 import classNames from "classnames";
 import "./reactflow.css";
+import { Label } from "./Types";
 
 export type NodeFlavor =
   | NodeFlavorTextBody
@@ -421,24 +422,117 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
   }
 };
 
-export const flavorLabel = (flavor: NodeFlavor): string => {
+// if these are going to have an `| undefined`, that only really makes sense if there's a `Level` input
+// actually, idk, some stuff like `let` really don't need labels
+
+// only used in beginner mode
+export const flavorLabelBeginnerModeSyntax = (
+  flavor: NodeFlavorNoBody
+): Label | undefined => {
+  const basicLabel = (contents: string): Label => ({
+    contents,
+    position: ["corner", "right"],
+  });
   switch (flavor) {
     case "Hole":
-      return "⚠️";
+      return basicLabel("misfit");
     case "EmptyHole":
-      return "?";
+      return basicLabel("hole");
     case "Ann":
-      return ":";
+      return basicLabel("type annotation");
     case "App":
-      return "←";
+      return basicLabel("apply");
     case "APP":
-      return "←";
+      return basicLabel("apply type");
+    case "Lam":
+      return basicLabel("lambda");
+    case "LAM":
+      return basicLabel("type lambda");
+    case "Let":
+      return undefined;
+    case "LetType":
+      return undefined;
+    case "Letrec":
+      return basicLabel("recursive let");
+    case "Case":
+      return basicLabel("match");
+    case "CaseWith":
+      return basicLabel("with");
+    case "TEmptyHole":
+      return basicLabel("type hole");
+    case "THole":
+      return basicLabel("misfit");
+    case "TFun":
+      return basicLabel("function type");
+    case "TApp":
+      return basicLabel("apply type");
+    case "TForall":
+      return basicLabel("forall");
+    case "TLet":
+      return basicLabel("type let");
+    case "PatternWildcard":
+      return basicLabel("🤷🏽‍♀️");
+    case "KType":
+      return basicLabel("type");
+    case "KHole":
+      return basicLabel("kind hole");
+    case "KFun":
+      return basicLabel("type constructor");
+  }
+};
+
+export const flavorLabelTextNode = (
+  flavor: NodeFlavorTextBody | NodeFlavorPrimBody
+): Label | undefined => {
+  const basicLabel = (contents: string): Label => ({
+    contents,
+    position: ["corner", "right"],
+  });
+  switch (flavor) {
+    case "Con":
+      return basicLabel("V");
+    case "GlobalVar":
+    case "LocalVar":
+      return basicLabel("Var");
+    case "PrimCon":
+      return basicLabel("V");
+    case "TCon":
+      return basicLabel("T");
+    case "TVar":
+      return basicLabel("Var");
+    case "PatternCon":
+      return basicLabel("V");
+    case "PrimPattern":
+      return basicLabel("V");
+    case "VarBind":
+      return basicLabel("bind");
+    case "TVarBind":
+      return basicLabel("type bind");
+  }
+};
+
+export const flavorLabel = (flavor: NodeFlavor): Label | undefined => {
+  const contents = flavorLabelOld(flavor);
+  return { contents, position: ["corner", "right"] };
+};
+export const flavorLabelOld = (flavor: NodeFlavor): string => {
+  switch (flavor) {
+    case "Hole":
+      return "misfit";
+    case "EmptyHole":
+      return "hole";
+    case "Ann":
+      return "type annotation";
+    case "App":
+      return "apply";
+    case "APP":
+      return "apply type";
     case "Con":
       return "V";
     case "Lam":
-      return "λ";
+      return "lambda";
     case "LAM":
-      return "Λ";
+      return "type lambda";
     case "GlobalVar":
       return "Var";
     case "LocalVar":
@@ -448,29 +542,29 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "LetType":
       return "let type";
     case "Letrec":
-      return "let rec";
+      return "recursive let";
     case "Case":
-      return "m";
+      return "match";
     case "CaseWith":
-      return "w";
+      return "with";
     case "PrimCon":
       return "V";
     case "TEmptyHole":
-      return "?";
+      return "type hole";
     case "THole":
-      return "⚠️";
+      return "misfit";
     case "TCon":
       return "T";
     case "TFun":
-      return "→";
+      return "function type";
     case "TVar":
       return "Var";
     case "TApp":
-      return "←";
+      return "apply type";
     case "TForall":
-      return "∀";
+      return "forall";
     case "TLet":
-      return "let";
+      return "type let";
     case "Pattern":
       return "";
     case "PatternCon":
@@ -480,11 +574,11 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
     case "PatternWildcard":
       return "🤷🏽‍♀️";
     case "KType":
-      return "✱";
+      return "type";
     case "KHole":
-      return "?";
+      return "kind hole";
     case "KFun":
-      return "➜";
+      return "type constructor";
     case "VarBind":
       return "bind";
     case "TVarBind":
@@ -510,52 +604,52 @@ export const flavorIsSyntax = (flavor: NodeFlavorTextBody): boolean => {
   }
 };
 
-export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
+export const syntaxNodeContents = (flavor: NodeFlavorNoBody): string => {
   switch (flavor) {
-    case "Ann":
-      return "type annotation";
-    case "App":
-      return "apply";
-    case "APP":
-      return "apply type";
-    case "Case":
-      return "match";
-    case "CaseWith":
-      return "with";
-    case "TFun":
-      return "function type";
-    case "TApp":
-      return "apply type";
     case "Hole":
-      return "misfit";
+      return "⚠️";
     case "EmptyHole":
-      return "hole";
-    case "TEmptyHole":
-      return "type hole";
-    case "THole":
-      return "misfit";
-    case "PatternWildcard":
-      return "🤷🏽‍♀️";
-    case "KType":
-      return "type";
-    case "KHole":
-      return "kind hole";
-    case "KFun":
-      return "type constructor";
-    case "LAM":
-      return "type lambda";
+      return "?";
+    case "Ann":
+      return ":";
+    case "App":
+      return "←";
+    case "APP":
+      return "←";
     case "Lam":
-      return "lambda";
+      return "λ";
+    case "LAM":
+      return "Λ";
     case "Let":
       return "let";
     case "LetType":
       return "let type";
     case "Letrec":
-      return "recursive let";
+      return "let rec";
+    case "Case":
+      return "m";
+    case "CaseWith":
+      return "w";
+    case "TEmptyHole":
+      return "?";
+    case "THole":
+      return "⚠️";
+    case "TFun":
+      return "→";
+    case "TApp":
+      return "←";
     case "TForall":
-      return "forall";
+      return "∀";
     case "TLet":
-      return "type let";
+      return "let";
+    case "PatternWildcard":
+      return "🤷🏽‍♀️";
+    case "KType":
+      return "✱";
+    case "KHole":
+      return "?";
+    case "KFun":
+      return "➜";
   }
 };
 
