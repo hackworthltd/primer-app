@@ -14,7 +14,24 @@ export const tree1: Tree = {
 };
 
 export const tree2: Tree = {
-  body: { tag: "TextBody", contents: { fst: "Lam", snd: { baseName: "x" } } },
+  body: {
+    tag: "NoBody",
+    contents: "Lam",
+  },
+  rightChild: {
+    fst: "Bind",
+    snd: {
+      nodeId: "202",
+      body: {
+        tag: "TextBody",
+        contents: {
+          fst: "LocalVar",
+          snd: { baseName: "x" },
+        },
+      },
+      childTrees: [],
+    },
+  },
   childTrees: [
     {
       fst: "Hole",
@@ -33,8 +50,19 @@ export const tree2: Tree = {
 
 export const tree3: Tree = {
   body: {
-    tag: "TextBody",
-    contents: { fst: "Lam", snd: { baseName: "y" } },
+    tag: "NoBody",
+    contents: "Lam",
+  },
+  rightChild: {
+    fst: "Bind",
+    snd: {
+      nodeId: "302",
+      body: {
+        tag: "TextBody",
+        contents: { fst: "VarBind", snd: { baseName: "y" } },
+      },
+      childTrees: [],
+    },
   },
   childTrees: [
     {
@@ -64,16 +92,38 @@ export const tree4: Tree = {
             fst: "Hole",
             snd: {
               body: {
-                tag: "TextBody",
-                contents: { fst: "LAM", snd: { baseName: "a" } },
+                tag: "NoBody",
+                contents: "LAM",
+              },
+              rightChild: {
+                fst: "Bind",
+                snd: {
+                  nodeId: "410",
+                  body: {
+                    tag: "TextBody",
+                    contents: { fst: "VarBind", snd: { baseName: "a" } },
+                  },
+                  childTrees: [],
+                },
               },
               childTrees: [
                 {
                   fst: "Hole",
                   snd: {
                     body: {
-                      tag: "TextBody",
-                      contents: { fst: "Lam", snd: { baseName: "x" } },
+                      tag: "NoBody",
+                      contents: "Lam",
+                    },
+                    rightChild: {
+                      fst: "Bind",
+                      snd: {
+                        nodeId: "411",
+                        body: {
+                          tag: "TextBody",
+                          contents: { fst: "VarBind", snd: { baseName: "x" } },
+                        },
+                        childTrees: [],
+                      },
                     },
                     childTrees: [
                       {
@@ -102,8 +152,19 @@ export const tree4: Tree = {
             fst: "Hole",
             snd: {
               body: {
-                tag: "TextBody",
-                contents: { fst: "TForall", snd: { baseName: "a" } },
+                tag: "NoBody",
+                contents: "TForall",
+              },
+              rightChild: {
+                fst: "Bind",
+                snd: {
+                  nodeId: "412",
+                  body: {
+                    tag: "TextBody",
+                    contents: { fst: "VarBind", snd: { baseName: "a" } },
+                  },
+                  childTrees: [],
+                },
               },
               childTrees: [
                 {
@@ -162,8 +223,19 @@ export const tree4: Tree = {
 
 export const tree5: Tree = {
   body: {
-    tag: "TextBody",
-    contents: { fst: "Lam", snd: { baseName: "x" } },
+    tag: "NoBody",
+    contents: "Lam",
+  },
+  rightChild: {
+    fst: "Bind",
+    snd: {
+      nodeId: "507",
+      body: {
+        tag: "TextBody",
+        contents: { fst: "VarBind", snd: { baseName: "x" } },
+      },
+      childTrees: [],
+    },
   },
   childTrees: [
     {
@@ -208,10 +280,21 @@ export const tree5: Tree = {
 
 export const tree6: Tree = {
   body: {
-    tag: "TextBody",
-    contents: {
-      fst: "Lam",
-      snd: { baseName: "a very very very long variable name" },
+    tag: "NoBody",
+    contents: "Lam",
+  },
+  rightChild: {
+    fst: "Bind",
+    snd: {
+      nodeId: "607",
+      body: {
+        tag: "TextBody",
+        contents: {
+          fst: "VarBind",
+          snd: { baseName: "a very very very long variable name" },
+        },
+      },
+      childTrees: [],
     },
   },
   childTrees: [
@@ -263,8 +346,19 @@ export const oddEvenTrees: [string, Tree][] = [
     "even",
     {
       body: {
-        contents: { fst: "Lam", snd: { baseName: "x" } },
-        tag: "TextBody",
+        tag: "NoBody",
+        contents: "Lam",
+      },
+      rightChild: {
+        fst: "Bind",
+        snd: {
+          nodeId: "bind1",
+          body: {
+            tag: "TextBody",
+            contents: { fst: "VarBind", snd: { baseName: "x" } },
+          },
+          childTrees: [],
+        },
       },
       childTrees: [
         {
@@ -555,8 +649,19 @@ export const oddEvenTrees: [string, Tree][] = [
     "odd",
     {
       body: {
-        contents: { fst: "Lam", snd: { baseName: "x" } },
-        tag: "TextBody",
+        tag: "NoBody",
+        contents: "Lam",
+      },
+      rightChild: {
+        fst: "Bind",
+        snd: {
+          nodeId: "bind2",
+          body: {
+            tag: "TextBody",
+            contents: { fst: "VarBind", snd: { baseName: "x" } },
+          },
+          childTrees: [],
+        },
       },
       childTrees: [
         {
@@ -727,8 +832,19 @@ export const oddEvenTreesMiscStyles: [string, Tree][] = [
     "even",
     {
       body: {
-        contents: { fst: "Lam", snd: { baseName: "x" } },
-        tag: "TextBody",
+        tag: "NoBody",
+        contents: "Lam",
+      },
+      rightChild: {
+        fst: "Bind",
+        snd: {
+          nodeId: "bind1",
+          body: {
+            tag: "TextBody",
+            contents: { fst: "VarBind", snd: { baseName: "x" } },
+          },
+          childTrees: [],
+        },
       },
       childTrees: [
         {
@@ -1002,8 +1118,19 @@ export const oddEvenTreesMiscStyles: [string, Tree][] = [
     "odd",
     {
       body: {
-        contents: { fst: "Lam", snd: { baseName: "x" } },
-        tag: "TextBody",
+        tag: "NoBody",
+        contents: "Lam",
+      },
+      rightChild: {
+        fst: "Bind",
+        snd: {
+          nodeId: "bind2",
+          body: {
+            tag: "TextBody",
+            contents: { fst: "VarBind", snd: { baseName: "x" } },
+          },
+          childTrees: [],
+        },
       },
       childTrees: [
         {

@@ -26,4 +26,11 @@ export const NodeFlavorNoBody = {
   KType: 'KType',
   KHole: 'KHole',
   KFun: 'KFun',
+  Lam: 'Lam',
+  LAM: 'LAM',
+  Let: 'Let',
+  LetType: 'LetType',
+  Letrec: 'Letrec',
+  TLet: 'TLet',
+  TForall: 'TForall',
 } as const;
