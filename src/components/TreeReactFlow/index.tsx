@@ -96,9 +96,7 @@ type ReactFlowParams = {
 };
 
 /** These properties are needed to construct nodes, but are invariant across all nodes. */
-export type NodeStyle = "corner" | "inline";
 type NodeParams = {
-  style: NodeStyle;
   nodeWidth: number;
   nodeHeight: number;
   boxPadding: number;
