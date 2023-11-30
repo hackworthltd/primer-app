@@ -48,7 +48,6 @@ import {
 } from "@/primer-api";
 import {
   defaultTreeReactFlowProps,
-  inlineTreeReactFlowProps,
   ScrollToDef,
 } from "@/components/TreeReactFlow";
 import { Mode } from "../Toolbar";
@@ -58,7 +57,6 @@ const initialLevel: Level = "Expert";
 
 export type DevOptions = {
   showIDs: boolean;
-  inlineLabels: boolean;
   alwaysShowLabels: boolean;
 };
 
@@ -287,9 +285,7 @@ const AppNoError = ({
     .sort((a, b) => cmpName(a.name, b.name))
     .map((d) => d.name.baseName);
 
-  const treeProps = p.devOpts.inlineLabels
-    ? inlineTreeReactFlowProps
-    : defaultTreeReactFlowProps;
+  const treeProps = defaultTreeReactFlowProps;
 
   return (
     <div className="grid h-[100dvh] grid-cols-[auto_20rem]">
