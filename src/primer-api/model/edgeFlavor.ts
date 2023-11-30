@@ -27,4 +27,5 @@ export const EdgeFlavor = {
   FunOut: 'FunOut',
   ForallKind: 'ForallKind',
   Forall: 'Forall',
+  Bind: 'Bind',
 } as const;

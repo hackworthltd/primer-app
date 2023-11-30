@@ -76,13 +76,13 @@ export const flavorClasses = (flavor: NodeFlavor): string =>
           );
         case "Lam":
           return classNames(
-            "border-blue-primary ring-blue-primary bg-white-primary",
+            "border-blue-primary ring-blue-primary bg-blue-primary",
             "hover:ring-blue-primary",
             commonHoverClasses
           );
         case "LAM":
           return classNames(
-            "border-blue-secondary ring-blue-secondary bg-white-primary",
+            "border-blue-secondary ring-blue-secondary bg-blue-secondary",
             "hover:ring-blue-secondary",
             commonHoverClasses
           );
@@ -92,6 +92,7 @@ export const flavorClasses = (flavor: NodeFlavor): string =>
             "hover:ring-blue-quaternary",
             commonHoverClasses
           );
+        case "VarBind":
         case "LocalVar":
           return classNames(
             "border-blue-quaternary ring-blue-quaternary bg-white-primary",
@@ -157,6 +158,7 @@ export const flavorClasses = (flavor: NodeFlavor): string =>
             "hover:ring-blue-primary",
             commonHoverClasses
           );
+        case "TVarBind":
         case "TVar":
           return classNames(
             "border-blue-quaternary ring-blue-quaternary bg-white-primary",
@@ -171,7 +173,7 @@ export const flavorClasses = (flavor: NodeFlavor): string =>
           );
         case "TForall":
           return classNames(
-            "border-blue-secondary ring-blue-secondary bg-white-primary",
+            "border-blue-secondary ring-blue-secondary bg-blue-secondary",
             "hover:ring-blue-secondary",
             commonHoverClasses
           );
@@ -195,12 +197,6 @@ export const flavorClasses = (flavor: NodeFlavor): string =>
           return "border-green-primary ring-green-primary bg-white-primary";
         case "PatternWildcard":
           return "border-none bg-transparent";
-        case "PatternBind":
-          return classNames(
-            "border-blue-quaternary ring-blue-quaternary bg-white-primary",
-            "hover:ring-blue-quaternary",
-            commonHoverClasses
-          );
       }
     })()
   );
@@ -231,11 +227,12 @@ export const flavorContentClasses = (
         case "KFun":
           return "text-white-primary";
         case "Lam":
-          return "text-blue-primary";
+          return "text-white-primary";
         case "LAM":
-          return "text-blue-secondary";
+          return "text-white-primary";
         case "GlobalVar":
           return "text-blue-primary";
+        case "VarBind":
         case "LocalVar":
           return "text-blue-primary";
         case "Let":
@@ -258,12 +255,13 @@ export const flavorContentClasses = (
           return "text-blue-primary";
         case "TFun":
           return "text-white-primary";
+        case "TVarBind":
         case "TVar":
           return "text-blue-primary";
         case "TApp":
           return "text-white-primary";
         case "TForall":
-          return "text-blue-secondary";
+          return "text-white-primary";
         case "TLet":
           return "text-white-primary";
         case "PatternCon":
@@ -275,8 +273,6 @@ export const flavorContentClasses = (
           // respond to Tailwind's font size classes. The `text-grey-secondary` is a
           // backup in case the emoji doesn't render on a particular client.
           return "text-grey-secondary scale-150";
-        case "PatternBind":
-          return "text-blue-primary";
       }
     })()
   );
@@ -310,6 +306,7 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string =>
           return "font-code bg-grey-tertiary bg-grey-tertiary text-white-primary";
         case "KFun":
           return "font-code bg-grey-tertiary bg-grey-tertiary text-white-primary";
+        case "VarBind":
         case "LocalVar":
           return "bg-blue-quaternary border-blue-quaternary text-white-primary";
         case "Let":
@@ -332,6 +329,7 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string =>
           return "bg-green-primary border-green-primary text-white-primary";
         case "TFun":
           return "font-code bg-blue-primary border-blue-primary text-white-primary";
+        case "TVarBind":
         case "TVar":
           return "bg-blue-quaternary border-blue-quaternary text-white-primary";
         case "TApp":
@@ -348,8 +346,6 @@ export const flavorLabelClasses = (flavor: NodeFlavor): string =>
           return "bg-green-primary border-green-primary text-white-primary";
         case "PatternWildcard":
           return "hidden";
-        case "PatternBind":
-          return "bg-blue-quaternary border-blue-quaternary text-white-primary";
       }
     })()
   );
@@ -418,7 +414,9 @@ export const flavorEdgeClasses = (flavor: NodeFlavor): string => {
       return "stroke-green-primary";
     case "PatternWildcard":
       return "stroke-grey-secondary";
-    case "PatternBind":
+    case "VarBind":
+      return "stroke-blue-quaternary";
+    case "TVarBind":
       return "stroke-blue-quaternary";
   }
 };
@@ -481,14 +479,16 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
       return "V";
     case "PatternWildcard":
       return "🤷🏽‍♀️";
-    case "PatternBind":
-      return "Var";
     case "KType":
       return "✱";
     case "KHole":
       return "?";
     case "KFun":
       return "➜";
+    case "VarBind":
+      return "bind";
+    case "TVarBind":
+      return "type bind";
   }
 };
 
@@ -498,21 +498,14 @@ export const flavorLabel = (flavor: NodeFlavor): string => {
  */
 export const flavorIsSyntax = (flavor: NodeFlavorTextBody): boolean => {
   switch (flavor) {
-    case "Lam":
-    case "LAM":
-    case "Let":
-    case "LetType":
-    case "Letrec":
-    case "TForall":
-    case "TLet":
-      return true;
     case "Con":
     case "GlobalVar":
     case "LocalVar":
     case "TCon":
     case "TVar":
     case "PatternCon":
-    case "PatternBind":
+    case "VarBind":
+    case "TVarBind":
       return false;
   }
 };
@@ -549,6 +542,20 @@ export const noBodyFlavorContents = (flavor: NodeFlavorNoBody): string => {
       return "kind hole";
     case "KFun":
       return "type constructor";
+    case "LAM":
+      return "type lambda";
+    case "Lam":
+      return "lambda";
+    case "Let":
+      return "let";
+    case "LetType":
+      return "let type";
+    case "Letrec":
+      return "recursive let";
+    case "TForall":
+      return "forall";
+    case "TLet":
+      return "type let";
   }
 };
 
@@ -570,7 +577,6 @@ export const flavorSort = (flavor: NodeFlavor): "term" | "type" | "kind" => {
     case "LAM":
     case "Let":
     case "Letrec":
-    case "PatternBind":
     case "PatternCon":
     case "LetType":
     case "GlobalVar":
@@ -586,6 +592,7 @@ export const flavorSort = (flavor: NodeFlavor): "term" | "type" | "kind" => {
     case "CaseWith":
     case "PatternWildcard":
     case "PrimPattern":
+    case "VarBind":
       return "term";
     case "TCon":
     case "TVar":
@@ -595,6 +602,7 @@ export const flavorSort = (flavor: NodeFlavor): "term" | "type" | "kind" => {
     case "THole":
     case "TFun":
     case "TApp":
+    case "TVarBind":
       return "type";
     case "KFun":
     case "KHole":
