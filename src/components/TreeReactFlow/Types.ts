@@ -63,6 +63,27 @@ export const treeMap = <N1, N2, E>(
     : {}),
 });
 
+// A generalisation of `treeMap`, where the mapping function is also passed
+// the node's subtrees and parent.
+export const treeMapWithExtraContext = <N1, N2, E>(
+  t: Tree<N1, E> & { parent?: Tree<N1, E> },
+  f: (t: Tree<N1, E> & { parent?: Tree<N1, E> }) => N2
+): Tree<N2, E> => ({
+  node: f({ ...t }),
+  childTrees: t.childTrees.map(([t1, e]) => [
+    treeMapWithExtraContext({ ...t1, parent: t }, f),
+    e,
+  ]),
+  ...(t.rightChild
+    ? {
+        rightChild: (([t1, e]) => [
+          treeMapWithExtraContext({ ...t1, parent: t }, f),
+          e,
+        ])(t.rightChild),
+      }
+    : {}),
+});
+
 export const treeNodes = <N, E>({
   node,
   rightChild,
