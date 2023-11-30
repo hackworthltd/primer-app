@@ -44,7 +44,7 @@ const App = (): JSX.Element => {
   const devToolsMaxHeight = 500;
   const [devOpts, setDevOpts] = useState<DevOptions>({
     showIDs: false,
-    alwaysShowLabels: true,
+    alwaysShowLabels: false,
   });
 
   useEffect(() => {

@@ -41,7 +41,6 @@ import {
   treeMap,
   primerNodeWith,
   graphMap,
-  PrimerSimpleNodeProps,
   PrimerBoxNodeProps,
   PrimerCommonNodeProps,
   treeNodes,
@@ -64,8 +63,9 @@ import {
   flavorLabel,
   flavorLabelClasses,
   flavorSort,
-  noBodyFlavorContents,
+  // flavorSyntaxBeginnerDescription,
   sortClasses,
+  syntaxNodeContents,
 } from "./Flavor";
 import { ZoomBar, ZoomBarProps } from "./ZoomBar";
 import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
@@ -130,7 +130,6 @@ export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
   "treePadding" | "forestLayout" | "defParams" | "layout" | keyof NodeParams
 > = {
-  style: "corner",
   level: "Expert",
   forestLayout: "Horizontal",
   treePadding: 100,
@@ -145,15 +144,6 @@ export const defaultTreeReactFlowProps: Pick<
   },
   showIDs: false,
   alwaysShowLabels: false,
-};
-export const inlineTreeReactFlowProps: typeof defaultTreeReactFlowProps = {
-  ...defaultTreeReactFlowProps,
-  style: "inline",
-  boxPadding: 35,
-  layout: {
-    ...defaultTreeReactFlowProps.layout,
-    margins: { child: 15, sibling: 12 },
-  },
 };
 
 // These should probably take a `GlobalName` instead, but we're not
@@ -173,12 +163,13 @@ const nodeTypes = {
     data: PrimerNodeProps & PrimerCommonNodeProps;
     id: string;
   }) => {
+    const label = data.hideLabel ? undefined : flavorLabel(data.flavor);
     return (
       <>
         {handle("target", Position.Top)}
         {handle("target", Position.Left)}
         <div
-          title={data.contents}
+          // title={data.contents}
           style={{
             width: data.width,
             height: data.height,
@@ -189,37 +180,40 @@ const nodeTypes = {
             flavorClasses(data.flavor)
           )}
         >
-          {data.hideLabel ? (
-            <></>
-          ) : (
+          {label ? (
             <div
               className={classNames(
                 "shrink-0 flex items-center justify-center z-20 text-sm xl:text-base",
                 flavorLabelClasses(data.flavor),
-                data.style == "corner" &&
-                  classNames(
-                    "p-1 absolute",
-                    data.centerLabel ? "-top-4" : "-left-2 -top-5"
-                  ),
-                data.style == "inline" && "-m-1 mr-0"
+                label.position[0] == "corner" && "p-1 absolute -left-2 -top-5",
+                label.position == "center" && "-top-4",
+                label.position[0] == "inline" && "-m-1 mr-0"
               )}
               style={{ width: data.height }}
             >
-              {data.showIDs ? id : flavorLabel(data.flavor)}
+              {data.showIDs ? id : label.contents}
             </div>
+          ) : (
+            <></>
           )}
           <div
             className={classNames(
               "overflow-hidden grow flex self-center justify-center px-1 font-code text-sm xl:text-base",
-              flavorContentClasses(data.flavor),
+              flavorContentClasses(data.flavor)
               // This makes the content look more centered, given the rounded ends (see `sortClasses`).
-              data.style == "inline" &&
-                flavorSort(data.flavor) == "term" &&
-                !data.hideLabel &&
-                "relative right-1"
+              // data.style == "inline" &&
+              //   flavorSort(data.flavor) == "term" &&
+              //   !data.hideLabel &&
+              //   "relative right-1"
             )}
           >
-            <div className="truncate">{data.contents}</div>
+            {}
+            {/* // contents: flavorSyntaxBeginnerDescription(node.body.contents), */}
+            {"contents" in data ? (
+              <div className="truncate">{data.contents}</div>
+            ) : (
+              <div className="truncate">{syntaxNodeContents(data.flavor)}</div>
+            )}
           </div>
         </div>
         {handle("source", Position.Bottom)}
@@ -227,46 +221,6 @@ const nodeTypes = {
       </>
     );
   },
-  "primer-simple": ({
-    data,
-    id,
-  }: {
-    data: PrimerSimpleNodeProps & PrimerCommonNodeProps;
-    id: string;
-  }) => (
-    <>
-      {handle("target", Position.Top)}
-      {handle("target", Position.Left)}
-      <div
-        title={data.flavor}
-        className={classNames(
-          {
-            "ring-4 ring-offset-4": data.selected,
-            "hover:ring-opacity-50": !data.selected,
-          },
-          "flex items-center justify-center border-4 text-grey-tertiary",
-          flavorClasses(data.flavor)
-        )}
-        style={{
-          width: data.width,
-          height: data.height,
-        }}
-      >
-        {
-          <div
-            className={classNames(
-              "block px-1 font-code text-sm xl:text-base",
-              flavorContentClasses(data.flavor)
-            )}
-          >
-            {data.showIDs ? id : flavorLabel(data.flavor)}
-          </div>
-        }
-      </div>
-      {handle("source", Position.Bottom)}
-      {handle("source", Position.Right)}
-    </>
-  ),
   "primer-box": ({
     data,
     id,
@@ -302,7 +256,7 @@ const nodeTypes = {
             flavorLabelClasses(data.flavor)
           )}
         >
-          {data.showIDs ? id : flavorLabel(data.flavor)}
+          {data.showIDs ? id : flavorLabel(data.flavor)?.contents}
         </div>
       </div>
       {handle("source", Position.Bottom)}
@@ -568,7 +522,6 @@ const makePrimerNode = async (
     height: p.nodeHeight,
     selected,
     nodeData,
-    style: p.style,
     showIDs: p.showIDs,
   };
   const edgeCommon = (
@@ -583,9 +536,10 @@ const makePrimerNode = async (
     targetHandle: isRight ? Position.Left : Position.Top,
   });
   const width = (hideLabel: boolean) =>
-    p.style == "inline" && !hideLabel
-      ? common.width + common.height
-      : common.width;
+    // common.style == "inline" && !hideLabel
+    //   ? common.width + common.height
+    //   :
+    common.width;
   switch (node.body.tag) {
     case "PrimBody": {
       const hideLabel = hideLabels;
@@ -622,7 +576,7 @@ const makePrimerNode = async (
           data: {
             flavor,
             contents,
-            centerLabel: false,
+            // centerLabel: false,
             hideLabel,
             ...common,
             width: width(hideLabel),
@@ -648,7 +602,7 @@ const makePrimerNode = async (
           data: {
             flavor,
             contents: name.baseName,
-            centerLabel: false,
+            // centerLabel: false,
             hideLabel,
             ...common,
             width: width(hideLabel),
@@ -671,55 +625,42 @@ const makePrimerNode = async (
         data: { flavor },
         ...edgeCommon(child, isRight),
       });
-      if (p.level == "Beginner") {
-        return [
-          {
-            id,
-            type: "primer",
-            data: {
-              flavor,
-              contents: noBodyFlavorContents(node.body.contents),
-              centerLabel: node.children >= 2,
-              hideLabel: false,
-              ...common,
-              // TODO This is necessary to ensure that all syntax labels fit.
-              // It can be removed when we have dynamic node sizes.
-              width: 150,
-            },
-            zIndex,
+      return [
+        {
+          id,
+          type: "primer",
+          data: {
+            beginner: p.level == "Beginner",
+            flavor,
+            hideLabel: hideLabels,
+            ...common,
+            // Square, with same height as other nodes.
+            width:
+              p.level == "Beginner"
+                ? // centerLabel: node.children >= 2,
+                  // hideLabel: false,
+                  // contents: flavorSyntaxBeginnerDescription(node.body.contents),
+                  // TODO This is necessary to ensure that all syntax labels fit.
+                  150
+                : common.height,
+            ...(p.level != "Beginner" && flavorSort(flavor) == "kind"
+              ? {
+                  padding: {
+                    // Since these nodes are rotated, their width,
+                    // as reported to the layout engine, is off by a factor of √2.
+                    // We don't pad vertically since allowing some overlap in the y-axis actually looks better,
+                    // due to the rotation and the fact that all non-leaf kind nodes have precisely two children.
+                    left: (common.height * Math.sqrt(2) - common.height) / 2,
+                    right: (common.height * Math.sqrt(2) - common.height) / 2,
+                  },
+                }
+              : {}),
           },
-          makeChild,
-          [],
-        ];
-      } else {
-        return [
-          {
-            id,
-            type: "primer-simple",
-            data: {
-              flavor,
-              ...common,
-              // Square, with same height as other nodes.
-              width: common.height,
-              ...(flavorSort(flavor) == "kind"
-                ? {
-                    padding: {
-                      // Since these nodes are rotated, their width,
-                      // as reported to the layout engine, is off by a factor of √2.
-                      // We don't pad vertically since allowing some overlap in the y-axis actually looks better,
-                      // due to the rotation and the fact that all non-leaf kind nodes have precisely two children.
-                      left: (common.height * Math.sqrt(2) - common.height) / 2,
-                      right: (common.height * Math.sqrt(2) - common.height) / 2,
-                    },
-                  }
-                : {}),
-            },
-            zIndex,
-          },
-          makeChild,
-          [],
-        ];
-      }
+          zIndex,
+        },
+        makeChild,
+        [],
+      ];
     }
     case "BoxBody": {
       const { fst: flavor, snd: t } = node.body.contents;
@@ -892,7 +833,6 @@ const defToTree = async (
   const defNameNode: PrimerNodeWithNestedAndDef = {
     id: defNodeId,
     data: {
-      style: p.style,
       def: def.name,
       width: p.nodeWidth * p.nameNodeMultipliers.width,
       height: p.nodeHeight * p.nameNodeMultipliers.height,
@@ -996,7 +936,6 @@ const typeDefToTree = async (
       id,
       type: "primer-typedef-param",
       data: {
-        style: p.style,
         def: def.name,
         width: p.nodeWidth,
         height: p.nodeHeight,
@@ -1087,7 +1026,6 @@ const typeDefToTree = async (
             id: consId,
             type: "primer-typedef-cons",
             data: {
-              style: p.style,
               def: def.name,
               name: cons.name,
               width: p.nodeWidth,
@@ -1125,7 +1063,6 @@ const typeDefToTree = async (
       id: rootId,
       type: "primer-typedef-name",
       data: {
-        style: p.style,
         def: def.name,
         name: def.name,
         height: p.nodeHeight * p.nameNodeMultipliers.height,
