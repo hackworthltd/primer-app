@@ -12,17 +12,11 @@ export type NodeFlavorTextBody = typeof NodeFlavorTextBody[keyof typeof NodeFlav
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const NodeFlavorTextBody = {
   Con: 'Con',
-  Lam: 'Lam',
-  LAM: 'LAM',
-  Let: 'Let',
-  LetType: 'LetType',
-  Letrec: 'Letrec',
-  PatternBind: 'PatternBind',
   PatternCon: 'PatternCon',
   TCon: 'TCon',
   TVar: 'TVar',
-  TForall: 'TForall',
-  TLet: 'TLet',
   GlobalVar: 'GlobalVar',
   LocalVar: 'LocalVar',
+  VarBind: 'VarBind',
+  TVarBind: 'TVarBind',
 } as const;
