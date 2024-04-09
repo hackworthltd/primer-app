@@ -83,10 +83,9 @@ export const treeToGraph = <
 ): Graph<N, E & { isRight: boolean }> => {
   const [trees, edges] = unzip(
     tree.childTrees
-      .map<[Tree<N, E>, E & { isRight: boolean }]>(([t, e]) => [
-        t,
-        { ...e, ...{ isRight: false } },
-      ])
+      .map<
+        [Tree<N, E>, E & { isRight: boolean }]
+      >(([t, e]) => [t, { ...e, ...{ isRight: false } }])
       .concat(
         tree.rightChild
           ? [

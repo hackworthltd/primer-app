@@ -143,7 +143,7 @@
             buildInputs = (with pkgs; [
               nodejs_18
               nodejs_18.pkgs.pnpm
-              rnix-lsp
+              nil
             ]);
 
             # Make sure the Nix shell includes node_modules's bin dir in
