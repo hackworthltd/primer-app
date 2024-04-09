@@ -63,6 +63,27 @@ export const treeMap = <N1, N2, E>(
     : {}),
 });
 
+// A generalisation of `treeMap`, where the mapping function is also passed
+// the node's subtrees and parent.
+export const treeMapWithExtraContext = <N1, N2, E>(
+  t: Tree<N1, E> & { parent?: Tree<N1, E> },
+  f: (t: Tree<N1, E> & { parent?: Tree<N1, E> }) => N2
+): Tree<N2, E> => ({
+  node: f({ ...t }),
+  childTrees: t.childTrees.map(([t1, e]) => [
+    treeMapWithExtraContext({ ...t1, parent: t }, f),
+    e,
+  ]),
+  ...(t.rightChild
+    ? {
+        rightChild: (([t1, e]) => [
+          treeMapWithExtraContext({ ...t1, parent: t }, f),
+          e,
+        ])(t.rightChild),
+      }
+    : {}),
+});
+
 export const treeNodes = <N, E>({
   node,
   rightChild,
@@ -118,7 +139,6 @@ export type PrimerNode<T = unknown> = {
   data: PrimerCommonNodeProps & T;
 } & (
   | { type: "primer"; data: PrimerNodeProps }
-  | { type: "primer-simple"; data: PrimerSimpleNodeProps }
   | { type: "primer-box"; data: PrimerBoxNodeProps }
   | { type: "primer-def-name"; data: PrimerDefNameNodeProps }
   | { type: "primer-typedef-name"; data: PrimerTypeDefNameNodeProps }
@@ -163,22 +183,25 @@ export type NodeData =
       name: string;
     };
 
+export type Label = {
+  contents: string;
+  position: "center" | ["inline" | "corner", "left" | "right"];
+};
+
 /** Node properties. */
 export type PrimerNodeProps = {
   nodeData: NodeData;
-  centerLabel: boolean;
-  flavor: NodeFlavorTextBody | NodeFlavorPrimBody | NodeFlavorNoBody;
-  contents: string;
   hideLabel: boolean;
   showIDs: boolean;
-};
-
-/** Properties for a simple node. */
-export type PrimerSimpleNodeProps = {
-  nodeData: NodeData;
-  flavor: NodeFlavorNoBody;
-  showIDs: boolean;
-};
+} & (
+  | {
+      flavor: NodeFlavorNoBody;
+      // this exists iff we are in beginner mode - is there a better way to model this?
+      // contents?: string;
+      beginner: boolean;
+    }
+  | { flavor: NodeFlavorTextBody | NodeFlavorPrimBody; contents: string }
+);
 
 /** Properties for a box node. */
 export type PrimerBoxNodeProps = {
@@ -218,7 +241,6 @@ export type PrimerCommonNodeProps = {
   height: number;
   padding?: Padding;
   selected: boolean;
-  style: "inline" | "corner";
 };
 
 /** Our edge type. Much like `PrimerNode`, `PrimerEdge` extends ReactFlow's `Edge`.
