@@ -95,7 +95,7 @@ export const SearchBar = (p: SearchBarProps): JSX.Element => {
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <MagnifyingGlassIcon
-            className="h-5 w-5 text-grey-secondary"
+            className="size-5 text-grey-secondary"
             aria-hidden="true"
           />
         </div>

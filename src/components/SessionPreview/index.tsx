@@ -24,7 +24,7 @@ export const SessionPreview = ({
           key={session.id}
           className="group rounded-t-lg hover:text-blue-primary"
         >
-          <BinaryTreePlaceholder className="mx-auto h-16 w-16 shrink-0 fill-current text-white-primary group-hover:text-blue-primary md:h-48 md:w-48" />
+          <BinaryTreePlaceholder className="mx-auto size-16 shrink-0 fill-current text-white-primary group-hover:text-blue-primary md:size-48" />
         </Link>
         <h3 className="mt-6 truncate font-medium text-blue-primary">
           {session.name}
@@ -49,7 +49,7 @@ export const SessionPreview = ({
               className="group inline-flex flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-blue-secondary hover:bg-blue-secondary hover:text-yellow-primary"
             >
               <StarIcon
-                className="h-5 w-5 fill-white-primary group-hover:fill-yellow-primary"
+                className="size-5 fill-white-primary group-hover:fill-yellow-primary"
                 aria-hidden="true"
               />
               <div className="sr-only">Favorite</div>
@@ -61,7 +61,7 @@ export const SessionPreview = ({
               className="group inline-flex flex-1 items-center justify-center border border-transparent py-4 text-sm font-medium text-blue-secondary hover:bg-blue-secondary hover:text-green-primary"
             >
               <UserPlusIcon
-                className="h-5 w-5 fill-white-primary group-hover:fill-green-primary"
+                className="size-5 fill-white-primary group-hover:fill-green-primary"
                 aria-hidden="true"
               />
               <div className="sr-only">Share</div>
@@ -74,7 +74,7 @@ export const SessionPreview = ({
               onClick={onClickDelete}
             >
               <TrashIcon
-                className="h-5 w-5 fill-white-primary hover:stroke-red-primary group-hover:stroke-red-secondary"
+                className="size-5 fill-white-primary hover:stroke-red-primary group-hover:stroke-red-secondary"
                 aria-hidden="true"
               />
               <div className="sr-only">Delete</div>

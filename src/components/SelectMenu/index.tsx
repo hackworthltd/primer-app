@@ -64,7 +64,7 @@ export const SelectMenu = (p: SelectMenuProps) => {
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon
-                  className="h-5 w-5 text-grey-secondary"
+                  className="size-5 text-grey-secondary"
                   aria-hidden="true"
                 />
               </span>
@@ -112,7 +112,7 @@ export const SelectMenu = (p: SelectMenuProps) => {
                               "absolute inset-y-0 right-0 flex items-center pr-4"
                             )}
                           >
-                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                            <CheckIcon className="size-5" aria-hidden="true" />
                           </span>
                         ) : null}
                       </>

@@ -88,7 +88,7 @@ export const ActionInput = (p: ActionInputProps): JSX.Element => {
             inputRef?.current?.reportValidity() && p.onSubmit(input);
           }}
         >
-          <ArrowUturnLeftIcon className="w-6 scale-y-[-1]"></ArrowUturnLeftIcon>
+          <ArrowUturnLeftIcon className="w-6 -scale-y-100"></ArrowUturnLeftIcon>
         </button>
       </form>
     </div>

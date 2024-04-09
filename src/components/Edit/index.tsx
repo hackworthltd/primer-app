@@ -292,7 +292,7 @@ const AppNoError = ({
     : defaultTreeReactFlowProps;
 
   return (
-    <div className="grid h-[100dvh] grid-cols-[auto_20rem]">
+    <div className="grid h-dvh grid-cols-[auto_20rem]">
       <div className="relative h-full">
         <ReactFlowProvider>
           <TreeReactFlow

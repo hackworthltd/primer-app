@@ -118,9 +118,9 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
             >
               <Dialog.Panel className="relative overflow-hidden rounded-lg bg-white-primary px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-blue-secondary sm:mx-0 sm:h-10 sm:w-10">
+                  <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-md bg-blue-secondary sm:mx-0 sm:size-10">
                     <SparklesIcon
-                      className="h-6 w-6 text-white-primary"
+                      className="size-6 text-white-primary"
                       aria-hidden="true"
                     />
                   </div>
@@ -170,7 +170,7 @@ export const SessionNameModal = (p: SessionNameModalProps): JSX.Element => {
                         <input
                           type="checkbox"
                           id="importPrelude"
-                          className="h-6 w-6 rounded-md border-grey-quaternary text-blue-primary focus:ring-blue-secondary"
+                          className="size-6 rounded-md border-grey-quaternary text-blue-primary focus:ring-blue-secondary"
                           {...register("importPrelude")}
                         />
                       </div>
