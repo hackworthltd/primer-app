@@ -118,7 +118,7 @@ export const useGetSessionListHook = () => {
 ) => {
         return getSessionList(
           {url: `/openapi/sessions`, method: 'GET',
-        params, ...(signal ? { signal }: {})
+        params, signal
     },
           );
         }
@@ -701,7 +701,7 @@ export const useGetSessionNameHook = () => {
  signal?: AbortSignal
 ) => {
         return getSessionName(
-          {url: `/openapi/sessions/${sessionId}/name`, method: 'GET', ...(signal ? { signal }: {})
+          {url: `/openapi/sessions/${sessionId}/name`, method: 'GET', signal
     },
           );
         }
@@ -827,7 +827,7 @@ export const useGetProgramHook = () => {
  signal?: AbortSignal
 ) => {
         return getProgram(
-          {url: `/openapi/sessions/${sessionId}/program`, method: 'GET', ...(signal ? { signal }: {})
+          {url: `/openapi/sessions/${sessionId}/program`, method: 'GET', signal
     },
           );
         }
@@ -1129,7 +1129,7 @@ export const useGetVersionHook = () => {
  signal?: AbortSignal
 ) => {
         return getVersion(
-          {url: `/openapi/version`, method: 'GET', ...(signal ? { signal }: {})
+          {url: `/openapi/version`, method: 'GET', signal
     },
           );
         }

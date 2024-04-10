@@ -1415,7 +1415,7 @@ export const ReactFlowSafe = <
         // the tree in order to perform actions on them.
         elementsSelectable: false,
         onNodeClick: (e, n) => {
-          "onNodeClick" in p &&
+          p.onNodeClick &&
             p.onNodeClick(
               e,
               // This cast is safe because `N` is also the type of elements of the `nodes` field.
