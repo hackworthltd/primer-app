@@ -1,4 +1,5 @@
-import { NodeChange, ReactFlowProvider, useReactFlow } from "reactflow";
+import { useState, useCallback } from "react";
+import { Node, NodeChange, ReactFlowProvider, useReactFlow, applyNodeChanges } from "reactflow";
 import { Tree, Level, TypeOrKind } from "@/primer-api";
 import { TreeReactFlowOne } from "@/components";
 import {
@@ -19,9 +20,14 @@ const TypeOrKindTree = (p: {
 }) => {
   const padding = 1.0;
   const { fitView } = useReactFlow();
-  const onNodesChange = (_: NodeChange[]) => {
-    fitView({ padding });
-  };
+  const [_, setNodes] = useState<Node[]>([]);
+  const onNodesChange = useCallback(
+    (changes: NodeChange[]) => {
+      setNodes((oldNodes: Node[]) => applyNodeChanges(changes, oldNodes));
+      fitView({ padding });
+    },
+    [setNodes, fitView]
+  );
 
   return (
     <TreeReactFlowOne
