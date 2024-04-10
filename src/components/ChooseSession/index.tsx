@@ -24,7 +24,9 @@ const ChooseSession = (): JSX.Element => {
   const deleteSession = useDeleteSession({
     mutation: {
       onSuccess: () =>
-        queryClient.invalidateQueries(getGetSessionListQueryKey()),
+        queryClient.invalidateQueries({
+          queryKey: getGetSessionListQueryKey(),
+        }),
     },
   });
   const { data } = useGetSessionList({
@@ -57,7 +59,9 @@ const ChooseSession = (): JSX.Element => {
   const newSession = useCreateSession({
     mutation: {
       onSuccess: (newSessionID: Uuid) => {
-        queryClient.invalidateQueries(getGetSessionListQueryKey());
+        queryClient.invalidateQueries({
+          queryKey: getGetSessionListQueryKey(),
+        });
         navigate(`/sessions/${newSessionID}`);
       },
     },

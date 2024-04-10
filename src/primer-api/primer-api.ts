@@ -130,7 +130,7 @@ export const getGetSessionListQueryKey = (params?: GetSessionListParams,) => {
     }
 
     
-export const useGetSessionListQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>, TError = ErrorType<void>>(params?: GetSessionListParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>, TError, TData>, }
+export const useGetSessionListQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>, TError = ErrorType<void>>(params?: GetSessionListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -145,7 +145,7 @@ const {query: queryOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn,   cacheTime: 0,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn,   gcTime: 0,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>, TError, TData> & { queryKey: QueryKey }
 }
 
 export type GetSessionListQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>>
@@ -155,7 +155,7 @@ export type GetSessionListQueryError = ErrorType<void>
  * @summary Get the list of sessions
  */
 export const useGetSessionList = <TData = Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>, TError = ErrorType<void>>(
- params?: GetSessionListParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>, TError, TData>, }
+ params?: GetSessionListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionListHook>>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
@@ -447,7 +447,7 @@ export const getGetAvailableActionsQueryKey = (sessionId: string,
     
 export const useGetAvailableActionsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>, TError = ErrorType<void>>(sessionId: string,
     selection: Selection,
-    params: GetAvailableActionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>, TError, TData>, }
+    params: GetAvailableActionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -474,7 +474,7 @@ export type GetAvailableActionsQueryError = ErrorType<void>
 export const useGetAvailableActions = <TData = Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>, TError = ErrorType<void>>(
  sessionId: string,
     selection: Selection,
-    params: GetAvailableActionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>, TError, TData>, }
+    params: GetAvailableActionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAvailableActionsHook>>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
@@ -647,7 +647,7 @@ export const getEvalFullQueryKey = (sessionId: string,
     
 export const useEvalFullQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError = ErrorType<void>>(sessionId: string,
     globalName: GlobalName,
-    params?: EvalFullParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError, TData>, }
+    params?: EvalFullParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -674,7 +674,7 @@ export type EvalFullQueryError = ErrorType<void>
 export const useEvalFull = <TData = Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError = ErrorType<void>>(
  sessionId: string,
     globalName: GlobalName,
-    params?: EvalFullParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError, TData>, }
+    params?: EvalFullParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalFullHook>>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
@@ -713,7 +713,7 @@ export const getGetSessionNameQueryKey = (sessionId: string,) => {
     }
 
     
-export const useGetSessionNameQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>, TError = ErrorType<void>>(sessionId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>, TError, TData>, }
+export const useGetSessionNameQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>, TError = ErrorType<void>>(sessionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -728,7 +728,7 @@ const {query: queryOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(sessionId),  cacheTime: 0,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(sessionId),  gcTime: 0,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>, TError, TData> & { queryKey: QueryKey }
 }
 
 export type GetSessionNameQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>>
@@ -738,7 +738,7 @@ export type GetSessionNameQueryError = ErrorType<void>
  * @summary Get the specified session's name
  */
 export const useGetSessionName = <TData = Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>, TError = ErrorType<void>>(
- sessionId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>, TError, TData>, }
+ sessionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSessionNameHook>>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
@@ -839,7 +839,7 @@ export const getGetProgramQueryKey = (sessionId: string,) => {
     }
 
     
-export const useGetProgramQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError = ErrorType<void>>(sessionId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError, TData>, }
+export const useGetProgramQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError = ErrorType<void>>(sessionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -854,7 +854,7 @@ const {query: queryOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(sessionId),  cacheTime: 0,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(sessionId),  gcTime: 0,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError, TData> & { queryKey: QueryKey }
 }
 
 export type GetProgramQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>>
@@ -864,7 +864,7 @@ export type GetProgramQueryError = ErrorType<void>
  * @summary Get the current program state
  */
 export const useGetProgram = <TData = Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError = ErrorType<void>>(
- sessionId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError, TData>, }
+ sessionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetProgramHook>>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
@@ -1141,7 +1141,7 @@ export const getGetVersionQueryKey = () => {
     }
 
     
-export const useGetVersionQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>, TError, TData>, }
+export const useGetVersionQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1156,7 +1156,7 @@ const {query: queryOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn,   cacheTime: 0,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn,   gcTime: 0,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>, TError, TData> & { queryKey: QueryKey }
 }
 
 export type GetVersionQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>>
@@ -1166,7 +1166,7 @@ export type GetVersionQueryError = ErrorType<unknown>
  * @summary Get the current server version
  */
 export const useGetVersion = <TData = Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>, TError, TData>, }
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVersionHook>>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 

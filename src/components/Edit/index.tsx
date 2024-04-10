@@ -62,9 +62,16 @@ export type DevOptions = {
   alwaysShowLabels: boolean;
 };
 
-const Edit = (devOpts: DevOptions): JSX.Element => {
+const Edit = (): JSX.Element => {
   const params = useParams();
   const sessionId = params["sessionId"];
+
+  // Temporary until these toggles are re-enabled.
+  const devOpts: DevOptions = {
+    showIDs: false,
+    inlineLabels: false,
+    alwaysShowLabels: false,
+  };
 
   if (!sessionId) {
     return (
@@ -74,33 +81,24 @@ const Edit = (devOpts: DevOptions): JSX.Element => {
   // This hook is *technically* conditional.
   // But if the condition above fails, then the app is broken anyway.
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const queryRes = useGetProgram(sessionId);
+  const { isPending, isError, data, error } = useGetProgram(sessionId);
 
-  if (queryRes.error) {
+  if (isError) {
     return (
-      <Error
-        string={
-          "Failed to get program from backend: " +
-          JSON.stringify(queryRes.error)
-        }
-      />
+      <Error string={"Failed to get program from backend: " + error.message} />
     );
-  }
-
-  // This state will appear on every load, usually only very briefly,
-  // and we choose to just show nothing.
-  if (queryRes.isLoading) {
+  } else if (isPending) {
+    // This state will appear on every load, usually only very briefly,
+    // and we choose to just show nothing.
     return <></>;
-  }
-
-  // At this point, we have successfully received an initial program.
-  return (
-    <AppProg
-      initialProg={queryRes.data}
-      {...{ sessionId }}
-      devOpts={devOpts}
-    ></AppProg>
-  );
+  } else
+    return (
+      <AppProg
+        initialProg={data}
+        {...{ sessionId }}
+        devOpts={devOpts}
+      ></AppProg>
+    );
 };
 
 const AppProg = (p: {
@@ -190,7 +188,10 @@ const useInvalidateOnChange = <TData, TError>(
   useEffect(
     () => {
       (async () =>
-        await queryClient.invalidateQueries(res.queryKey, { exact: true }))();
+        await queryClient.invalidateQueries({
+          queryKey: res.queryKey,
+          exact: true,
+        }))();
     },
     // We stringify the queryKey as a poor-man's deep equality check,
     // since the orval generated bindings to react-query construct a
