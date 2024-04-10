@@ -84,7 +84,7 @@ export const CommandPalette = (p: CommandPaletteProps): JSX.Element => {
               >
                 <div className="relative">
                   <MagnifyingGlassIcon
-                    className="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-grey-secondary"
+                    className="pointer-events-none absolute left-4 top-3.5 size-5 text-grey-secondary"
                     aria-hidden="true"
                   />
                   <Combobox.Input
@@ -156,7 +156,7 @@ export const CommandPalette = (p: CommandPaletteProps): JSX.Element => {
                   filteredTypes.length === 0 && (
                     <div className="border-t border-grey-quaternary px-6 py-14 text-center text-sm sm:px-14">
                       <FaceFrownIcon
-                        className="mx-auto h-6 w-6 text-blue-primary"
+                        className="mx-auto size-6 text-blue-primary"
                         aria-hidden="true"
                       />
                       <p className="mt-4 text-lg font-semibold leading-6 text-blue-secondary">
@@ -175,7 +175,7 @@ export const CommandPalette = (p: CommandPaletteProps): JSX.Element => {
                   filteredTypes.length === 0 && (
                     <div className="border-t border-grey-quaternary px-6 py-14 text-center text-sm sm:px-14">
                       <GlobeAmericasIcon
-                        className="mx-auto h-6 w-6 text-blue-primary"
+                        className="mx-auto size-6 text-blue-primary"
                         aria-hidden="true"
                       />
                       <p className="mt-4 text-lg font-semibold leading-6 text-blue-secondary">

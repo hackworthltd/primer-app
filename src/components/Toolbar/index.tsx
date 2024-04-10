@@ -114,7 +114,7 @@ export const Toolbar = (p: ToolbarProps): JSX.Element => {
         disabled={!p.redoAvailable}
         className={buttonClasses("primary", true)}
       >
-        <div className="scale-x-[-1]">{arrow}</div>
+        <div className="-scale-x-100">{arrow}</div>
         redo
       </button>
       <button
