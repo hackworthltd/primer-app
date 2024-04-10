@@ -22,8 +22,8 @@ const useQueryPost: {
   })
 );
 
-// We disable caching by default, to avoid displaying stale data.
-const queryOpts: UseQueryOptions = { cacheTime: 0 };
+// gc immediately, to disable showing cached data.
+const queryOpts: UseQueryOptions = { gcTime: 0 };
 
 export default defineConfig({
   "primer-api": {
