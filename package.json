@@ -27,7 +27,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@neodrag/react": "^2.0.4",
     "@orval/core": "^6.26.0",
-    "@tanstack/react-query": "^5.29.0",
+    "@tanstack/react-query": "^5.29.2",
     "@tanstack/react-query-devtools": "^5.29.0",
     "@types/deep-equal": "^1.0.4",
     "@zxch3n/tidy": "github:hackworthltd/tidy#e07fdef2ae7bf593701817113dd47b4cd56c7a97",
