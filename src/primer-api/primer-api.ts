@@ -25,6 +25,8 @@ import type {
   ApplyActionWithInputParams,
   CreateDefinitionParams,
   CreateTypeDefBody,
+  EvalBoundedInterpParams,
+  EvalBoundedInterpResp,
   EvalFullParams,
   EvalFullResp,
   GetActionOptionsParams,
@@ -690,6 +692,69 @@ export const useEvalFull = <TData = Awaited<ReturnType<ReturnType<typeof useEval
 
 
 
+/**
+ * @summary Using the interpreter, evaluate the named definition to normal form (or time out)
+ */
+export const useEvalBoundedInterpHook = () => {
+        const evalBoundedInterp = useCustomInstance<EvalBoundedInterpResp>();
+
+        return (
+    sessionId: string,
+    globalName: GlobalName,
+    params?: EvalBoundedInterpParams,
+ ) => {
+        return evalBoundedInterp(
+          {url: `/openapi/sessions/${sessionId}/eval-bounded-interp`, method: 'POST',
+      headers: {'Content-Type': 'application/json;charset=utf-8', },
+      data: globalName,
+        params
+    },
+          );
+        }
+      }
+    
+
+
+export const useEvalBoundedInterpMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError,{sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError,{sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams}, TContext> => {
+const {mutation: mutationOptions} = options ?? {};
+
+      const evalBoundedInterp =  useEvalBoundedInterpHook()
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, {sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams}> = (props) => {
+          const {sessionId,data,params} = props ?? {};
+
+          return  evalBoundedInterp(sessionId,data,params,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EvalBoundedInterpMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>>
+    export type EvalBoundedInterpMutationBody = GlobalName
+    export type EvalBoundedInterpMutationError = ErrorType<void>
+
+    /**
+ * @summary Using the interpreter, evaluate the named definition to normal form (or time out)
+ */
+export const useEvalBoundedInterp = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError,{sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams}, TContext>, }
+): UseMutationResult<
+        Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>,
+        TError,
+        {sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams},
+        TContext
+      > => {
+
+      const mutationOptions = useEvalBoundedInterpMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * @summary Get the specified session's name
  */
