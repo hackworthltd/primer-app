@@ -59,7 +59,7 @@ jobs:
         run: pnpm lint --max-warnings=0
 
       - name: Archive frontend
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.3.3
         with:
           name: dist
           path: |
