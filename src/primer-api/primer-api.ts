@@ -25,6 +25,8 @@ import type {
   ApplyActionWithInputParams,
   CreateDefinitionParams,
   CreateTypeDefBody,
+  EvalBoundedInterpParams,
+  EvalBoundedInterpResp,
   EvalFullParams,
   EvalFullResp,
   GetActionOptionsParams,
@@ -679,6 +681,80 @@ export const useEvalFull = <TData = Awaited<ReturnType<ReturnType<typeof useEval
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const queryOptions = useEvalFullQueryOptions(sessionId,globalName,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Using the interpreter, evaluate the named definition to normal form (or time out)
+ */
+const useEvalBoundedInterpHook = () => {
+        const evalBoundedInterp = useCustomInstance<EvalBoundedInterpResp>();
+
+        return (
+    sessionId: string,
+    globalName: GlobalName,
+    params?: EvalBoundedInterpParams,
+ ) => {
+        return evalBoundedInterp(
+          {url: `/openapi/sessions/${sessionId}/eval-bounded-interp`, method: 'POST',
+      headers: {'Content-Type': 'application/json;charset=utf-8', },
+      data: globalName,
+        params
+    },
+          );
+        }
+      }
+    
+
+export const getEvalBoundedInterpQueryKey = (sessionId: string,
+    globalName: GlobalName,
+    params?: EvalBoundedInterpParams,) => {
+    return [`/openapi/sessions/${sessionId}/eval-bounded-interp`, ...(params ? [params]: []), globalName] as const;
+    }
+
+    
+export const useEvalBoundedInterpQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError = ErrorType<void>>(sessionId: string,
+    globalName: GlobalName,
+    params?: EvalBoundedInterpParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getEvalBoundedInterpQueryKey(sessionId,globalName,params);
+
+  const evalBoundedInterp =  useEvalBoundedInterpHook();
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>> = () => evalBoundedInterp(sessionId,globalName,params, );
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(sessionId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type EvalBoundedInterpQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>>
+export type EvalBoundedInterpQueryError = ErrorType<void>
+
+/**
+ * @summary Using the interpreter, evaluate the named definition to normal form (or time out)
+ */
+export const useEvalBoundedInterp = <TData = Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError = ErrorType<void>>(
+ sessionId: string,
+    globalName: GlobalName,
+    params?: EvalBoundedInterpParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = useEvalBoundedInterpQueryOptions(sessionId,globalName,params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

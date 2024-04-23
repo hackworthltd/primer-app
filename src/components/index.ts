@@ -9,6 +9,7 @@ export { default as CreateDefModal } from "./CreateDefModal";
 export { default as DefsToolbar } from "./DefsToolbar";
 export { default as Edit } from "./Edit";
 export { default as Error } from "./Error";
+export { default as EvalBoundedInterp } from "./EvalBoundedInterp";
 export { default as EvalFull } from "./EvalFull";
 export { default as GroupedButtonList } from "./GroupedButtonList";
 export { default as NoMatch } from "./NoMatch";
