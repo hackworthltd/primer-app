@@ -695,7 +695,7 @@ export const useEvalFull = <TData = Awaited<ReturnType<ReturnType<typeof useEval
 /**
  * @summary Using the interpreter, evaluate the named definition to normal form (or time out)
  */
-export const useEvalBoundedInterpHook = () => {
+const useEvalBoundedInterpHook = () => {
         const evalBoundedInterp = useCustomInstance<EvalBoundedInterpResp>();
 
         return (
@@ -714,47 +714,58 @@ export const useEvalBoundedInterpHook = () => {
       }
     
 
+export const getEvalBoundedInterpQueryKey = (sessionId: string,
+    globalName: GlobalName,
+    params?: EvalBoundedInterpParams,) => {
+    return [`/openapi/sessions/${sessionId}/eval-bounded-interp`, ...(params ? [params]: []), globalName] as const;
+    }
 
-export const useEvalBoundedInterpMutationOptions = <TError = ErrorType<void>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError,{sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError,{sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams}, TContext> => {
-const {mutation: mutationOptions} = options ?? {};
+    
+export const useEvalBoundedInterpQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError = ErrorType<void>>(sessionId: string,
+    globalName: GlobalName,
+    params?: EvalBoundedInterpParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError, TData>>, }
+) => {
 
-      const evalBoundedInterp =  useEvalBoundedInterpHook()
+const {query: queryOptions} = options ?? {};
 
+  const queryKey =  queryOptions?.queryKey ?? getEvalBoundedInterpQueryKey(sessionId,globalName,params);
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, {sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams}> = (props) => {
-          const {sessionId,data,params} = props ?? {};
+  const evalBoundedInterp =  useEvalBoundedInterpHook();
 
-          return  evalBoundedInterp(sessionId,data,params,)
-        }
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>> = () => evalBoundedInterp(sessionId,globalName,params, );
 
-        
+      
 
+      
 
-  return  { mutationFn, ...mutationOptions }}
+   return  { queryKey, queryFn, enabled: !!(sessionId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError, TData> & { queryKey: QueryKey }
+}
 
-    export type EvalBoundedInterpMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>>
-    export type EvalBoundedInterpMutationBody = GlobalName
-    export type EvalBoundedInterpMutationError = ErrorType<void>
+export type EvalBoundedInterpQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>>
+export type EvalBoundedInterpQueryError = ErrorType<void>
 
-    /**
+/**
  * @summary Using the interpreter, evaluate the named definition to normal form (or time out)
  */
-export const useEvalBoundedInterp = <TError = ErrorType<void>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError,{sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams}, TContext>, }
-): UseMutationResult<
-        Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>,
-        TError,
-        {sessionId: string;data: GlobalName;params?: EvalBoundedInterpParams},
-        TContext
-      > => {
+export const useEvalBoundedInterp = <TData = Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError = ErrorType<void>>(
+ sessionId: string,
+    globalName: GlobalName,
+    params?: EvalBoundedInterpParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useEvalBoundedInterpHook>>>, TError, TData>>, }
 
-      const mutationOptions = useEvalBoundedInterpMutationOptions(options);
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-      return useMutation(mutationOptions);
-    }
-    
+  const queryOptions = useEvalBoundedInterpQueryOptions(sessionId,globalName,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
 /**
  * @summary Get the specified session's name
  */
