@@ -8,7 +8,6 @@ import {
   Level,
   TypeDef,
 } from "@/primer-api";
-import type { NodeChange } from "reactflow";
 import {
   ReactFlow,
   Node as RFNode,
@@ -22,7 +21,6 @@ import {
   EdgeProps,
   getBezierPath,
   EdgeTypes,
-  useReactFlow,
 } from "reactflow";
 import "./reactflow.css";
 import { MutableRefObject, PropsWithChildren, useId } from "react";
@@ -74,27 +72,6 @@ import { mapSnd } from "fp-ts/lib/Tuple";
 
 export type ScrollToDef = (defName: string) => void;
 
-/**
- * Only the `FitViewOptions` from `ReactFlow` that we want to expose.
- */
-export type FitViewOptions = {
-  padding?: number;
-};
-
-/**
- * A subset of the properties that `ReactFlow` supports and that we want to
- * expose to users of `TreeReactFlow` and `TreeReactFlowOne`.
- */
-export type OnNodesChange = (nodesChanges: NodeChange[]) => void;
-type ReactFlowParams = {
-  onNodesChange?: OnNodesChange;
-
-  /**
-   * Options that are passed to the initial `fitView` call.
-   */
-  fitViewOptions?: FitViewOptions;
-};
-
 /** These properties are needed to construct nodes, but are invariant across all nodes. */
 export type NodeStyle = "corner" | "inline";
 type NodeParams = {
@@ -126,8 +103,7 @@ export type TreeReactFlowProps = {
   scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
   scrollToTypeDefRef: MutableRefObject<ScrollToDef | undefined>;
   zoomBarProps: ZoomBarProps;
-} & NodeParams &
-  ReactFlowParams;
+} & NodeParams;
 export const defaultTreeReactFlowProps: Pick<
   TreeReactFlowProps,
   "treePadding" | "forestLayout" | "defParams" | "layout" | keyof NodeParams
@@ -1246,10 +1222,6 @@ export const TreeReactFlow = (p: PropsWithChildren<TreeReactFlowProps>) => {
       }
       zoomBarProps={p.zoomBarProps}
     >
-      <SetTreeReactFlowCallbacks
-        scrollToDefRef={p.scrollToDefRef}
-        scrollToTypeDefRef={p.scrollToTypeDefRef}
-      />
       {p.children}
     </Trees>
   );
@@ -1261,8 +1233,7 @@ export type TreeReactFlowOneProps = {
   onNodeClick?: (event: React.MouseEvent, node: Positioned<PrimerNode>) => void;
   layout: LayoutParams;
   zoomBarProps: ZoomBarProps;
-} & NodeParams &
-  ReactFlowParams;
+} & NodeParams;
 
 /** Renders one `APITree` (e.g. one type or one term) on its own individual canvas.
  * This is essentially a much simpler version of `TreeReactFlow`.
@@ -1301,8 +1272,7 @@ const Trees = <N,>(
       node: Positioned<PrimerNode<N>>
     ) => void;
     zoomBarProps: ZoomBarProps;
-  }> &
-    ReactFlowParams
+  }>
 ): JSX.Element => {
   const trees = usePromise([], p.makeTrees);
   const { nodes, edges } = combineGraphs([
@@ -1324,53 +1294,12 @@ const Trees = <N,>(
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       proOptions={{ hideAttribution: true, account: "paid-pro" }}
-      onNodesChange={p.onNodesChange}
-      fitViewOptions={p.fitViewOptions}
     >
       <Background gap={25} size={1.6} color="#81818a" />
       <ZoomBar {...p.zoomBarProps} />
       {p.children}
     </ReactFlowSafe>
   );
-};
-
-// This component is rendered purely for side effects. We do this
-// rather than wrap our `ReactFlow` components with
-// `ReactFlowProvider`s.
-const SetTreeReactFlowCallbacks = ({
-  scrollToDefRef,
-  scrollToTypeDefRef,
-}: {
-  scrollToDefRef: MutableRefObject<ScrollToDef | undefined>;
-  scrollToTypeDefRef: MutableRefObject<ScrollToDef | undefined>;
-}) => {
-  const { fitView, getZoom } = useReactFlow();
-
-  const scrollToDef: ScrollToDef = (defName: string) => {
-    // Don't change the current zoom level when scrolling to a
-    // definition.
-    const zoomLevel: number = getZoom();
-    fitView({
-      nodes: [{ id: defNameToNodeId(defName) }],
-      minZoom: zoomLevel,
-      maxZoom: zoomLevel,
-    });
-  };
-  scrollToDefRef.current = scrollToDef;
-
-  const scrollToTypeDef: ScrollToDef = (defName: string) => {
-    // Don't change the current zoom level when scrolling to a
-    // definition.
-    const zoomLevel: number = getZoom();
-    fitView({
-      nodes: [{ id: typeDefNameToNodeId(defName) }],
-      minZoom: zoomLevel,
-      maxZoom: zoomLevel,
-    });
-  };
-  scrollToTypeDefRef.current = scrollToTypeDef;
-
-  return <></>;
 };
 
 /** A more strongly-typed version of the `ReactFlow` component.

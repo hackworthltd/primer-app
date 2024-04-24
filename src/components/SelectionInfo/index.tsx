@@ -1,4 +1,4 @@
-import { NodeChange, ReactFlowProvider, useReactFlow } from "reactflow";
+import { ReactFlowProvider } from "reactflow";
 import { Tree, Level, TypeOrKind } from "@/primer-api";
 import { TreeReactFlowOne } from "@/components";
 import {
@@ -18,10 +18,6 @@ const TypeOrKindTree = (p: {
   extraTreeProps: Partial<TreeReactFlowOneProps>;
 }) => {
   const padding = 1.0;
-  const { fitView } = useReactFlow();
-  const onNodesChange = (_: NodeChange[]) => {
-    fitView({ padding });
-  };
 
   return (
     <TreeReactFlowOne
@@ -29,8 +25,6 @@ const TypeOrKindTree = (p: {
       tree={p.typeOrKind}
       level={p.level}
       zoomBarProps={{ padding }}
-      onNodesChange={onNodesChange}
-      fitViewOptions={{ padding }}
       {...p.extraTreeProps}
     />
   );

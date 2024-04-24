@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NodeChange, ReactFlowProvider, useReactFlow } from "reactflow";
+import { ReactFlowProvider } from "reactflow";
 import { EvalBoundedInterpResp, GlobalName, Level } from "@/primer-api";
 import { SelectMenu, TreeReactFlowOne } from "@/components";
 import {
@@ -26,10 +26,6 @@ const Evaluated = (p: {
   extraTreeProps: Partial<TreeReactFlowOneProps>;
 }) => {
   const padding = 1.0;
-  const { fitView } = useReactFlow();
-  const onNodesChange = (_: NodeChange[]) => {
-    fitView({ padding });
-  };
   const resultTree = () => {
     switch (p?.evaluated?.tag) {
       case "EvalBoundedInterpRespNormal":
@@ -47,8 +43,6 @@ const Evaluated = (p: {
       {...resultTree()}
       level={p.level}
       zoomBarProps={{ padding }}
-      onNodesChange={onNodesChange}
-      fitViewOptions={{ padding }}
       {...p.extraTreeProps}
     />
   );
