@@ -1,4 +1,4 @@
-import { NodeChange, ReactFlowProvider, useReactFlow } from "reactflow";
+import { NodeChange, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { Tree, Level, TypeOrKind } from "@/primer-api";
 import { TreeReactFlowOne } from "@/components";
 import {

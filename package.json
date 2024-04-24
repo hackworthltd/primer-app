@@ -30,6 +30,7 @@
     "@tanstack/react-query": "^5.29.0",
     "@tanstack/react-query-devtools": "^5.29.0",
     "@types/deep-equal": "^1.0.4",
+    "@xyflow/react": "12.0.0-next.15",
     "@zxch3n/tidy": "github:hackworthltd/tidy#e07fdef2ae7bf593701817113dd47b4cd56c7a97",
     "axios": "^1.6.8",
     "deep-equal": "^2.2.3",
@@ -41,7 +42,6 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.2",
     "react-router-dom": "^6.22.3",
-    "reactflow": "^11.10.3",
     "universal-cookie": "^7.1.4",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"

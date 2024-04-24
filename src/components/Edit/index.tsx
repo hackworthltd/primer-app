@@ -22,7 +22,7 @@ import {
   useState,
 } from "react";
 import { useParams } from "react-router-dom";
-import { ReactFlowProvider } from "reactflow";
+import { ReactFlowProvider } from "@xyflow/react";
 import {
   useGetAvailableActions,
   useGetProgram,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NodeChange, ReactFlowProvider, useReactFlow } from "reactflow";
+import { NodeChange, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { EvalFullResp, GlobalName, Level } from "@/primer-api";
 import { SelectMenu, TreeReactFlowOne } from "@/components";
 import {

@@ -7,7 +7,7 @@ import {
   NodeType,
 } from "@/primer-api";
 import { unzip } from "fp-ts/lib/Array";
-import { Position } from "reactflow";
+import { Position } from "@xyflow/react";
 import { NodeFlavor } from "./Flavor";
 
 /** A generic graph. */
