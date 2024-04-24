@@ -1,4 +1,4 @@
-@import "reactflow/dist/base.css";
+@import "@xyflow/react/dist/base.css";
 
 .react-flow__edge-path,
 .react-flow__connection-path {

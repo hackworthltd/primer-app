@@ -8,7 +8,7 @@ import {
   Level,
   TypeDef,
 } from "@/primer-api";
-import type { NodeChange } from "reactflow";
+import type { NodeChange } from "@xyflow/react";
 import {
   ReactFlow,
   Node as RFNode,
@@ -23,7 +23,7 @@ import {
   getBezierPath,
   EdgeTypes,
   useReactFlow,
-} from "reactflow";
+} from "@xyflow/react";
 import "./reactflow.css";
 import { MutableRefObject, PropsWithChildren, useId } from "react";
 import classNames from "classnames";
@@ -462,7 +462,7 @@ const edgeTypes = {
     targetX,
     targetY,
     targetPosition,
-  }: EdgeProps<unknown> & { data: PrimerEdgeProps }) => {
+  }: EdgeProps<PrimerEdge> & { data: PrimerEdgeProps }) => {
     const [edgePath] = getBezierPath({
       sourceX,
       sourceY,
@@ -490,7 +490,7 @@ const edgeTypes = {
     targetX,
     targetY,
     targetPosition,
-  }: EdgeProps<unknown>) => {
+  }: EdgeProps<PrimerEdge>) => {
     const [edgePath] = getSmoothStepPath({
       sourceX,
       sourceY,
@@ -756,7 +756,7 @@ const makePrimerNode = async (
         bodyNested.concat({
           nodes: bodyLayout.nodes.map((node) => ({
             ...node,
-            parentNode: id,
+            parentId: id,
             position: {
               x: node.position.x + p.boxPadding / 2,
               y: node.position.y + p.boxPadding / 2,
@@ -1378,19 +1378,17 @@ const SetTreeReactFlowCallbacks = ({
  * check that we register its subtypes correctly with ReactFlow,
  * and safely act on that type in handlers. */
 export const ReactFlowSafe = <
-  N extends RFNode<unknown> & { type: string },
-  E extends RFEdge<unknown> & { type: string },
+  N extends RFNode & { type: string },
+  E extends RFEdge & { type: string },
 >(
   p: Omit<Parameters<typeof ReactFlow>[0], "onNodeClick" | "edgeTypes"> & {
     nodes: N[];
     nodeTypes: {
-      [T in N["type"]]: (
-        args: NodeProps<unknown> & N & { type: T }
-      ) => JSX.Element;
+      [T in N["type"]]: (args: NodeProps & N & { type: T }) => JSX.Element;
     };
     edgeTypes: {
       [T in E["type"]]: (
-        args: EdgeProps<unknown> & E & { type: T }
+        args: EdgeProps<PrimerEdge> & E & { type: T }
       ) => JSX.Element;
     };
     onNodeClick?: (e: React.MouseEvent<Element, MouseEvent>, n: N) => void;

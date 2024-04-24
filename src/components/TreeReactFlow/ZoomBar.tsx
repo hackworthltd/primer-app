@@ -1,4 +1,4 @@
-import { useReactFlow, Panel } from "@reactflow/core";
+import { useReactFlow, Panel } from "@xyflow/react";
 import {
   ArrowsPointingOutIcon,
   MagnifyingGlassPlusIcon,
