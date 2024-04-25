@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v4.1.6
+        uses: actions/download-artifact@v4.1.7
 
       - name: Import secrets from Vault
         uses: hashicorp/vault-action@v3.0.0
