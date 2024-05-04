@@ -35,7 +35,7 @@ export const layoutTree = <
       const [treeTidy0, nodeInfos, edgeInfos] = primerToTidy(primerTree);
       const treeTidy = layout.set_root(treeTidy0);
       layout.layout(true);
-      layout.dispose();
+      layout[Symbol.dispose]();
       const nodeMap = makeNodeMap(
         nodeInfos,
         edgeInfos,
