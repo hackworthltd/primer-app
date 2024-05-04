@@ -31,7 +31,6 @@ import {
   Tidy as TidyWasm,
   WasmLayoutType as LayoutType,
 } from "@hackworthltd/tidyt-wasm";
-import { Disposable } from "./dispose";
 
 export { LayoutType };
 
@@ -73,7 +72,7 @@ const NULL_ID = () => {
   }
   return nullId;
 };
-export class TidyLayout extends Disposable {
+export class TidyLayout implements Disposable {
   private tidy: TidyWasm;
   private nextId = 1;
   private root: InnerNode | undefined;
@@ -91,7 +90,6 @@ export class TidyLayout extends Disposable {
     parent_child_margin: number,
     peer_margin: number
   ) {
-    super();
     if (type === LayoutType.Basic) {
       this.tidy = TidyWasm.with_basic_layout(parent_child_margin, peer_margin);
     } else if (type === LayoutType.Tidy) {
@@ -101,11 +99,10 @@ export class TidyLayout extends Disposable {
     } else {
       throw new Error("not implemented");
     }
-    this._register({
-      dispose: () => {
-        this.tidy.free();
-      },
-    });
+  }
+
+  [Symbol.dispose]() {
+    this.tidy.free();
   }
 
   changeLayoutType(type: LayoutType) {
