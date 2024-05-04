@@ -26,15 +26,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Tidy, Tidy as TidyWasm, WasmLayoutType as LayoutType } from '@hackworthltd/tidyt-wasm';
-import { Disposable } from './dispose';
+import {
+  Tidy,
+  Tidy as TidyWasm,
+  WasmLayoutType as LayoutType,
+} from "@hackworthltd/tidyt-wasm";
+import { Disposable } from "./dispose";
 
 export { LayoutType };
 
 function visit<T extends { children: T[] }>(
   node: T,
   func: (node: T, depth: number) => void,
-  depth = 0,
+  depth = 0
 ) {
   func(node, depth);
   for (const child of node.children) {
@@ -77,7 +81,7 @@ export class TidyLayout extends Disposable {
   static async create(
     type: LayoutType = LayoutType.Tidy,
     parent_child_margin = 40,
-    peer_margin = 10,
+    peer_margin = 10
   ) {
     return new TidyLayout(type, parent_child_margin, peer_margin);
   }
@@ -85,7 +89,7 @@ export class TidyLayout extends Disposable {
   private constructor(
     type: LayoutType = LayoutType.Tidy,
     parent_child_margin: number,
-    peer_margin: number,
+    peer_margin: number
   ) {
     super();
     if (type === LayoutType.Basic) {
@@ -95,7 +99,7 @@ export class TidyLayout extends Disposable {
     } else if (type === LayoutType.LayeredTidy) {
       this.tidy = TidyWasm.with_layered_tidy(parent_child_margin, peer_margin);
     } else {
-      throw new Error('not implemented');
+      throw new Error("not implemented");
     }
     this._register({
       dispose: () => {
@@ -144,7 +148,7 @@ export class TidyLayout extends Disposable {
         node.id,
         node.width,
         node.height,
-        node.parentId ?? NULL_ID(),
+        node.parentId ?? NULL_ID()
       );
     });
 
@@ -186,7 +190,7 @@ export class TidyLayout extends Disposable {
       new Uint32Array(ids),
       new Float64Array(width),
       new Float64Array(height),
-      new Uint32Array(parents),
+      new Uint32Array(parents)
     );
 
     return this.root;
