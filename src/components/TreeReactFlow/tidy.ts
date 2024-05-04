@@ -116,10 +116,18 @@ export class TidyLayout extends Disposable {
     this.tidy.layout();
     const positions = this.tidy.get_pos();
     for (let i = 0; i < positions.length; i += 3) {
-      const id = positions[i] | 0;
+      // Better error handling needed here when the id is undefined.
+      //
+      // https://github.com/hackworthltd/primer-app/issues/1189
+      const id = positions[i] || 0;
       const node = this.idToNode.get(id)!;
-      node.x = positions[i + 1];
-      node.y = positions[i + 2];
+
+      // Also need better error handling here when the node's x or y
+      // position is undefined.
+      //
+      // https://github.com/hackworthltd/primer-app/issues/1189
+      node.x = positions[i + 1] || 0;
+      node.y = positions[i + 2] || 0;
     }
   }
 
