@@ -68,7 +68,7 @@ import {
   sortClasses,
 } from "./Flavor";
 import { ZoomBar, ZoomBarProps } from "./ZoomBar";
-import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
+import { WasmLayoutType } from "@hackworthltd/tidyt-wasm";
 import { deepEqualTyped, usePromise } from "@/util";
 import { mapSnd } from "fp-ts/lib/Tuple";
 

@@ -2,8 +2,8 @@ import {
   InnerNode as InnerTidyNode,
   Node as TidyNode,
   TidyLayout,
-} from "@zxch3n/tidy";
-import { WasmLayoutType } from "@zxch3n/tidy/wasm_dist";
+} from "./tidy";
+import { WasmLayoutType } from "@hackworthltd/tidyt-wasm";
 import { unzip } from "fp-ts/lib/Array";
 import { fst, mapFst, mapSnd } from "fp-ts/lib/Tuple";
 import { treeMap, Tree, Positioned, Padding } from "./Types";

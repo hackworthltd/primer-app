@@ -4,6 +4,8 @@ import react from "@vitejs/plugin-react";
 import { checker } from "vite-plugin-checker";
 import tsconfigPaths from "vite-tsconfig-paths";
 import vitePluginFaviconsInject from "vite-plugin-favicons-inject";
+import wasm from "vite-plugin-wasm";
+import topLevelAwait from "vite-plugin-top-level-await";
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -11,6 +13,8 @@ export default ({ mode }) => {
 
   return defineConfig({
     plugins: [
+      wasm(),
+      topLevelAwait(),
       checker({
         typescript: { tsconfigPath: "./tsconfig.app.json" },
         overlay: false,
