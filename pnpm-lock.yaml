@@ -40,8 +40,8 @@ dependencies:
     specifier: ^1.0.4
     version: 1.0.4
   '@xyflow/react':
-    specifier: 12.0.0-next.17
-    version: 12.0.0-next.17(@types/react@18.3.1)(react-dom@18.3.1)(react@18.3.1)
+    specifier: 12.0.0-next.18
+    version: 12.0.0-next.18(@types/react@18.3.1)(react-dom@18.3.1)(react@18.3.1)
   axios:
     specifier: ^1.6.8
     version: 1.6.8
@@ -5177,13 +5177,13 @@ packages:
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
     dev: true
 
-  /@xyflow/react@12.0.0-next.17(@types/react@18.3.1)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-4XuwFwNnu/yLf/1jKKJwmUleklIA0QnecojMa38XkkvydaES9b1+ayU4nHITLjJOBhKFYLsihwhgYm7ofRdEsw==}
+  /@xyflow/react@12.0.0-next.18(@types/react@18.3.1)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-NkYSEED3z0CYC8OgsiWbz8S/LU8m2M8436c3otpUahc0eTHHhsSrN+YO9GNBAiYgegQQv5RlOPL0KW1mk4fQbw==}
     peerDependencies:
       react: '>=17'
       react-dom: '>=17'
     dependencies:
-      '@xyflow/system': 0.0.25
+      '@xyflow/system': 0.0.26
       classcat: 5.0.5
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -5193,8 +5193,8 @@ packages:
       - immer
     dev: false
 
-  /@xyflow/system@0.0.25:
-    resolution: {integrity: sha512-xukvOg6620ZO+w1UccS+LFTCl4mTptswUOjlcLkdLQJDSu7BJfNBGDN0qL/q/a05GSVFRIP8hlaqgOdi3fDsWw==}
+  /@xyflow/system@0.0.26:
+    resolution: {integrity: sha512-BOizB0xZiJmzNzihoqpqWLddyGhKesBLXcQpKnXdZuI8KpLDVXXxbJH2JTuVOGsBGSAZc/yXZqtwrXBhu8rA5w==}
     dependencies:
       '@types/d3': 7.4.3
       '@types/d3-drag': 3.0.7
