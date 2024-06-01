@@ -102,8 +102,8 @@ devDependencies:
     specifier: ^8.0.9
     version: 8.0.9(@types/react@18.3.1)(react-dom@18.3.1)(react@18.3.1)
   '@storybook/addon-links':
-    specifier: ^8.0.9
-    version: 8.0.9(react@18.3.1)
+    specifier: ^8.1.5
+    version: 8.1.5(react@18.3.1)
   '@storybook/react':
     specifier: ^8.0.9
     version: 8.0.9(react-dom@18.3.1)(react@18.3.1)(typescript@5.4.5)
@@ -3384,15 +3384,15 @@ packages:
       '@storybook/global': 5.0.0
     dev: true
 
-  /@storybook/addon-links@8.0.9(react@18.3.1):
-    resolution: {integrity: sha512-FVt+AdW3JFSqbJzkKiqKsMRWqHXqEvCBqFs7lNfk3OW0w0jfv1iREtrxE0dVdJoUFQC9V/2Im/EpJ7UB3C2bNQ==}
+  /@storybook/addon-links@8.1.5(react@18.3.1):
+    resolution: {integrity: sha512-cRarzAI27K1JijDmFtNqr7khyg/l1JyOLXvLUDZRI6NBFGQo2oA42iHuR8jzje4tlUEh/8svGz52YR4TUvsDtQ==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
     peerDependenciesMeta:
       react:
         optional: true
     dependencies:
-      '@storybook/csf': 0.1.6
+      '@storybook/csf': 0.1.7
       '@storybook/global': 5.0.0
       react: 18.3.1
       ts-dedent: 2.2.0
@@ -3765,6 +3765,12 @@ packages:
 
   /@storybook/csf@0.1.6:
     resolution: {integrity: sha512-JjWnBptVhBYJ14yq+cHs66BXjykRUWQ5TlD1RhPxMOtavynYyV/Q+QR98/N+XB+mcPtFMm5I2DvNkpj0/Dk8Mw==}
+    dependencies:
+      type-fest: 2.19.0
+    dev: true
+
+  /@storybook/csf@0.1.7:
+    resolution: {integrity: sha512-53JeLZBibjQxi0Ep+/AJTfxlofJlxy1jXcSKENlnKxHjWEYyHQCumMP5yTFjf7vhNnMjEpV3zx6t23ssFiGRyw==}
     dependencies:
       type-fest: 2.19.0
     dev: true
