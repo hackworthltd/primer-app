@@ -524,17 +524,14 @@ const edgeTypes = {
           style={{ strokeWidth: "0.25rem", fill: "none" }}
         ></BaseEdge>
         {label && (
+          // Note: React Flow provides `EdgeText`, but it's not quite
+          // flexible enough for what we want.
           <EdgeLabelRenderer>
             <div
               style={{
-                position: "absolute",
-                transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-                backgroundColor: "rgba(255, 255, 255, 0.8)",
-                padding: "0.15rem",
-                // color: "rgb(100, 176, 200)", // parent
-                color: "rgb(52, 55, 93)", // primary blue, as used for most text
-                // boxShadow: "0 0 0.2rem 0.2rem white",
+                transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
               }}
+              className="absolute flex rounded-full bg-blue-quaternary px-2 font-code text-sm text-white-primary xl:text-base"
             >
               {label}
             </div>
