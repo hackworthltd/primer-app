@@ -7,6 +7,7 @@ import {
   NodeType,
   Level,
   TypeDef,
+  EdgeFlavor,
 } from "@/primer-api";
 import type { NodeChange } from "@xyflow/react";
 import {
@@ -23,6 +24,8 @@ import {
   getBezierPath,
   EdgeTypes,
   useReactFlow,
+  BaseEdge,
+  EdgeLabelRenderer,
 } from "@xyflow/react";
 import "./reactflow.css";
 import { MutableRefObject, PropsWithChildren, useId } from "react";
@@ -55,6 +58,7 @@ import {
 } from "./Types";
 import { LayoutParams, layoutTree } from "./layoutTree";
 import {
+  NodeFlavor,
   boxFlavorBackground,
   commonHoverClasses,
   flavorClasses,
@@ -154,7 +158,7 @@ export const inlineTreeReactFlowProps: typeof defaultTreeReactFlowProps = {
   boxPadding: 35,
   layout: {
     ...defaultTreeReactFlowProps.layout,
-    margins: { child: 15, sibling: 12 },
+    margins: { child: 19, sibling: 12 },
   },
 };
 
@@ -456,6 +460,8 @@ const edgeTypes = {
   primer: ({
     data,
     id,
+    // TODO split out common edge props to ensure this is inferred to be a string
+    // label,
     sourceX,
     sourceY,
     sourcePosition,
@@ -463,7 +469,7 @@ const edgeTypes = {
     targetY,
     targetPosition,
   }: EdgeProps<PrimerEdge> & { data: PrimerEdgeProps }) => {
-    const [edgePath] = getBezierPath({
+    const [edgePath, labelX, labelY] = getBezierPath({
       sourceX,
       sourceY,
       sourcePosition,
@@ -471,15 +477,70 @@ const edgeTypes = {
       targetY,
       targetPosition,
     });
+    const label = (() => {
+      switch (data.edgeFlavor) {
+        case "Hole":
+          return undefined;
+        case "AnnTerm":
+          return undefined;
+        case "Ann":
+          return undefined;
+        case "AppFun":
+          return undefined;
+        case "AppArg":
+          return undefined;
+        case "ConField":
+          return undefined;
+        case "Lam":
+          return undefined;
+        case "LetEqual":
+          return "=";
+        case "LetIn":
+          return "in";
+        case "MatchInput":
+          return undefined;
+        case "Pattern":
+          return undefined;
+        case "MatchOutput":
+          return undefined;
+        case "FunIn":
+          return undefined;
+        case "FunOut":
+          return undefined;
+        case "ForallKind":
+          return undefined;
+        case "Forall":
+          return undefined;
+        case "Bind":
+          return undefined;
+      }
+    })();
     return (
-      <path
-        id={id}
-        className={classNames(
-          "fill-none stroke-[0.25rem]",
-          flavorEdgeClasses(data.flavor)
+      <>
+        <BaseEdge
+          label={id}
+          id={id}
+          path={edgePath}
+          style={{ strokeWidth: "0.25rem", fill: "none" }}
+        ></BaseEdge>
+        {label && (
+          <EdgeLabelRenderer>
+            <div
+              style={{
+                position: "absolute",
+                transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                padding: "0.15rem",
+                // color: "rgb(100, 176, 200)", // parent
+                color: "rgb(52, 55, 93)", // primary blue, as used for most text
+                // boxShadow: "0 0 0.2rem 0.2rem white",
+              }}
+            >
+              {label}
+            </div>
+          </EdgeLabelRenderer>
         )}
-        d={edgePath}
-      />
+      </>
     );
   },
   "primer-def": ({
@@ -490,8 +551,9 @@ const edgeTypes = {
     targetX,
     targetY,
     targetPosition,
+    label,
   }: EdgeProps<PrimerEdge>) => {
-    const [edgePath] = getSmoothStepPath({
+    const [edgePath, labelX, labelY] = getSmoothStepPath({
       sourceX,
       sourceY,
       sourcePosition,
@@ -501,12 +563,24 @@ const edgeTypes = {
       offset: 0,
     });
     return (
-      <path
-        id={id}
-        className={"fill-none stroke-grey-tertiary stroke-[0.25rem]"}
-        style={{ strokeDasharray: 4 }}
-        d={edgePath}
-      />
+      <>
+        <BaseEdge
+          label={id}
+          id={id}
+          path={edgePath}
+          style={{ strokeWidth: "0.25rem", fill: "none", strokeDasharray: 4 }}
+        ></BaseEdge>
+        <EdgeLabelRenderer>
+          <div
+            style={{
+              position: "absolute",
+              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            }}
+          >
+            {label}
+          </div>
+        </EdgeLabelRenderer>
+      </>
     );
   },
 };
@@ -520,10 +594,14 @@ type APITreeNode = {
 
 const augmentTree = async <T, E>(
   tree: APITree,
-  f: (tree: APITreeNode) => Promise<[T, (child: T, isRight: boolean) => E]>
+  f: (
+    tree: APITreeNode
+  ) => Promise<[T, (child: T, flavor: EdgeFlavor, isRight: boolean) => E]>
 ): Promise<Tree<T, E>> => {
   const childTrees = await Promise.all(
-    tree.childTrees.map((t) => augmentTree(t.snd, f))
+    tree.childTrees.map((t) =>
+      augmentTree(t.snd, f).then((r) => [r, t.fst] as const)
+    )
   );
   const [node, makeEdge] = await f({
     children: tree.childTrees.length + (tree.rightChild ? 1 : 0),
@@ -533,10 +611,18 @@ const augmentTree = async <T, E>(
     ? augmentTree(tree.rightChild.snd, f)
     : undefined);
   return {
-    ...(rightChild
-      ? { rightChild: [rightChild, makeEdge(rightChild.node, true)] }
+    ...(rightChild && tree.rightChild
+      ? {
+          rightChild: [
+            rightChild,
+            makeEdge(rightChild.node, tree.rightChild.fst, true),
+          ],
+        }
       : {}),
-    childTrees: childTrees.map((e) => [e, makeEdge(e.node, false)]),
+    childTrees: childTrees.map(([e, flavor]) => [
+      e,
+      makeEdge(e.node, flavor, false),
+    ]),
     node,
   };
 };
@@ -551,7 +637,7 @@ const makePrimerNode = async (
 ): Promise<
   [
     PrimerNode,
-    (child: PrimerNode, isRight: boolean) => PrimerEdge,
+    (child: PrimerNode, flavor: EdgeFlavor, isRight: boolean) => PrimerEdge,
     /* Nodes of nested trees, already positioned.
     We have to lay these out first in order to know the dimensions of boxes to be drawn around them.*/
     PrimerGraph[],
@@ -574,15 +660,17 @@ const makePrimerNode = async (
     showIDs: p.showIDs,
   };
   const edgeCommon = (
+    flavor: NodeFlavor,
     child: PrimerNode,
     isRight: boolean
-  ): Omit<PrimerEdge, "className" | "type" | "data"> => ({
+  ): Omit<PrimerEdge, "type" | "data"> => ({
     id: JSON.stringify([id, child.id]),
     source: id,
     target: child.id,
     zIndex,
     sourceHandle: isRight ? Position.Right : Position.Bottom,
     targetHandle: isRight ? Position.Left : Position.Top,
+    className: flavorEdgeClasses(flavor),
   });
   const width = (hideLabel: boolean) =>
     p.style == "inline" && !hideLabel
@@ -600,11 +688,10 @@ const makePrimerNode = async (
             data: { contents: prim.contents, ...common },
             zIndex,
           },
-          (child, isRight) => ({
+          (child, edgeFlavor, isRight) => ({
             type: "primer",
-            data: { flavor },
-            className: flavorEdgeClasses(flavor),
-            ...edgeCommon(child, isRight),
+            data: { flavor, edgeFlavor },
+            ...edgeCommon(flavor, child, isRight),
           }),
           [],
         ];
@@ -631,11 +718,10 @@ const makePrimerNode = async (
           },
           zIndex,
         },
-        (child, isRight) => ({
+        (child, edgeFlavor, isRight) => ({
           type: "primer",
-          data: { flavor },
-          className: flavorEdgeClasses(flavor),
-          ...edgeCommon(child, isRight),
+          data: { flavor, edgeFlavor },
+          ...edgeCommon(flavor, child, isRight),
         }),
         [],
       ];
@@ -657,21 +743,24 @@ const makePrimerNode = async (
           },
           zIndex,
         },
-        (child, isRight) => ({
+        (child, edgeFlavor, isRight) => ({
           type: "primer",
-          data: { flavor },
-          className: flavorEdgeClasses(flavor),
-          ...edgeCommon(child, isRight),
+          data: { flavor, edgeFlavor },
+          ...edgeCommon(flavor, child, isRight),
         }),
         [],
       ];
     }
     case "NoBody": {
       const flavor = node.body.contents;
-      const makeChild = (child: PrimerNode, isRight: boolean): PrimerEdge => ({
+      const makeChild = (
+        child: PrimerNode,
+        edgeFlavor: EdgeFlavor,
+        isRight: boolean
+      ): PrimerEdge => ({
         type: "primer",
-        data: { flavor },
-        ...edgeCommon(child, isRight),
+        data: { flavor, edgeFlavor },
+        ...edgeCommon(flavor, child, isRight),
       });
       if (p.level == "Beginner") {
         return [
@@ -747,11 +836,10 @@ const makePrimerNode = async (
           },
           zIndex,
         },
-        (child, isRight) => ({
+        (child, edgeFlavor, isRight) => ({
           type: "primer",
-          data: { flavor },
-          className: flavorEdgeClasses(flavor),
-          ...edgeCommon(child, isRight),
+          data: { flavor, edgeFlavor },
+          ...edgeCommon(flavor, child, isRight),
         }),
         bodyNested.concat({
           nodes: bodyLayout.nodes.map((node) => ({
@@ -943,6 +1031,7 @@ const defToTree = async (
         zIndex: 0,
         sourceHandle: Position.Bottom,
         targetHandle: Position.Top,
+        className: "stroke-grey-tertiary",
       },
     ]);
   const sigTree = await defEdge(def.type_, "SigNode", sigEdgeId);
@@ -1024,6 +1113,7 @@ const typeDefToTree = async (
       targetHandle: Position.Top,
       zIndex: 0,
       type: "primer-def",
+      className: "stroke-grey-tertiary",
     };
     return [
       {
@@ -1041,6 +1131,7 @@ const typeDefToTree = async (
         zIndex: 0,
         sourceHandle: Position.Right,
         targetHandle: Position.Left,
+        className: "stroke-grey-tertiary",
       }),
     ];
   }, undefined);
@@ -1079,6 +1170,7 @@ const typeDefToTree = async (
               zIndex: 0,
               sourceHandle: Position.Bottom,
               targetHandle: Position.Top,
+              className: "stroke-grey-tertiary",
             },
           ])
         )
@@ -1118,6 +1210,7 @@ const typeDefToTree = async (
           sourceHandle: Position.Bottom,
           targetHandle: Position.Top,
           zIndex: 0,
+          className: "stroke-grey-tertiary",
         },
       ];
     })
