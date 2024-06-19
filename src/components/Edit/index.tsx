@@ -39,7 +39,7 @@ import {
   useGetActionOptions,
   useCreateDefinition,
   useCreateTypeDef,
-  useEvalFull,
+  useEvalBoundedInterp,
   Level,
   useUndo,
   useRedo,
@@ -250,10 +250,10 @@ const AppNoError = ({
 
   const [evalTarget, setEvalTarget] = useState<string | undefined>();
   const evalResult = useInvalidateOnChange(
-    useEvalFull(
+    useEvalBoundedInterp(
       p.sessionId,
       { qualifiedModule: p.module.modname, baseName: evalTarget || "" },
-      { stepLimit: 300 },
+      { timeoutMicroseconds: 100000 },
       { query: { enabled: !!evalTarget } }
     ),
     [p.module]
@@ -344,7 +344,7 @@ const AppNoError = ({
               // Note: these offsets are rather arbitrary.
               initialPosition={{ x: 10, y: 10 }}
               moduleName={p.module.modname}
-              evalFull={{
+              evalBoundedInterp={{
                 request: setEvalTarget,
                 ...(evalResult.isSuccess ? { result: evalResult.data } : {}),
               }}
