@@ -96,8 +96,8 @@ devDependencies:
     specifier: ^2.1.3
     version: 2.1.3(react@18.3.1)
   '@storybook/addon-actions':
-    specifier: ^8.0.9
-    version: 8.0.9
+    specifier: ^8.1.10
+    version: 8.1.10
   '@storybook/addon-essentials':
     specifier: ^8.0.9
     version: 8.0.9(@types/react@18.3.1)(react-dom@18.3.1)(react@18.3.1)
@@ -3303,6 +3303,17 @@ packages:
       uuid: 9.0.1
     dev: true
 
+  /@storybook/addon-actions@8.1.10:
+    resolution: {integrity: sha512-1MjncuynvkT3rJtrkWPHLo92Pfno+LUWtaHiNDt9nXYowclTN2cT4a4gNDh6eKkB9dITHxkD7/4mxjHpFUvyrA==}
+    dependencies:
+      '@storybook/core-events': 8.1.10
+      '@storybook/global': 5.0.0
+      '@types/uuid': 9.0.8
+      dequal: 2.0.3
+      polished: 4.3.1
+      uuid: 9.0.1
+    dev: true
+
   /@storybook/addon-backgrounds@8.0.9:
     resolution: {integrity: sha512-pCDecACrVyxPaJKEWS0sHsRb8xw+IPCSxDM1TkjaAQ6zZ468A/dcUnqW+LVK8bSXgQwWzn23wqnqPFSy5yptuQ==}
     dependencies:
@@ -3677,6 +3688,13 @@ packages:
       ts-dedent: 2.2.0
     dev: true
 
+  /@storybook/core-events@8.1.10:
+    resolution: {integrity: sha512-aS4zsBVyJds74+rAW0IfTEjULDCQwXecVpQfv11B8/89/07s3bOPssGGoTtCTaN4pHbduywE6MxbmFvTmXOFCA==}
+    dependencies:
+      '@storybook/csf': 0.1.8
+      ts-dedent: 2.2.0
+    dev: true
+
   /@storybook/core-server@8.0.9(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-BIe1T5YUBl0GYxEjRoTQsvXD2pyuzL8rPTUD41zlzSQM0R8U6Iant9SzRms4u0+rKUm2mGxxKuODlUo5ewqaGA==}
     dependencies:
@@ -3765,6 +3783,12 @@ packages:
 
   /@storybook/csf@0.1.6:
     resolution: {integrity: sha512-JjWnBptVhBYJ14yq+cHs66BXjykRUWQ5TlD1RhPxMOtavynYyV/Q+QR98/N+XB+mcPtFMm5I2DvNkpj0/Dk8Mw==}
+    dependencies:
+      type-fest: 2.19.0
+    dev: true
+
+  /@storybook/csf@0.1.8:
+    resolution: {integrity: sha512-Ntab9o7LjBCbFIao5l42itFiaSh/Qu+l16l/r/9qmV9LnYZkO+JQ7tzhdlwpgJfhs+B5xeejpdAtftDRyXNajw==}
     dependencies:
       type-fest: 2.19.0
     dev: true
