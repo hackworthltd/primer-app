@@ -91,7 +91,7 @@
     "unified-language-server": "^4.0.1",
     "vite": "^5.2.11",
     "vite-plugin-checker": "^0.6.4",
-    "vite-plugin-dts": "^3.9.0",
+    "vite-plugin-dts": "^4.0.0",
     "vite-plugin-favicons-inject": "^2.2.0",
     "vite-plugin-package-config": "^0.1.1",
     "vite-plugin-svgr": "^4.2.0",
