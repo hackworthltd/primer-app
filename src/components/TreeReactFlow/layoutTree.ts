@@ -6,7 +6,13 @@ import {
 import { WasmLayoutType } from "@hackworthltd/tidyt-wasm";
 import { unzip } from "fp-ts/lib/Array";
 import { fst, mapFst, mapSnd } from "fp-ts/lib/Tuple";
-import { treeMap, Tree, Positioned, Padding } from "./Types";
+import {
+  treeMap,
+  Tree,
+  Positioned,
+  Padding,
+  treeMapWithExtraContext,
+} from "./Types";
 
 export type LayoutParams = {
   type: WasmLayoutType;
@@ -53,7 +59,25 @@ export const layoutTree = <
       const minY = Math.min(
         ...nodes.map((n) => n.position.y - (n.data.padding?.top || 0))
       );
-      const tree = treeMap(treeUnNormalized, (n) => ({
+      // Ensure that where a node is a right-child with no children of its own,
+      // that child is drawn close to its parent, rather than evenly distributed among its parents' siblings.
+      // We should consider patching Tidy to allow us to do this sort of thing.
+      // As it stands, this is a bit of a hack, but a self-contained and relatively harmless one,
+      // which is extremely useful for positioning variable-binding nodes.
+      const tree0 = treeMapWithExtraContext(treeUnNormalized, (t) => ({
+        ...t.node,
+        position: {
+          x:
+            t.parent?.rightChild?.[1].target == t.node.id &&
+            t.childTrees.length == 0
+              ? t.parent.node.position.x +
+                p.margins.sibling +
+                t.parent.node.data.width
+              : t.node.position.x,
+          y: t.node.position.y,
+        },
+      }));
+      const tree = treeMap(tree0, (n) => ({
         ...n,
         // Ensure top-left is at (0,0). This makes the result easier to work with.
         position: { x: n.position.x - minX, y: n.position.y - minY },
