@@ -1,8 +1,11 @@
 name: Check DCO
 
 on:
-  pull_request:
-  merge_group:
+  workflow_dispatch:
+
+  # This project is deprecated.
+  #pull_request:
+  #merge_group:
 
 jobs:
   check-dco:

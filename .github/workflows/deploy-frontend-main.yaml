@@ -1,9 +1,11 @@
 name: Deploy the frontend (production)
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  # This project is deprecated.
+  #push:
+    # branches:
+    #   - main
 
 jobs:
   build-frontend-production:

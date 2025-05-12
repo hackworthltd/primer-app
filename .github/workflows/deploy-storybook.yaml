@@ -1,11 +1,14 @@
 name: Deploy Storybook.js
 
 on:
-  push:
-    branches-ignore:
-      # Do not run this workflow on Dependabot updates, or else it'll
-      # absolutely kill our GitHub Action & Chromatic CI minutes.
-      - dependabot/**
+  workflow_dispatch:
+
+  # This project is deprecated.
+  # push:
+  #   branches-ignore:
+  #     # Do not run this workflow on Dependabot updates, or else it'll
+  #     # absolutely kill our GitHub Action & Chromatic CI minutes.
+  #     - dependabot/**
 
 jobs:
   deploy-to-chromatic:
