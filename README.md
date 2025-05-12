@@ -1,4 +1,18 @@
-# Primer App
+# Deprecation notice
+
+**Note**: this TypeScript & React-based frontend for the [Primer
+pedagogical functional programming
+language](https://github.com/hackworthltd/primer) has been deprecated
+in favor of a Haskell-native frontend web app, which can be found in
+that project's repository, along with the core Primer implementation.
+
+All work on this project has been halted, but we'll keep the repo
+around for historical interest, and as a comparative reference for the
+new frontend.
+
+# Historical notes
+
+## Primer App
 
 Primer is a pedagogical functional programming language. This
 repository contains a collection of [React](https://react.dev)
@@ -22,7 +36,7 @@ licensed under the terms of [version 3 (or later) of the GNU Affero
 General Public License](COPYING), and can be freely copied, modified,
 and distributed, so long as the license is preserved.
 
-# Important caveats
+## Important caveats
 
 The Primer programming language, our Primer language server
 implementation, and this web app are all still under heavy
@@ -91,8 +105,8 @@ about the current state of the project**:
   begin for some time. Version 1.0 of Primer will focus on teaching
   fundamental functional programming concepts, such as functions,
   types, expressions, and program evaluation.
-  
-# Contributing
+
+## Contributing
 
 We welcome contributions from the community! Please read our
 [contributing guide](CONTRIBUTING.md) if you think you'd like to help.
@@ -101,7 +115,7 @@ We also provide a comprehensive [development
 guide](docs/development-guide-toc.md) for anyone who'd like to build
 and run the project locally.
 
-# Third-party licenses
+## Third-party licenses
 
 Some third-party assets that we distribute together with this
 project's source code (e.g., open source fonts) are licensed
