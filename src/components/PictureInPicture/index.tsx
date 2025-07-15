@@ -11,16 +11,16 @@ import classNames from "classnames";
 import { useRef, useState } from "react";
 import { useDraggable, DragOptions } from "@neodrag/react";
 import { Tab } from "@headlessui/react";
-import type { EvalFullProps } from "@/components/EvalFull";
+import type { EvalBoundedInterpProps } from "@/components/EvalBoundedInterp";
 import type { SelectionInfoProps } from "@/components/SelectionInfo";
-import { EvalFull, SelectionInfo } from "@/components";
+import { EvalBoundedInterp, SelectionInfo } from "@/components";
 
 export type PictureInPictureTab = "Eval" | "Info";
 
 export type PictureInPictureProps = {
   initialTab: PictureInPictureTab;
   initialPosition: { x: number; y: number };
-} & EvalFullProps &
+} & EvalBoundedInterpProps &
   SelectionInfoProps;
 
 const tabClasses = (selected: boolean, extra?: string) =>
@@ -96,7 +96,7 @@ export const PictureInPicture = (p: PictureInPictureProps): JSX.Element => {
           <Tab.Panels>
             <Tab.Panel>
               <div className="h-60">
-                <EvalFull {...p} />
+                <EvalBoundedInterp {...p} />
               </div>
             </Tab.Panel>
             <Tab.Panel>
